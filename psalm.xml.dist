@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<psalm
+        errorLevel="1"
+        resolveFromConfigFile="true"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="https://getpsalm.org/schema/config"
+        xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+        findUnusedBaselineEntry="true"
+        findUnusedCode="false"
+        findUnusedPsalmSuppress="true"
+        reportInfo="false"
+        reportMixedIssues="true"
+        allowStringToStandInForClass="true"
+>
+    <projectFiles>
+        <directory name="src"/>
+        <!--<directory name="tests"/>-->
+        <ignoreFiles>
+            <directory name="vendor"/>
+            <!-- Temp ignore -->
+            <directory name="../ezlogging"/>
+            <directory name="src/Addon/Projectdoc"/>
+            <file name="**/*Trait.php"/>
+        </ignoreFiles>
+    </projectFiles>
+    <issueHandlers>
+        <UnusedPsalmSuppress errorLevel="error"/>
+        <!-- too strict -->
+        <InternalMethod errorLevel="info"/>
+        <LessSpecificImplementedReturnType errorLevel="suppress"/>
+        <MixedArgument errorLevel="info"/>
+        <MixedReturnStatement errorLevel="info"/>
+        <MixedArrayAccess errorLevel="info"/>
+        <MixedAssignment errorLevel="info"/>
+        <MixedArgumentTypeCoercion errorLevel="info"/>
+        <MixedPropertyTypeCoercion errorLevel="info"/>
+        <MixedInferredReturnType errorLevel="info"/>
+        <PropertyNotSetInConstructor errorLevel="info"/>
+        <!-- Temp ignore -->
+        <UndefinedConstant errorLevel="suppress"/>
+    </issueHandlers>
+    <plugins>
+        <pluginClass class="Psalm\PhpUnitPlugin\Plugin"/>
+    </plugins>
+</psalm>

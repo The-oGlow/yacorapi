@@ -1,0 +1,135 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of ezlogging
+ *
+ * (c) 2024 Oliver Glowa, coding.glowa.com
+ *
+ * This source file is subject to the Apache-2.0 license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+namespace oglow\tools\Addon\Projectdoc\Macro;
+
+use Ds\Vector;
+use oglow\tools\Yacorapi\Macro\AbstractAddon;
+
+class ProjectdocAddon extends AbstractAddon
+{
+    /**
+     * @SuppressWarnings("PHPMD.ExcessiveMethodLength")
+     */
+    protected function init(): void
+    {
+        parent::init();
+        $this->addonsMacros->putAll(
+            [
+                'projectdoc Core Doctypes'            => new Vector(
+                    [
+                        'projectdoc-stakeholder-rating-macro',
+                    ]
+                ),
+                'projectdoc for Agile Planning'       => new Vector(
+                    [
+                        'projectdoc-story-points',
+                        'projectdoc-story-relevance',
+                        'projectdoc-story-status',
+                    ]
+                ),
+                'projectdoc for Software Development' => new Vector(
+                    [
+                        'projectdoc-actor-type',
+                        'projectdoc-feature-importance',
+                        'projectdoc-technical-debt-quality',
+                        'projectdoc-use-case-level',
+                        'projectdoc-user-type',
+                    ]
+                ),
+                'projectdoc Toolbox for Confluence' => new Vector(
+                    [
+                        'projectdoc-action-button-macro',
+                        'projectdoc-aside-panel-macro',
+                        'projectdoc-attachment-link-macro',
+                        'projectdoc-box-caution',
+                        'projectdoc-box-deprecated',
+                        'projectdoc-box-example',
+                        'projectdoc-box-fault',
+                        'projectdoc-box-feedback',
+                        'projectdoc-box-generic',
+                        'projectdoc-box-info',
+                        'projectdoc-box-note',
+                        'projectdoc-box-pending',
+                        'projectdoc-box-question',
+                        'projectdoc-box-references',
+                        'projectdoc-box-tip',
+                        'projectdoc-box-version',
+                        'projectdoc-box-warning',
+                        'projectdoc-changelog-macro',
+                        'projectdoc-code-block-placeholder-macro',
+                        'projectdoc-complexity',
+                        'projectdoc-content-marker',
+                        'projectdoc-count-macro',
+                        'projectdoc-create-one-document-macro',
+                        'projectdoc-definition-list-macro',
+                        'projectdoc-display-all-properties-macro',
+                        'projectdoc-display-all-space-properties-macro',
+                        'projectdoc-display-list',
+                        'projectdoc-display-space-attribute-macro',
+                        'projectdoc-display-table',
+                        'projectdoc-display-template-list',
+                        'projectdoc-dynamic-document-link-macro',
+                        'projectdoc-even-rating-macro',
+                        'projectdoc-hide',
+                        'projectdoc-hide-from-anonymous-user-macro',
+                        'projectdoc-hide-from-reader-macro',
+                        'projectdoc-hml-rating',
+                        'projectdoc-in-document-link-macro',
+                        'projectdoc-index-entries-table-macro',
+                        'projectdoc-issue-severity',
+                        'projectdoc-issue-status',
+                        'projectdoc-iteration',
+                        'projectdoc-layout-element-macro',
+                        'projectdoc-level-macro',
+                        'projectdoc-link-external',
+                        'projectdoc-link-wiki',
+                        'projectdoc-name-list',
+                        'projectdoc-page-include-macro',
+                        'projectdoc-physical-children-macro',
+                        'projectdoc-primary-page-property-display-macro',
+                        'projectdoc-priority',
+                        'projectdoc-properties-marker',
+                        'projectdoc-properties-supplier-from-documents-macro',
+                        'projectdoc-properties-supplier-macro',
+                        'projectdoc-properties-supply-by-attachment-macro',
+                        'projectdoc-property-display-as-list-macro',
+                        'projectdoc-quote',
+                        'projectdoc-quote-external',
+                        'projectdoc-random-static-transclusion-macro',
+                        'projectdoc-section',
+                        'projectdoc-space-list-macro',
+                        'projectdoc-space-property-display-macro',
+                        'projectdoc-steps-macro',
+                        'projectdoc-table-merger-macro',
+                        'projectdoc-table-set-macro',
+                        'projectdoc-tag-list-macro',
+                        'projectdoc-tour-by-property-macro',
+                        'projectdoc-tour-macro',
+                        'projectdoc-transclude-documents-macro',
+                        'projectdoc-transclusion-ancestor-property-macro',
+                        'projectdoc-transclusion-macro',
+                        'projectdoc-transclusion-parent-property',
+                        'projectdoc-transclusion-properties-display',
+                        'projectdoc-transclusion-property-display',
+                        'projectdoc-transclusion-property-display-as-image-macro',
+                        'projectdoc-transclusion-property-display-as-link-macro',
+                        'projectdoc-transclusion-property-display-ref',
+                        'projectdoc-transclusion-property-display-ref-concat',
+                        'projectdoc-transclusion-ref-macro',
+                    ]
+                ),
+            ]
+        );
+    }
+}

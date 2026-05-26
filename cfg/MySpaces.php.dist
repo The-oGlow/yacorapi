@@ -1,0 +1,57 @@
+<?php
+
+declare(strict_types=1);
+
+namespace oglow\tools\Yacorapi;
+
+/**
+ * Class MySpaces
+ *
+ * Define this class to list all your spaces (by key).
+ *
+ * @see {@link config.adoc} for configuration details
+ */
+class MySpaces
+{
+    /**
+     * A list with one single space key.
+     *
+     * @return string[]
+     */
+    public static function getMySpaceListSingle(): array
+    {
+        return ['#spacekey-single#'];
+    }
+
+    /**
+     * A small list of individual space keys.
+     * More than {@link getMySpaceListSingle()}, but less than {@link getMySpaceListAll()}.
+     *
+     * @return string[]
+     */
+    public static function getMySpaceListSimple(): array
+    {
+        return ['#spacekey-simple1#', '#spacekey-simple2#'];
+    }
+
+    /**
+     * A list with all available space keys.
+     *
+     * @return string[]
+     */
+    public static function getMySpaceListAll(): array
+    {
+        return ['#spacekey-all1#', '#spacekey-all2#'];
+    }
+
+    /**
+     * A list with a subset of space keys.
+     *
+     * @return string[]
+     */
+    public static function getMySpaceListSubset1(): array
+    {
+        return ['#spacekey-all1#', '#spacekey-all2#'];
+    }
+
+}

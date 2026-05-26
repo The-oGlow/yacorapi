@@ -1,0 +1,30 @@
+The functions are separated in subfolders uner `example`
+
+* link:{site_resource}/example/Restapi[`Restapi`] -> Base folder for all REST-API examples
+* link:{site_resource}/example/Restapi/Projectdoc[`Projectdoc`] -> Examples using the Projectdoc Toolbox
+
+Starting a function is easy from the shell (commandline)
+
+    php -f ./example/<subfolder>/<function>.php
+
+E.g.
+
+    php -f ./example/search/searchpage.php
+
+The results are printed to the console or into a file in the target folder
+
+    ./target/<subfolder>/<yyyymmdd-hhnnss>/<function>.<extension>
+
+The output can be
+
+* Text
+* CSV
+* JSON
+
+=== Switch to production
+By default the requests are sent to the URL of `\#confluence-url_for_testing#`
+
+* Edit the file:
+** Unix / Linux: `${HOME}/.yacorapi/myauth.php`
+** Windows: `%USERPROFILE%\.yacorapi\myauth.php`
+* Set `CONST USE_PROD = false` to `CONST USE_PROD = true`

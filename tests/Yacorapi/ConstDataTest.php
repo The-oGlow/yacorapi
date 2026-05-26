@@ -1,0 +1,127 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of ezlogging
+ *
+ * (c) 2024 Oliver Glowa, coding.glowa.com
+ *
+ * This source file is subject to the Apache-2.0 license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+namespace oglow\tools\Yacorapi;
+
+use PHPUnit\Framework\ConstantCheckTestCase;
+
+class ConstDataTest extends ConstantCheckTestCase
+{
+    public const  CLASS_PREFIX = ConstData::class . self::C_STATIC_SEP;
+
+    /** @var int */
+    protected const EXPECTED_CONSTANT_COUNT = 34;
+
+    /** @var bool */
+    protected const WITH_CONST_CROSSCHECK = true;
+
+    /**
+     * @return ConstData
+     */
+    protected static function prepareO2t()
+    {
+        return new ConstData();
+    }
+
+    /**
+     * @return ConstData
+     */
+    protected function getCasto2t()
+    {
+        return $this->o2t;
+    }
+
+    public static function setUpBeforeClass(bool $withConstCrossCheck = self::WITH_CONST_CROSSCHECK, int $expectedConstsCount = self::EXPECTED_CONSTANT_COUNT): void
+    {
+        parent::setUpBeforeClass($withConstCrossCheck, $expectedConstsCount);
+    }
+
+    public function testGlobalConstsExists(): void
+    {
+        $const              = [
+            self::CLASS_PREFIX . 'KEY_MY_DIR',
+        ];
+        static::updateActualConsts($const);
+
+        $this->verifyConstAllExists($const);
+    }
+
+    public function testPathConstsExists(): void
+    {
+        $const              = [
+            self::CLASS_PREFIX . 'KEY_PROJECT_ROOT',
+            self::CLASS_PREFIX . 'KEY_TARGET_ROOTDIR',
+            self::CLASS_PREFIX . 'KEY_TARGET_DIR',
+            self::CLASS_PREFIX . 'TARGET_ORGDIR',
+            self::CLASS_PREFIX . 'TARGET_MODDIR',
+            self::CLASS_PREFIX . 'KEY_INPUT_ROOTDIR',
+            self::CLASS_PREFIX . 'KEY_INPUT_DIR',
+        ];
+        static::updateActualConsts($const);
+
+        $this->verifyConstAllExists($const);
+    }
+
+    public function testClassConstsExists(): void
+    {
+        $const              = [
+            self::CLASS_PREFIX . 'PAGE_START',
+            self::CLASS_PREFIX . 'PAGE_LIMIT',
+            self::CLASS_PREFIX . 'PAGE_MAX_PAGES',
+            self::CLASS_PREFIX . 'PAGE_MAX_RESULTS',
+        ];
+        static::updateActualConsts($const);
+
+        $this->verifyConstAllExists($const);
+    }
+
+    public function testCliParameterSize(): void
+    {
+        $const              = [
+            self::CLASS_PREFIX . 'CLI_LONG_OPTS' => 1,
+        ];
+        static::updateActualConsts(array_keys($const));
+
+        $this->verifyConstArrayAllExists($const);
+    }
+
+    public function testConfigConstsExists(): void
+    {
+        $const              = [
+            self::CLASS_PREFIX . 'CONF_PAT_PROD',
+            self::CLASS_PREFIX . 'CONF_PAT_TEST',
+            self::CLASS_PREFIX . 'CONF_USERCERTFILE',
+            self::CLASS_PREFIX . 'CONF_USERAUTHFILE',
+            self::CLASS_PREFIX . 'CONF_USERFOLDER',
+            self::CLASS_PREFIX . 'KEY_USE_PROD',
+            self::CLASS_PREFIX . 'KEY_CONF_BASE_URL',
+            self::CLASS_PREFIX . 'KEY_AUTH_TOKEN_NAME',
+            self::CLASS_PREFIX . 'KEY_MY_CERT_CA',
+            self::CLASS_PREFIX . 'KEY_CONF_CONTENT_URL',
+            self::CLASS_PREFIX . 'KEY_CONF_SEARCH_URL',
+            self::CLASS_PREFIX . 'KEY_CONF_SPACE_URL',
+            self::CLASS_PREFIX . 'KEY_WEB_SHOW_PAGEID',
+            self::CLASS_PREFIX . 'KEY_SEARCH_LIMIT',
+            self::CLASS_PREFIX . 'C_RAPI_CONTENT',
+            self::CLASS_PREFIX . 'C_RAPI_SCAN',
+            self::CLASS_PREFIX . 'C_RAPI_SEARCH',
+            self::CLASS_PREFIX . 'C_RAPI_SPACE',
+            self::CLASS_PREFIX . 'C_RAPI_VIEWPAGE',
+            self::CLASS_PREFIX . 'C_RAPI_RESTRICTION_BYOP',
+            self::CLASS_PREFIX . 'C_RAPI_RESTRICTION',
+        ];
+        static::updateActualConsts($const);
+
+        $this->verifyConstAllExists($const);
+    }
+}

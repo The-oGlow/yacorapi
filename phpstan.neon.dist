@@ -1,0 +1,52 @@
+parameters:
+    level: 8
+
+    parallel:
+        jobSize: 10
+        maximumNumberOfProcesses: 32
+        minimumNumberOfJobsPerProcess: 4
+
+    paths:
+        - src/
+        - tests/
+
+    checkStrictPrintfPlaceholderTypes: false
+
+    strictRules:
+        # Too strict -> disabled
+        disallowedEmpty: false
+        disallowedLooseComparison: false
+
+    ignoreErrors:
+        # Too strict -> disabled
+        -
+            identifier: function.alreadyNarrowedType
+            paths:
+                - tests/*/*Test.php
+        -
+            identifier: staticMethod.alreadyNarrowedType
+            paths:
+                - tests/*/*Test.php
+
+        # Custom
+        -   
+            identifier: assign.propertyType
+            paths:
+                - src/Yacorapi/Client/AbstractRapiClient.php
+        -
+            identifier: class.notFound
+            paths:
+                - src/Yacorapi/ConstData.php
+                - tests/Yacorapi/MySpacesTest.php
+        -
+            identifier: property.onlyWritten
+            paths:
+                - src/foo/FooClazz.php
+
+    excludePaths:
+        -  src/Addon/Projectdoc
+        -  src/Addon/Atlassian/Extension/AdminExtension.php
+        -  src/Yacorapi/Response/ResponseDryRun.php
+
+includes:
+    - vendor/phpstan/phpstan-strict-rules/rules.neon

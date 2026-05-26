@@ -1,0 +1,74 @@
+:hide-uri-scheme:
+:doctype: book
+
+:site_resource: .
+include::{site_resource}/pj-settings.adoc[opts=optional]
+include::{site_resource}/adoc-cmmn-all.adoc[opts=optional]
+
+:source-highlighter: highlight.js
+
+= {pj_gh_repo}
+:toc: preamble
+:toclevels: 2
+
+{pj_ps_license_img}
+{pj_ps_release_img}
+{pj_ps_langtop_img}
+{pj_ps_langcount_img}
+{pj_ps_issues_img}
+
+{cm_shlds_tool_phpunit_img}
+{cm_shlds_tool_sonarcloud_img}
+{cm_shlds_tool_cdcy_img}
+{cm_shlds_tool_cvrlls_img}
+
+image:{cm_shlds_tool_phpcsfixer_url}[title="PHP CS Fixer Ruleset"]
+image:{cm_shlds_tool_phpstan_url}[title="PHPStan Level"]
+image:{cm_shlds_tool_psalm_url}[title="Psalm Level"]
+image:{cm_shlds_tool_phpcs_url}[title="PHP CodeSniffer Ruleset""]
+image:{cm_shlds_tool_phpmd_url}[title="PHP Mess Detector Ruleset"]
+
+== Description
+
+Managing the maintenance of a Confluence instance by REST API
+
+== What is a yacorapi?
+**Y** - et +
+**a** - nother +
+**-** +
+**co** - nfluence +
+**r** - est +
+**api**
+
+== Configuration
+
+Please read the link:config.adoc[configuration].
+
+== Usage
+
+include::{site_resource}/pj-usage.adoc[opts=optional]
+
+== Examples
+
+Please read some link:examples.adoc[examples].
+
+== Project Status
+
+Please read the link:analysis.adoc[project status].
+
+== Additional Information
+
+* link:composer.adoc[Composer Commands] - New commands for composer
+
+== Notice
+
+* Examples are working with privat access token (PAT) only!
+* Tested & Working with the Confluence Data Center Edition (DCE)
+
+link:{pj_snr_dash_url}[image:{cm_snr_tool_sonarcloud_url}[title="Sonarcloud Logo"]]
+
+== Reference
+
+* link:https://getcomposer.org/[Composer]
+
+_{pj_cright_author}_

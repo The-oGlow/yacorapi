@@ -1,0 +1,98 @@
+:hide-uri-scheme:
+:doctype: book
+
+:site_resource: .
+include::{site_resource}/pj-settings.adoc[opts=optional]
+include::{site_resource}/adoc-cmmn-all.adoc[opts=optional]
+
+:source-highlighter: highlight.js
+
+= {pj_gh_repo} - Configuration
+:toc:
+:toclevels: 2
+
+== Requirements
+
+* link:https://www.php.net[PHP]
+* link:https://getcomposer.org/[Composer]
+* Commandline / Shell (opt.)
+** Linux / Unix Shell or
+** Windows Shell
+
+== Configuration
+
+=== Unix / Linux
+
+* Clone this repository to your local drive
+* Create the folder +
+  `mkdir ${HOME}/.yacorapi`
+* Copy the file to the created folder +
+  `cp ./cfg/myauth.php.dist ${HOME}/.yacorapi/myauth.php`
+* Edit the file `${HOME}/.yacorapi/myauth.php`
+** Replace `\#confluence-url_for_production#` with your Confluence URL for the production environment
+** Replace `\#confluence-url_for_testing#` with your Confluence URL for the testing environment
+
+=== Windows
+
+* Clone this repository to your local drive
+* Create the folder +
+  `mkdir %USERPROFILE%\.yacorapi`
+* Copy the file to the created folder +
+  `copy .\cfg\myauth.php.dist %USERPROFILE%\.yacorapi\myauth.php`
+* Edit the file `%USERPROFILE%\.yacorapi\myauth.php`
+** Replace `\#confluence-url_for_production#` with your Confluence URL for the production environment
+** Replace `\#confluence-url_for_testing#` with your Confluence URL for the testing environment
+
+== Development
+
+Some infos, in case you want to fork and extend this library,
+
+=== Build & Test
+
+Start the whole build (run composer with c-fix, c-phpstan, c-psalm, c-test)
+
+    composer c-all
+
+=== UNIT Tests
+
+Starting the unit tests with PHPUnit
+
+    composer c-test
+
+=== Structure
+
+Relevant files and folders
+
+    <project-root>
+    |--cfg
+    |  |- *
+    |
+    |--site
+    |  |- *
+    |
+    |--src
+    |  |-- Yacorapi
+    |
+    |--target
+    |  |- *
+    |
+    |--tests
+    |  |-- Yacorapi
+    |
+    |--vendor
+    |  |- *
+    |
+    |-.php-cs-fixer.dist.php
+	|-.phpcs.xml.dist
+	|-.phpmd.xml.dist
+    |-composer.json
+    |-composer.lock
+    |-LICENSE
+    |-phpstan.neon.dist
+    |-phpunit.xml.dist
+    |-psalm.xml.dist
+    |-README.md
+    |-sonar-project.properties
+
+
+_{pj_cright_author}_

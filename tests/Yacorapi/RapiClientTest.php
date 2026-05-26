@@ -1,0 +1,354 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of ezlogging
+ *
+ * (c) 2024 Oliver Glowa, coding.glowa.com
+ *
+ * This source file is subject to the Apache-2.0 license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+namespace oglow\tools\Yacorapi;
+
+use Monolog\ConsoleLogger;
+use oglow\tools\common\MockProvider;
+use oglow\tools\Yacorapi\Client\RapiClient;
+use oglow\tools\Yacorapi\Extension\IExtension;
+use oglow\tools\Yacorapi\Response\Response;
+use oglow\tools\Yacorapi\Statistic\IStatistic;
+use oglow\tools\Yacorapi\Statistic\SpaceStatistic;
+use PHPUnit\Framework\EasyGoingTestCase;
+use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
+use oglow\tools\Yacorapi\Macro\AllAddon;
+use oglow\tools\Yacorapi\Macro\SingleAddon;
+use oglow\tools\Yacorapi\Macro\BlockerAddon;
+
+class RapiClientTest extends EasyGoingTestCase
+{
+    /** @var string Space on test instance */
+    public const SPACE_KEY = 'NMAS';
+
+    /** @var int Page id of space on test instance */
+    public const SPACE_HOMEPAGE_ID = 125380876;
+
+    public const PLAYGROUND_PAGEID = 532951146;
+
+    /** @var string */
+    public const PAGE_TITLE = 'NEW PAGE %s-%s';
+
+    /** @var string */
+    public const PAGE_BODY = "<p>This is <br/> a new page</p>\n";
+
+    /** @var string */
+    public const SEARCH_TERM = 'title=REST-API%2001';
+
+    /** @var LoggerInterface */
+    private static $logger;
+
+    public function setUp(): void
+    {
+        self::$logger = new ConsoleLogger(RapiClientTest::class);
+        self::$logger->debug('START');
+        parent::setUp();
+        self::$logger->debug('END');
+    }
+
+    /**
+     * @return IRapiClient
+     */
+    protected static function prepareO2t()
+    {
+        return RapiClient::newClient(IExtension::EXTENSION_ALL, new MockProvider(LogLevel::DEBUG));
+    }
+
+    /**
+     * @return IRapiClient
+     */
+    protected function getCasto2t(): IRapiClient
+    {
+        return $this->o2t;
+    }
+
+    /**
+     * @param string $expected
+     * @param int    $pageId
+     *
+     * @dataProvider providerReadPageByPageId
+     */
+    public function testReadPageByPageId(string $expected, int $pageId): void
+    {
+        self::$logger->info('START');
+
+        /** @var IResponse $response */
+        $response = $this->getCasto2t()->readPageByPageId($pageId);
+
+        self::$logger->info('response', [$response->getResponse()]);
+
+        self::assertNotEmpty($response);
+        $actual = $response->getBody();
+        self::assertStringContainsString($expected, $actual);
+        self::assertTrue($response->getResults()->isEmpty());
+
+        self::$logger->info('END');
+    }
+
+    /**
+     * @return array<mixed,mixed>
+     */
+    public function providerReadPageByPageId(): array
+    {
+        return [
+            'exists' => [YacorapiTestData::HTML_PAGE, YacorapiTestData::C_SEARCHPAGEID_01],
+            'notExist' => [YacorapiTestData::DATA_EMPTY, YacorapiTestData::C_PAGEID_NOTEXIST],
+        ];
+    }
+
+    public function testCreatePage(): void
+    {
+        self::$logger->info('START');
+
+        $newSpaceKey = self::SPACE_KEY;
+        $newTitle = sprintf(self::PAGE_TITLE, date('Ymd-His'), 1);
+        $newBody = self::PAGE_BODY;
+        $newParent = self::SPACE_HOMEPAGE_ID;
+
+        /** @var IResponse $response */
+        $response = $this->getCasto2t()->createPage($newSpaceKey, $newTitle, $newBody, $newParent);
+
+        self::$logger->info('response', [$response->getResponse()]);
+
+        self::assertNotEmpty($response);
+        self::assertNotEmpty($response->getValue(IResponse::KEY_ID));
+
+        self::assertEquals($newTitle, $response->getValue(IResponse::KEY_TITLE));
+        self::assertEquals($newBody, $response->getBody());
+        self::assertEquals($newSpaceKey, $response->getValue(IResponse::KEY_SPACE)[IResponse::KEY_KEY]);
+        self::assertEquals($newParent, $response->getValue(IResponse::KEY_ANCESTORS)[IResponse::KEY_ID]);
+
+        self::$logger->info('END');
+    }
+
+    public function testUpdatePage(): void
+    {
+        self::$logger->info('START');
+
+        $updateId = YacorapiTestData::C_SEARCHPAGEID_01;
+        $updateTitle = sprintf(self::PAGE_TITLE, date('Ymd-His'), 1);
+        $updateBody = self::PAGE_BODY;
+
+        $before = $this->getCasto2t()->readPageByPageId($updateId);
+        self::$logger->info('before', [$before->getResponse()]);
+
+        self::assertNotEmpty($before);
+        self::assertEquals($updateId, $before->getValue(IResponse::KEY_ID));
+
+        $after = $this->getCasto2t()->updatePage($updateId, $updateBody, $updateTitle);
+        self::$logger->info('after', [$after->getResponse()]);
+
+        self::assertNotEmpty($after);
+        self::assertEquals($updateId, $after->getValue(IResponse::KEY_ID));
+        self::assertEquals($updateTitle, $after->getValue(IResponse::KEY_TITLE));
+        self::assertEquals($updateBody, $after->getBody());
+
+        self::assertNotEquals($before->getValue(IResponse::KEY_TITLE), $after->getValue(IResponse::KEY_TITLE));
+        self::assertNotEquals($before->getBody(), $after->getBody());
+
+        self::$logger->info('END');
+    }
+
+    public function ztestMovePage(): void
+    {
+        self::$logger->info('START');
+
+        /** @var IResponse $response */
+        $response = $this->getCasto2t()->movePage(YacorapiTestData::C_PAGEID_EXIST, YacorapiTestData::C_PAGEID_NEW);
+
+        self::$logger->info('response', [$response->getResponse()]);
+        self::assertNotEmpty($response);
+
+        self::$logger->info('END');
+    }
+
+    public function testReadPagesWithFilter(): void
+    {
+        self::$logger->info('START');
+
+        $expectedCount = 1;
+
+        /** @var IResponse $response */
+        $response = $this->getCasto2t()->readPagesWithFilter(YacorapiTestData::C_FILTERTERM_01, YacorapiTestData::C_SPACE_EXIST_KEY);
+
+        $actualCount = $response->getResponse()->get(Response::KEY_TOTAL_SIZE, -1);
+
+        self::$logger->info('response', [$response->getResponse()]);
+        self::$logger->info('results', [$response->getResults()]);
+
+        self::assertNotEmpty($response);
+        self::assertCount($expectedCount, $response->getResults());
+        self::assertCount($actualCount, $response->getResults());
+
+        self::$logger->info('END');
+    }
+
+    public function testScanPagesWithFilter(): void
+    {
+        self::$logger->info('START');
+
+        $expectedCount = 1;
+
+        /** @var IResponse $response */
+        $response = $this->getCasto2t()->scanPagesWithFilter(YacorapiTestData::C_FILTERTERM_01, YacorapiTestData::C_SPACE_EXIST_KEY);
+
+        $actualCount = $response->getResponse()->get(Response::KEY_TOTAL_SIZE, -1);
+
+        self::$logger->info('response', [$response->getResponse()]);
+        self::$logger->info('results', [$response->getResults()]);
+
+        self::assertNotEmpty($response);
+        self::assertCount($expectedCount, $response->getResults());
+        self::assertCount($actualCount, $response->getResults());
+
+        self::$logger->info('END');
+    }
+
+    public function testSearchPagesWithFilter(): void
+    {
+        self::$logger->info('START');
+
+        $expectedCount = 1;
+
+        /** @var IResponse $response */
+        $response = $this->getCasto2t()->searchPagesWithFilter(YacorapiTestData::C_FILTERTERM_01, YacorapiTestData::C_SPACE_EXIST_KEY);
+
+        $actualCount = $response->getResponse()->get(Response::KEY_TOTAL_SIZE, -1);
+
+        self::$logger->info('response', [$response->getResponse()]);
+        self::$logger->info('results', [$response->getResults()]);
+
+        self::assertNotEmpty($response);
+        self::assertCount($expectedCount, $response->getResults());
+        self::assertCount($actualCount, $response->getResults());
+
+        self::$logger->info('END');
+    }
+
+    public function ztestCountItemsinSpace(): void
+    {
+        self::$logger->info('START');
+
+        /** @var IStatistic $statistic */
+        $statistic = $this->getCasto2t()->countItemsinSpace(YacorapiTestData::C_SPACE_EXIST_KEY);
+
+        self::$logger->info('statistic', [$statistic->flatten()]);
+        self::assertNotEmpty($statistic);
+
+        self::$logger->info('END');
+    }
+
+    public function testReadRestrictionsByPageId(): void
+    {
+        self::$logger->info('START');
+
+        /** @var IResponse $response */
+        $response = $this->getCasto2t()->readRestrictionsByPageId(YacorapiTestData::C_SEARCHPAGEID_01);
+
+        self::$logger->info('response', [$response->getResponse()]);
+        self::assertNotEmpty($response);
+        self::assertNotEmpty($response->getRestrictions());
+
+        self::$logger->info('END');
+    }
+
+    public function testWriteRestrictionsByPageId(): void
+    {
+        self::$logger->info('START');
+
+        $expected = false;
+
+        // @var bool $success
+        static::expectException(\BadMethodCallException::class);
+        $success = $this->getCasto2t()->writeRestrictionsByPageId(YacorapiTestData::C_SEARCHPAGEID_01);
+
+        self::assertEquals($expected, $success);
+
+        self::$logger->info('END');
+    }
+
+    public function testListSpaces(): void
+    {
+        self::$logger->info('START');
+
+        $expectedCount = 1;
+
+        /** @var IResponse $response */
+        $response = $this->getCasto2t()->listSpaces();
+
+        $actualCount = $response->getResponse()->get(Response::KEY_TOTAL_SIZE, -1);
+
+        self::$logger->info('response', [$response->getResponse()]);
+        self::$logger->info('results', [$response->getResults()]);
+
+        self::assertNotEmpty($response);
+        self::assertCount($expectedCount, $response->getResults());
+        self::assertCount($actualCount, $response->getResults());
+
+        self::$logger->info('END');
+    }
+
+    public function ztestCountMacrosInSpace(): void
+    {
+        self::$logger->info('START');
+
+        $spaceKey = YacorapiTestData::C_SPACE_EXIST_KEY;
+
+        $outputMatrix = new SpaceStatistic($spaceKey);
+
+        $statistic = $this->getCasto2t()->countMacrosInSpace($spaceKey, $this->getCasto2t()->prepareAddonSet(), $outputMatrix);
+
+        self::$logger->info('statistic', [$statistic]);
+        self::assertNotEmpty($statistic);
+
+        self::$logger->info('outputMatrix', [$outputMatrix]);
+        self::assertNotEmpty($outputMatrix);
+
+        self::$logger->info('END');
+    }
+
+    /**
+     * @param int $expected
+     * @param int $mode
+     *
+     * @dataProvider providerPrepareAddonSet
+     */
+    public function testPrepareAddonSet(int $expected, int $mode): void
+    {
+        self::$logger->info('START');
+
+        $response = $this->getCasto2t()->prepareAddonSet($mode);
+
+        self::$logger->info('response', [$response->getResponse()]);
+
+        self::assertNotEmpty($response);
+        self::assertCount($expected, $response->getResponse());
+        self::assertTrue($response->getResults()->isEmpty());
+
+        self::$logger->info('END');
+    }
+
+    /**
+     * @return array<mixed,mixed>
+     */
+    public function providerPrepareAddonSet(): array
+    {
+        return [
+            'default' => [18, AllAddon::ADDON_ALL],
+            'blocker' => [11, BlockerAddon::ADDON_BLOCKER],
+            'single' => [1, SingleAddon::ADDON_SINGLE],
+            'wrong' => [0, YacorapiTestData::NOTEXIST_ID],
+        ];
+    }
+}

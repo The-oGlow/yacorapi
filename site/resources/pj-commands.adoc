@@ -1,0 +1,55 @@
+:hide-uri-scheme:
+:doctype: book
+
+:site_resource: .
+include::{site_resource}/pj-settings.adoc[opts=optional]
+include::{site_resource}/adoc-cmmn-all.adoc[opts=optional]
+
+:source-highlighter: highlight.js
+
+= {pj_gh_repo} - Composer
+:toc:
+:toclevels: 2
+
+== Additional Commands
+
+There are severall shortkeys, which are useful for your development.
+
+.Additional Composer Commands
+[%header%autowidth,frame=ends,valign=top,halign=center]
+|===
+^|*Command*           ^|*Description*
+| c-all               | CUSTOM: Run composer with c-check, c-test, c-format
+| c-check             | CUSTOM: Run composer with c-phpstan, c-psalm, c-phpmd
+| c-da                | CUSTOM: shortkey for 'dump-autoload'
+| c-dry-fix           | CUSTOM: See what PHP CS Fixer will fix (dry run)
+| c-dry-psalter       | CUSTOM: See what Psalter will fix (dry run)
+| c-fix               | CUSTOM: PHP CS Fixer fixes your code
+| c-format            | CUSTOM: Format the code with c-fix, c-phpcbf
+| c-package           | CUSTOM: Create deployable package
+| c-phpcbf            | CUSTOM: PHP Code Sniffer fixes your code
+| c-phpcs             | CUSTOM: PHP Code Sniffer verifies your code
+| c-phpdoc            | CUSTOM: phpDocumentor generates the API documentation
+| c-phpmd             | CUSTOM: PHP Mess Detector verifies your code
+| c-phpstan           | CUSTOM: PHPStan verifies your code
+| c-psalm             | CUSTOM: Psalm verifies your code
+| c-psalter           | CUSTOM: Psalter fixes your code
+| c-sonar             | CUSTOM: Sonarcloud verifies your code
+| c-test              | CUSTOM: PHPUnit executes all unit tests
+|===
+
+Call:
+
+ $ composer list
+
+See section `scripts` & `scripts-description` in link:composer.json[composer.json]. +
+Copy them to your `composer.json`, if you like them!
+
+== Reference
+* link:https://getcomposer.org/[Composer]
+* link:https://cs.symfony.com/[PHP CS Fixer]
+* link:https://phpstan.org/[PHPStan]
+* link:https://phpunit.de/[PHPUnit]
+* link:https://psalm.dev/[Psalm]
+
+_{pj_cright_author}_

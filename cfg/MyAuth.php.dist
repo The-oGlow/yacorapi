@@ -1,0 +1,22 @@
+<?php
+
+declare(strict_types=1);
+
+namespace oglow\tools\Yacorapi;
+
+/**
+ * Class MyAuth
+ *
+ * Define this class to configure the basic URL to your confluence instances.
+ *
+ * {@link config.adoc} for configuration details
+ */
+class MyAuth
+{
+    /** @var bool Flag, to switch between test and productive instances. */
+    public const  USE_PROD = false;
+    /** @var string The base URL to access the <strong>productive</strong> instance. */
+    public const PROD_URL = '#confluence-url_for_production#';
+    /** @var string The base URL to access the <strong>test</strong> instance. */
+    public const TEST_URL = '#confluence-url_for_testing#';
+}

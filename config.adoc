@@ -1,0 +1,454 @@
+:hide-uri-scheme:
+:doctype: book
+
+:site_resource: .
+// project settings - START
+// user data
+:acc_vcs_url: https://github.com
+:acc_user: ollily
+:acc_user_orga: The-oGlow
+:acc_user_name: Oliver Glowa
+:acc_user_email: coding at glowa-net dot com
+:acc_user_hp: http://coding.glowa-net.com
+:acc_user_url: {acc_vcs_url}/{acc_user}[{acc_user_name}]
+
+// organization
+:orga_vcs_url: {acc_vcs_url}
+:orga_user: The-oGlow
+:orga_user_name: The oGlow
+:orga_user_email: {acc_user_email}
+:orga_user_hp: {acc_user_hp}
+:orga_user_url: {orga_vcs_url}/{orga_user}[{orga_user_name}]
+
+// organization team
+:orga_team_user: oteam
+:orga_team_user_name: The oTeam
+:orga_team_email: {orga_user_email}
+:orga_team_hp: {orga_user_hp}
+:orga_team_url: {orga_vcs_url}/orgs/{orga_user}/teams/{orga_team_user}[{orga_team_user_name}]
+
+// module data
+// Description of this project
+// Name of the author or Github user name (acc_user_name or orga_user_name)
+:pj_author: {acc_user_name}
+// Version or "latest version"
+:pj_version: [latest version]
+// Creation year
+:pj_year: 2024
+// Github description
+:pj_description: Managing the maintenance of a Confluence instance by REST API
+
+// Id of this project
+// Prefix of the Github URL (acc_vcs_url or orga_vcs_url)
+:pj_gh_vcs_url: {orga_vcs_url}
+// Github User or Organisation (acc_user or orga_user)
+:pj_gh_account: {orga_user}
+// Github repo name
+:pj_gh_repo: yacorapi
+// Github projectid or -1
+:pj_gh_vcsid: {pj_gh_account}/{pj_gh_repo}
+
+// Tools for this project
+// Sonar projectid or -1
+:pj_snr_projid: {pj_gh_account}_{pj_gh_repo}
+// Codacy Token or -1
+:pj_cdcy_id: 24b6d45054d847dfbb0649b9f72b70f9
+// Coveralls projectid or -1
+:pj_cvrlls_id: {pj_gh_account}/{pj_gh_repo}
+// OpenSSF projectid or -1
+:pj_opnssf_id: -1
+// Coverty projectid or -1
+:pj_cvrty_id: -1
+// project settings - END
+// common settings - START
+:site_resource: .
+
+// common settings - START
+:brnch1: master
+:brnch2: develop
+
+// project settings (generated)
+// module data generated
+:pj_cright_author: (c) {pj_year} by {acc_user_url}
+:pj_cright_orga: (c) {pj_year} by {orga_user_url}
+
+// Shields - START
+:cm_shlds_url: https://img.shields.io
+:cm_shlds_badge_url: {cm_shlds_url}/badge
+:cm_shlds_img_style: &style=plastic
+:cm_shlds_notsupp_url: {cm_shlds_badge_url}/info-not%20supported-lightgrey?{cm_shlds_img_style}
+:cm_shlds_notneed_url: {cm_shlds_badge_url}/info-not%20needed-lightgrey?{cm_shlds_img_style}
+
+:cm_shlds_tool_style: -orange?{cm_shlds_img_style}
+:cm_shlds_tool_phpcsfixer_url: {cm_shlds_badge_url}/php_cs_fixer-PSR2_&amp;_PSR12{cm_shlds_tool_style}&logo=php
+:cm_shlds_tool_phpunit_url: {cm_shlds_badge_url}/phpunit-UNIT_Tests{cm_shlds_tool_style}&logo=php
+:cm_shlds_tool_phpstan_url: {cm_shlds_badge_url}/phpstan-Level_8_Strict{cm_shlds_tool_style}&logo=php
+:cm_shlds_tool_psalm_url: {cm_shlds_badge_url}/psalm-Level_2{cm_shlds_tool_style}&logo=php
+:cm_shlds_tool_phpmd_url: {cm_shlds_badge_url}/php_mess_detector-codesize_&amp;_cleancode_&amp;_controversial_&amp;_design_&amp;_naming_&amp;_unusedcode{cm_shlds_tool_style}&logo=php
+
+:cm_shlds_tool_phpunit_img: image:{cm_shlds_tool_phpunit_url}[title="PHPUnit Tests"]
+// Shields - END
+// github - START
+ifeval::["{pj_gh_vcsid}" != "-1"]
+:cm_gh_wrkflw_link: actions/workflows
+
+// shields for github
+:cm_shlds_gh_url: {cm_shlds_url}/github
+:cm_shlds_gh_logo: logo=github
+:cm_shlds_gh_style: &{cm_shlds_gh_logo}{cm_shlds_img_style}
+:cm_shlds_gh_status_url: {cm_shlds_gh_url}/actions/workflow/status
+:cm_shlds_gh_issues_url: {cm_shlds_gh_url}/issues
+// :cm_shlds_gh_pulls_url: {cm_shlds_gh_url}/pulls
+:cm_shlds_gh_license_url: {cm_shlds_gh_url}/license
+:cm_shlds_gh_release_url: {cm_shlds_gh_url}/v/release
+:cm_shlds_gh_langtop_url: {cm_shlds_gh_url}/languages/count
+:cm_shlds_gh_langcount_url: {cm_shlds_gh_url}/languages/top
+:cm_shlds_gh_checkruns_url: {cm_shlds_gh_url}/check-runs
+
+// project settings (generated)
+// module data generated
+:pj_gh_vcsid_url: {pj_gh_vcs_url}/{pj_gh_vcsid}
+:pj_gh_wflow_url: {pj_gh_vcsid_url}/{cm_gh_wrkflw_link}
+
+// project status
+// ps github
+:pj_ps_release_url: {cm_shlds_gh_release_url}/{pj_gh_vcsid}?{cm_shlds_gh_style}&sort=semver
+:pj_ps_license_url: {cm_shlds_gh_license_url}/{pj_gh_vcsid}?{cm_shlds_gh_style}
+:pj_ps_langtop_url: {cm_shlds_gh_langtop_url}/{pj_gh_vcsid}?{cm_shlds_gh_style}
+:pj_ps_langcount_url: {cm_shlds_gh_langcount_url}/{pj_gh_vcsid}?{cm_shlds_gh_style}
+:pj_ps_issues_url: {cm_shlds_gh_issues_url}/{pj_gh_vcsid}?{cm_shlds_gh_style}
+:pj_ps_release_img: image:{pj_ps_license_url}[title="License"]
+:pj_ps_license_img: image:{pj_ps_release_url}[title="Latest Release"]
+:pj_ps_langtop_img: image:{pj_ps_langtop_url}[title="Main Language"]
+:pj_ps_langcount_img: image:{pj_ps_langcount_url}[title="No of Languages"]
+:pj_ps_issues_img: image:{pj_ps_issues_url}[title="Open Issues"]
+
+// build status
+// bs github
+:pj_bs_brnch1_status_url: {cm_shlds_gh_status_url}/{pj_gh_vcsid}/build.yml?{cm_shlds_gh_style}&branch={brnch1}&label={brnch1}
+:pj_bs_brnch2_status_url: {cm_shlds_gh_status_url}/{pj_gh_vcsid}/build.yml?{cm_shlds_gh_style}&branch={brnch2}&label={brnch2}
+:pj_bs_brnch1_checkruns_url: {cm_shlds_gh_checkruns_url}/{pj_gh_vcsid}/{brnch1}?{cm_shlds_snr_style}
+:pj_bs_brnch2_checkruns_url: {cm_shlds_gh_checkruns_url}/{pj_gh_vcsid}/{brnch2}?{cm_shlds_snr_style}
+endif::[]
+ifeval::["{pj_gh_vcsid}" == "-1"]
+// module data generated
+:pj_gh_vcsid_url:
+:pj_gh_wflow_url:
+// ps github
+:pj_ps_release_url:
+:pj_ps_license_url:
+:pj_ps_langtop_url:
+:pj_ps_langcount_url:
+:pj_ps_issues_url:
+:pj_ps_release_img:
+:pj_ps_license_img:
+:pj_ps_langtop_img:
+:pj_ps_langcount_img:
+:pj_ps_issues_img:
+// bs github
+:pj_bs_brnch1_status_url: {cm_shlds_notsupp_url}
+:pj_bs_brnch2_status_url: {cm_shlds_notsupp_url}
+:pj_bs_brnch1_checkruns_url: {cm_shlds_notsupp_url}
+:pj_bs_brnch2_checkruns_url: {cm_shlds_notsupp_url}
+endif::[]
+// github - END
+// sonar - START
+ifeval::["{pj_snr_projid}" != "-1"]
+:cm_snr_url: https://sonarcloud.io
+:cm_snr_badge_url: {cm_snr_url}/images/project_badges
+:cm_snr_dash_url: {cm_snr_url}/dashboard?id=
+:cm_snr_api_url: {cm_snr_url}/api
+:cm_snr_qgate_url: {cm_snr_api_url}/project_badges/quality_gate?project=
+:cm_snr_brnch_url: {cm_snr_url}/summary/new_code?id=
+:cm_snr_mes_tsd: component_measures?metric=test_success_density&view=list
+:cm_snr_mes_test: component_measures?metric=tests&view=list
+:cm_snr_mes_cov: component_measures?metric=coverage&view=list
+:cm_snr_logo_url: {cm_snr_badge_url}/sonarcloud-black.svg
+:cm_snr_logo_url2: {cm_snr_badge_url}/sonarcloud-light.svg
+:cm_snr_tool_sonarcloud_url: {cm_snr_logo_url2}
+
+// shields for sonar
+:cm_shlds_snr_url: {cm_shlds_url}/sonar
+:cm_shlds_snr_logo: logo=sonarcloud&server=https%3A%2F%2Fsonarcloud.io
+:cm_shlds_snr_style: &{cm_shlds_snr_logo}{cm_shlds_img_style}
+:cm_shlds_snr_qgate_url: {cm_shlds_snr_url}/quality_gate
+:cm_shlds_snr_tsd_url: {cm_shlds_snr_url}/test_success_density
+:cm_shlds_snr_tests_url: {cm_shlds_snr_url}/tests
+:cm_shlds_snr_coverage_url: {cm_shlds_snr_url}/coverage
+:cm_shlds_snr_violations_url: {cm_shlds_snr_url}/violations
+:cm_shlds_tool_sonarcloud_url: {cm_shlds_badge_url}/sonarcloud-oGlow_way{cm_shlds_tool_style}&logo=sonar
+:cm_shlds_tool_sonarcloud_img: image:{cm_shlds_tool_sonarcloud_url}[title="Sonarcloud Quality Gateway"]
+
+// project settings (generated)
+// module data generated
+:pj_snr_component: {pj_gh_account}:{pj_gh_repo}
+:pj_snr_dash_url: {cm_snr_dash_url}{pj_snr_projid}
+:pj_snr_brnch_main_url: {cm_snr_brnch_url}{pj_snr_projid}
+:pj_snr_brnch1_url: {cm_snr_brnch_url}{pj_snr_projid}&branch={brnch1}
+:pj_snr_brnch2_url: {cm_snr_brnch_url}{pj_snr_projid}&branch={brnch2}
+
+// quality information
+// qi shields
+:pj_qi_qgate_url: {cm_shlds_snr_qgate_url}/{pj_snr_projid}?{cm_shlds_snr_style}
+:pj_qi_tsd_url: {cm_shlds_snr_tsd_url_url}/{pj_snr_projid}?{cm_shlds_snr_style}
+:pj_qi_tests_url: {cm_shlds_snr_tests_url}/{pj_snr_projid}?{cm_shlds_snr_style}
+:pj_qi_coverage_url: {cm_shlds_snr_coverage_url}/{pj_snr_projid}?{cm_shlds_snr_style}
+:pj_qi_violations_url: {cm_shlds_snr_violations_url}/{pj_snr_projid}?{cm_shlds_snr_style}
+
+// qi sonar
+:pj_qi_snr_brnch1_qgate_url: {cm_shlds_snr_qgate_url}/{pj_snr_projid}/{brnch1}?{cm_shlds_snr_style}
+:pj_qi_snr_brnch2_qgate_url: {cm_shlds_snr_qgate_url}/{pj_snr_projid}/{brnch2}?{cm_shlds_snr_style}
+:pj_qi_snr_qgate_url: {cm_snr_qgate_url}{pj_snr_projid}
+:pj_qi_snr_logo_url: {cm_snr_logo_url}
+
+// test information
+// ti sonar
+:pj_ti_snr_brnch1_tsd_url: {cm_shlds_snr_tsd_url}/{pj_snr_projid}/{brnch1}?{cm_shlds_snr_style}
+:pj_ti_snr_brnch2_tsd_url: {cm_shlds_snr_tsd_url}/{pj_snr_projid}/{brnch2}?{cm_shlds_snr_style}
+:pj_ti_snr_brnch1_tests_url: {cm_shlds_snr_tests_url}/{pj_snr_projid}/{brnch1}?{cm_shlds_snr_style}
+:pj_ti_snr_brnch2_tests_url: {cm_shlds_snr_tests_url}/{pj_snr_projid}/{brnch2}?{cm_shlds_snr_style}
+:pj_ti_snr_brnch1_coverage_url: {cm_shlds_snr_coverage_url}/{pj_snr_projid}/{brnch1}?{cm_shlds_snr_style}
+:pj_ti_snr_brnch2_coverage_url: {cm_shlds_snr_coverage_url}/{pj_snr_projid}/{brnch2}?{cm_shlds_snr_style}
+:pj_ti_snr_brnch1_violations_url: {cm_shlds_snr_violations_url}/{pj_snr_projid}/{brnch1}?{cm_shlds_snr_style}
+:pj_ti_snr_brnch2_violations_url: {cm_shlds_snr_violations_url}/{pj_snr_projid}/{brnch2}?{cm_shlds_snr_style}
+endif::[]
+ifeval::["{pj_snr_projid}" == "-1"]
+// shields for sonar
+:cm_shlds_tool_sonarcloud_url:
+:cm_shlds_tool_sonarcloud_img:
+// module data generated
+:pj_snr_dash_url:
+:pj_snr_brnch_main_url:
+// qi shields
+:pj_qi_qgate_url: {cm_shlds_notsupp_url}
+:pj_qi_tsd_url: {cm_shlds_notsupp_url}
+:pj_qi_tests_url: {cm_shlds_notsupp_url}
+:pj_qi_coverage_url: {cm_shlds_notsupp_url}
+:pj_qi_violations_url: {cm_shlds_notsupp_url}
+// qi sonar
+:pj_qi_snr_brnch1_qgate_url: {cm_shlds_notsupp_url}
+:pj_qi_snr_brnch2_qgate_url: {cm_shlds_notsupp_url}
+:pj_qi_snr_qgate_url: {cm_shlds_notsupp_url}
+:pj_qi_snr_logo_url:  {cm_shlds_notsupp_url}
+// ti sonar
+:pj_ti_snr_brnch1_tsd_url: {cm_shlds_notsupp_url}
+:pj_ti_snr_brnch2_tsd_url: {cm_shlds_notsupp_url}
+:pj_ti_snr_brnch1_tests_url: {cm_shlds_notsupp_url}
+:pj_ti_snr_brnch2_tests_url: {cm_shlds_notsupp_url}
+:pj_ti_snr_brnch1_coverage_url: {cm_shlds_notsupp_url}
+:pj_ti_snr_brnch2_coverage_url: {cm_shlds_notsupp_url}
+:pj_ti_snr_brnch1_violations_url: {cm_shlds_notsupp_url}
+:pj_ti_snr_brnch2_violations_url: {cm_shlds_notsupp_url}
+endif::[]
+// sonar - END
+// codacy - START
+ifeval::["{pj_cdcy_id}" != "-1"]
+:cm_cdcy_url: https://www.codacy.com
+:cm_cdcy_app: https://app.codacy.com
+:cm_cdcy_badge_grade_url: {cm_cdcy_app}/project/badge/Grade
+:cm_cdcy_badge_coverage_url: {cm_cdcy_app}/project/badge/Coverage
+:cm_cdcy_dash_gh_url: {cm_cdcy_app}/gh
+
+// shields for codacy
+:cm_shlds_cdcy_url: {cm_shlds_url}/codacy
+:cm_shlds_cdcy_logo: logo=codacy
+:cm_shlds_cdcy_style: &{cm_shlds_cdcy_logo}{cm_shlds_img_style}
+:cm_shlds_cdcy_grade_url: {cm_shlds_cdcy_url}/grade
+:cm_shlds_cdcy_coverage_url: {cm_shlds_cdcy_url}/coverage
+:cm_shlds_tool_cdcy_url: {cm_shlds_badge_url}/codacy-oGlow_Rulset{cm_shlds_tool_style}&logo=codacy
+:cm_shlds_tool_cdcy_img: image:{cm_shlds_tool_cdcy_url}[title="Codacy Quality Gateway"]
+
+// project settings (generated)
+// module data generated
+:pj_cdcy_vcsid: {pj_gh_vcsid}
+
+// quality information
+// qi codacy
+:pj_cdcy_vcsid_url: {cm_cdcy_dash_gh_url}/{pj_cdcy_vcsid}/dashboard
+:pj_cdcy_branch1_url: {pj_cdcy_vcsid_url}?branch={brnch1}
+:pj_cdcy_branch2_url: {pj_cdcy_vcsid_url}?branch={brnch2}
+:pj_qi_cdcy_badge_grade_url: {cm_cdcy_badge_grade_url}/{pj_cdcy_id}
+:pj_qi_cdcy_brnch1_grade_url: {cm_shlds_cdcy_grade_url}/{pj_cdcy_id}/{brnch1}?{cm_shlds_cdcy_style}
+:pj_qi_cdcy_brnch2_grade_url: {cm_shlds_cdcy_grade_url}/{pj_cdcy_id}/{brnch2}?{cm_shlds_cdcy_style}
+:pj_ti_cdcy_badge_coverage_url: {cm_cdcy_badge_coverage_url}/{pj_cdcy_id}
+:pj_ti_cdcy_brnch1_coverage_url: {cm_shlds_cdcy_coverage_url}/{pj_cdcy_id}/{brnch1}?{cm_shlds_cdcy_style}
+:pj_ti_cdcy_brnch2_coverage_url: {cm_shlds_cdcy_coverage_url}/{pj_cdcy_id}/{brnch2}?{cm_shlds_cdcy_style}
+endif::[]
+ifeval::["{pj_cdcy_id}" == "-1"]
+// shields for codacy
+:cm_shlds_tool_cdcy_url:
+:cm_shlds_tool_cdcy_img:
+// qi codacy
+:pj_cdcy_vcsid_url: {cm_shlds_notsupp_url}
+:pj_cdcy_branch1_url: {cm_shlds_notsupp_url}
+:pj_cdcy_branch2_url: {cm_shlds_notsupp_url}
+:pj_qi_cdcy_badge_grade_url: {cm_shlds_notsupp_url}
+:pj_qi_cdcy_brnch1_grade_url: {cm_shlds_notsupp_url}
+:pj_qi_cdcy_brnch2_grade_url: {cm_shlds_notsupp_url}
+:pj_ti_cdcy_badge_coverage_url: {cm_shlds_notsupp_url}
+:pj_ti_cdcy_brnch1_coverage_url: {cm_shlds_notsupp_url}
+:pj_ti_cdcy_brnch2_coverage_url: {cm_shlds_notsupp_url}
+endif::[]
+// codacy - END
+//coveralls - START
+ifeval::["{pj_cvrlls_id}" != "-1"]
+:cm_cvrlls_url: https://coveralls.io
+:cm_cvrlls_dash_gh_url: {cm_cvrlls_url}/github
+:cm_cvrlls_repos_gh_url: {cm_cvrlls_url}/repos/github
+
+// shields for coveralls
+:cm_shlds_cvrlls_url: {cm_shlds_url}/coveralls/github
+:cm_shlds_cvrlls_logo: logo=coveralls
+:cm_shlds_cvrlls_style: &{cm_shlds_cvrlls_logo}{cm_shlds_img_style}
+:cm_shlds_tool_cvrlls_url: {cm_shlds_badge_url}/coveralls-Coverage{cm_shlds_tool_style}&logo=coveralls
+:cm_shlds_tool_cvrlls_img: image:{cm_shlds_tool_cvrlls_url}[title="Coveralls Coverage"]
+// project settings (generated)
+// module data generated
+:pj_cvrlls_vcsid: {pj_cvrlls_id}
+
+// test information
+// ti coveralls
+:pj_cvrlls_dash_gh_url: {cm_cvrlls_dash_gh_url}/{pj_cvrlls_vcsid}
+:pj_cvrlls_brnch1_dash_gh_url: {cm_cvrlls_dash_gh_url}/{pj_cvrlls_vcsid}?branch={brnch1}
+:pj_cvrlls_brnch2_dash_gh_url: {cm_cvrlls_dash_gh_url}/{pj_cvrlls_vcsid}?branch={brnch2}
+:pj_ti_cvrlls_brnch1_coverage_url: {cm_cvrlls_repos_gh_url}/{pj_cvrlls_vcsid}/badge.svg?branch={brnch1}
+:pj_ti_cvrlls_brnch2_coverage_url: {cm_cvrlls_repos_gh_url}/{pj_cvrlls_vcsid}/badge.svg?branch={brnch2}
+:pj_ti_cvrlls_brnch1_status_url: {cm_shlds_cvrlls_url}/{pj_cvrlls_vcsid}/{brnch1}?{cm_shlds_cvrlls_style}
+:pj_ti_cvrlls_brnch2_status_url: {cm_shlds_cvrlls_url}/{pj_cvrlls_vcsid}/{brnch2}?{cm_shlds_cvrlls_style}
+endif::[]
+ifeval::["{pj_cvrlls_id}" == "-1"]
+// shields for coveralls
+:cm_shlds_tool_cvrlls_url:
+:cm_shlds_tool_cvrlls_img:
+// ti coveralls
+:pj_cvrlls_dash_gh_url: {cm_shlds_notsupp_url}
+:pj_cvrlls_brnch1_dash_gh_url: {cm_shlds_notsupp_url}
+:pj_cvrlls_brnch2_dash_gh_url: {cm_shlds_notsupp_url}
+:pj_ti_cvrlls_brnch1_coverage_url: {cm_shlds_notsupp_url}
+:pj_ti_cvrlls_brnch2_coverage_url: {cm_shlds_notsupp_url}
+:pj_ti_cvrlls_brnch1_status_url: {cm_shlds_notsupp_url}
+:pj_ti_cvrlls_brnch2_status_url: {cm_shlds_notsupp_url}
+endif::[]
+//coveralls - END
+// phpcodesniffer - START
+:cm_phpcs_url: https://github.com/PHPCSStandards/PHP_CodeSniffer
+
+// shields for phpcodesniffer
+:cm_shlds_phpcs_url: {cm_shlds_url}/phpcodesniffer
+:cm_shlds_cdcy_logo: logo=php
+:cm_shlds_cdcy_style: &{cm_shlds_cdcy_logo}{cm_shlds_img_style}
+:cm_shlds_tool_phpcs_url: {cm_shlds_badge_url}/php_codesniffer-PSR2_&amp;_PSR12{cm_shlds_tool_style}&logo=php
+// phpcodesniffer - END
+// openssf - START
+ifeval::["{pj_opnssf_id}" != "-1"]
+:cm_opnssf_url: https://www.bestpractices.dev
+:cm_opnssf_badge_url: {cm_opnssf_url}/projects
+:cm_opnssf_dash_url: {cm_opnssf_url}/projects
+
+// project settings (generated)
+// module data generated
+:pj_opnssf_vcsid: {pj_opnssf_id}
+
+// quality information
+// qi openssf
+:pj_opnssf_dash_url: {cm_opnssf_dash_url}/{pj_opnssf_vcsid}
+:pj_qi_opnssf_status_url: {cm_opnssf_badge_url}/{pj_opnssf_vcsid}/badge
+endif::[]
+ifeval::["{pj_opnssf_id}" == "-1"]
+:pj_opnssf_dash_url: {cm_shlds_notsupp_url}
+:pj_qi_opnssf_status_url: {cm_shlds_notsupp_url}
+endif::[]
+// openssf - END
+// common settings - END
+
+:source-highlighter: highlight.js
+
+= {pj_gh_repo} - Configuration
+:toc:
+:toclevels: 2
+
+== Requirements
+
+* link:https://www.php.net[PHP]
+* link:https://getcomposer.org/[Composer]
+* Commandline / Shell (opt.)
+** Linux / Unix Shell or
+** Windows Shell
+
+== Configuration
+
+=== Unix / Linux
+
+* Clone this repository to your local drive
+* Create the folder +
+  `mkdir ${HOME}/.yacorapi`
+* Copy the file to the created folder +
+  `cp ./cfg/myauth.php.dist ${HOME}/.yacorapi/myauth.php`
+* Edit the file `${HOME}/.yacorapi/myauth.php`
+** Replace `\#confluence-url_for_production#` with your Confluence URL for the production environment
+** Replace `\#confluence-url_for_testing#` with your Confluence URL for the testing environment
+
+=== Windows
+
+* Clone this repository to your local drive
+* Create the folder +
+  `mkdir %USERPROFILE%\.yacorapi`
+* Copy the file to the created folder +
+  `copy .\cfg\myauth.php.dist %USERPROFILE%\.yacorapi\myauth.php`
+* Edit the file `%USERPROFILE%\.yacorapi\myauth.php`
+** Replace `\#confluence-url_for_production#` with your Confluence URL for the production environment
+** Replace `\#confluence-url_for_testing#` with your Confluence URL for the testing environment
+
+== Development
+
+Some infos, in case you want to fork and extend this library,
+
+=== Build & Test
+
+Start the whole build (run composer with c-fix, c-phpstan, c-psalm, c-test)
+
+    composer c-all
+
+=== UNIT Tests
+
+Starting the unit tests with PHPUnit
+
+    composer c-test
+
+=== Structure
+
+Relevant files and folders
+
+    <project-root>
+    |--cfg
+    |  |- *
+    |
+    |--site
+    |  |- *
+    |
+    |--src
+    |  |-- Yacorapi
+    |
+    |--target
+    |  |- *
+    |
+    |--tests
+    |  |-- Yacorapi
+    |
+    |--vendor
+    |  |- *
+    |
+    |-.php-cs-fixer.dist.php
+	|-.phpcs.xml.dist
+	|-.phpmd.xml.dist
+    |-composer.json
+    |-composer.lock
+    |-LICENSE
+    |-phpstan.neon.dist
+    |-phpunit.xml.dist
+    |-psalm.xml.dist
+    |-README.md
+    |-sonar-project.properties
+
+
+_{pj_cright_author}_

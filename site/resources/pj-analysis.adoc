@@ -1,0 +1,112 @@
+:hide-uri-scheme:
+:doctype: book
+
+:site_resource: .
+include::{site_resource}/pj-settings.adoc[opts=optional]
+include::{site_resource}/adoc-cmmn-all.adoc[opts=optional]
+
+:source-highlighter: highlight.js
+
+= {pj_gh_repo} - Analysis
+:toc:
+:toclevels: 2
+
+== Quality Analysis
+
+=== Project Status
+.Project Status
+[%header,frame=ends,valign=top,halign=center,width=200px]
+|===
+^| ^|Branch '{brnch1}' ^|Branch '{brnch2}'
+3+|link:{pj_gh_vcsid_url}[Github]
+|Checks
+^|image:{pj_bs_brnch1_checkruns_url}[]
+^|image:{pj_bs_brnch2_checkruns_url}[]
+|Status
+^|image:{pj_bs_brnch1_status_url}[]
+^|image:{pj_bs_brnch2_status_url}[]
+|===
+
+=== Quality Information
+.Quality Information
+[%header,frame=ends,valign=top,halign=center]
+|===
+^| ^|Branch '{brnch1}' ^|Branch '{brnch2}'
+3+|link:{pj_snr_dash_url}[Sonarcloud]
+|Quality Gate
+2+^|image:{pj_qi_snr_qgate_url}[]
+|Details
+^|image:{pj_qi_snr_brnch1_qgate_url}[]
+^|image:{pj_qi_snr_brnch2_qgate_url}[]
+3+|link:{pj_cdcy_vcsid_url}[Codacy]
+|Code Quality
+2+^|image:{pj_qi_cdcy_badge_grade_url}[]
+3+|link:{pj_opnssf_dash_url}[Open SSF]
+|Status
+2+^|image:{pj_qi_opnssf_status_url}[]
+|===
+
+=== Test Information
+.Test Information
+[%header,frame=ends,valign=top,halign=center]
+|===
+^| ^|Branch '{brnch1}' ^|Branch '{brnch2}'
+3+|link:{pj_snr_dash_url}[Sonarcloud]
+|Tests %
+^|image:{pj_ti_snr_brnch1_tsd_url}[]
+^|image:{pj_ti_snr_brnch2_tsd_url}[]
+|Tests Count
+^|image:{pj_ti_snr_brnch1_tests_url}[]
+^|image:{pj_ti_snr_brnch2_tests_url}[]
+|Coverage
+^|image:{pj_ti_snr_brnch1_coverage_url}[]
+^|image:{pj_ti_snr_brnch2_coverage_url}[]
+|Violations
+^|image:{pj_ti_snr_brnch1_violations_url}[]
+^|image:{pj_ti_snr_brnch2_violations_url}[]
+3+|link:{pj_cdcy_vcsid_url}[Codacy]
+|Coverage
+2+^|image:{pj_ti_cdcy_badge_coverage_url}[]
+|Details
+^|image:{pj_ti_cdcy_brnch1_coverage_url}[]
+^|image:{pj_ti_cdcy_brnch2_coverage_url}[]
+3+|link:{pj_cvrlls_dash_gh_url}[Coveralls]
+|Coverage
+^|image:{pj_ti_cvrlls_brnch1_coverage_url}[]
+^|image:{pj_ti_cvrlls_brnch2_coverage_url}[]
+|Details
+^|image:{pj_ti_cvrlls_brnch1_status_url}[]
+^|image:{pj_ti_cvrlls_brnch2_status_url}[]
+|===
+
+== Roadmap
+
+=== r0.1 (first release)
+
+* Move code from PoC to OO
+* Create simple write actions
+* Create examples and describe their purpose
+* Describe the installation and usage of this library
+
+=== r0.2
+
+* Decouple link:{site_resource}/src/Yacorapi/IConnectionProvider.php[`IConnectionProvider`] to support different provider
+* Externalize functions for the link:https://www.smartics.eu/spaces/PDAC1/projectdoc-Toolbox_3671724.html[Projectdoc Toolbox] into its own library
+
+=== r0.3
+
+* Decouple the REST-API definitions to support different Confluence versions (e.g. Cloud) or Atlassian tools (e.g. Jira)
+* Create write actions by batch
+
+=== r0.4
+
+* Code cleanup release
+* Code coverage release
+* Setup github actions
+
+=== Near or Far Future
+
+* Create an alternative provider
+* Implement a Cloud fortifed REST-API definition
+
+_{pj_cright_author}_

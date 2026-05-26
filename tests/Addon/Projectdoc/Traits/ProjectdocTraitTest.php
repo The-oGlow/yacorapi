@@ -1,0 +1,150 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of ezlogging
+ *
+ * (c) 2024 Oliver Glowa, coding.glowa.com
+ *
+ * This source file is subject to the Apache-2.0 license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+namespace oglow\tools\Addon\Projectdoc\Traits;
+
+use oglow\tools\Yacorapi\IResponse;
+use oglow\tools\Yacorapi\Response\Response;
+use PHPUnit\Framework\EasyGoingTestCase;
+
+class ProjectdocTraitTest extends EasyGoingTestCase
+{
+    /**
+     * @return ProjectdocTraitTestClazz
+     */
+    protected static function prepareO2t()
+    {
+        return new ProjectdocTraitTestClazz();
+    }
+
+    /**
+     * @return ProjectdocTraitTestClazz
+     */
+    protected function getCasto2t()
+    {
+        return $this->o2t;
+    }
+
+    /**
+     * @param bool      $expected
+     * @param IResponse $response
+     *
+     * @dataProvider providerResponse
+     */
+    public function testCheckDataPdtDocument(bool $expected, IResponse $response): void
+    {
+        $actual = $this->getCasto2t()->checkDataPdtDocument($response);
+
+        self::assertEquals($expected, $actual);
+    }
+
+    /**
+     * @param bool      $expected
+     * @param IResponse $response
+     *
+     * @dataProvider providerResponse
+     */
+    public function testCheckDataPdtProperty(bool $expected, IResponse $response): void
+    {
+        $actual = $this->getCasto2t()->checkDataPdtProperty($response);
+
+        self::assertEquals($expected, $actual);
+    }
+
+    /**
+     * @param string    $expected
+     * @param IResponse $response
+     * @param string    $propertyName
+     *
+     * @dataProvider providerPropertyName
+     */
+    public function testshowResultsPdt(string $expected, IResponse $response, string $propertyName): void
+    {
+        $actual = $this->getCasto2t()->showResultsPdt($response, $propertyName);
+
+        self::assertEquals($expected, $actual);
+    }
+
+    /**
+     * @param IResponse $expected
+     * @param int       $pageId
+     * @param string    $propertyName
+     *
+     * @dataProvider providerPdtReadProperty
+     */
+    public function testPdtReadProperty(IResponse $expected, int $pageId, string $propertyName): void
+    {
+        $actual = $this->getCasto2t()->pdtReadProperty($pageId, $propertyName);
+
+        self::assertEquals($expected, $actual);
+    }
+
+    /**
+     * @param IResponse $expected
+     * @param mixed[]   $propertyNames
+     * @param string    $spaceKey
+     * @param string    $where
+     *
+     * @dataProvider providerPdtReadDocument
+     */
+    public function testPdtReadDocument(
+        IResponse $expected,
+        array $propertyNames,
+        string $spaceKey,
+        string $where
+    ): void {
+        $actual = $this->getCasto2t()->pdtReadDocument($propertyNames, $spaceKey, $where);
+
+        self::assertEquals($expected, $actual);
+    }
+
+    /**
+     * @return mixed[]
+     */
+    public function providerResponse()
+    {
+        return [
+            'empty' => [ false, new Response()],
+        ];
+    }
+
+    /**
+     * @return mixed[]
+     */
+    public function providerPropertyName()
+    {
+        return [
+            'empty' => [ '', new Response(), ''],
+        ];
+    }
+
+    /**
+     * @return mixed[]
+     */
+    public function providerPdtReadProperty()
+    {
+        return [
+            'empty' => [ new Response(), 0,''],
+        ];
+    }
+
+    /**
+     * @return mixed[]
+     */
+    public function providerPdtReadDocument()
+    {
+        return [
+            'empty' => [ new Response(), [],'',''],
+        ];
+    }
+}

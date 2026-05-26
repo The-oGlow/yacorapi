@@ -1,0 +1,31 @@
+:hide-uri-scheme:
+:doctype: book
+
+:site_resource: .
+include::{site_resource}/pj-settings.adoc[opts=optional]
+include::{site_resource}/adoc-cmmn-all.adoc[opts=optional]
+
+:source-highlighter: highlight.js
+
+= {pj_gh_repo} - Examples
+:toc:
+:toclevels: 2
+
+== Notice
+
+* Examples are working with privat access token (PAT) only!
+
+== Title 2
+
+=== Title 3
+
+.TItle 4
+[source,php]
+----
+<?php
+----
+
+.Log output
+[source,text]
+----
+----
