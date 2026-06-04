@@ -25,45 +25,40 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
-        "php": ">=7.4",
+        "php": ">=8.4.1",
         "ext-curl": "*",
         "ext-json": "*",
-        "monolog/monolog": "^2.10",
-        "ollily/ezkoding": "^0.2",
-        "ollily/ezlogging": "^1.3",
         "php-ds/php-ds": "^1.0",
+        "ollily/ezkoding": "^8.4",
+        "ollily/ezlogging": "^8.4",
+        "monolog/monolog": "^2.10",
         "psr/log": "^1.0||^2.0||^3.0"
     },
     "provide": {
         "psr/log-implementation": "^1.0||^2.0||^3.0"
     },
     "suggest": {
-        "guzzlehttp/guzzle": "Alternative to CURL",
-        "guzzlehttp/psr7": "PSR-7 Definition",
-        "mashape/unirest-php": "Alternative to CURL",
-        "bamarni/composer-bin-plugin": "Having compatible versions"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9.6",
+        "phpunit/phpunit": "^13.1",
         "phpstan/phpstan": "^2.1",
         "phpstan/phpstan-strict-rules": "^2.0",
-        "vimeo/psalm": "^5.26",
+        "vimeo/psalm": "^6.0",
         "psalm/plugin-phpunit": "^0.19",
         "friendsofphp/php-cs-fixer": "^3.0",
-        "squizlabs/php_codesniffer": "^3.13",
+        "squizlabs/php_codesniffer": "^4.0",
         "phpmd/phpmd": "^2.0",
         "rogervila/php-sonarqube-scanner": "^1.0"
     },
     "config": {
         "platform": {
-            "php": "7.4.0"
+            "php": "8.4.3"
         },
         "optimize-autoloader": false,
         "sort-packages": true,
         "allow-plugins": {
             "phpstan/extension-installer": true,
-            "php-http/discovery": true,
-            "bamarni/composer-bin-plugin": true
+            "php-http/discovery": true
         }
     },
     "autoload": {
@@ -103,12 +98,14 @@
         ],
         "c-package": "@composer archive --format=zip --dir=target/staging",
         "c-phpcs": [
+            "bash -c 'echo PHP Code Sniffer checking ...'",
             "bash -c 'mkdir --p target/analysis/phpcs'",
             "bash -c 'rm -f target/analysis/phpcs/phpcsniffer-report.txt'",
             "@php -d xdebug.mode=off vendor/bin/phpcs --colors || true",
             "bash -c 'if [ -s target/analysis/phpcs/phpcsniffer-report.txt ]; then cat target/analysis/phpcs/phpcsniffer-report.txt; exit 0; else exit 0; fi'"
         ],
         "c-phpcbf": [
+            "bash -c 'echo PHP Code Sniffer FIXING ...'",
             "bash -c 'mkdir --p target/analysis/phpcs'",
             "bash -c 'rm -f target/analysis/phpcs/phpcsniffer-report.txt'",
             "@php -d xdebug.mode=off vendor/bin/phpcbf || true",
@@ -116,8 +113,9 @@
         ],
         "c-phpdoc": "phpDocumentor run",
         "c-phpmd": [
+            "bash -c 'echo PHP Mess Dectector running ...'",
             "bash -c 'rm -f target/analysis/phpmd/phpmd-report.txt'",
-            "@php -d xdebug.mode=off vendor/bin/phpmd src,tests text .phpmd.xml.dist --report-file=target/analysis/phpmd/phpmd-report.txt -v --color --ignore-errors-on-exit --ignore-violations-on-exit",
+            "@php -d xdebug.mode=off vendor/bin/phpmd src,tests text .phpmd.xml.dist --report-file=target/analysis/phpmd/phpmd-report.txt --error-file=target/analysis/phpmd/zzz-phpmd-error.txt --color --cache --ignore-errors-on-exit --ignore-violations-on-exit",
             "bash -c 'if [ -s target/analysis/phpmd/phpmd-report.txt ]; then cat target/analysis/phpmd/phpmd-report.txt; exit 1; else exit 0; fi'"
         ],
         "c-phpstan": "@php -d xdebug.mode=off vendor/bin/phpstan analyse",
@@ -128,7 +126,7 @@
             "composer c-test",
             "@php -d xdebug.mode=off -Dproject.settings=sonar-project.properties vendor/bin/sonar-scanner"
         ],
-        "c-test": "@php -d xdebug.mode=coverage vendor/bin/phpunit"
+        "c-test": "@php -d xdebug.mode=coverage vendor/bin/phpunit -c phpunit.xml.cov"
     },
     "scripts-descriptions": {
         "c-all": "CUSTOM: Run composer with c-check, c-test, c-format",
@@ -138,7 +136,7 @@
         "c-format": "CUSTOM: Format the code with c-fix, c-phpcbf",
         "c-fix": "CUSTOM: PHP CS Fixer fixes your code",
         "c-package": "CUSTOM: Create deployable package",
-        "c-phpcs": "CUSTOM: PHP Code Sniffer verifies your code",
+        "c-phpcs": "CUSTOM: See what PHP Code Sniffer will fix (dry-run)",
         "c-phpcbf": "CUSTOM: PHP Code Sniffer fixes your code",
         "c-phpdoc": "CUSTOM: phpDocumentor generates the API documentation",
         "c-phpmd": "CUSTOM: PHP Mess Detector verifies your code",

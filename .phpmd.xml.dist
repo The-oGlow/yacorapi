@@ -20,7 +20,10 @@
         <exclude name="ElseExpression"/>
         <exclude name="StaticAccess"/>
     </rule>
-    <rule ref="rulesets/controversial.xml"/>
+    <rule ref="rulesets/controversial.xml">
+        <!-- too strict -->
+        <exclude name="CamelCaseMethodName"/>
+    </rule>
     <rule ref="rulesets/design.xml">
         <exclude name="CouplingBetweenObjects"/>
     </rule>

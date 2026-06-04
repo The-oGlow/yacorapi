@@ -10,7 +10,6 @@ on:
 
 env:
   # PHP Configuration
-  PHP_MODULES-7.4: none,xdebug-3.1.6,bcmath,bz2,calendar,Core,ctype,curl,date,dom,exif,fileinfo,filter,gd,hash,iconv,intl,json,libxml,mbstring,openssl,pcre,PDO,Phar,readline,Reflection,session,SimpleXML,soap,sockets,SPL,standard,tokenizer,xml,xmlreader,xmlwriter,xsl,zip,zlib
   PHP_MODULES: none,bcmath,bz2,calendar,Core,ctype,curl,date,dom,exif,fileinfo,filter,gd,hash,iconv,intl,json,libxml,mbstring,openssl,pcre,PDO,Phar,readline,Reflection,session,SimpleXML,soap,sockets,SPL,standard,tokenizer,xml,xmlreader,xmlwriter,xsl,zip,zlib
   PHPUNIT_DIR: ${{ github.workspace }}/target/analysis/phpunit
   PHPUNIT_LOG: ${{ github.workspace }}/target/analysis/phpunit/phpunit-test.log
@@ -55,27 +54,27 @@ jobs:
         run: asciidoctor-reducer --preserve-conditionals -o README.adoc ${{ env.DOCU_SRC_DIR }}/pj-readme.adoc
 
       - name: assembly config.adoc
-        run: asciidoctor-reducer --preserve-conditionals -o config.adoc ${{ env.DOCU_SRC_DIR }}/pj-config.adoc
+        run: asciidoctor-reducer --preserve-conditionals -o docu-config.adoc ${{ env.DOCU_SRC_DIR }}/pj-config.adoc
 
       - name: assembly analysis.adoc
-        run: asciidoctor-reducer --preserve-conditionals -o analysis.adoc ${{ env.DOCU_SRC_DIR }}/pj-analysis.adoc
+        run: asciidoctor-reducer --preserve-conditionals -o docu-analysis.adoc ${{ env.DOCU_SRC_DIR }}/pj-analysis.adoc
 
       - name: assembly commmands.adoc
-        run: asciidoctor-reducer --preserve-conditionals -o commands.adoc ${{ env.DOCU_SRC_DIR }}/pj-commands.adoc
+        run: asciidoctor-reducer --preserve-conditionals -o docu-commands.adoc ${{ env.DOCU_SRC_DIR }}/pj-commands.adoc
 
       - name: assembly examples.adoc
-        run: asciidoctor-reducer --preserve-conditionals -o examples.adoc ${{ env.DOCU_SRC_DIR }}/pj-examples.adoc
+        run: asciidoctor-reducer --preserve-conditionals -o docu-examples.adoc ${{ env.DOCU_SRC_DIR }}/pj-examples.adoc
 
       - name: assembly usage.adoc
-        run: asciidoctor-reducer --preserve-conditionals -o usage.adoc ${{ env.DOCU_SRC_DIR }}/pj-usage.adoc
+        run: asciidoctor-reducer --preserve-conditionals -o docu-usage.adoc ${{ env.DOCU_SRC_DIR }}/pj-usage.adoc
 
       - name: commit and push documents
         uses: EndBug/add-and-commit@v9.1.4
         with:
           add: |
             - README.adoc
-            - config.adoc
-            - analysis.adoc
-            - commands.adoc
-            - examples.adoc
-            - usage.adoc
+            - docu-config.adoc
+            - docu-analysis.adoc
+            - docu-commands.adoc
+            - docu-examples.adoc
+            - docu-usage.adoc

@@ -18,6 +18,7 @@
         <ignoreFiles>
             <directory name="vendor"/>
             <!-- Temp ignore -->
+            <directory name="../ezkoding"/>
             <directory name="../ezlogging"/>
             <directory name="src/Addon/Projectdoc"/>
             <file name="**/*Trait.php"/>
@@ -26,18 +27,17 @@
     <issueHandlers>
         <UnusedPsalmSuppress errorLevel="error"/>
         <!-- too strict -->
+        <ClassMustBeFinal errorLevel="info"/>
         <InternalMethod errorLevel="info"/>
-        <LessSpecificImplementedReturnType errorLevel="suppress"/>
+        <LessSpecificImplementedReturnType errorLevel="info"/>
         <MixedArgument errorLevel="info"/>
         <MixedReturnStatement errorLevel="info"/>
         <MixedArrayAccess errorLevel="info"/>
         <MixedAssignment errorLevel="info"/>
         <MixedArgumentTypeCoercion errorLevel="info"/>
         <MixedPropertyTypeCoercion errorLevel="info"/>
-        <MixedInferredReturnType errorLevel="info"/>
         <PropertyNotSetInConstructor errorLevel="info"/>
-        <!-- Temp ignore -->
-        <UndefinedConstant errorLevel="suppress"/>
+        <UndefinedConstant errorLevel="info"/>
     </issueHandlers>
     <plugins>
         <pluginClass class="Psalm\PhpUnitPlugin\Plugin"/>
