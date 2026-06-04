@@ -20,10 +20,9 @@ use Psr\Log\LoggerInterface;
 abstract class AbstractStoreItem implements IStoreItem
 {
     /** @var Map<mixed,mixed> */
-    protected $storeItems;
+    protected Map $storeItems;
 
-    /** @var LoggerInterface */
-    private static $logger;
+    private static LoggerInterface $logger;
 
     protected function __construct()
     {

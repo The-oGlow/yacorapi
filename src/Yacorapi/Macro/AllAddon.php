@@ -24,8 +24,7 @@ class AllAddon extends AbstractAddon
 
     public const ADDON_ALL = 99;
 
-    /** @var LoggerInterface */
-    private static $logger;
+    private static LoggerInterface $logger;
 
     public function __construct()
     {

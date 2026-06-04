@@ -33,19 +33,15 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
 
     protected const         C_FILE_READ = 'r';
 
-    protected const         C_DIR_MASK = 0777;
+    protected const         C_DIR_MASK = 0o777;
 
-    /** @var ConstData */
-    protected $constData;
+    protected ConstData $constData;
 
-    /** @var LoggerInterface */
-    private static $logger;
+    private static LoggerInterface $logger;
 
-    /** @var string */
-    private $sessionTargetDir;
+    private string $sessionTargetDir;
 
-    /** @var IStoreItem */
-    protected $storeItem;
+    protected IStoreItem $storeItem;
 
     public function __construct(string $outputFileName, string $fileSuffix = '', string $customTargetDir = '')
     {
@@ -136,7 +132,7 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
      *
      * @return string
      */
-    protected function flattenDataHeader($dataHeader): string
+    protected function flattenDataHeader(string|array $dataHeader): string
     {
         self::$logger->debug("START");
 
@@ -157,7 +153,7 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
      * @param IStoreItem $targetFile
      * @param mixed      $anyData
      */
-    final protected function writeData(IStoreItem $targetFile, $anyData): void
+    final protected function writeData(IStoreItem $targetFile, mixed $anyData): void
     {
         self::$logger->debug("START - targetFile", [$targetFile]);
 
@@ -196,8 +192,6 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
 
         try {
             /**
-             * @var IStoreItem
-             *
              * @phpstan-ignore staticMethod.dynamicName
              */
             $newClazz = $storeItemClazz::$methodName(...$params);
@@ -219,11 +213,11 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
      *
      * @param string $fileName
      *
-     * @return mixed[]
+     * @return array<mixed,mixed>
      *
      * @SuppressWarnings("PHPMD.UnusedPrivateMethod")
      */
-    private function readResultFile(string $fileName)
+    private function readResultFile(string $fileName): array
     {
         self::$logger->debug('START', [$fileName]);
 

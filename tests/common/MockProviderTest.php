@@ -20,7 +20,7 @@ class MockProviderTest extends EasyGoingTestCase
     /**
      * @return MockProvider
      */
-    protected static function prepareO2t()
+    protected static function prepareO2t(): MockProvider
     {
         return new MockProvider();
     }
@@ -28,7 +28,7 @@ class MockProviderTest extends EasyGoingTestCase
     /**
      * @return MockProvider
      */
-    protected function getCasto2t()
+    protected function getCasto2t(): MockProvider
     {
         return $this->o2t;
     }

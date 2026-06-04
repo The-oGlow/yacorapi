@@ -34,7 +34,7 @@ class UserMacroAddon extends AbstractAddon
                         'um-iframe',
                         'um-rule-blue',
                     ]
-                )
+                ),
             ]
         );
     }

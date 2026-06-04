@@ -15,15 +15,15 @@ namespace oglow\tools\Yacorapi\Response;
 
 use Ds\Map;
 use Ds\Set;
-use PHPUnit\Framework\EasyGoingTestCase;
 use oglow\tools\Yacorapi\YacorapiTestData;
+use PHPUnit\Framework\EasyGoingTestCase;
 
 class ResponseTest extends EasyGoingTestCase
 {
     /**
      * @return Response
      */
-    protected static function prepareO2t()
+    protected static function prepareO2t(): Response
     {
         return new Response();
     }
@@ -31,7 +31,7 @@ class ResponseTest extends EasyGoingTestCase
     /**
      * @return Response
      */
-    protected function getCasto2t()
+    protected function getCasto2t(): Response
     {
         return $this->o2t;
     }

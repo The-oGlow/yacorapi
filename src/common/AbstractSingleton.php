@@ -20,11 +20,9 @@ use Psr\Log\LoggerInterface;
 
 abstract class AbstractSingleton implements ISingleton
 {
-    /** @var LoggerInterface */
-    private static $logger;
+    private static LoggerInterface $logger;
 
-    /** @var string */
-    private $key;
+    private string $key;
 
     abstract protected function prepareSettings(): void;
 
@@ -82,7 +80,7 @@ abstract class AbstractSingleton implements ISingleton
      *
      * @return mixed
      */
-    protected function parseBool(Map $overrideParameters, string $keyName)
+    protected function parseBool(Map $overrideParameters, string $keyName): mixed
     {
         $ovUseProd = $overrideParameters->get($keyName, '');
         if (!empty($ovUseProd)) {

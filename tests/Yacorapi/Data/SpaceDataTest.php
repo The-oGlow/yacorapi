@@ -20,7 +20,7 @@ class SpaceDataTest extends EasyGoingTestCase
     /**
      * @return SpaceData
      */
-    protected static function prepareO2t()
+    protected static function prepareO2t(): SpaceData
     {
         return new SpaceData();
     }
@@ -28,7 +28,7 @@ class SpaceDataTest extends EasyGoingTestCase
     /**
      * @return SpaceData
      */
-    protected function getCasto2t()
+    protected function getCasto2t(): SpaceData
     {
         return $this->o2t;
     }

@@ -19,16 +19,14 @@ class RequestTypeTest extends ConstantCheckTestCase
 {
     public const  CLASS_PREFIX = RequestType::class . self::C_STATIC_SEP;
 
-    /** @var int */
-    protected const EXPECTED_CONSTANT_COUNT = 4;
+    protected const int EXPECTED_CONSTANT_COUNT = 4;
 
-    /** @var bool */
-    protected const WITH_CONST_CROSSCHECK = true;
+    protected const bool WITH_CONST_CROSSCHECK = true;
 
     /**
      * @return RequestType
      */
-    protected static function prepareO2t()
+    protected static function prepareO2t(): RequestType
     {
         return new RequestType();
     }
@@ -36,7 +34,7 @@ class RequestTypeTest extends ConstantCheckTestCase
     /**
      * @return RequestType
      */
-    protected function getCasto2t()
+    protected function getCasto2t(): RequestType
     {
         return  $this->o2t;
     }

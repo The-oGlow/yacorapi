@@ -4,7 +4,7 @@
     "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
     "This file is @generated automatically"
   ],
-  "content-hash": "6ad9005c8dd4001be170706c92d122af",
+  "content-hash": "0d854ead5b721e2b5b97b4a8492b0dba",
   "packages": [
     {
       "name": "composer/ca-bundle",
@@ -776,6 +776,109 @@
       "time": "2025-09-14T11:18:39+00:00"
     },
     {
+      "name": "monolog/monolog",
+      "version": "3.10.0",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/Seldaek/monolog.git",
+        "reference": "b321dd6749f0bf7189444158a3ce785cc16d69b0"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/Seldaek/monolog/zipball/b321dd6749f0bf7189444158a3ce785cc16d69b0",
+        "reference": "b321dd6749f0bf7189444158a3ce785cc16d69b0",
+        "shasum": ""
+      },
+      "require": {
+        "php": ">=8.1",
+        "psr/log": "^2.0 || ^3.0"
+      },
+      "provide": {
+        "psr/log-implementation": "3.0.0"
+      },
+      "require-dev": {
+        "aws/aws-sdk-php": "^3.0",
+        "doctrine/couchdb": "~1.0@dev",
+        "elasticsearch/elasticsearch": "^7 || ^8",
+        "ext-json": "*",
+        "graylog2/gelf-php": "^1.4.2 || ^2.0",
+        "guzzlehttp/guzzle": "^7.4.5",
+        "guzzlehttp/psr7": "^2.2",
+        "mongodb/mongodb": "^1.8 || ^2.0",
+        "php-amqplib/php-amqplib": "~2.4 || ^3",
+        "php-console/php-console": "^3.1.8",
+        "phpstan/phpstan": "^2",
+        "phpstan/phpstan-deprecation-rules": "^2",
+        "phpstan/phpstan-strict-rules": "^2",
+        "phpunit/phpunit": "^10.5.17 || ^11.0.7",
+        "predis/predis": "^1.1 || ^2",
+        "rollbar/rollbar": "^4.0",
+        "ruflin/elastica": "^7 || ^8",
+        "symfony/mailer": "^5.4 || ^6",
+        "symfony/mime": "^5.4 || ^6"
+      },
+      "suggest": {
+        "aws/aws-sdk-php": "Allow sending log messages to AWS services like DynamoDB",
+        "doctrine/couchdb": "Allow sending log messages to a CouchDB server",
+        "elasticsearch/elasticsearch": "Allow sending log messages to an Elasticsearch server via official client",
+        "ext-amqp": "Allow sending log messages to an AMQP server (1.0+ required)",
+        "ext-curl": "Required to send log messages using the IFTTTHandler, the LogglyHandler, the SendGridHandler, the SlackWebhookHandler or the TelegramBotHandler",
+        "ext-mbstring": "Allow to work properly with unicode symbols",
+        "ext-mongodb": "Allow sending log messages to a MongoDB server (via driver)",
+        "ext-openssl": "Required to send log messages using SSL",
+        "ext-sockets": "Allow sending log messages to a Syslog server (via UDP driver)",
+        "graylog2/gelf-php": "Allow sending log messages to a GrayLog2 server",
+        "mongodb/mongodb": "Allow sending log messages to a MongoDB server (via library)",
+        "php-amqplib/php-amqplib": "Allow sending log messages to an AMQP server using php-amqplib",
+        "rollbar/rollbar": "Allow sending log messages to Rollbar",
+        "ruflin/elastica": "Allow sending log messages to an Elastic Search server"
+      },
+      "type": "library",
+      "extra": {
+        "branch-alias": {
+          "dev-main": "3.x-dev"
+        }
+      },
+      "autoload": {
+        "psr-4": {
+          "Monolog\\": "src/Monolog"
+        }
+      },
+      "notification-url": "https://packagist.org/downloads/",
+      "license": [
+        "MIT"
+      ],
+      "authors": [
+        {
+          "name": "Jordi Boggiano",
+          "email": "j.boggiano@seld.be",
+          "homepage": "https://seld.be"
+        }
+      ],
+      "description": "Sends your logs to files, sockets, inboxes, databases and various web services",
+      "homepage": "https://github.com/Seldaek/monolog",
+      "keywords": [
+        "log",
+        "logging",
+        "psr-3"
+      ],
+      "support": {
+        "issues": "https://github.com/Seldaek/monolog/issues",
+        "source": "https://github.com/Seldaek/monolog/tree/3.10.0"
+      },
+      "funding": [
+        {
+          "url": "https://github.com/Seldaek",
+          "type": "github"
+        },
+        {
+          "url": "https://tidelift.com/funding/github/packagist/monolog/monolog",
+          "type": "tidelift"
+        }
+      ],
+      "time": "2026-01-02T08:56:05+00:00"
+    },
+    {
       "name": "ollily/ezkoding",
       "version": "8.4.001",
       "source": {
@@ -853,27 +956,21 @@
     },
     {
       "name": "ollily/ezlogging",
-      "version": "8.4.0",
-      "source": {
-        "type": "git",
-        "url": "https://github.com/The-oGlow/ezlogging.git",
-        "reference": "94232f8ee2a76d628a56d55ef0a6f1e2be6b9a44"
-      },
+      "version": "dev-develop",
       "dist": {
-        "type": "zip",
-        "url": "https://api.github.com/repos/The-oGlow/ezlogging/zipball/94232f8ee2a76d628a56d55ef0a6f1e2be6b9a44",
-        "reference": "94232f8ee2a76d628a56d55ef0a6f1e2be6b9a44",
-        "shasum": ""
+        "type": "path",
+        "url": "../ezlogging",
+        "reference": "cbc3531397409a1c285d6f612ffb78428d76e6e0"
       },
       "require": {
-        "monolog/monolog": "^2.10",
+        "monolog/monolog": "^3.0",
         "ollily/ezkoding": "^8.4",
         "php": ">=8.4.1",
         "php-ds/php-ds": "^1.0",
-        "psr/log": "^1.0||^2.0||^3.0"
+        "psr/log": "^2.0||^3.0"
       },
       "provide": {
-        "psr/log-implementation": "^1.0||^2.0||^3.0"
+        "psr/log-implementation": "^2.0||^3.0"
       },
       "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.0",
@@ -892,7 +989,82 @@
           "Monolog\\": "src/Monolog"
         }
       },
-      "notification-url": "https://packagist.org/downloads/",
+      "autoload-dev": {
+        "psr-4": {
+          "Monolog\\": "tests/Monolog"
+        }
+      },
+      "scripts": {
+        "c-all": [
+          "composer c-check",
+          "composer c-test",
+          "composer c-format"
+        ],
+        "c-check": [
+          "composer c-phpstan",
+          "composer c-psalm",
+          "composer c-phpmd"
+        ],
+        "c-da": [
+          "@composer dump-autoload"
+        ],
+        "c-dry-fix": [
+          "@php -d xdebug.mode=off vendor/bin/php-cs-fixer check --allow-unsupported-php-version=yes --allow-risky=yes --format txt"
+        ],
+        "c-fix": [
+          "@php -d xdebug.mode=off vendor/bin/php-cs-fixer fix --allow-unsupported-php-version=yes --allow-risky=yes"
+        ],
+        "c-format": [
+          "composer c-fix",
+          "composer c-phpcbf",
+          "composer c-phpcs"
+        ],
+        "c-package": [
+          "@composer archive --format=zip --dir=target/staging"
+        ],
+        "c-phpcs": [
+          "bash -c 'echo PHP Code Sniffer checking ...'",
+          "bash -c 'mkdir --p target/analysis/phpcs'",
+          "bash -c 'rm -f target/analysis/phpcs/phpcsniffer-report.txt'",
+          "@php -d xdebug.mode=off vendor/bin/phpcs --colors || true",
+          "bash -c 'if [ -s target/analysis/phpcs/phpcsniffer-report.txt ]; then cat target/analysis/phpcs/phpcsniffer-report.txt; exit 0; else exit 0; fi'"
+        ],
+        "c-phpcbf": [
+          "bash -c 'echo PHP Code Sniffer FIXING ...'",
+          "bash -c 'mkdir --p target/analysis/phpcs'",
+          "bash -c 'rm -f target/analysis/phpcs/phpcsniffer-report.txt'",
+          "@php -d xdebug.mode=off vendor/bin/phpcbf || true",
+          "bash -c 'if [ -s target/analysis/phpcs/phpcsniffer-report.txt ]; then cat target/analysis/phpcs/phpcsniffer-report.txt; exit 0; else exit 0; fi'"
+        ],
+        "c-phpdoc": [
+          "phpDocumentor run"
+        ],
+        "c-phpmd": [
+          "bash -c 'echo PHP Mess Dectector running ...'",
+          "bash -c 'rm -f target/analysis/phpmd/phpmd-report.txt'",
+          "@php -d xdebug.mode=off vendor/bin/phpmd src,tests text .phpmd.xml.dist --report-file=target/analysis/phpmd/phpmd-report.txt --error-file=target/analysis/phpmd/zzz-phpmd-error.txt --color --cache --ignore-errors-on-exit --ignore-violations-on-exit",
+          "bash -c 'if [ -s target/analysis/phpmd/phpmd-report.txt ]; then cat target/analysis/phpmd/phpmd-report.txt; exit 1; else exit 0; fi'"
+        ],
+        "c-phpstan": [
+          "@php -d xdebug.mode=off vendor/bin/phpstan analyse"
+        ],
+        "c-psalm": [
+          "@php -d xdebug.mode=off vendor/bin/psalm --report=target/analysis/psalm/psalm-report.txt"
+        ],
+        "c-dry-psalter": [
+          "@php -d xdebug.mode=off vendor/bin/psalter --dry-run --issues=MissingReturnType,MissingClosureReturnType,MissingParamType,MissingPropertyType,PossiblyUndefinedVariable,PossiblyUndefinedGlobalVariable,ParamNameMismatch"
+        ],
+        "c-psalter": [
+          "@php -d xdebug.mode=off vendor/bin/psalter --issues=MissingReturnType,MissingClosureReturnType,MissingParamType,MissingPropertyType,PossiblyUndefinedVariable,PossiblyUndefinedGlobalVariable,ParamNameMismatch"
+        ],
+        "c-sonar": [
+          "composer c-test",
+          "@php -d xdebug.mode=off -Dproject.settings=sonar-project.properties vendor/bin/sonar-scanner"
+        ],
+        "c-test": [
+          "@php -d xdebug.mode=coverage vendor/bin/phpunit -c phpunit.xml.cov"
+        ]
+      },
       "license": [
         "Apache-2.0"
       ],
@@ -902,12 +1074,6 @@
           "email": "426229+ollily@users.noreply.github.com",
           "homepage": "https://github.com/ollily",
           "role": "Project Owner, Developer"
-        },
-        {
-          "name": "oglowa",
-          "email": "36665428+oglowa@users.noreply.github.com",
-          "homepage": "https://github.com/The-oGlow",
-          "role": "Developer"
         }
       ],
       "description": "Simplify the usage of - Logging with Monolog",
@@ -919,10 +1085,11 @@
         "php"
       ],
       "support": {
-        "issues": "https://github.com/ollily/ezlogging/issues",
-        "source": "https://github.com/The-oGlow/ezlogging/tree/8.4.0"
+        "issues": "https://github.com/ollily/ezlogging/issues"
       },
-      "time": "2026-06-04T13:39:45+00:00"
+      "transport-options": {
+        "relative": true
+      }
     },
     {
       "name": "php-ds/php-ds",
@@ -8507,7 +8674,9 @@
   ],
   "aliases": [],
   "minimum-stability": "stable",
-  "stability-flags": {},
+  "stability-flags": {
+    "ollily/ezlogging": 20
+  },
   "prefer-stable": true,
   "prefer-lowest": false,
   "platform": {

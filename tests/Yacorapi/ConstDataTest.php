@@ -17,18 +17,16 @@ use PHPUnit\Framework\ConstantCheckTestCase;
 
 class ConstDataTest extends ConstantCheckTestCase
 {
-    public const  CLASS_PREFIX = ConstData::class . self::C_STATIC_SEP;
+    public const string  CLASS_PREFIX = ConstData::class . self::C_STATIC_SEP;
 
-    /** @var int */
-    protected const EXPECTED_CONSTANT_COUNT = 34;
+    protected const int EXPECTED_CONSTANT_COUNT = 34;
 
-    /** @var bool */
-    protected const WITH_CONST_CROSSCHECK = true;
+    protected const bool WITH_CONST_CROSSCHECK = true;
 
     /**
      * @return ConstData
      */
-    protected static function prepareO2t()
+    protected static function prepareO2t(): ConstData
     {
         return new ConstData();
     }
@@ -36,7 +34,7 @@ class ConstDataTest extends ConstantCheckTestCase
     /**
      * @return ConstData
      */
-    protected function getCasto2t()
+    protected function getCasto2t(): ConstData
     {
         return $this->o2t;
     }

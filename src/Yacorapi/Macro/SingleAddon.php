@@ -32,7 +32,7 @@ class SingleAddon extends AbstractAddon
                         'section',
                         'toc',
                     ]
-                )
+                ),
             ]
         );
     }

@@ -33,10 +33,10 @@ interface IExtension
     public const EXTENSION_MIN                  = self::EXTENSION_RAPI_CLIENT + self::EXTENSION_ATLASSIAN;
 
     public const EXTENSION_ALL                  = self::EXTENSION_MIN +
-        self::EXTENSION_ATLASSIAN_ADMIN +
-        self::EXTENSION_ATLASSIAN_USER_MACRO +
-        self::EXTENSION_THIRD_PARTY +
-        self::EXTENSION_PROJECTDOC_TOOLBOX;
+    self::EXTENSION_ATLASSIAN_ADMIN +
+    self::EXTENSION_ATLASSIAN_USER_MACRO +
+    self::EXTENSION_THIRD_PARTY +
+    self::EXTENSION_PROJECTDOC_TOOLBOX;
 
     public static function getName(): string;
 

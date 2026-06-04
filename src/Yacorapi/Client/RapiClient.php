@@ -40,11 +40,10 @@ use Psr\Log\LogLevel;
  */
 class RapiClient extends AbstractRapiClient // NOSONAR: php:S1448
 {
-    /** @var LoggerInterface */
-    private static $logger;
+    private static LoggerInterface $logger;
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public static function newClient(?int $modeExtension = null, ?IConnectionProvider $connectionProvider = null, ?AddonMacroData $addons = null): IRapiClient
     {
@@ -72,7 +71,7 @@ class RapiClient extends AbstractRapiClient // NOSONAR: php:S1448
     // Public methods
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function readPageByPageId(int $pageId): IResponse
     {
@@ -84,7 +83,7 @@ class RapiClient extends AbstractRapiClient // NOSONAR: php:S1448
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function readPagesWithFilter(string $filterTerm, string $spaceKey = ''): IResponse
     {
@@ -96,7 +95,7 @@ class RapiClient extends AbstractRapiClient // NOSONAR: php:S1448
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function scanPagesWithFilter(string $filterTerm, string $spaceKey = ''): IResponse
     {
@@ -108,7 +107,7 @@ class RapiClient extends AbstractRapiClient // NOSONAR: php:S1448
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function searchPagesWithFilter(
         string $filterTerm,
@@ -128,7 +127,7 @@ class RapiClient extends AbstractRapiClient // NOSONAR: php:S1448
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function countItemsinSpace(string $spaceKey, string $itemType = RequestParameterData::ITEM_TYPE_PAGE): IStatistic
     {
@@ -149,7 +148,7 @@ class RapiClient extends AbstractRapiClient // NOSONAR: php:S1448
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function readRestrictionsByPageId(int $pageId): IResponse
     {
@@ -163,7 +162,7 @@ class RapiClient extends AbstractRapiClient // NOSONAR: php:S1448
     /**
      * REFACTOR: API-Function doesn't work or description is wrong.
      *
-     * @inheritdoc
+     * @inheritDoc
      */
     public function writeRestrictionsByPageId(int $pageId, array $writeRestrictions = [], array $readRestrictions = []): bool // NOSONAR: php:S1172
     {
@@ -173,7 +172,7 @@ class RapiClient extends AbstractRapiClient // NOSONAR: php:S1448
     /**
      * REFACTOR: Listing only 100 spaces, loop is missing.
      *
-     * @inheritdoc
+     * @inheritDoc
      */
     public function listSpaces(string $spaceType = RequestParameterData::SPACE_TYPE_GLOBAL, int $limit = RequestParameterData::SPACE_LIMIT_DEFAULT): IResponse
     {
@@ -185,7 +184,7 @@ class RapiClient extends AbstractRapiClient // NOSONAR: php:S1448
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function countMacrosInSpace(string $spaceKey, ResponseAddonMacroDecorate $addonSet, ?IStatistic $outputMatrix): IStatistic
     {
@@ -201,7 +200,7 @@ class RapiClient extends AbstractRapiClient // NOSONAR: php:S1448
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function movePage(int $pageId, int $newParentId): IResponse
     {
@@ -224,7 +223,7 @@ class RapiClient extends AbstractRapiClient // NOSONAR: php:S1448
             RequestParameterData::PROP_VERSION,
             [
                 RequestParameterData::PROP_NUMBER => ++$pageVersion, // NOSONAR php:S881
-                RequestParameterData::PROP_MESSAGE => self::MSG_MOVED_TO_NEW_PARENT . $newParentId
+                RequestParameterData::PROP_MESSAGE => self::MSG_MOVED_TO_NEW_PARENT . $newParentId,
             ]
         );
 
@@ -237,7 +236,7 @@ class RapiClient extends AbstractRapiClient // NOSONAR: php:S1448
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function createPage(
         string $spaceKey,
@@ -281,7 +280,7 @@ class RapiClient extends AbstractRapiClient // NOSONAR: php:S1448
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function updatePage(
         int $pageId,
@@ -311,8 +310,8 @@ class RapiClient extends AbstractRapiClient // NOSONAR: php:S1448
                 RequestParameterData::PROP_BODY => [
                     RequestParameterData::PROP_STORAGE => [
                         RequestParameterData::PROP_VALUE => $pageBody,
-                        RequestParameterData::PROP_REPRESENTATION => RequestParameterData::REPRESENTATION_TYPE_STORAGE
-                    ]
+                        RequestParameterData::PROP_REPRESENTATION => RequestParameterData::REPRESENTATION_TYPE_STORAGE,
+                    ],
                 ],
                 RequestParameterData::PROP_VERSION => [RequestParameterData::PROP_NUMBER => $nextVersion, RequestParameterData::PROP_MESSAGE => $comment],
                 ]
@@ -330,7 +329,7 @@ class RapiClient extends AbstractRapiClient // NOSONAR: php:S1448
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function prepareAddonSet($mode = AllAddon::ADDON_ALL): ResponseAddonMacroDecorate
     {

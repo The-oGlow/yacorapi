@@ -23,7 +23,7 @@ class AbstractHelperTestDummyClazz extends AbstractHelper
     }
 
     /**
-     * @param Map <mixed, mixed> $overrideParameters
+     * @param Map<mixed, mixed> $overrideParameters
      *
      * @return bool
      */

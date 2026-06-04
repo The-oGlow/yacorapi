@@ -16,12 +16,12 @@ namespace oglow\tools\common;
 interface IContainer extends \Stringable
 {
     /**
-     * @return mixed[]
+     * @return array<mixed,mixed>
      */
     public function getAllData(): array;
 
     /**
-     * @return mixed[]
+     * @return array<mixed,mixed>
      */
     public function getKeys(): array;
 
@@ -30,7 +30,7 @@ interface IContainer extends \Stringable
      *
      * @return bool
      */
-    public function keyExists($key): bool;
+    public function keyExists(mixed $key): bool;
 
     /**
      * @return int[]|string[]
@@ -42,10 +42,10 @@ interface IContainer extends \Stringable
      *
      * @return mixed
      */
-    public function getDataByMode($mode);
+    public function getDataByMode(int|string $mode): mixed;
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function __toString();
 }

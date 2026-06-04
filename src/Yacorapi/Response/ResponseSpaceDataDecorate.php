@@ -25,11 +25,10 @@ class ResponseSpaceDataDecorate extends AbstractResponse
 
     public const SPACE_ARCH_FLAG2  = '[archive]';
 
-    /** @var LoggerInterface */
-    private static $logger;
+    private static LoggerInterface $logger;
 
     /** @var array<mixed,mixed> */
-    private $spaces;
+    private array $spaces;
 
     public function __construct(IResponse $response)
     {
@@ -51,7 +50,7 @@ class ResponseSpaceDataDecorate extends AbstractResponse
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function keyExists($key): bool
     {
@@ -59,7 +58,7 @@ class ResponseSpaceDataDecorate extends AbstractResponse
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function keys(): Set
     {
@@ -67,7 +66,7 @@ class ResponseSpaceDataDecorate extends AbstractResponse
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getValue($key, $default = '')
     {
@@ -81,7 +80,7 @@ class ResponseSpaceDataDecorate extends AbstractResponse
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getResults(): Map
     {
@@ -89,15 +88,15 @@ class ResponseSpaceDataDecorate extends AbstractResponse
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
-    public function getResult(int $idx)
+    public function getResult(int $idx): void
     {
         throw new \BadFunctionCallException('Try instead ResponseSpaceDataDecorate->getValue()');
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function isResultsAvailable(): bool
     {
@@ -168,6 +167,7 @@ class ResponseSpaceDataDecorate extends AbstractResponse
                                 $space[self::KEY_NAME],
                                 htmlentities(
                                     implode(
+                                        '',
                                         explode(
                                             PHP_EOL,
                                             $descr
@@ -189,7 +189,7 @@ class ResponseSpaceDataDecorate extends AbstractResponse
                             self::KEY_KEY      => $space[self::KEY_KEY],
                             self::KEY_NAME     => $space[self::KEY_NAME],
                             self::KEY_TYPE     => $space[self::KEY_TYPE],
-                            self::KEY_ARCHIVED => $this->isArchived($descr) ? self::VAL_TRUE : self::VAL_FALSE
+                            self::KEY_ARCHIVED => $this->isArchived($descr) ? self::VAL_TRUE : self::VAL_FALSE,
                         ];
 
                         $resultSpaces[(string)$space[self::KEY_KEY]] = $newSpace;
@@ -203,7 +203,7 @@ class ResponseSpaceDataDecorate extends AbstractResponse
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      *
      * @SuppressWarnings("PHPMD.CamelCaseMethodName")
      */

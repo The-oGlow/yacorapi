@@ -21,11 +21,9 @@ use Psr\Log\LoggerInterface;
 
 abstract class AbstractHelper extends AbstractSingleton implements IHelper
 {
-    /** @var ConstData */
-    protected $constData;
+    protected ConstData $constData;
 
-    /** @var LoggerInterface */
-    private static $logger;
+    private static LoggerInterface $logger;
 
     public function __construct(string $key, bool $withLogger = true)
     {

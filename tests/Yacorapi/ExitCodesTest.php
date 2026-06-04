@@ -19,16 +19,14 @@ class ExitCodesTest extends ConstantCheckTestCase
 {
     public const CLASS_PREFIX = ExitCodesTest::class . self::C_STATIC_SEP;
 
-    /** @var int */
-    protected const EXPECTED_CONSTANT_COUNT = 8;
+    protected const int EXPECTED_CONSTANT_COUNT = 8;
 
-    /** @var bool */
-    protected const WITH_CONST_CROSSCHECK = true;
+    protected const bool WITH_CONST_CROSSCHECK = true;
 
     /**
      * @return ExitCodes
      */
-    protected static function prepareO2t()
+    protected static function prepareO2t(): ExitCodes
     {
         return new ExitCodes();
     }
@@ -36,7 +34,7 @@ class ExitCodesTest extends ConstantCheckTestCase
     /**
      * @return ExitCodes
      */
-    protected function getCasto2t()
+    protected function getCasto2t(): ExitCodes
     {
         return $this->o2t;
     }

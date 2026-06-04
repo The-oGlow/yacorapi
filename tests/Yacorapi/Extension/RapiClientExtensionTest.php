@@ -20,7 +20,7 @@ class RapiClientExtensionTest extends EasyGoingTestCase
     /**
      * @return RapiClientExtension
      */
-    protected static function prepareO2t()
+    protected static function prepareO2t(): RapiClientExtension
     {
         return new RapiClientExtension();
     }
@@ -28,7 +28,7 @@ class RapiClientExtensionTest extends EasyGoingTestCase
     /**
      * @return RapiClientExtension
      */
-    protected function getCasto2t()
+    protected function getCasto2t(): RapiClientExtension
     {
         return $this->o2t;
     }

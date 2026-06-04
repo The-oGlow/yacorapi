@@ -22,14 +22,11 @@ use Psr\Log\LoggerInterface;
 
 abstract class AbstractExtension implements IExtension
 {
-    /** @var LoggerInterface */
-    private static $logger;
+    private static LoggerInterface $logger;
 
-    /** @var ConstData */
-    protected $constData;
+    protected ConstData $constData;
 
-    /** @var null|IAddon */
-    protected $addons;
+    protected ?IAddon $addons;
 
     public function __construct()
     {
@@ -43,12 +40,12 @@ abstract class AbstractExtension implements IExtension
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     abstract public static function getName(): string;
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     abstract public static function getId(): int;
 
@@ -57,7 +54,7 @@ abstract class AbstractExtension implements IExtension
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getAddons(): Map
     {
@@ -71,7 +68,7 @@ abstract class AbstractExtension implements IExtension
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getMacros(): Vector
     {

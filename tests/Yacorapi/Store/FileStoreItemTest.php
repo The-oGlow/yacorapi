@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Store;
 
-use PHPUnit\Framework\EasyGoingTestCase;
 use oglow\tools\Yacorapi\YacorapiTestData;
+use PHPUnit\Framework\EasyGoingTestCase;
 
 class FileStoreItemTest extends EasyGoingTestCase
 {
     /**
      * @return IStoreItem
      */
-    protected static function prepareO2t()
+    protected static function prepareO2t(): IStoreItem
     {
         return FileStoreItem::prepareTargetFile(
             YacorapiTestData::FILE_FOLDERNAME,
@@ -33,7 +33,7 @@ class FileStoreItemTest extends EasyGoingTestCase
     /**
      * @return FileStoreItem
      */
-    protected function getCasto2t()
+    protected function getCasto2t(): FileStoreItem
     {
         return $this->o2t;
     }
@@ -106,8 +106,8 @@ class FileStoreItemTest extends EasyGoingTestCase
     public function testToString(): void
     {
         $expected = YacorapiTestData::FILE_FOLDERNAME . FileStoreItem::C_PATH_SEP .
-            YacorapiTestData::FILE_FILENAME . FileStoreItem::C_FILE_SEP .
-            YacorapiTestData::FILE_EXT_NAME;
+        YacorapiTestData::FILE_FILENAME . FileStoreItem::C_FILE_SEP .
+        YacorapiTestData::FILE_EXT_NAME;
 
         $actual = $this->getCasto2t()->__toString();
 

@@ -24,7 +24,7 @@ class AbstractAddonTestClazz extends AbstractAddon
         $this->addonsMacros->putAll(
             [
                 YacorapiTestData::ADDON_1 => new Vector(YacorapiTestData::ADDON_1_ORDER),
-                YacorapiTestData::ADDON_2 => new Vector(YacorapiTestData::ADDON_2_ORDER)
+                YacorapiTestData::ADDON_2 => new Vector(YacorapiTestData::ADDON_2_ORDER),
             ]
         );
     }

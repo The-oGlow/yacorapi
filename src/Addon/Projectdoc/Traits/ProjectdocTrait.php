@@ -19,11 +19,9 @@ use Psr\Log\LoggerInterface;
 
 trait ProjectdocTrait
 {
-    /** @var LoggerInterface */
-    private static $logger;
+    private static LoggerInterface $logger;
 
-    /** @var bool */
-    private static $traitInit = false;
+    private static bool $traitInit = false;
 
     /**
      * @SuppressWarnings("php:S115")
@@ -225,7 +223,7 @@ trait ProjectdocTrait
      *
      * @return false|string
      */
-    private function prepareCsvLine(string $format, ...$param)
+    private function prepareCsvLine(string $format, ...$param): bool|string
     {
         return sprintf($format . "\n", ...$param);
     }

@@ -70,7 +70,7 @@ class AbstractSingletonTestDummyClazz extends AbstractSingleton
      *
      * @return mixed
      */
-    public function publicParseBoolMap(Map $overrideParameters, string $keyName)
+    public function publicParseBoolMap(Map $overrideParameters, string $keyName): mixed
     {
         return parent::parseBool($overrideParameters, $keyName);
     }

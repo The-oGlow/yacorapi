@@ -19,8 +19,7 @@ class PrepWriteTraitTestClazz
 {
     use PrepWriteTrait;
 
-    /** @var ConstData */
-    protected $constData;
+    protected ConstData $constData;
 
     public function __construct()
     {

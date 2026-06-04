@@ -15,11 +15,9 @@ namespace oglow\tools\Yacorapi\Store;
 
 interface IStoreItem extends \Stringable
 {
-    /** @var string */
-    public const EXT_TEXT = 'txt';
+    public const string EXT_TEXT = 'txt';
 
-    /** @var string */
-    public const EXT_CSV = 'csv';
+    public const string EXT_CSV = 'csv';
 
     public const C_FILE_SEP = '.';
 
@@ -64,5 +62,5 @@ interface IStoreItem extends \Stringable
     /**
      * @return string
      */
-    public function __toString();
+    public function __toString(): string;
 }

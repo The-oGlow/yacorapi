@@ -17,37 +17,32 @@ use Monolog\ConsoleLogger;
 use oglow\tools\common\MockProvider;
 use oglow\tools\Yacorapi\Client\RapiClient;
 use oglow\tools\Yacorapi\Extension\IExtension;
+use oglow\tools\Yacorapi\Macro\AllAddon;
+use oglow\tools\Yacorapi\Macro\BlockerAddon;
+use oglow\tools\Yacorapi\Macro\SingleAddon;
 use oglow\tools\Yacorapi\Response\Response;
-use oglow\tools\Yacorapi\Statistic\IStatistic;
 use oglow\tools\Yacorapi\Statistic\SpaceStatistic;
 use PHPUnit\Framework\EasyGoingTestCase;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
-use oglow\tools\Yacorapi\Macro\AllAddon;
-use oglow\tools\Yacorapi\Macro\SingleAddon;
-use oglow\tools\Yacorapi\Macro\BlockerAddon;
 
 class RapiClientTest extends EasyGoingTestCase
 {
-    /** @var string Space on test instance */
-    public const SPACE_KEY = 'NMAS';
+    /** Space on test instance */
+    public const string SPACE_KEY = 'NMAS';
 
-    /** @var int Page id of space on test instance */
-    public const SPACE_HOMEPAGE_ID = 125380876;
+    /** Page id of space on test instance */
+    public const int SPACE_HOMEPAGE_ID = 125380876;
 
-    public const PLAYGROUND_PAGEID = 532951146;
+    public const int PLAYGROUND_PAGEID = 532951146;
 
-    /** @var string */
-    public const PAGE_TITLE = 'NEW PAGE %s-%s';
+    public const string PAGE_TITLE = 'NEW PAGE %s-%s';
 
-    /** @var string */
-    public const PAGE_BODY = "<p>This is <br/> a new page</p>\n";
+    public const string PAGE_BODY = "<p>This is <br/> a new page</p>\n";
 
-    /** @var string */
-    public const SEARCH_TERM = 'title=REST-API%2001';
+    public const string SEARCH_TERM = 'title=REST-API%2001';
 
-    /** @var LoggerInterface */
-    private static $logger;
+    private static LoggerInterface $logger;
 
     public function setUp(): void
     {
@@ -60,7 +55,7 @@ class RapiClientTest extends EasyGoingTestCase
     /**
      * @return IRapiClient
      */
-    protected static function prepareO2t()
+    protected static function prepareO2t(): IRapiClient
     {
         return RapiClient::newClient(IExtension::EXTENSION_ALL, new MockProvider(LogLevel::DEBUG));
     }
@@ -83,7 +78,6 @@ class RapiClientTest extends EasyGoingTestCase
     {
         self::$logger->info('START');
 
-        /** @var IResponse $response */
         $response = $this->getCasto2t()->readPageByPageId($pageId);
 
         self::$logger->info('response', [$response->getResponse()]);
@@ -116,7 +110,6 @@ class RapiClientTest extends EasyGoingTestCase
         $newBody = self::PAGE_BODY;
         $newParent = self::SPACE_HOMEPAGE_ID;
 
-        /** @var IResponse $response */
         $response = $this->getCasto2t()->createPage($newSpaceKey, $newTitle, $newBody, $newParent);
 
         self::$logger->info('response', [$response->getResponse()]);
@@ -164,7 +157,6 @@ class RapiClientTest extends EasyGoingTestCase
     {
         self::$logger->info('START');
 
-        /** @var IResponse $response */
         $response = $this->getCasto2t()->movePage(YacorapiTestData::C_PAGEID_EXIST, YacorapiTestData::C_PAGEID_NEW);
 
         self::$logger->info('response', [$response->getResponse()]);
@@ -179,7 +171,6 @@ class RapiClientTest extends EasyGoingTestCase
 
         $expectedCount = 1;
 
-        /** @var IResponse $response */
         $response = $this->getCasto2t()->readPagesWithFilter(YacorapiTestData::C_FILTERTERM_01, YacorapiTestData::C_SPACE_EXIST_KEY);
 
         $actualCount = $response->getResponse()->get(Response::KEY_TOTAL_SIZE, -1);
@@ -200,7 +191,6 @@ class RapiClientTest extends EasyGoingTestCase
 
         $expectedCount = 1;
 
-        /** @var IResponse $response */
         $response = $this->getCasto2t()->scanPagesWithFilter(YacorapiTestData::C_FILTERTERM_01, YacorapiTestData::C_SPACE_EXIST_KEY);
 
         $actualCount = $response->getResponse()->get(Response::KEY_TOTAL_SIZE, -1);
@@ -221,7 +211,6 @@ class RapiClientTest extends EasyGoingTestCase
 
         $expectedCount = 1;
 
-        /** @var IResponse $response */
         $response = $this->getCasto2t()->searchPagesWithFilter(YacorapiTestData::C_FILTERTERM_01, YacorapiTestData::C_SPACE_EXIST_KEY);
 
         $actualCount = $response->getResponse()->get(Response::KEY_TOTAL_SIZE, -1);
@@ -240,7 +229,6 @@ class RapiClientTest extends EasyGoingTestCase
     {
         self::$logger->info('START');
 
-        /** @var IStatistic $statistic */
         $statistic = $this->getCasto2t()->countItemsinSpace(YacorapiTestData::C_SPACE_EXIST_KEY);
 
         self::$logger->info('statistic', [$statistic->flatten()]);
@@ -253,7 +241,6 @@ class RapiClientTest extends EasyGoingTestCase
     {
         self::$logger->info('START');
 
-        /** @var IResponse $response */
         $response = $this->getCasto2t()->readRestrictionsByPageId(YacorapiTestData::C_SEARCHPAGEID_01);
 
         self::$logger->info('response', [$response->getResponse()]);
@@ -269,7 +256,6 @@ class RapiClientTest extends EasyGoingTestCase
 
         $expected = false;
 
-        // @var bool $success
         static::expectException(\BadMethodCallException::class);
         $success = $this->getCasto2t()->writeRestrictionsByPageId(YacorapiTestData::C_SEARCHPAGEID_01);
 
@@ -284,7 +270,6 @@ class RapiClientTest extends EasyGoingTestCase
 
         $expectedCount = 1;
 
-        /** @var IResponse $response */
         $response = $this->getCasto2t()->listSpaces();
 
         $actualCount = $response->getResponse()->get(Response::KEY_TOTAL_SIZE, -1);

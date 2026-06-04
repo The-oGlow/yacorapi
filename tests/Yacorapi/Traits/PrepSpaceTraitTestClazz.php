@@ -19,8 +19,7 @@ class PrepSpaceTraitTestClazz
 {
     use PrepSpaceTrait;
 
-    /** @var ConstData */
-    protected $constData;
+    protected ConstData $constData;
 
     public function __construct()
     {

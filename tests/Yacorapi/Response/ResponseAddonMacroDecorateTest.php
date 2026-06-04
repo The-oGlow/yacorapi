@@ -21,7 +21,7 @@ class ResponseAddonMacroDecorateTest extends EasyGoingTestCase
     /**
      * @return ResponseAddonMacroDecorate
      */
-    protected static function prepareO2t()
+    protected static function prepareO2t(): ResponseAddonMacroDecorate
     {
         return new ResponseAddonMacroDecorate(SingleAddon::ADDON_SINGLE);
     }
@@ -29,7 +29,7 @@ class ResponseAddonMacroDecorateTest extends EasyGoingTestCase
     /**
      * @return ResponseAddonMacroDecorate
      */
-    protected function getCasto2t()
+    protected function getCasto2t(): ResponseAddonMacroDecorate
     {
         return $this->o2t;
     }

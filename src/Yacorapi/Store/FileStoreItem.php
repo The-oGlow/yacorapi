@@ -24,8 +24,7 @@ class FileStoreItem extends AbstractStoreItem
 
     public const EXT  = 'EXT';
 
-    /** @var LoggerInterface */
-    private static $logger;
+    private static LoggerInterface $logger;
 
     /**
      * @param string $dir

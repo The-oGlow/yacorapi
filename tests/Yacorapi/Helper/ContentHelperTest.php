@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Helper;
 
 use Ds\Map;
-use PHPUnit\Framework\ConstantCheckTestCase;
 use ollily\Tools\Test\TestData;
+use PHPUnit\Framework\ConstantCheckTestCase;
 
 class ContentHelperTest extends ConstantCheckTestCase
 {
@@ -27,16 +27,14 @@ class ContentHelperTest extends ConstantCheckTestCase
 
     public const MACRO_COLUMN = 'column';
 
-    /** @var int */
-    protected const EXPECTED_CONSTANT_COUNT = 13;
+    protected const int EXPECTED_CONSTANT_COUNT = 13;
 
-    /** @var bool */
-    protected const WITH_CONST_CROSSCHECK = true;
+    protected const bool WITH_CONST_CROSSCHECK = true;
 
     /**
      * @return ContentHelper
      */
-    protected static function prepareO2t()
+    protected static function prepareO2t(): ContentHelper
     {
         return new ContentHelper();
     }
@@ -44,7 +42,7 @@ class ContentHelperTest extends ConstantCheckTestCase
     /**
      * @return ContentHelper
      */
-    protected function getCasto2t()
+    protected function getCasto2t(): ContentHelper
     {
         return $this->o2t;
     }
@@ -224,13 +222,11 @@ class ContentHelperTest extends ConstantCheckTestCase
                 new Map(TestData::ARRAY_ALPHA1)],
             'twoParam' => [
                 sprintf(ContentHelper::TAG_PARAM_START . TestData::DATA_BOOL_T . ContentHelper::TAG_PARAM_END, 0) .
-                sprintf(ContentHelper::TAG_PARAM_START . TestData::DATA_BOOL_F . ContentHelper::TAG_PARAM_END, 1)
-                , new Map(TestData::ARRAY_BOOL2)],
+                sprintf(ContentHelper::TAG_PARAM_START . TestData::DATA_BOOL_F . ContentHelper::TAG_PARAM_END, 1), new Map(TestData::ARRAY_BOOL2)],
             'threeParam' => [
                 sprintf(ContentHelper::TAG_PARAM_START . TestData::DATA_NUM1 . ContentHelper::TAG_PARAM_END, 0) .
                 sprintf(ContentHelper::TAG_PARAM_START . TestData::DATA_NUM2 . ContentHelper::TAG_PARAM_END, 1) .
-                sprintf(ContentHelper::TAG_PARAM_START . TestData::DATA_NUM3 . ContentHelper::TAG_PARAM_END, 2)
-                , new Map(TestData::ARRAY_NUM3)],
+                sprintf(ContentHelper::TAG_PARAM_START . TestData::DATA_NUM3 . ContentHelper::TAG_PARAM_END, 2), new Map(TestData::ARRAY_NUM3)],
         ];
     }
 

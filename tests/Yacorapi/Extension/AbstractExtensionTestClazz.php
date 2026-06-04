@@ -24,7 +24,7 @@ class AbstractExtensionTestClazz extends AbstractExtension
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public static function getName(): string
     {
@@ -32,7 +32,7 @@ class AbstractExtensionTestClazz extends AbstractExtension
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public static function getId(): int
     {

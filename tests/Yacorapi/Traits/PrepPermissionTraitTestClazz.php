@@ -23,14 +23,11 @@ class PrepPermissionTraitTestClazz
 {
     use PrepPermissionTrait;
 
-    /** @var ConstData */
-    protected $constData;
+    protected ConstData $constData;
 
-    /** @var LoggerInterface */
-    private static $logger;
+    private static LoggerInterface $logger;
 
-    /** @var IConnectionProvider */
-    protected $connectionProvider;
+    protected IConnectionProvider $connectionProvider;
 
     public function __construct()
     {

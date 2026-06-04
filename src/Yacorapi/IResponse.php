@@ -113,7 +113,7 @@ interface IResponse extends \Stringable
      *
      * @return bool
      */
-    public function keyExists($key): bool;
+    public function keyExists(mixed $key): bool;
 
     /**
      * @return Set<mixed>
@@ -126,7 +126,7 @@ interface IResponse extends \Stringable
      *
      * @return mixed
      */
-    public function getValue($key, $default = '');
+    public function getValue(mixed $key, mixed $default = ''): mixed;
 
     /**
      * Response is correct or has an error.
@@ -147,7 +147,7 @@ interface IResponse extends \Stringable
      *
      * @return mixed pageId=Data is valid, else FALSE
      */
-    public function checkDataWrite();
+    public function checkDataWrite(): mixed;
 
     /**
      * @return Map<mixed,mixed>
@@ -159,7 +159,7 @@ interface IResponse extends \Stringable
      *
      * @return mixed
      */
-    public function getResult(int $idx);
+    public function getResult(int $idx): mixed;
 
     /**
      * @return string
@@ -179,7 +179,7 @@ interface IResponse extends \Stringable
     public function isResultsAvailable(): bool;
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function __toString();
 }

@@ -114,24 +114,20 @@ final class ConstData extends AbstractSingleton
 
     private const CLI_LONG_OPTS = [self::KEY_USE_PROD . ':'];
 
-    /** @var LoggerInterface */
-    private static $logger;
+    private static LoggerInterface $logger;
 
-    /** @var string */
-    private static $tsNow;
+    private static string $tsNow;
 
     // Variables
 
     /** @var Map<string,scalar> */
-    private $definedConst;
+    private Map $definedConst;
 
     /**
-     * @var PersonalAuth
-     *
      * @psalm-suppress UndefinedDocblockClass
      * @psalm-suppress PropertyNotSetInConstructor
      */
-    private $userAuth;
+    private PersonalAuth $userAuth;
 
     public function __construct(string $key = '', bool $withLogger = false)
     {
@@ -189,7 +185,7 @@ final class ConstData extends AbstractSingleton
      *
      * @SuppressWarnings("PHPMD.ShortMethodName")
      */
-    public function c(string $constKey, $default = null)
+    public function c(string $constKey, mixed $default = null): mixed
     {
         return self::getConst($constKey, $default);
     }
@@ -224,9 +220,7 @@ final class ConstData extends AbstractSingleton
         $pathMid = dirname($outputFileName);
         if (!empty($pathMid)) {
             $pathMidSplit = explode(DIRECTORY_SEPARATOR, $pathMid);
-            $callback = function (string $val): string {
-                return substr($val, 0, 2);
-            };
+            $callback = fn (string $val): string => substr($val, 0, 2);
             $pathMid = implode('-', array_map($callback, $pathMidSplit));
         }
         $fullTargetFile = $pathPre . DIRECTORY_SEPARATOR . $pathMid . DIRECTORY_SEPARATOR . basename($outputFileName);
@@ -420,7 +414,7 @@ final class ConstData extends AbstractSingleton
      * @param mixed $constValue
      * @param bool  $replace    TRUE=replace constant, if already exists, else FALSE
      */
-    private function putConst($constName, $constValue, bool $replace = true): void
+    private function putConst(mixed $constName, mixed $constValue, bool $replace = true): void
     {
         if ($this->isDefined($constName)) {
             if ($replace) {
@@ -439,7 +433,7 @@ final class ConstData extends AbstractSingleton
      *
      * @return mixed
      */
-    private function getConst(string $constKey, $default = null)
+    private function getConst(string $constKey, mixed $default = null): mixed
     {
         return $this->definedConst->get($constKey, $default);
     }

@@ -24,14 +24,13 @@ abstract class AbstractResponse implements IResponse
 {
     use ToStringTrait;
 
-    /** @var LoggerInterface */
-    private static $logger;
+    private static LoggerInterface $logger;
 
     /** @var Map<mixed,mixed> */
-    private $response;
+    private Map $response;
 
     /** @var Map<mixed,mixed> */
-    private $results;
+    private Map $results;
 
     /**
      * Response constructor.
@@ -49,7 +48,7 @@ abstract class AbstractResponse implements IResponse
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getResponse(): Map
     {
@@ -57,7 +56,7 @@ abstract class AbstractResponse implements IResponse
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function keyExists($key): bool
     {
@@ -65,7 +64,7 @@ abstract class AbstractResponse implements IResponse
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function keys(): Set
     {
@@ -73,7 +72,7 @@ abstract class AbstractResponse implements IResponse
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getValue($key, $default = '')
     {
@@ -86,7 +85,7 @@ abstract class AbstractResponse implements IResponse
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function checkStatus(): bool
     {
@@ -107,7 +106,7 @@ abstract class AbstractResponse implements IResponse
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function checkData(): bool
     {
@@ -134,7 +133,7 @@ abstract class AbstractResponse implements IResponse
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function checkDataWrite()
     {
@@ -163,7 +162,7 @@ abstract class AbstractResponse implements IResponse
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getResults(): Map
     {
@@ -171,7 +170,7 @@ abstract class AbstractResponse implements IResponse
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getResult(int $idx)
     {
@@ -184,7 +183,7 @@ abstract class AbstractResponse implements IResponse
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function isResultsAvailable(): bool
     {
@@ -192,7 +191,7 @@ abstract class AbstractResponse implements IResponse
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getBody(): string
     {
@@ -210,7 +209,7 @@ abstract class AbstractResponse implements IResponse
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getRestrictions(): array
     {
@@ -223,11 +222,11 @@ abstract class AbstractResponse implements IResponse
     }
 
     /**
-     * @return mixed[]
+     * @return array<mixed,mixed>
      *
      * @SuppressWarnings("PHPMD.CamelCaseMethodName")
      */
-    protected function __toStringValues()
+    protected function __toStringValues(): array
     {
         return [self::KEY_RESPONSE => $this->response, self::KEY_RESULTS => $this->results];
     }

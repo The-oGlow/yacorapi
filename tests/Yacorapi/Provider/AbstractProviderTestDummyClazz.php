@@ -21,7 +21,7 @@ class AbstractProviderTestDummyClazz extends AbstractProvider
      *
      * @return array<mixed,mixed>
      */
-    protected function execInternal($execUrl, $reqType)
+    protected function execInternal(string $execUrl, int $reqType): array
     {
         return [];
     }
@@ -33,7 +33,7 @@ class AbstractProviderTestDummyClazz extends AbstractProvider
      *
      * @return array<mixed,mixed>
      */
-    protected function execPostInternal($execUrl, $parameters, $reqType)
+    protected function execPostInternal(string $execUrl, \Ds\Map $parameters, int $reqType): array
     {
         return [];
     }
@@ -46,7 +46,7 @@ class AbstractProviderTestDummyClazz extends AbstractProvider
      *
      * @return array<mixed,mixed>
      */
-    public function publicExecInternal(string $execUrl, int $reqType)
+    public function publicExecInternal(string $execUrl, int $reqType): array
     {
         return $this->execInternal($execUrl, $reqType);
     }
@@ -58,7 +58,7 @@ class AbstractProviderTestDummyClazz extends AbstractProvider
      *
      * @return array<mixed,mixed>
      */
-    public function publicExecPostInternal(string $execUrl, $parameters, int $reqType)
+    public function publicExecPostInternal(string $execUrl, \Ds\Map $parameters, int $reqType): array
     {
         return $this->execPostInternal($execUrl, $parameters, $reqType);
     }

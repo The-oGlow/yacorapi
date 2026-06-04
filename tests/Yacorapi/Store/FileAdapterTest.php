@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Store;
 
-use PHPUnit\Framework\EasyGoingTestCase;
-use oglow\tools\Yacorapi\YacorapiTestData;
 use Monolog\ConsoleLogger;
+use oglow\tools\Yacorapi\YacorapiTestData;
+use PHPUnit\Framework\EasyGoingTestCase;
 use Psr\Log\LoggerInterface;
 
 class FileAdapterTest extends EasyGoingTestCase
@@ -28,26 +28,24 @@ class FileAdapterTest extends EasyGoingTestCase
 
     private const CHAR_MAX = self::CHAR_MIN + 26;
 
-    /** @var LoggerInterface */
-    private static $logger;
+    private static LoggerInterface $logger;
 
-    /** @var string */
-    private static $fileName;
+    private static string $fileName;
 
-    public function __construct($name = null, $data = [], $dataName = '')
-    {
+    public static function setUpBeforeClass(): void
+{
         self::$logger = new ConsoleLogger(FileAdapterTest::class);
         self::$logger->debug('START');
 
-        parent::__construct($name, $data, $dataName);
-
+        parent::setUpBeforeClass();
+        
         self::$logger->debug('END');
     }
 
     /**
      * @return FileAdapter
      */
-    protected static function prepareO2t()
+    protected static function prepareO2t(): FileAdapter
     {
         return new FileAdapter(self::$fileName);
     }
@@ -55,7 +53,7 @@ class FileAdapterTest extends EasyGoingTestCase
     /**
      * @return FileAdapter
      */
-    protected function getCasto2t()
+    protected function getCasto2t(): FileAdapter
     {
         return $this->o2t;
     }
@@ -71,7 +69,7 @@ class FileAdapterTest extends EasyGoingTestCase
     {
         $results = [
             FileAdapter::KEY_KEY => YacorapiTestData::C_PAGEID_EXIST,
-            FileAdapter::KEY_TITLE => YacorapiTestData::FILE_EXT_JSON
+            FileAdapter::KEY_TITLE => YacorapiTestData::FILE_EXT_JSON,
         ];
         $results[FileAdapter::KEY_LINKS][FileAdapter::KEY_TINYUI] = YacorapiTestData::FILE_EXT_JSON;
         $expected = 42;

@@ -23,7 +23,7 @@ class AbstractExtensionTest extends EasyGoingTestCase
     /**
      * @return AbstractExtensionTestClazz
      */
-    protected static function prepareO2t()
+    protected static function prepareO2t(): AbstractExtensionTestClazz
     {
         return new AbstractExtensionTestClazz();
     }
@@ -31,7 +31,7 @@ class AbstractExtensionTest extends EasyGoingTestCase
     /**
      * @return AbstractExtensionTestClazz
      */
-    protected function getCasto2t()
+    protected function getCasto2t(): AbstractExtensionTestClazz
     {
         return $this->o2t;
     }

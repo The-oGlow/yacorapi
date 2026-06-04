@@ -84,7 +84,7 @@ class ThirdPartyAddon extends AbstractAddon
                         'link-window',
                         'orphaned-links',
                         'outgoing-links',
-                        'undefined-links,'
+                        'undefined-links,',
                     ]
                 ),
                 'Scroll Documents for Confluence'                      => new Vector(

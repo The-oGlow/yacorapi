@@ -19,19 +19,16 @@ class RequestParameterDataTest extends ConstantCheckTestCase
 {
     protected const CLASS_PREFIX     = RequestParameterData::class . self::C_STATIC_SEP;
 
-    /** @var int */
-    private const   EXPECTED_PROPERTY_COUT  = 19;
+    private const int   EXPECTED_PROPERTY_COUT  = 19;
 
-    /** @var int */
-    protected const EXPECTED_CONSTANT_COUNT = 42;
+    protected const int EXPECTED_CONSTANT_COUNT = 42;
 
-    /** @var bool */
-    protected const WITH_CONST_CROSSCHECK = true;
+    protected const bool WITH_CONST_CROSSCHECK = true;
 
     /**
      * @return RequestParameterData
      */
-    protected static function prepareO2t()
+    protected static function prepareO2t(): RequestParameterData
     {
         return new RequestParameterData();
     }
@@ -39,7 +36,7 @@ class RequestParameterDataTest extends ConstantCheckTestCase
     /**
      * @return RequestParameterData
      */
-    protected function getCasto2t()
+    protected function getCasto2t(): RequestParameterData
     {
         return $this->o2t;
     }
@@ -98,13 +95,9 @@ class RequestParameterDataTest extends ConstantCheckTestCase
 
     public function testPropConstants(): void
     {
-        $callback           = function ($val, $key) {
-            return str_starts_with($key, 'PROP_');
-        };
+        $callback           = fn ($val, $key) => str_starts_with($key, 'PROP_');
         $const             = array_filter(self::getAllDefinedConsts(RequestParameterData::class), $callback, ARRAY_FILTER_USE_BOTH);
-        $map                = function ($val) {
-            return RequestParameterData::class . self::C_STATIC_SEP . $val;
-        };
+        $map                = fn ($val) => RequestParameterData::class . self::C_STATIC_SEP . $val;
         $const             = array_map($map, array_keys($const));
         static::updateActualConsts($const);
 

@@ -24,7 +24,7 @@ class AddonMacroDataTest extends EasyGoingTestCase
     /**
      * @return AddonMacroData
      */
-    protected static function prepareO2t()
+    protected static function prepareO2t(): AddonMacroData
     {
         return new AddonMacroData();
     }
@@ -32,7 +32,7 @@ class AddonMacroDataTest extends EasyGoingTestCase
     /**
      * @return AddonMacroData
      */
-    protected function getCasto2t()
+    protected function getCasto2t(): AddonMacroData
     {
         return $this->o2t;
     }
@@ -43,7 +43,7 @@ class AddonMacroDataTest extends EasyGoingTestCase
      *
      * @dataProvider providerGetMacro
      */
-    public function testGetMacros(int $expected, $mode = null): void
+    public function testGetMacros(int $expected, int|string|null $mode = null): void
     {
         if (is_null($mode)) {
             $actual = $this->getCasto2t()->getMacros();
@@ -57,7 +57,7 @@ class AddonMacroDataTest extends EasyGoingTestCase
     /**
      * @return array<string,array<int,mixed>>
      */
-    public function providerGetMacro()
+    public function providerGetMacro(): array
     {
         return [
             'DefaultMode' => [YacorapiTestData::MODE_SINGLE_MACRO_COUNT_TOTAL, null],
@@ -75,7 +75,7 @@ class AddonMacroDataTest extends EasyGoingTestCase
      *
      * @dataProvider providerGetMacroNamesByAddon
      */
-    public function testgetMacroNamesByAddon(int $expected, $mode = '', $addon = ''): void
+    public function testgetMacroNamesByAddon(int $expected, int|string $mode = '', string $addon = ''): void
     {
         $actual = $this->getCasto2t()->getMacroNamesByAddon($mode, $addon);
 
@@ -86,43 +86,43 @@ class AddonMacroDataTest extends EasyGoingTestCase
     /**
      * @return array<string,array<int,mixed>>
      */
-    public function providerGetMacroNamesByAddon()
+    public function providerGetMacroNamesByAddon(): array
     {
         return [
             'SingleMode'          => [
                 YacorapiTestData::MODE_SINGLE_ADDON_NAME_MACRO_COUNT,
                 SingleAddon::ADDON_SINGLE,
-                YacorapiTestData::MODE_SINGLE_ADDON_NAME
+                YacorapiTestData::MODE_SINGLE_ADDON_NAME,
             ],
             'SingleModeNotExist'  => [
                 YacorapiTestData::MODE_SINGLE_ADDON_NAME_NOTEXIST_MACRO_COUNT,
                 SingleAddon::ADDON_SINGLE,
-                YacorapiTestData::MODE_SINGLE_ADDON_NAME_NOTEXIST
+                YacorapiTestData::MODE_SINGLE_ADDON_NAME_NOTEXIST,
             ],
             'BlockerMode'         => [
                 YacorapiTestData::MODE_BLOCKER_ADDON_NAME_MACRO_COUNT,
                 BlockerAddon::ADDON_BLOCKER,
-                YacorapiTestData::MODE_BLOCKER_ADDON_NAME
+                YacorapiTestData::MODE_BLOCKER_ADDON_NAME,
             ],
             'BlockerModeNotExist' => [
                 YacorapiTestData::MODE_BLOCKER_ADDON_NAME_NOTEXISTS_MACRO_COUNT,
                 BlockerAddon::ADDON_BLOCKER,
-                YacorapiTestData::MODE_BLOCKER_ADDON_NAME_NOTEXISTS
+                YacorapiTestData::MODE_BLOCKER_ADDON_NAME_NOTEXISTS,
             ],
             'AllMode'             => [
                 YacorapiTestData::MODE_ALL_ADDON_NAME_MACRO_COUNT,
                 AllAddon::ADDON_ALL,
-                YacorapiTestData::MODE_ALL_ADDON_NAME
+                YacorapiTestData::MODE_ALL_ADDON_NAME,
             ],
             'AllModeNotExist'     => [
                 YacorapiTestData::MODE_ALL_ADDON_NAME_NOTEXIST_MACRO_COUNT,
                 AllAddon::ADDON_ALL,
-                YacorapiTestData::MODE_ALL_ADDON_NAME_NOTEXIST
+                YacorapiTestData::MODE_ALL_ADDON_NAME_NOTEXIST,
             ],
             'WrongMode'           => [
                 0,
                 YacorapiTestData::MODE_NOTEXIST,
-                YacorapiTestData::MODE_SINGLE_ADDON_NAME
+                YacorapiTestData::MODE_SINGLE_ADDON_NAME,
             ],
         ];
     }
@@ -133,7 +133,7 @@ class AddonMacroDataTest extends EasyGoingTestCase
      *
      * @dataProvider providerGetMacro
      */
-    public function testGetMacroNamesByMode(int $expected, $mode = null): void
+    public function testGetMacroNamesByMode(int $expected, int|string|null $mode = null): void
     {
         if (is_null($mode)) {
             $actual = $this->getCasto2t()->getMacroNamesByMode();

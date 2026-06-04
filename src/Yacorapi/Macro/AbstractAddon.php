@@ -20,11 +20,10 @@ use Psr\Log\LoggerInterface;
 
 abstract class AbstractAddon implements IAddon
 {
-    /** @var LoggerInterface */
-    private static $logger;
+    private static LoggerInterface $logger;
 
     /** @var Map<mixed,Vector<mixed>> */
-    protected $addonsMacros;
+    protected Map $addonsMacros;
 
     public function __construct()
     {
@@ -41,7 +40,7 @@ abstract class AbstractAddon implements IAddon
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getAddons(): Map
     {
@@ -49,7 +48,7 @@ abstract class AbstractAddon implements IAddon
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getAddonNames(): Vector
     {
@@ -57,7 +56,7 @@ abstract class AbstractAddon implements IAddon
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getMacros(): Vector
     {
@@ -74,7 +73,7 @@ abstract class AbstractAddon implements IAddon
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getMacrosArray(): array
     {

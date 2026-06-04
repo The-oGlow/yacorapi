@@ -23,7 +23,7 @@ class ResponseSpaceDataDecorateTest extends EasyGoingTestCase
     /**
      * @return ResponseSpaceDataDecorate
      */
-    protected static function prepareO2t()
+    protected static function prepareO2t(): ResponseSpaceDataDecorate
     {
         return new ResponseSpaceDataDecorate(new Response());
     }
@@ -31,7 +31,7 @@ class ResponseSpaceDataDecorateTest extends EasyGoingTestCase
     /**
      * @return ResponseSpaceDataDecorate
      */
-    protected function getCasto2t()
+    protected function getCasto2t(): ResponseSpaceDataDecorate
     {
         return $this->o2t;
     }

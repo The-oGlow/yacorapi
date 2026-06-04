@@ -24,23 +24,20 @@ abstract class AbstractStatistic implements IStatistic
 {
     use ToStringTrait;
 
-    /** @var string Defines the column name when exporting */
-    protected const EXPORT_NAME = '';
+    /** Defines the column name when exporting */
+    protected const string EXPORT_NAME = '';
 
-    /** @var string The column name when {@link EXPORT_NAME} is not set */
-    protected const UDF = 'undefined';
+    /** The column name when {@link EXPORT_NAME} is not set */
+    protected const string UDF = 'undefined';
 
     /** @var Map<string,IStatistic> */
-    private $items;
+    private Map $items;
 
-    /** @var string */
-    private $statisticName;
+    private string $statisticName;
 
-    /** @var string */
-    private $exportName;
+    private string $exportName;
 
-    /** @var LoggerInterface */
-    private static $logger;
+    private static LoggerInterface $logger;
 
     /**
      * @param string $statisticName
@@ -73,7 +70,7 @@ abstract class AbstractStatistic implements IStatistic
      *
      * @return bool
      */
-    public function keyExists($key): bool
+    public function keyExists(string $key): bool
     {
         return !empty($key) && $this->items->hasKey($key);
     }
@@ -83,7 +80,7 @@ abstract class AbstractStatistic implements IStatistic
      *
      * @return null|IStatistic
      */
-    public function getItem($key)
+    public function getItem(string $key): ?IStatistic
     {
         $item = null;
         if ($this->keyExists($key)) {
@@ -97,7 +94,7 @@ abstract class AbstractStatistic implements IStatistic
      * @param string     $key
      * @param IStatistic $item
      */
-    public function addItem($key, $item): void
+    public function addItem(string $key, IStatistic $item): void
     {
         $this->items[$key] = $item;
     }
@@ -199,7 +196,7 @@ abstract class AbstractStatistic implements IStatistic
         return [
             'statisticName' => $this->statisticName,
             'exportName'    => $this->exportName,
-            'items'         => $this->items
+            'items'         => $this->items,
         ];
     }
 }

@@ -18,11 +18,9 @@ use Psr\Log\LoggerInterface;
 
 class ResponseAddonMacroDecorate extends AbstractResponse
 {
-    /** @var LoggerInterface */
-    private static $logger;
+    private static LoggerInterface $logger;
 
-    /** @var int */
-    private $mode;
+    private int $mode;
 
     /**
      * ResponseAddonMacroDecorate constructor.
@@ -30,7 +28,7 @@ class ResponseAddonMacroDecorate extends AbstractResponse
      * @param int                     $mode
      * @param null|array<mixed,mixed> $data
      */
-    public function __construct($mode, ?array $data = null)
+    public function __construct(int $mode, ?array $data = null)
     {
         self::$logger = new ConsoleLogger(ResponseAddonMacroDecorate::class);
         self::$logger->debug('START');
@@ -42,7 +40,7 @@ class ResponseAddonMacroDecorate extends AbstractResponse
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getResult(int $idx): void
     {
@@ -52,7 +50,7 @@ class ResponseAddonMacroDecorate extends AbstractResponse
     /**
      * @return int
      */
-    public function getMode()
+    public function getMode(): int
     {
         return $this->mode;
     }

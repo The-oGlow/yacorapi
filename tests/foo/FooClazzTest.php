@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace foo;
 
-require_once __DIR__ . './../bootstrap.php'; // NOSONAR php:S2036
-
 use Monolog\ConsoleLogger;
 use ollily\Tools\Reflection\UnavailableFieldsTrait;
 use ollily\Tools\Reflection\UnavailableMethodsTrait;
@@ -26,21 +24,20 @@ class FooClazzTest extends EasyGoingTestCase
     use UnavailableFieldsTrait;
     use UnavailableMethodsTrait;
 
-    /** @var LoggerInterface */
-    private static $logger;
+    private static LoggerInterface $logger;
 
-    public function __construct()
+    public static function setUpBeforeClass(): void
     {
         self::$logger = new ConsoleLogger(FooClazzTest::class);
         self::$logger->debug('START');
-        parent::__construct();
+        parent::setUpBeforeClass();
         self::$logger->debug('END');
     }
 
     /**
      * @return FooClazz Ccast to business class
      */
-    protected static function prepareO2t()
+    protected static function prepareO2t(): FooClazz
     {
         return new FooClazz();
     }
@@ -48,7 +45,7 @@ class FooClazzTest extends EasyGoingTestCase
     /**
      * @return FooClazz Cast to business class
      */
-    protected function getCasto2t()
+    protected function getCasto2t(): FooClazz
     {
         return $this->o2t;
     }

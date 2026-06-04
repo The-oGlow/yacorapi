@@ -57,37 +57,37 @@ class MacroTest extends TestCase
                 YacorapiTestData::CLAZZ_ALL_ADDON,
                 YacorapiTestData::MODE_ALL_ADDON_COUNT_TOTAL,
                 YacorapiTestData::MODE_ALL_MACRO_COUNT_TOTAL,
-                true
+                true,
             ],
             'BlockerAddon'    => [
                 YacorapiTestData::CLAZZ_BLOCKER_ADDON,
                 YacorapiTestData::MODE_BLOCKER_ADDON_COUNT_TOTAL,
-                YacorapiTestData::MODE_BLOCKER_MACRO_COUNT_TOTAL
+                YacorapiTestData::MODE_BLOCKER_MACRO_COUNT_TOTAL,
             ],
             'SingleAddon'     => [
                 YacorapiTestData::CLAZZ_SINGLE_ADDON,
                 YacorapiTestData::MODE_SINGLE_ADDON_COUNT_TOTAL,
-                YacorapiTestData::MODE_SINGLE_MACRO_COUNT_TOTAL
+                YacorapiTestData::MODE_SINGLE_MACRO_COUNT_TOTAL,
             ],
             'AtlassianAddon'  => [
                 YacorapiTestData::CLAZZ_ATLASSIAN_ADDON,
                 YacorapiTestData::EXT_ATLASSIAN_ADDON,
-                YacorapiTestData::EXT_ATLASSIAN_MACRO
+                YacorapiTestData::EXT_ATLASSIAN_MACRO,
             ],
             'ProjectdocAddon' => [
                 YacorapiTestData::CLAZZ_PDT,
                 YacorapiTestData::EXT_PDT_ADDON,
-                YacorapiTestData::EXT_PDT_MACRO
+                YacorapiTestData::EXT_PDT_MACRO,
             ],
             'ThirdPartyAddon' => [
                 YacorapiTestData::CLAZZ_3PARTY,
                 YacorapiTestData::EXT_3PARTY_ADDON,
-                YacorapiTestData::EXT_3PARTY_MACRO
+                YacorapiTestData::EXT_3PARTY_MACRO,
             ],
             'UserAddon'       => [
                 YacorapiTestData::CLAZZ_USER_MACRO_ADDON,
                 YacorapiTestData::EXT_USER_MACRO_ADDON,
-                YacorapiTestData::EXT_USER_MACRO_MACRO
+                YacorapiTestData::EXT_USER_MACRO_MACRO,
             ],
         ];
     }

@@ -18,11 +18,9 @@ use oglow\tools\Yacorapi\Request\RequestType;
 
 interface IConnectionProvider
 {
-    /** @var string */
-    public const MSG_FOUND_NO_RESULTS = 'Found no results!';
+    public const string MSG_FOUND_NO_RESULTS = 'Found no results!';
 
-    /** @var string */
-    public const MSG_NOT_IMPLEMENTED  = 'Not implemented so far!';
+    public const string MSG_NOT_IMPLEMENTED  = 'Not implemented so far!';
 
     /**
      * @param string $execUrl

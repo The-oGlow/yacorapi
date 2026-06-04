@@ -20,7 +20,7 @@ class AbstractContainerTest extends EasyGoingTestCase
     /**
      * @return AbstractContainerTestClazz
      */
-    protected static function prepareO2t()
+    protected static function prepareO2t(): AbstractContainerTestClazz
     {
         return new AbstractContainerTestClazz();
     }
@@ -28,7 +28,7 @@ class AbstractContainerTest extends EasyGoingTestCase
     /**
      * @return AbstractContainerTestClazz
      */
-    protected function getCasto2t()
+    protected function getCasto2t(): AbstractContainerTestClazz
     {
         return $this->o2t;
     }

@@ -21,8 +21,7 @@ class CsvFileAdapter extends FileAdapter
 {
     use ImplodeTrait;
 
-    /** @var LoggerInterface */
-    private static $logger;
+    private static LoggerInterface $logger;
 
     public function __construct(string $outputFileName, string $fileSuffix = '', string $customTargetDir = '')
     {
@@ -49,11 +48,11 @@ class CsvFileAdapter extends FileAdapter
     }
 
     /**
-     * @param mixed[]|string $param
+     * @param array<mixed,mixed>|string $param
      *
      * @return string
      */
-    protected function prepareCsvLine($param): string
+    protected function prepareCsvLine(array|string $param): string
     {
         self::$logger->debug("START");
 
@@ -92,7 +91,7 @@ class CsvFileAdapter extends FileAdapter
     /**
      * @param mixed $dataContent
      */
-    public function storeData($dataContent): void
+    public function storeData(mixed $dataContent): void
     {
         self::$logger->debug('START');
         self::$logger->debug('dataContent', [$dataContent]);
@@ -109,7 +108,7 @@ class CsvFileAdapter extends FileAdapter
     /**
      * @param string|string[] $dataHeader
      */
-    public function storeDataHeader($dataHeader): void
+    public function storeDataHeader(string|array $dataHeader): void
     {
         self::$logger->debug("START");
 

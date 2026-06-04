@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace oglow\tools\Addon\Atlassian\Extension;
 
 use oglow\tools\Yacorapi\Extension\AbstractExtension;
-use oglow\tools\Yacorapi\Traits\PrepPermissionTrait;
 use oglow\tools\Yacorapi\IConnectionProvider;
+use oglow\tools\Yacorapi\Traits\PrepPermissionTrait;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -25,13 +25,10 @@ class AdminExtension extends AbstractExtension
 {
     use PrepPermissionTrait;
 
-    /** @var IConnectionProvider
-     *  @psalm-suppress PropertyNotSetInConstructor
-     */
-    protected $connectionProvider;
+    /** @psalm-suppress PropertyNotSetInConstructor     */
+    protected IConnectionProvider $connectionProvider;
 
-    /** @var LoggerInterface */
-    private static $logger;
+    private static LoggerInterface $logger;
 
     public static function getName(): string
     {

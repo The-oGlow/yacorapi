@@ -45,13 +45,10 @@ class SpaceData extends AbstractContainer
 
     public const           MY_SPACES_FILE                    = self::MY_SPACES_CLAZZ . '.php';
 
-    /** @var LoggerInterface */
-    private static $logger;
+    private static LoggerInterface $logger;
 
-    /** @var string
-     * @psalm-suppress PropertyNotSetInConstructor
-     */
-    private $mySpaceFileDefault;
+    /** @psalm-suppress PropertyNotSetInConstructor     */
+    private string $mySpaceFileDefault;
 
     public function __construct()
     {
@@ -62,7 +59,7 @@ class SpaceData extends AbstractContainer
     }
 
     /**
-     * @param mixed[] $spaces
+     * @param array<mixed,mixed> $spaces
      *
      * @return string
      */
@@ -142,7 +139,7 @@ class SpaceData extends AbstractContainer
      *
      * @return mixed
      */
-    private function dynamiCall(string $mySpacesFunc, string $mySpaceFile)
+    private function dynamiCall(string $mySpacesFunc, string $mySpaceFile): mixed
     {
         self::loadPersonalSpaces($mySpaceFile);
         $mySpaces = [];

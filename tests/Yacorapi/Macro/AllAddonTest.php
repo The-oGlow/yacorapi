@@ -21,7 +21,7 @@ class AllAddonTest extends EasyGoingTestCase
     /**
      * @return AllAddon
      */
-    protected static function prepareO2t()
+    protected static function prepareO2t(): AllAddon
     {
         return new AllAddon();
     }
@@ -29,7 +29,7 @@ class AllAddonTest extends EasyGoingTestCase
     /**
      * @return AllAddon
      */
-    protected function getCasto2t()
+    protected function getCasto2t(): AllAddon
     {
         return $this->o2t;
     }

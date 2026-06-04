@@ -19,8 +19,7 @@ use Psr\Log\LoggerInterface;
 
 class FileAdapter extends AbstractStoreAdapter
 {
-    /** @var LoggerInterface */
-    private static $logger;
+    private static LoggerInterface $logger;
 
     public function __construct(string $outputFileName, string $fileSuffix = '', string $customTargetDir = '')
     {
@@ -33,7 +32,7 @@ class FileAdapter extends AbstractStoreAdapter
     }
 
     /**
-     * @param mixed[] $resultsEntry
+     * @param array<mixed,mixed> $resultsEntry
      */
     public function storeResults(array $resultsEntry): void
     {
@@ -59,7 +58,7 @@ class FileAdapter extends AbstractStoreAdapter
     /**
      * @param mixed $dataContent
      */
-    public function storeData($dataContent): void
+    public function storeData(mixed $dataContent): void
     {
         self::$logger->debug('START');
         self::$logger->debug('Writing data to ', [$this->storeItem]);
@@ -72,7 +71,7 @@ class FileAdapter extends AbstractStoreAdapter
     /**
      * @param string|string[] $dataHeader
      */
-    public function storeDataHeader($dataHeader): void
+    public function storeDataHeader(string|array $dataHeader): void
     {
         self::$logger->debug('START');
 

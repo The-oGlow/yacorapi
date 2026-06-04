@@ -20,13 +20,12 @@ use PHPUnit\Framework\EasyGoingTestCase;
 
 class ProjectDocToolboxHelperTest extends EasyGoingTestCase
 {
-    /** @var string */
-    private $cleanupFile = '';
+    private string $cleanupFile = '';
 
     /**
      * @return ProjectDocToolboxHelper
      */
-    protected static function prepareO2t()
+    protected static function prepareO2t(): ProjectDocToolboxHelper
     {
         return new ProjectDocToolboxHelper();
     }
@@ -34,7 +33,7 @@ class ProjectDocToolboxHelperTest extends EasyGoingTestCase
     /**
      * @return ProjectDocToolboxHelper
      */
-    protected function getCasto2t()
+    protected function getCasto2t(): ProjectDocToolboxHelper
     {
         return $this->o2t;
     }
@@ -98,28 +97,28 @@ class ProjectDocToolboxHelperTest extends EasyGoingTestCase
                 YacorapiTestData::MACR_BODY_EMPTY,
                 YacorapiTestData::MACR_DOCTYPE_OLD,
                 YacorapiTestData::MACR_DOCTYPE_NEW,
-                false
+                false,
             ],
             'FilenameWrongBodySimple' => [
                 YacorapiTestData::FILE_FILENAME_EMPTY,
                 YacorapiTestData::MACR_BODY_SIMPLE,
                 YacorapiTestData::MACR_DOCTYPE_OLD,
                 YacorapiTestData::MACR_DOCTYPE_NEW,
-                false
+                false,
             ],
             'FilenameCorrectBodyEmpty' => [
                 YacorapiTestData::prepareTempFile(),
                 YacorapiTestData::MACR_BODY_EMPTY,
                 YacorapiTestData::MACR_DOCTYPE_OLD,
                 YacorapiTestData::MACR_DOCTYPE_NEW,
-                false
+                false,
             ],
             'FilenameCorrectBodySimple' => [
                 YacorapiTestData::prepareTempFile(),
                 YacorapiTestData::MACR_BODY_SIMPLE,
                 YacorapiTestData::MACR_DOCTYPE_OLD,
                 YacorapiTestData::MACR_DOCTYPE_NEW,
-                false
+                false,
             ],
         ];
     }
@@ -134,7 +133,6 @@ class ProjectDocToolboxHelperTest extends EasyGoingTestCase
      */
     public function testReplaceDoctype(string $body, string $oldDoctype, string $newDoctype, bool $isContains): void
     {
-        /** @var string $actual */
         $actual = $this->getCasto2t()->replaceDoctype($body, $oldDoctype, $newDoctype);
 
         if ($isContains) {
@@ -160,7 +158,7 @@ class ProjectDocToolboxHelperTest extends EasyGoingTestCase
                 ),
                 YacorapiTestData::MACR_DOCTYPE_OLD,
                 YacorapiTestData::MACR_DOCTYPE_NEW,
-                false
+                false,
             ],
             'DoctypeInvalid'         => [
                 YacorapiTestData::repPH(
@@ -169,7 +167,7 @@ class ProjectDocToolboxHelperTest extends EasyGoingTestCase
                 ),
                 YacorapiTestData::MACR_DOCTYPE_OLD,
                 YacorapiTestData::MACR_DOCTYPE_NEW,
-                false
+                false,
             ],
             'DoctypeCorrect'         => [
                 YacorapiTestData::repPH(
@@ -178,7 +176,7 @@ class ProjectDocToolboxHelperTest extends EasyGoingTestCase
                 ),
                 YacorapiTestData::MACR_DOCTYPE_OLD,
                 YacorapiTestData::MACR_DOCTYPE_NEW,
-                true
+                true,
             ],
             'DoctypeAlreadyReplaced' => [
                 YacorapiTestData::repPH(
@@ -187,7 +185,7 @@ class ProjectDocToolboxHelperTest extends EasyGoingTestCase
                 ),
                 YacorapiTestData::MACR_DOCTYPE_OLD,
                 YacorapiTestData::MACR_DOCTYPE_NEW,
-                true
+                true,
             ],
         ];
     }

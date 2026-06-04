@@ -23,11 +23,9 @@ use Psr\Log\LogLevel;
 
 class CurlProvider extends AbstractProvider
 {
-    /** @var LoggerInterface */
-    private static $logger;
+    private static LoggerInterface $logger;
 
-    /** @var null|IResponse */
-    private $dryRunResponse;
+    private ?IResponse $dryRunResponse;
 
     public function __construct(?IResponse $dryRunResponse = null, string $logLevel = LogLevel::INFO)
     {
@@ -46,7 +44,7 @@ class CurlProvider extends AbstractProvider
      *
      * @return array<mixed,mixed>
      */
-    protected function execInternal(string $execUrl, int $reqType = RequestType::REQ_TYP_GET)
+    protected function execInternal(string $execUrl, int $reqType = RequestType::REQ_TYP_GET): array
     {
         self::$logger->debug('START - execUrl,reqType', [$execUrl, $reqType]);
 
@@ -66,7 +64,7 @@ class CurlProvider extends AbstractProvider
      *
      * @return array<mixed,mixed>
      */
-    protected function execPostInternal(string $execUrl, Map $parameters, $reqType = RequestType::REQ_TYP_PUT)
+    protected function execPostInternal(string $execUrl, Map $parameters, int $reqType = RequestType::REQ_TYP_PUT): array
     {
         self::$logger->debug('START - execUrl,parameters,reqType', [$execUrl, $parameters, $reqType]);
 
@@ -136,7 +134,7 @@ class CurlProvider extends AbstractProvider
      *
      * @return array<mixed,mixed>
      */
-    private function execCurl($execSession, string $execUrl, bool $dryRun = false)
+    private function execCurl($execSession, string $execUrl, bool $dryRun = false): array
     {
         self::$logger->debug('START - execUrl,dryRun', [$execUrl, $dryRun]);
 

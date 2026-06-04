@@ -31,20 +31,20 @@ interface IStatistic extends \Stringable
      *
      * @return bool
      */
-    public function keyExists($key): bool;
+    public function keyExists(string $key): bool;
 
     /**
      * @param string $key
      *
      * @return null|IStatistic
      */
-    public function getItem($key);
+    public function getItem(string $key): ?IStatistic;
 
     /**
      * @param string     $key
      * @param IStatistic $item
      */
-    public function addItem($key, $item): void;
+    public function addItem(string $key, IStatistic $item): void;
 
     /**
      * @return string
@@ -74,7 +74,7 @@ interface IStatistic extends \Stringable
     //    public function flattenHeader(): string;
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function __toString();
 }

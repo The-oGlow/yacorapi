@@ -22,7 +22,7 @@ class ProjectdocTraitTest extends EasyGoingTestCase
     /**
      * @return ProjectdocTraitTestClazz
      */
-    protected static function prepareO2t()
+    protected static function prepareO2t(): ProjectdocTraitTestClazz
     {
         return new ProjectdocTraitTestClazz();
     }
@@ -30,7 +30,7 @@ class ProjectdocTraitTest extends EasyGoingTestCase
     /**
      * @return ProjectdocTraitTestClazz
      */
-    protected function getCasto2t()
+    protected function getCasto2t(): ProjectdocTraitTestClazz
     {
         return $this->o2t;
     }
@@ -90,10 +90,10 @@ class ProjectdocTraitTest extends EasyGoingTestCase
     }
 
     /**
-     * @param IResponse $expected
-     * @param mixed[]   $propertyNames
-     * @param string    $spaceKey
-     * @param string    $where
+     * @param IResponse          $expected
+     * @param array<mixed,mixed> $propertyNames
+     * @param string             $spaceKey
+     * @param string             $where
      *
      * @dataProvider providerPdtReadDocument
      */
@@ -109,9 +109,9 @@ class ProjectdocTraitTest extends EasyGoingTestCase
     }
 
     /**
-     * @return mixed[]
+     * @return array<mixed,mixed>
      */
-    public function providerResponse()
+    public function providerResponse(): array
     {
         return [
             'empty' => [ false, new Response()],
@@ -119,9 +119,9 @@ class ProjectdocTraitTest extends EasyGoingTestCase
     }
 
     /**
-     * @return mixed[]
+     * @return array<mixed,mixed>
      */
-    public function providerPropertyName()
+    public function providerPropertyName(): array
     {
         return [
             'empty' => [ '', new Response(), ''],
@@ -129,9 +129,9 @@ class ProjectdocTraitTest extends EasyGoingTestCase
     }
 
     /**
-     * @return mixed[]
+     * @return array<mixed,mixed>
      */
-    public function providerPdtReadProperty()
+    public function providerPdtReadProperty(): array
     {
         return [
             'empty' => [ new Response(), 0,''],
@@ -139,9 +139,9 @@ class ProjectdocTraitTest extends EasyGoingTestCase
     }
 
     /**
-     * @return mixed[]
+     * @return array<mixed,mixed>
      */
-    public function providerPdtReadDocument()
+    public function providerPdtReadDocument(): array
     {
         return [
             'empty' => [ new Response(), [],'',''],

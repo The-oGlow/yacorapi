@@ -57,35 +57,25 @@ abstract class AbstractRapiClient implements IRapiClient
 
     public const MSG_UPDATE_PAGE_WITHOUT_CHANGES = 'Update page without changes';
 
-    /** @var ConstData */
-    protected $constData;
+    protected ConstData $constData;
 
-    /** @var AddonMacroData */
-    protected $addons;
+    protected AddonMacroData $addons;
 
-    /** @var RapiClientExtension */
-    protected $commonExtension;
+    protected RapiClientExtension $commonExtension;
 
-    /** @var AdminExtension */
-    protected $adminExtension;
+    protected AdminExtension $adminExtension;
 
-    /** @var AtlassianExtension */
-    protected $atlassianExtension;
+    protected AtlassianExtension $atlassianExtension;
 
-    /** @var UserMacroExtension */
-    protected $userMacroExtension;
+    protected UserMacroExtension $userMacroExtension;
 
-    /** @var ThirdPartyExtension */
-    protected $thirdPartyExtension;
+    protected ThirdPartyExtension $thirdPartyExtension;
 
-    /** @var ProjectdocExtension */
-    protected $projectdocExtension;
+    protected ProjectdocExtension $projectdocExtension;
 
-    /** @var IConnectionProvider */
-    protected $connectionProvider;
+    protected IConnectionProvider $connectionProvider;
 
-    /** @var LoggerInterface */
-    private static $logger;
+    private static LoggerInterface $logger;
 
     /**
      * Create new RapiClient.
@@ -155,9 +145,9 @@ abstract class AbstractRapiClient implements IRapiClient
     }
 
     /**
-     * @param string            $prepareUrl
-     * @param Map <mixed,mixed> $parameters
-     * @param int               $reqType
+     * @param string           $prepareUrl
+     * @param Map<mixed,mixed> $parameters
+     * @param int              $reqType
      *
      * @return IResponse
      */
@@ -173,15 +163,14 @@ abstract class AbstractRapiClient implements IRapiClient
     }
 
     /**
-     * @param mixed[] $page
+     * @param array<mixed,mixed> $page
      *
      * @return string
      */
     protected function getSpaceKeyFromResult(array $page = []): string
     {
-        return isset($page[RequestParameterData::PROP_CONTENT][RequestParameterData::PROP_SPACE][RequestParameterData::PROP_KEY]) ?
-            $page[RequestParameterData::PROP_CONTENT][RequestParameterData::PROP_SPACE][RequestParameterData::PROP_KEY] :
-            $page[RequestParameterData::PROP_SPACE][RequestParameterData::PROP_KEY];
+        return $page[RequestParameterData::PROP_CONTENT][RequestParameterData::PROP_SPACE][RequestParameterData::PROP_KEY] ??
+        $page[RequestParameterData::PROP_SPACE][RequestParameterData::PROP_KEY];
     }
 
     /**
@@ -312,7 +301,6 @@ abstract class AbstractRapiClient implements IRapiClient
 
         $extensions = $this->initExtensions($modeExtension);
 
-        /** @var IExtension $extension */
         foreach ($extensions as $key => $extension) {
             self::$logger->debug('Key,Ext', [$key]);
 

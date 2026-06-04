@@ -45,8 +45,7 @@ class ContentHelper extends AbstractHelper
 
     public const TAG_MACRO_VERSION = "1";
 
-    /** @var LoggerInterface */
-    private static $logger;
+    private static LoggerInterface $logger;
 
     public function __construct(bool $withLogger = true)
     {
@@ -118,10 +117,10 @@ class ContentHelper extends AbstractHelper
     {
         $choose = '';
         switch (true) {
-            case strpos(self::MACROBODY_PLAIN, strtolower($macroName . ';')) !== false:
+            case str_contains(self::MACROBODY_PLAIN, strtolower($macroName . ';')):
                 $choose = self::CHOOSE_BODY_PLAIN;
                 break;
-            case strpos(self::MACROBODY_RICHTEXT, strtolower($macroName . ';')) !== false:
+            case str_contains(self::MACROBODY_RICHTEXT, strtolower($macroName . ';')):
                 $choose = self::CHOOSE_BODY_RICHTEXT;
                 break;
             default:

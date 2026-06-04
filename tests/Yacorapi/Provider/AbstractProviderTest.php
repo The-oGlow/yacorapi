@@ -29,7 +29,7 @@ class AbstractProviderTest extends EasyGoingTestCase
     /**
      * @return AbstractProviderTestDummyClazz
      */
-    protected static function prepareO2t()
+    protected static function prepareO2t(): AbstractProviderTestDummyClazz
     {
         return new AbstractProviderTestDummyClazz();
     }
@@ -37,14 +37,14 @@ class AbstractProviderTest extends EasyGoingTestCase
     /**
      * @return AbstractProviderTestDummyClazz
      */
-    protected function getCasto2t()
+    protected function getCasto2t(): AbstractProviderTestDummyClazz
     {
         return $this->o2t;
     }
 
     /**
-     * @param IResponse $response
-     * @param mixed[]   $expectedData
+     * @param IResponse          $response
+     * @param array<mixed,mixed> $expectedData
      */
     protected function verifyResponse(IResponse $response, array $expectedData = []): void
     {

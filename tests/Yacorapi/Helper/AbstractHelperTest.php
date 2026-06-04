@@ -22,7 +22,7 @@ class AbstractHelperTest extends EasyGoingTestCase
     /**
      * @return AbstractHelperTestDummyClazz
      */
-    protected static function prepareO2t()
+    protected static function prepareO2t(): AbstractHelperTestDummyClazz
     {
         return new AbstractHelperTestDummyClazz(AbstractHelperTest::class);
     }
@@ -30,7 +30,7 @@ class AbstractHelperTest extends EasyGoingTestCase
     /**
      * @return AbstractHelperTestDummyClazz
      */
-    protected function getCasto2t()
+    protected function getCasto2t(): AbstractHelperTestDummyClazz
     {
         return $this->o2t;
     }
@@ -42,7 +42,7 @@ class AbstractHelperTest extends EasyGoingTestCase
      *
      * @dataProvider providerConstruct
      */
-    public function testConstruct($expected, string $key, bool $withLogger): void
+    public function testConstruct(mixed $expected, string $key, bool $withLogger): void
     {
         $actual = new AbstractHelperTestDummyClazz($key, $withLogger);
 

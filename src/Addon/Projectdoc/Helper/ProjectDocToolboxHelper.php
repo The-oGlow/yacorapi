@@ -25,8 +25,7 @@ use Psr\Log\LoggerInterface;
 
 class ProjectDocToolboxHelper extends AbstractHelper
 {
-    /** @var LoggerInterface */
-    private static $logger;
+    private static LoggerInterface $logger;
 
     public function __construct(bool $withLogger = true)
     {
@@ -59,7 +58,7 @@ class ProjectDocToolboxHelper extends AbstractHelper
         $newBody = $body;
         if (!empty($oldDoctype)) {
             $pattern =
-                "/(ac:name=.projectdoc-properties-marker.\sac:schema-version=.1.><ac:parameter\sac:name=.doctype.>)(" . $oldDoctype . ")(<\/ac:parameter>)/";
+            "/(ac:name=.projectdoc-properties-marker.\sac:schema-version=.1.><ac:parameter\sac:name=.doctype.>)(" . $oldDoctype . ")(<\/ac:parameter>)/";
             self::$logger->debug('Search pattern', [$oldDoctype,$newDoctype,$pattern]);
             $newBody = preg_replace($pattern, "$1" . $newDoctype . "$3", $body);
         }
@@ -120,7 +119,7 @@ class ProjectDocToolboxHelper extends AbstractHelper
     }
 
     /**
-     * @param Map <mixed, mixed> $overrideParameters
+     * @param Map<mixed, mixed> $overrideParameters
      *
      * @return bool
      */

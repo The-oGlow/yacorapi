@@ -19,8 +19,7 @@ class PrepReadTraitTestClazz
 {
     use PrepReadTrait;
 
-    /** @var ConstData */
-    protected $constData;
+    protected ConstData $constData;
 
     public function __construct()
     {

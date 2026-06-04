@@ -78,9 +78,9 @@ interface IRapiClient
     /**
      * REFACTOR: API-Function doesn't work or description is wrong.
      *
-     * @param int     $pageId
-     * @param mixed[] $writeRestrictions
-     * @param mixed[] $readRestrictions
+     * @param int                $pageId
+     * @param array<mixed,mixed> $writeRestrictions
+     * @param array<mixed,mixed> $readRestrictions
      *
      * @return bool
      */
@@ -152,5 +152,5 @@ interface IRapiClient
      *
      * @return ResponseAddonMacroDecorate
      */
-    public function prepareAddonSet($mode = AllAddon::ADDON_ALL): ResponseAddonMacroDecorate;
+    public function prepareAddonSet(int $mode = AllAddon::ADDON_ALL): ResponseAddonMacroDecorate;
 }

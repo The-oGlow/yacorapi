@@ -38,7 +38,7 @@ class AbstractContainerTestClazz extends AbstractContainer
     // Set method to public for testing purpose
 
     /**
-     * @return mixed[]
+     * @return array<mixed,mixed>
      */
     public function publicToStringValues(): array
     {

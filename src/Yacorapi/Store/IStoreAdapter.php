@@ -29,10 +29,10 @@ interface IStoreAdapter
     /**
      * @param mixed $dataContent
      */
-    public function storeData($dataContent): void;
+    public function storeData(mixed $dataContent): void;
 
     /**
      * @param string|string[] $dataHeader
      */
-    public function storeDataHeader($dataHeader): void;
+    public function storeDataHeader(string|array $dataHeader): void;
 }

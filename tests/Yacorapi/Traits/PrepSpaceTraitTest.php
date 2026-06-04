@@ -23,7 +23,7 @@ class PrepSpaceTraitTest extends EasyGoingTestCase
     /**
      * @return PrepSpaceTraitTestClazz
      */
-    protected static function prepareO2t()
+    protected static function prepareO2t(): PrepSpaceTraitTestClazz
     {
         return new PrepSpaceTraitTestClazz();
     }
@@ -31,7 +31,7 @@ class PrepSpaceTraitTest extends EasyGoingTestCase
     /**
      * @return PrepSpaceTraitTestClazz
      */
-    protected function getCasto2t()
+    protected function getCasto2t(): PrepSpaceTraitTestClazz
     {
         return $this->o2t;
     }

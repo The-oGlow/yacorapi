@@ -22,17 +22,15 @@ abstract class AbstractContainer implements IContainer
 {
     use ToStringTrait;
 
-    /** @var ConstData */
-    protected $constData;
+    protected ConstData $constData;
 
-    /** @var mixed[] */
-    private $data = [];
+    /** @var array<mixed,mixed> */
+    private array $data = [];
 
     /** @var int[]|string[] */
-    private $modes = [];
+    private array $modes = [];
 
-    /** @var LoggerInterface */
-    private static $logger;
+    private static LoggerInterface $logger;
 
     abstract protected function prepareModes(): void;
 
@@ -50,7 +48,7 @@ abstract class AbstractContainer implements IContainer
     }
 
     /**
-     * @return mixed[]
+     * @return array<mixed,mixed>
      */
     public function getAllData(): array
     {
@@ -58,7 +56,7 @@ abstract class AbstractContainer implements IContainer
     }
 
     /**
-     * @param mixed[] $allData
+     * @param array<mixed,mixed> $allData
      */
     protected function setAllData(array $allData): void
     {
@@ -66,7 +64,7 @@ abstract class AbstractContainer implements IContainer
     }
 
     /**
-     * @return mixed[]
+     * @return array<mixed,mixed>
      */
     public function getKeys(): array
     {
@@ -78,7 +76,7 @@ abstract class AbstractContainer implements IContainer
      *
      * @return bool
      */
-    public function keyExists($key): bool
+    public function keyExists(mixed $key): bool
     {
         return !empty($key) && array_key_exists($key, $this->getAllData());
     }
@@ -104,7 +102,7 @@ abstract class AbstractContainer implements IContainer
      *
      * @return mixed
      */
-    public function getDataByMode($mode)
+    public function getDataByMode(int|string $mode): mixed
     {
         self::$logger->debug('START', [$mode]);
         $value = [];
@@ -124,7 +122,7 @@ abstract class AbstractContainer implements IContainer
     }
 
     /**
-     * @return mixed[]
+     * @return array<mixed,mixed>
      *
      * @SuppressWarnings("PHPMD.CamelCaseMethodName")
      */

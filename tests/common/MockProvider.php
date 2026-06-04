@@ -15,19 +15,18 @@ namespace oglow\tools\common;
 
 use Ds\Map;
 use Monolog\ConsoleLogger;
+use oglow\tools\Yacorapi\ConstData;
+use oglow\tools\Yacorapi\Data\RequestParameterData;
+use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Provider\AbstractProvider;
 use oglow\tools\Yacorapi\Request\RequestType;
 use oglow\tools\Yacorapi\YacorapiTestData;
-use oglow\tools\Yacorapi\ConstData;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
-use oglow\tools\Yacorapi\IResponse;
-use oglow\tools\Yacorapi\Data\RequestParameterData;
 
 class MockProvider extends AbstractProvider
 {
-    /** @var LoggerInterface */
-    private static $logger;
+    private static LoggerInterface $logger;
 
     public function __construct(string $logLevel = LogLevel::INFO)
     {
@@ -42,7 +41,7 @@ class MockProvider extends AbstractProvider
      *
      * @return array<mixed,mixed>
      */
-    protected function execInternal(string $execUrl, int $reqType)
+    protected function execInternal(string $execUrl, int $reqType): array
     {
         self::$logger->debug('START - execUrl,reqType', [$execUrl, $reqType]);
 
@@ -60,7 +59,7 @@ class MockProvider extends AbstractProvider
      *
      * @return array<mixed,mixed>
      */
-    protected function execPostInternal(string $execUrl, Map $parameters, int $reqType)
+    protected function execPostInternal(string $execUrl, Map $parameters, int $reqType): array
     {
         self::$logger->debug('START - execUrl,parameters,reqType', [$execUrl, $parameters, $reqType]);
 
@@ -191,7 +190,7 @@ class MockProvider extends AbstractProvider
      *
      * @return bool
      */
-    protected function evalScanPagesWithFilter(string $execUrl, int $reqType, &$response): bool
+    protected function evalScanPagesWithFilter(string $execUrl, int $reqType, array &$response): bool
     {
         $done = false;
         $searchUrl = sprintf('%s?', ConstData::C_RAPI_SCAN);
@@ -216,7 +215,7 @@ class MockProvider extends AbstractProvider
      *
      * @return bool
      */
-    protected function evalListSpaces(string $execUrl, int $reqType, &$response): bool
+    protected function evalListSpaces(string $execUrl, int $reqType, array &$response): bool
     {
         $done = false;
         $searchUrl = sprintf('%s?', ConstData::C_RAPI_SPACE);
@@ -237,7 +236,7 @@ class MockProvider extends AbstractProvider
                                 IResponse::KEY_VALUE => YacorapiTestData::C_SPACE_EXIST_DESCRIPTION]],
                         IResponse::KEY_STATUS => YacorapiTestData::C_SPACE_EXIST_STATUS,
                         IResponse::KEY_TYPE => 0,
-                    ]
+                    ],
                 ]]
             );
             $done = true;
@@ -294,7 +293,7 @@ class MockProvider extends AbstractProvider
         $searchUrl = sprintf('%s/', ConstData::C_RAPI_CONTENT);
 
         $expectedKeys = [RequestParameterData::PROP_TYPE, RequestParameterData::PROP_TITLE,
-            RequestParameterData::PROP_STATUS, RequestParameterData::PROP_BODY, RequestParameterData::PROP_SPACE
+            RequestParameterData::PROP_STATUS, RequestParameterData::PROP_BODY, RequestParameterData::PROP_SPACE,
         ];
         $notExpectedKeys = [RequestParameterData::PROP_ID];
 
@@ -328,7 +327,7 @@ class MockProvider extends AbstractProvider
         $done = false;
         $searchUrl = sprintf('%s/', ConstData::C_RAPI_CONTENT);
         $expectedKeys = [RequestParameterData::PROP_TYPE, RequestParameterData::PROP_TITLE,
-             RequestParameterData::PROP_BODY, RequestParameterData::PROP_ID
+             RequestParameterData::PROP_BODY, RequestParameterData::PROP_ID,
         ];
 
         if (str_contains($execUrl, $searchUrl) && $this->verifyKeys($parameters, $expectedKeys)) {

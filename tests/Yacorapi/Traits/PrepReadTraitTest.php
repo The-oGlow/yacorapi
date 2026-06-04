@@ -25,7 +25,7 @@ class PrepReadTraitTest extends EasyGoingTestCase
     /**
      * @return PrepReadTraitTestClazz
      */
-    protected static function prepareO2t()
+    protected static function prepareO2t(): PrepReadTraitTestClazz
     {
         return new PrepReadTraitTestClazz();
     }
@@ -33,7 +33,7 @@ class PrepReadTraitTest extends EasyGoingTestCase
     /**
      * @return PrepReadTraitTestClazz
      */
-    protected function getCasto2t()
+    protected function getCasto2t(): PrepReadTraitTestClazz
     {
         return $this->o2t;
     }

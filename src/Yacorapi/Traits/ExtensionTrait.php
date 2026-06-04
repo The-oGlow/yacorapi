@@ -85,7 +85,7 @@ trait ExtensionTrait
 
         /** @var Map<mixed,Vector<mixed>> $extensionAddons */
         $extensionAddons = new Map();
-        /** @var IExtension $extension */
+
         foreach ($extensions as $extension) {
             $addons = $extension->getAddons();
             if (!$addons->isEmpty()) {

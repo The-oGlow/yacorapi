@@ -23,11 +23,9 @@ class ExtensionTraitTestClazz
 {
     use ExtensionTrait;
 
-    /** @var ConstData */
-    protected $constData;
+    protected ConstData $constData;
 
-    /** @var LoggerInterface */
-    private static $logger;
+    private static LoggerInterface $logger;
 
     public function __construct()
     {

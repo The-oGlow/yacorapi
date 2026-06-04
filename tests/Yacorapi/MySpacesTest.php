@@ -31,13 +31,12 @@ class MySpacesTest extends EasyGoingTestCase
 
     public const METHOD_REFERENCE = SpaceData::SPACE_ALL_METHOD;
 
-    /** @var LoggerInterface */
-    private static $logger;
+    private static LoggerInterface $logger;
 
     /**
      * @return null|PersonalSpaces
      */
-    protected static function prepareO2t()
+    protected static function prepareO2t(): ?PersonalSpaces
     {
         try {
             static::prepareSpaceData();
@@ -54,7 +53,7 @@ class MySpacesTest extends EasyGoingTestCase
     /**
      * @return PersonalSpaces
      */
-    protected function getCasto2t()
+    protected function getCasto2t(): PersonalSpaces
     {
         return $this->o2t;
     }

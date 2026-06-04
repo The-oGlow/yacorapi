@@ -25,16 +25,14 @@ class ExtensionTest extends ConstantCheckTestCase
 {
     public const  CLASS_PREFIX = IExtension::class . self::C_STATIC_SEP;
 
-    /** @var int */
-    protected const EXPECTED_CONSTANT_COUNT = 8;
+    protected const int EXPECTED_CONSTANT_COUNT = 8;
 
-    /** @var bool */
-    protected const WITH_CONST_CROSSCHECK = true;
+    protected const bool WITH_CONST_CROSSCHECK = true;
 
     /**
      * @return ExtensionTestDummyClazz
      */
-    protected static function prepareO2t()
+    protected static function prepareO2t(): ExtensionTestDummyClazz
     {
         return new ExtensionTestDummyClazz();
     }
@@ -42,7 +40,7 @@ class ExtensionTest extends ConstantCheckTestCase
     /**
      * @return ExtensionTestDummyClazz
      */
-    protected function getCasto2t()
+    protected function getCasto2t(): ExtensionTestDummyClazz
     {
         return $this->o2t;
     }
@@ -59,7 +57,7 @@ class ExtensionTest extends ConstantCheckTestCase
      *
      * @dataProvider providerExtensions
      */
-    public function testExtension($clazz, $expected, int $extensionId): void
+    public function testExtension(mixed $clazz, mixed $expected, int $extensionId): void
     {
         /** @var IExtension $newInstance */
         $newInstance = new $clazz(new ConstData());
@@ -80,7 +78,7 @@ class ExtensionTest extends ConstantCheckTestCase
             'AdminExtension'      => [AdminExtension::class, AdminExtension::class, IExtension::EXTENSION_ATLASSIAN_ADMIN],
             'UserMacroExtension'  => [UserMacroExtension::class, UserMacroExtension::class, IExtension::EXTENSION_ATLASSIAN_USER_MACRO],
             'ThirdPartyExtension' => [ThirdPartyExtension::class, ThirdPartyExtension::class, IExtension::EXTENSION_THIRD_PARTY],
-            'ProjectdocExtension' => [ProjectdocExtension::class, ProjectdocExtension::class, IExtension::EXTENSION_PROJECTDOC_TOOLBOX]
+            'ProjectdocExtension' => [ProjectdocExtension::class, ProjectdocExtension::class, IExtension::EXTENSION_PROJECTDOC_TOOLBOX],
         ];
     }
 

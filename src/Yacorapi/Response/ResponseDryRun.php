@@ -107,7 +107,7 @@ class ResponseDryRun implements IResponse
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function keyExists($key): bool
     {
@@ -115,15 +115,15 @@ class ResponseDryRun implements IResponse
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function keys(): Set
     {
-        return (new Map())->keys();
+        return new Map()->keys();
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getValue($key, $default = '')
     {
@@ -131,7 +131,7 @@ class ResponseDryRun implements IResponse
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function checkStatus(): bool
     {
@@ -139,7 +139,7 @@ class ResponseDryRun implements IResponse
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getResults(): Map
     {
@@ -156,7 +156,7 @@ class ResponseDryRun implements IResponse
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getResult(int $idx)
     {
@@ -164,7 +164,7 @@ class ResponseDryRun implements IResponse
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function isResultsAvailable(): bool // NOSONAR: php:S4144
     {
@@ -172,7 +172,7 @@ class ResponseDryRun implements IResponse
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function checkData(): bool
     {
@@ -181,7 +181,7 @@ class ResponseDryRun implements IResponse
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function checkDataWrite()
     {
@@ -190,7 +190,7 @@ class ResponseDryRun implements IResponse
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getBody(): string
     {
@@ -199,7 +199,7 @@ class ResponseDryRun implements IResponse
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getRestrictions(): array
     {
@@ -208,7 +208,7 @@ class ResponseDryRun implements IResponse
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function __toString()
     {

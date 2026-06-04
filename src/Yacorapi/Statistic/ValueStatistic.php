@@ -26,17 +26,17 @@ class ValueStatistic extends AbstractStatistic
     protected const EXPORT_NAME = self::C_VALUE;
 
     /** @var Set<mixed> */
-    private $keysForValue;
+    private Set $keysForValue;
 
     /** @var mixed */
-    private $value;
+    private mixed $value;
 
     /**
      * ValueStatistic constructor.
      *
      * @param string $statisticName
      */
-    public function __construct($statisticName)
+    public function __construct(string $statisticName)
     {
         parent::__construct($statisticName);
         $this->keysForValue = new Set([self::EXPORT_NAME]);
@@ -55,7 +55,7 @@ class ValueStatistic extends AbstractStatistic
      *
      * @return bool
      */
-    public function keyExists($key): bool
+    public function keyExists(mixed $key): bool
     {
         return $this->keysForValue->contains($key);
     }
@@ -66,7 +66,7 @@ class ValueStatistic extends AbstractStatistic
      *
      * @see addValue()
      */
-    public function addItem($key, $item): void
+    public function addItem(mixed $key, IStatistic $item): void
     {
         throw new \BadMethodCallException('Use instead \'->addValue\'');
     }
@@ -78,7 +78,7 @@ class ValueStatistic extends AbstractStatistic
      *
      * @see getValue()
      */
-    public function getItem($key)
+    public function getItem(mixed $key): ?IStatistic
     {
         throw new \BadMethodCallException('Use instead \'->getValue\'');
     }
@@ -86,7 +86,7 @@ class ValueStatistic extends AbstractStatistic
     /**
      * @param mixed $item
      */
-    public function addValue($item): void
+    public function addValue(mixed $item): void
     {
         $this->value = $item;
     }
@@ -94,13 +94,13 @@ class ValueStatistic extends AbstractStatistic
     /**
      * @return mixed
      */
-    public function getValue()
+    public function getValue(): mixed
     {
         return $this->value;
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      *
      * @SuppressWarnings("PHPMD.CamelCaseMethodName")
      */
@@ -109,7 +109,7 @@ class ValueStatistic extends AbstractStatistic
         return [
             self::C_STATISTIC_NAME => $this->getStatisticName(),
             self::C_EXPORT_NAME1   => $this->getExportName(),
-            self::C_VALUE          => $this->value
+            self::C_VALUE          => $this->value,
         ];
     }
 }

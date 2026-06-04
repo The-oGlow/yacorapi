@@ -44,7 +44,7 @@ class YacorapiTestData extends TestData
         IExtension::EXTENSION_ATLASSIAN_ADMIN => AdminExtension::class,
         IExtension::EXTENSION_ATLASSIAN_USER_MACRO => UserMacroExtension::class,
         IExtension::EXTENSION_THIRD_PARTY => ThirdPartyExtension::class,
-        IExtension::EXTENSION_PROJECTDOC_TOOLBOX => ProjectdocExtension::class
+        IExtension::EXTENSION_PROJECTDOC_TOOLBOX => ProjectdocExtension::class,
     ];
 
     /** Array of extensions which will be verified */
@@ -268,19 +268,19 @@ class YacorapiTestData extends TestData
     // Response
 
     /** @var array<mixed,mixed> */
-    private static $RESP_HEAD_SEARCHPAGEID_01;
+    private static array $RESP_HEAD_SEARCHPAGEID_01;
 
     /** @var array<mixed,mixed> */
-    private static $RESP_BODY;
+    private static array $RESP_BODY;
 
     /** @var array<mixed,mixed> */
-    private static $RESP_CONTENTFILTER_RESULT;
+    private static array $RESP_CONTENTFILTER_RESULT;
 
     /** @var array<mixed,mixed> */
-    private static $RESP_SEARCH_RESULT;
+    private static array $RESP_SEARCH_RESULT;
 
     /** @var array<mixed,mixed> */
-    private static $RESP_SCAN_RESULT;
+    private static array $RESP_SCAN_RESULT;
 
     public const RESP_RESTRICTION = [
         IResponse::KEY_RESTRICTIONS => [
@@ -289,16 +289,16 @@ class YacorapiTestData extends TestData
                 IResponse::KEY_RESTRICTIONS => [
                     IResponse::KEY_USER => [],
                     IResponse::KEY_GROUP => [],
-                ]
+                ],
             ],
             IResponse::KEY_UPDATE => [
                 IResponse::KEY_OPERATION => IResponse::KEY_UPDATE,
                 IResponse::KEY_RESTRICTIONS => [
                     IResponse::KEY_USER => [],
                     IResponse::KEY_GROUP => [],
-                ]
+                ],
             ],
-        ]
+        ],
     ];
 
     // Misc Constants
@@ -412,7 +412,7 @@ class YacorapiTestData extends TestData
 
         return [
             IResponse::KEY_SPACE => [
-                IResponse::KEY_KEY => $text
+                IResponse::KEY_KEY => $text,
             ]];
     }
 
@@ -422,7 +422,7 @@ class YacorapiTestData extends TestData
      *
      * @return array<mixed,mixed>
      */
-    public static function prepareResponseAncestor($text = '', ?Map $parameters = null): array
+    public static function prepareResponseAncestor(mixed $text = '', ?Map $parameters = null): array
     {
         if (!is_null($parameters)) {
             $text = $parameters->get(RequestParameterData::PROP_ANCESTORS)[RequestParameterData::PROP_KEY];
@@ -430,7 +430,7 @@ class YacorapiTestData extends TestData
 
         return [
             IResponse::KEY_ANCESTORS => [
-                IResponse::KEY_ID => $text
+                IResponse::KEY_ID => $text,
             ]];
     }
 
@@ -449,7 +449,7 @@ class YacorapiTestData extends TestData
         return [
             IResponse::KEY_BODY => [
                 IResponse::KEY_STORAGE => [
-                    IResponse::KEY_VALUE => $text
+                    IResponse::KEY_VALUE => $text,
                 ]]];
     }
 

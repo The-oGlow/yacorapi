@@ -21,7 +21,7 @@ class CurlProviderTest extends EasyGoingTestCase
     /**
      * @return CurlProvider
      */
-    protected static function prepareO2t()
+    protected static function prepareO2t(): CurlProvider
     {
         return new CurlProvider(null, LogLevel::DEBUG);
     }
@@ -29,7 +29,7 @@ class CurlProviderTest extends EasyGoingTestCase
     /**
      * @return CurlProvider
      */
-    protected function getCasto2t()
+    protected function getCasto2t(): CurlProvider
     {
         return  $this->o2t;
     }

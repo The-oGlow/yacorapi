@@ -25,11 +25,9 @@ use Psr\Log\LogLevel;
 
 abstract class AbstractProvider implements IConnectionProvider
 {
-    /** @var LoggerInterface */
-    private static $logger;
+    private static LoggerInterface $logger;
 
-    /** @var ConstData */
-    protected $constData;
+    protected ConstData $constData;
 
     public function __construct(string $logLevel = LogLevel::INFO)
     {
@@ -80,7 +78,7 @@ abstract class AbstractProvider implements IConnectionProvider
      *
      * @return IResponse
      */
-    public function prepareResponse($data): IResponse
+    public function prepareResponse(?array $data): IResponse
     {
         self::$logger->debug('START');
 
@@ -103,7 +101,7 @@ abstract class AbstractProvider implements IConnectionProvider
      *
      * @return array<mixed,mixed>
      */
-    abstract protected function execInternal(string $execUrl, int $reqType);
+    abstract protected function execInternal(string $execUrl, int $reqType): array;
 
     /**
      * @param string           $execUrl
@@ -112,7 +110,7 @@ abstract class AbstractProvider implements IConnectionProvider
      *
      * @return array<mixed,mixed>
      */
-    abstract protected function execPostInternal(string $execUrl, Map $parameters, int $reqType);
+    abstract protected function execPostInternal(string $execUrl, Map $parameters, int $reqType): array;
 
     /**
      * @return string

@@ -22,7 +22,7 @@ class AbstractSingletonTest extends EasyGoingTestCase
     /**
      * @return AbstractSingletonTestDummyClazz
      */
-    protected static function prepareO2t()
+    protected static function prepareO2t(): AbstractSingletonTestDummyClazz
     {
         return new AbstractSingletonTestDummyClazz();
     }
@@ -30,7 +30,7 @@ class AbstractSingletonTest extends EasyGoingTestCase
     /**
      * @return AbstractSingletonTestDummyClazz
      */
-    protected function getCasto2t()
+    protected function getCasto2t(): AbstractSingletonTestDummyClazz
     {
         return $this->o2t;
     }
@@ -51,7 +51,7 @@ class AbstractSingletonTest extends EasyGoingTestCase
      *
      * @dataProvider providerConstruct
      */
-    public function testConstruct($expected, string $key, bool $withLogger): void
+    public function testConstruct(mixed $expected, string $key, bool $withLogger): void
     {
         $actual = new AbstractSingletonTestDummyClazz($key, $withLogger);
 

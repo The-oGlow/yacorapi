@@ -23,13 +23,12 @@ use Psr\Log\LoggerInterface;
 
 class ExtensionTraitTest extends EasyGoingTestCase
 {
-    /** @var LoggerInterface */
-    private static $logger;
+    private static LoggerInterface $logger;
 
     /**
      * @return ExtensionTraitTestClazz
      */
-    protected static function prepareO2t()
+    protected static function prepareO2t(): ExtensionTraitTestClazz
     {
         return new ExtensionTraitTestClazz();
     }
@@ -37,7 +36,7 @@ class ExtensionTraitTest extends EasyGoingTestCase
     /**
      * @return ExtensionTraitTestClazz
      */
-    protected function getCasto2t()
+    protected function getCasto2t(): ExtensionTraitTestClazz
     {
         return $this->o2t;
     }

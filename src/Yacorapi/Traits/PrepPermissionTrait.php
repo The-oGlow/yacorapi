@@ -42,9 +42,9 @@ trait PrepPermissionTrait
     /**
      * REFACTOR: API-Function doesn't work or description is wrong.
      *
-     * @param int     $pageId
-     * @param mixed[] $writeRestrictions
-     * @param mixed[] $readRestrictions
+     * @param int                $pageId
+     * @param array<mixed,mixed> $writeRestrictions
+     * @param array<mixed,mixed> $readRestrictions
      *
      * @return bool
      *
@@ -60,14 +60,14 @@ trait PrepPermissionTrait
         $prefix                        = [
             'content' => [
                 'expanded'     => true,
-                'idProperties' => new \stdClass()
+                'idProperties' => new \stdClass(),
             ],
         ];
 
         if (!empty($writeRestrictions)) {
             $prepareParametersWrite = [
                 'operation'    => 'update',
-                'restrictions' => $this->addRestrictionForUser($writeRestrictions)
+                'restrictions' => $this->addRestrictionForUser($writeRestrictions),
             ];
             // 'lastModificationDate' => date('Y-m-d\TH:i:s\Z')
 
@@ -78,7 +78,7 @@ trait PrepPermissionTrait
         if (!empty($readRestrictions)) {
             $prepareParametersRead = [
                 'operation'    => 'read',
-                'restrictions' => $this->addRestrictionForUser($readRestrictions)
+                'restrictions' => $this->addRestrictionForUser($readRestrictions),
             ];
             self::$logger->info('', [$prepareParametersRead]);
             $prepareParametersRestrictions['restrictions']['read'] = $prepareParametersRead;
@@ -102,9 +102,9 @@ trait PrepPermissionTrait
     }
 
     /**
-     * @param mixed[] $readRestrictions
+     * @param array<mixed,mixed> $readRestrictions
      *
-     * @return mixed[]
+     * @return array<mixed,mixed>
      *
      * REFACTOR: Switch array to Map
      */
@@ -116,7 +116,7 @@ trait PrepPermissionTrait
         if (array_key_exists(RequestParameterData::PROP_USER, $readRestrictions)) {
             foreach ($readRestrictions[RequestParameterData::PROP_USER] as $readRestriction) {
                 $readUser[] =
-                    [RequestParameterData::PROP_TYPE => RequestParameterData::USER_TYPE_KNOWN, RequestParameterData::PROP_USERNAME => $readRestriction];
+                [RequestParameterData::PROP_TYPE => RequestParameterData::USER_TYPE_KNOWN, RequestParameterData::PROP_USERNAME => $readRestriction];
             }
         }
 
@@ -125,9 +125,9 @@ trait PrepPermissionTrait
     }
 
     /**
-     * @param mixed[] $readRestrictions
+     * @param array<mixed,mixed> $readRestrictions
      *
-     * @return mixed[]
+     * @return array<mixed,mixed>
      *
      * REFACTOR: Switch array to Map
      */
@@ -139,7 +139,7 @@ trait PrepPermissionTrait
         if (array_key_exists(RequestParameterData::PROP_GROUP, $readRestrictions)) {
             foreach ($readRestrictions[RequestParameterData::PROP_GROUP] as $readRestriction) {
                 $readGroup[] =
-                    [RequestParameterData::PROP_TYPE => RequestParameterData::USER_TYPE_KNOWN, RequestParameterData::PROP_USERNAME => $readRestriction];
+                [RequestParameterData::PROP_TYPE => RequestParameterData::USER_TYPE_KNOWN, RequestParameterData::PROP_USERNAME => $readRestriction];
             }
         }
 

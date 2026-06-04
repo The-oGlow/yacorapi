@@ -31,8 +31,7 @@ class AddonMacroData extends AbstractContainer
 
     protected const SHOW_ITEMS_MAX = 20;
 
-    /** @var LoggerInterface */
-    private static $logger;
+    private static LoggerInterface $logger;
 
     public function __construct()
     {
@@ -46,7 +45,7 @@ class AddonMacroData extends AbstractContainer
      *
      * @return mixed
      */
-    public function getMacros($mode = SingleAddon::ADDON_SINGLE)
+    public function getMacros(int|string $mode = SingleAddon::ADDON_SINGLE): mixed
     {
         self::$logger->debug('START', [$mode]);
         $macros = [];
@@ -72,9 +71,9 @@ class AddonMacroData extends AbstractContainer
      * @param int|string $mode
      * @param string     $addon
      *
-     * @return mixed[]
+     * @return array<mixed,mixed>
      */
-    public function getMacroNamesByAddon($mode, string $addon): array
+    public function getMacroNamesByAddon(int|string $mode, string $addon): array
     {
         self::$logger->debug('START', [$mode, $addon]);
 
@@ -104,9 +103,9 @@ class AddonMacroData extends AbstractContainer
     /**
      * @param int|string $mode
      *
-     * @return mixed[]
+     * @return array<mixed,mixed>
      */
-    public function getMacroNamesByMode($mode = SingleAddon::ADDON_SINGLE): array
+    public function getMacroNamesByMode(int|string $mode = SingleAddon::ADDON_SINGLE): array
     {
         self::$logger->debug('START', [$mode]);
 

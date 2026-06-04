@@ -22,11 +22,9 @@ class ProjectdocTraitTestClazz
 {
     use ProjectdocTrait;
 
-    /** @var ConstData */
-    protected $constData;
+    protected ConstData $constData;
 
-    /** @var IConnectionProvider */
-    protected $provider;
+    protected IConnectionProvider $provider;
 
     public function __construct()
     {
