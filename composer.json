@@ -27,7 +27,21 @@
     "repositories": [
         {
             "type": "path",
-            "url": "../ezlogging"
+            "url": "../ezkoding",
+            "options": {
+                "versions": {
+                    "ollily/ezkoding": "8.4"
+                }
+            }
+        },
+        {
+            "type": "path",
+            "url": "../ezlogging",
+            "options": {
+                "versions": {
+                    "ollily/ezlogging": "8.4"
+                }
+            }
         }
     ],
     "require": {
@@ -35,8 +49,8 @@
         "ext-curl": "*",
         "ext-json": "*",
         "php-ds/php-ds": "^1.0",
-        "ollily/ezkoding": "^8.4",
-        "ollily/ezlogging": "dev-develop"
+        "ollily/ezkoding": "*",
+        "ollily/ezlogging": "*"
     },
     "provide": {
         "psr/log-implementation": "^2.0||^3.0"
