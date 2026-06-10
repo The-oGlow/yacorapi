@@ -62,7 +62,7 @@ class ContentHelper extends AbstractHelper
      *
      * @return string
      */
-    public function prepareMacroParameter(?Map $parameters = null): string
+    public static function prepareMacroParameter(?Map $parameters = null): string
     {
         $newTag = '';
         if (!is_null($parameters) && !$parameters->isEmpty()) {
@@ -74,7 +74,7 @@ class ContentHelper extends AbstractHelper
         return $newTag;
     }
 
-    public function preparePlainBody(string $body = ''): string
+    public static function preparePlainBody(string $body = ''): string
     {
         $newTag = '';
         if (!empty($body)) {
@@ -84,7 +84,7 @@ class ContentHelper extends AbstractHelper
         return $newTag;
     }
 
-    public function prepareRichTextBody(string $body = ''): string
+    public static function prepareRichTextBody(string $body = ''): string
     {
         $newTag = '';
         if (!empty($body)) {
@@ -94,16 +94,16 @@ class ContentHelper extends AbstractHelper
         return $newTag;
     }
 
-    public function prepareMacroBody(string $macroName, string $body = ''): string
+    public static function prepareMacroBody(string $macroName, string $body = ''): string
     {
         $newTag = '';
         if (!empty($body)) {
-            switch ($this->chooseMacroBody($macroName)) {
+            switch (self::chooseMacroBody($macroName)) {
                 case self::CHOOSE_BODY_PLAIN:
-                    $newTag .= sprintf("%s", $this->preparePlainBody($body));
+                    $newTag .= sprintf("%s", self::preparePlainBody($body));
                     break;
                 case self::CHOOSE_BODY_RICHTEXT:
-                    $newTag .= sprintf("%s", $this->prepareRichTextBody($body));
+                    $newTag .= sprintf("%s", self::prepareRichTextBody($body));
                     break;
                 default:
                     $newTag .= $body;
@@ -113,7 +113,7 @@ class ContentHelper extends AbstractHelper
         return $newTag;
     }
 
-    public function chooseMacroBody(string $macroName = ''): string
+    public static function chooseMacroBody(string $macroName = ''): string
     {
         $choose = '';
         switch (true) {
@@ -136,12 +136,12 @@ class ContentHelper extends AbstractHelper
      *
      * @return string
      */
-    public function prepareMacro(string $macroName, ?Map $parameters = null, string $body = ''): string
+    public static function prepareMacro(string $macroName, ?Map $parameters = null, string $body = ''): string
     {
         $newTag = '';
         $newTag .= sprintf(self::TAG_MACRO_START, $macroName, self::TAG_MACRO_VERSION);
-        $newTag .= $this->prepareMacroParameter($parameters);
-        $newTag .= $this->prepareMacroBody($macroName, $body);
+        $newTag .= self::prepareMacroParameter($parameters);
+        $newTag .= self::prepareMacroBody($macroName, $body);
         $newTag .= self::TAG_MACRO_END;
 
         return $newTag;

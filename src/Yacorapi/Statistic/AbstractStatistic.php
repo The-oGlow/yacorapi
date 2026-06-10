@@ -60,6 +60,7 @@ abstract class AbstractStatistic implements IStatistic
     /**
      * @return Set<string>
      */
+    #[\Override]
     public function keys(): Set
     {
         return $this->items->keys();
@@ -70,6 +71,7 @@ abstract class AbstractStatistic implements IStatistic
      *
      * @return bool
      */
+    #[\Override]
     public function keyExists(string $key): bool
     {
         return !empty($key) && $this->items->hasKey($key);
@@ -80,6 +82,7 @@ abstract class AbstractStatistic implements IStatistic
      *
      * @return null|IStatistic
      */
+    #[\Override]
     public function getItem(string $key): ?IStatistic
     {
         $item = null;
@@ -94,6 +97,7 @@ abstract class AbstractStatistic implements IStatistic
      * @param string     $key
      * @param IStatistic $item
      */
+    #[\Override]
     public function addItem(string $key, IStatistic $item): void
     {
         $this->items[$key] = $item;
@@ -102,6 +106,7 @@ abstract class AbstractStatistic implements IStatistic
     /**
      * @return string
      */
+    #[\Override]
     public function getStatisticName(): string
     {
         return $this->statisticName;
@@ -110,6 +115,7 @@ abstract class AbstractStatistic implements IStatistic
     /**
      * @return string
      */
+    #[\Override]
     public function getExportName(): string
     {
         return $this->exportName;
@@ -124,6 +130,7 @@ abstract class AbstractStatistic implements IStatistic
      *
      * @see IStatistic::ITEM_SEP
      */
+    #[\Override]
     public function flatten(bool $displayKeys = true): string
     {
         $flatData = $this->implode_recursive(static::ITEM_SEP, $this->items, false, $displayKeys);
@@ -139,6 +146,7 @@ abstract class AbstractStatistic implements IStatistic
      *
      * @return array<string>
      */
+    #[\Override]
     public function header(): array
     {
         $header   = [];
@@ -159,38 +167,40 @@ abstract class AbstractStatistic implements IStatistic
         return $header;
     }
 
-    //    /**
-    //     * @return string
-    //     */
-    //    public function flattenHeader(): string
-    //    {
-    //        //        $header = $this->getExportName() . static::C_ITEM_SEP;
-    //        //        if (!(empty($this->items))) {
-    //        //            $firstItem = $this->items[array_key_first($this->items)];
-    //        //            if ($firstItem instanceof IStatistic) {
-    //        //                $header .= $firstItem->flattenHeader() . static::C_ITEM_SEP;
-    //        //            } else {
-    //        //                $header .= $this->customerHeader() . static::C_ITEM_SEP;
-    //        //            }
-    //        //        }
-    //        $flatten = '';
-    //        $header = $this->header();
-    //        if (!empty($header)) {
-    //            $flatten = $this->implode_recursive(static::C_ITEM_SEP, $header);
-    //            //            $header = str_replace(str_repeat(static::C_ITEM_SEP, 2), static::C_ITEM_SEP, $header);
-    //            //            if (str_ends_with($header, static::C_ITEM_SEP)) {
-    //            //                $header = substr($header, 0, strlen($header) - 1);
-    //            //            }
-    //        }
-    //
-    //        return $flatten;
-    //    }
+        /**
+         * @return string
+         */
+    #[\Override]
+    public function flattenHeader(): string
+        {
+            //        $header = $this->getExportName() . static::C_ITEM_SEP;
+            //        if (!(empty($this->items))) {
+            //            $firstItem = $this->items[array_key_first($this->items)];
+            //            if ($firstItem instanceof IStatistic) {
+            //                $header .= $firstItem->flattenHeader() . static::C_ITEM_SEP;
+            //            } else {
+            //                $header .= $this->customerHeader() . static::C_ITEM_SEP;
+            //            }
+            //        }
+            $flatten = '';
+            $header = $this->header();
+            if (!empty($header)) {
+                $flatten = $this->implode_recursive(static::C_ITEM_SEP, $header);
+                //            $header = str_replace(str_repeat(static::C_ITEM_SEP, 2), static::C_ITEM_SEP, $header);
+                //            if (str_ends_with($header, static::C_ITEM_SEP)) {
+                //                $header = substr($header, 0, strlen($header) - 1);
+                //            }
+            }
+    
+            return $flatten;
+        }
 
     /**
      * @return array<mixed,mixed>
      *
      * @SuppressWarnings("PHPMD.CamelCaseMethodName")
      */
+    #[\Override]
     protected function __toStringValues(): array
     {
         return [

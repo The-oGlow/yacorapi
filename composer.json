@@ -24,26 +24,6 @@
     },
     "minimum-stability": "stable",
     "prefer-stable": true,
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../ezkoding",
-            "options": {
-                "versions": {
-                    "ollily/ezkoding": "8.4"
-                }
-            }
-        },
-        {
-            "type": "path",
-            "url": "../ezlogging",
-            "options": {
-                "versions": {
-                    "ollily/ezlogging": "8.4"
-                }
-            }
-        }
-    ],
     "require": {
         "php": ">=8.4.1",
         "ext-curl": "*",
@@ -65,13 +45,9 @@
         "psalm/plugin-phpunit": "^0.19",
         "friendsofphp/php-cs-fixer": "^3.0",
         "squizlabs/php_codesniffer": "^4.0",
-        "phpmd/phpmd": "^2.0",
-        "rogervila/php-sonarqube-scanner": "^1.0"
+        "phpmd/phpmd": "^2.0"
     },
     "config": {
-        "platform": {
-            "php": "8.4.3"
-        },
         "optimize-autoloader": false,
         "sort-packages": true,
         "allow-plugins": {

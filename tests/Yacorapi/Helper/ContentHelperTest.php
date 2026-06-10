@@ -34,6 +34,7 @@ class ContentHelperTest extends ConstantCheckTestCase
     /**
      * @return ContentHelper
      */
+    #[\Override]
     protected static function prepareO2t(): ContentHelper
     {
         return new ContentHelper();
@@ -42,11 +43,13 @@ class ContentHelperTest extends ConstantCheckTestCase
     /**
      * @return ContentHelper
      */
+    #[\Override]
     protected function getCasto2t(): ContentHelper
     {
         return $this->o2t;
     }
 
+    #[\Override]
     public static function setUpBeforeClass(bool $withConstCrossCheck = self::WITH_CONST_CROSSCHECK, int $expectedConstsCount = self::EXPECTED_CONSTANT_COUNT): void
     {
         parent::setUpBeforeClass($withConstCrossCheck, $expectedConstsCount);
@@ -82,7 +85,7 @@ class ContentHelperTest extends ConstantCheckTestCase
      */
     public function testPrepareMacroParameter(string $expected, ?Map $parameters): void
     {
-        $actual = $this->getCasto2t()->prepareMacroParameter($parameters);
+        $actual = $this->getCasto2t()::prepareMacroParameter($parameters);
 
         self::assertEquals($expected, $actual);
     }
@@ -95,7 +98,7 @@ class ContentHelperTest extends ConstantCheckTestCase
      */
     public function testPreparePlainBody(string $expected, string $body): void
     {
-        $actual = $this->getCasto2t()->preparePlainBody($body);
+        $actual = $this->getCasto2t()::preparePlainBody($body);
 
         self::assertEquals($expected, $actual);
     }
@@ -108,7 +111,7 @@ class ContentHelperTest extends ConstantCheckTestCase
      */
     public function testPrepareRichTextBody(string $expected, string $body): void
     {
-        $actual = $this->getCasto2t()->prepareRichTextBody($body);
+        $actual = $this->getCasto2t()::prepareRichTextBody($body);
 
         self::assertEquals($expected, $actual);
     }
@@ -122,7 +125,7 @@ class ContentHelperTest extends ConstantCheckTestCase
      */
     public function testPrepareMacroBody(string $expected, string $macroName, string $body): void
     {
-        $actual = $this->getCasto2t()->prepareMacroBody($macroName, $body);
+        $actual = $this->getCasto2t()::prepareMacroBody($macroName, $body);
 
         self::assertEquals($expected, $actual);
     }
@@ -135,7 +138,7 @@ class ContentHelperTest extends ConstantCheckTestCase
      */
     public function testChooseMacroBody(string $expected, string $macroName): void
     {
-        $actual = $this->getCasto2t()->chooseMacroBody($macroName);
+        $actual = $this->getCasto2t()::chooseMacroBody($macroName);
 
         self::assertEquals($expected, $actual);
     }
@@ -150,7 +153,7 @@ class ContentHelperTest extends ConstantCheckTestCase
      */
     public function testPrepareMacro(string $expected, string $macroName, ?Map $parameters, string $body): void
     {
-        $actual = $this->getCasto2t()->prepareMacro($macroName, $parameters, $body);
+        $actual = $this->getCasto2t()::prepareMacro($macroName, $parameters, $body);
 
         self::assertEquals($expected, $actual);
     }

@@ -4,7 +4,7 @@
     "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
     "This file is @generated automatically"
   ],
-  "content-hash": "a4df1583646c5d368b02f95dff6a8b9b",
+  "content-hash": "745dd39cc7078dff7353a6ad6fc3ebd9",
   "packages": [
     {
       "name": "composer/ca-bundle",
@@ -629,16 +629,16 @@
     },
     {
       "name": "justinrainbow/json-schema",
-      "version": "6.8.2",
+      "version": "6.9.0",
       "source": {
         "type": "git",
         "url": "https://github.com/jsonrainbow/json-schema.git",
-        "reference": "2c89ebb95ca9cedc9347f780333f7b25792dcb76"
+        "reference": "bd1bda2ebfc8bff418565941771ea8f03c557886"
       },
       "dist": {
         "type": "zip",
-        "url": "https://api.github.com/repos/jsonrainbow/json-schema/zipball/2c89ebb95ca9cedc9347f780333f7b25792dcb76",
-        "reference": "2c89ebb95ca9cedc9347f780333f7b25792dcb76",
+        "url": "https://api.github.com/repos/jsonrainbow/json-schema/zipball/bd1bda2ebfc8bff418565941771ea8f03c557886",
+        "reference": "bd1bda2ebfc8bff418565941771ea8f03c557886",
         "shasum": ""
       },
       "require": {
@@ -648,7 +648,7 @@
       },
       "require-dev": {
         "friendsofphp/php-cs-fixer": "3.3.0",
-        "json-schema/json-schema-test-suite": "dev-main",
+        "json-schema/json-schema-test-suite": "^23.2",
         "marc-mabe/php-enum-phpstan": "^2.0",
         "phpspec/prophecy": "^1.19",
         "phpstan/phpstan": "^1.12",
@@ -698,9 +698,9 @@
       ],
       "support": {
         "issues": "https://github.com/jsonrainbow/json-schema/issues",
-        "source": "https://github.com/jsonrainbow/json-schema/tree/6.8.2"
+        "source": "https://github.com/jsonrainbow/json-schema/tree/6.9.0"
       },
-      "time": "2026-05-05T05:39:01+00:00"
+      "time": "2026-06-05T14:05:24+00:00"
     },
     {
       "name": "marc-mabe/php-enum",
@@ -776,115 +776,18 @@
       "time": "2025-09-14T11:18:39+00:00"
     },
     {
-      "name": "monolog/monolog",
-      "version": "3.10.0",
+      "name": "ollily/ezkoding",
+      "version": "8.4.001",
       "source": {
         "type": "git",
-        "url": "https://github.com/Seldaek/monolog.git",
-        "reference": "b321dd6749f0bf7189444158a3ce785cc16d69b0"
+        "url": "https://github.com/The-oGlow/ezkoding.git",
+        "reference": "7a2e1fca5d1e48ec15618cb6c7f7d9e20c1d44c4"
       },
       "dist": {
         "type": "zip",
-        "url": "https://api.github.com/repos/Seldaek/monolog/zipball/b321dd6749f0bf7189444158a3ce785cc16d69b0",
-        "reference": "b321dd6749f0bf7189444158a3ce785cc16d69b0",
+        "url": "https://api.github.com/repos/The-oGlow/ezkoding/zipball/7a2e1fca5d1e48ec15618cb6c7f7d9e20c1d44c4",
+        "reference": "7a2e1fca5d1e48ec15618cb6c7f7d9e20c1d44c4",
         "shasum": ""
-      },
-      "require": {
-        "php": ">=8.1",
-        "psr/log": "^2.0 || ^3.0"
-      },
-      "provide": {
-        "psr/log-implementation": "3.0.0"
-      },
-      "require-dev": {
-        "aws/aws-sdk-php": "^3.0",
-        "doctrine/couchdb": "~1.0@dev",
-        "elasticsearch/elasticsearch": "^7 || ^8",
-        "ext-json": "*",
-        "graylog2/gelf-php": "^1.4.2 || ^2.0",
-        "guzzlehttp/guzzle": "^7.4.5",
-        "guzzlehttp/psr7": "^2.2",
-        "mongodb/mongodb": "^1.8 || ^2.0",
-        "php-amqplib/php-amqplib": "~2.4 || ^3",
-        "php-console/php-console": "^3.1.8",
-        "phpstan/phpstan": "^2",
-        "phpstan/phpstan-deprecation-rules": "^2",
-        "phpstan/phpstan-strict-rules": "^2",
-        "phpunit/phpunit": "^10.5.17 || ^11.0.7",
-        "predis/predis": "^1.1 || ^2",
-        "rollbar/rollbar": "^4.0",
-        "ruflin/elastica": "^7 || ^8",
-        "symfony/mailer": "^5.4 || ^6",
-        "symfony/mime": "^5.4 || ^6"
-      },
-      "suggest": {
-        "aws/aws-sdk-php": "Allow sending log messages to AWS services like DynamoDB",
-        "doctrine/couchdb": "Allow sending log messages to a CouchDB server",
-        "elasticsearch/elasticsearch": "Allow sending log messages to an Elasticsearch server via official client",
-        "ext-amqp": "Allow sending log messages to an AMQP server (1.0+ required)",
-        "ext-curl": "Required to send log messages using the IFTTTHandler, the LogglyHandler, the SendGridHandler, the SlackWebhookHandler or the TelegramBotHandler",
-        "ext-mbstring": "Allow to work properly with unicode symbols",
-        "ext-mongodb": "Allow sending log messages to a MongoDB server (via driver)",
-        "ext-openssl": "Required to send log messages using SSL",
-        "ext-sockets": "Allow sending log messages to a Syslog server (via UDP driver)",
-        "graylog2/gelf-php": "Allow sending log messages to a GrayLog2 server",
-        "mongodb/mongodb": "Allow sending log messages to a MongoDB server (via library)",
-        "php-amqplib/php-amqplib": "Allow sending log messages to an AMQP server using php-amqplib",
-        "rollbar/rollbar": "Allow sending log messages to Rollbar",
-        "ruflin/elastica": "Allow sending log messages to an Elastic Search server"
-      },
-      "type": "library",
-      "extra": {
-        "branch-alias": {
-          "dev-main": "3.x-dev"
-        }
-      },
-      "autoload": {
-        "psr-4": {
-          "Monolog\\": "src/Monolog"
-        }
-      },
-      "notification-url": "https://packagist.org/downloads/",
-      "license": [
-        "MIT"
-      ],
-      "authors": [
-        {
-          "name": "Jordi Boggiano",
-          "email": "j.boggiano@seld.be",
-          "homepage": "https://seld.be"
-        }
-      ],
-      "description": "Sends your logs to files, sockets, inboxes, databases and various web services",
-      "homepage": "https://github.com/Seldaek/monolog",
-      "keywords": [
-        "log",
-        "logging",
-        "psr-3"
-      ],
-      "support": {
-        "issues": "https://github.com/Seldaek/monolog/issues",
-        "source": "https://github.com/Seldaek/monolog/tree/3.10.0"
-      },
-      "funding": [
-        {
-          "url": "https://github.com/Seldaek",
-          "type": "github"
-        },
-        {
-          "url": "https://tidelift.com/funding/github/packagist/monolog/monolog",
-          "type": "tidelift"
-        }
-      ],
-      "time": "2026-01-02T08:56:05+00:00"
-    },
-    {
-      "name": "ollily/ezkoding",
-      "version": "8.4",
-      "dist": {
-        "type": "path",
-        "url": "../ezkoding",
-        "reference": "5cbfc6a1344dc165382d0485c03dd8c7b1f03432"
       },
       "require": {
         "composer/composer": "^2.0",
@@ -911,88 +814,11 @@
       "autoload": {
         "psr-4": {
           "Monolog\\": "src/Monolog",
-          "ollily\\Tools\\": "src/Tools",
-          "PHPUnit\\": "src/PHPUnit"
+          "PHPUnit\\": "src/PHPUnit",
+          "ollily\\Tools\\": "src/Tools"
         }
       },
-      "autoload-dev": {
-        "psr-4": {
-          "Monolog\\": "tests/Monolog",
-          "ollily\\Tools\\": "tests/Tools",
-          "PHPUnit\\": "tests/PHPUnit"
-        }
-      },
-      "scripts": {
-        "c-all": [
-          "composer c-check",
-          "composer c-test",
-          "composer c-format"
-        ],
-        "c-check": [
-          "composer c-phpstan",
-          "composer c-psalm",
-          "composer c-phpmd"
-        ],
-        "c-da": [
-          "@composer dump-autoload"
-        ],
-        "c-dry-fix": [
-          "@php -d xdebug.mode=off vendor/bin/php-cs-fixer check --allow-unsupported-php-version=yes --allow-risky=yes --format txt"
-        ],
-        "c-fix": [
-          "@php -d xdebug.mode=off vendor/bin/php-cs-fixer fix --allow-unsupported-php-version=yes --allow-risky=yes"
-        ],
-        "c-format": [
-          "composer c-fix",
-          "composer c-phpcbf",
-          "composer c-phpcs"
-        ],
-        "c-package": [
-          "@composer archive --format=zip --dir=target/staging"
-        ],
-        "c-phpcs": [
-          "bash -c 'echo PHP Code Sniffer checking ...'",
-          "bash -c 'mkdir --p target/analysis/phpcs'",
-          "bash -c 'rm -f target/analysis/phpcs/phpcsniffer-report.txt'",
-          "@php -d xdebug.mode=off vendor/bin/phpcs --colors || true",
-          "bash -c 'if [ -s target/analysis/phpcs/phpcsniffer-report.txt ]; then cat target/analysis/phpcs/phpcsniffer-report.txt; exit 0; else exit 0; fi'"
-        ],
-        "c-phpcbf": [
-          "bash -c 'echo PHP Code Sniffer FIXING ...'",
-          "bash -c 'mkdir --p target/analysis/phpcs'",
-          "bash -c 'rm -f target/analysis/phpcs/phpcsniffer-report.txt'",
-          "@php -d xdebug.mode=off vendor/bin/phpcbf || true",
-          "bash -c 'if [ -s target/analysis/phpcs/phpcsniffer-report.txt ]; then cat target/analysis/phpcs/phpcsniffer-report.txt; exit 0; else exit 0; fi'"
-        ],
-        "c-phpdoc": [
-          "phpDocumentor run"
-        ],
-        "c-phpmd": [
-          "bash -c 'echo PHP Mess Dectector running ...'",
-          "bash -c 'rm -f target/analysis/phpmd/phpmd-report.txt'",
-          "@php -d xdebug.mode=off vendor/bin/phpmd src,tests text .phpmd.xml.dist --report-file=target/analysis/phpmd/phpmd-report.txt --error-file=target/analysis/phpmd/zzz-phpmd-error.txt --color --cache --ignore-errors-on-exit --ignore-violations-on-exit",
-          "bash -c 'if [ -s target/analysis/phpmd/phpmd-report.txt ]; then cat target/analysis/phpmd/phpmd-report.txt; exit 1; else exit 0; fi'"
-        ],
-        "c-phpstan": [
-          "@php -d xdebug.mode=off vendor/bin/phpstan analyse"
-        ],
-        "c-psalm": [
-          "@php -d xdebug.mode=off vendor/bin/psalm --report=target/analysis/psalm/psalm-report.txt"
-        ],
-        "c-dry-psalter": [
-          "@php -d xdebug.mode=off vendor/bin/psalter --dry-run --issues=MissingReturnType,MissingClosureReturnType,MissingParamType,MissingPropertyType,PossiblyUndefinedVariable,PossiblyUndefinedGlobalVariable,ParamNameMismatch"
-        ],
-        "c-psalter": [
-          "@php -d xdebug.mode=off vendor/bin/psalter --issues=MissingReturnType,MissingClosureReturnType,MissingParamType,MissingPropertyType,PossiblyUndefinedVariable,PossiblyUndefinedGlobalVariable,ParamNameMismatch"
-        ],
-        "c-sonar": [
-          "composer c-test",
-          "@php -d xdebug.mode=off -Dproject.settings=sonar-project.properties vendor/bin/sonar-scanner"
-        ],
-        "c-test": [
-          "@php -d xdebug.mode=coverage vendor/bin/phpunit -c phpunit.xml.cov"
-        ]
-      },
+      "notification-url": "https://packagist.org/downloads/",
       "license": [
         "Apache-2.0"
       ],
@@ -1002,6 +828,12 @@
           "email": "426229+ollily@users.noreply.github.com",
           "homepage": "https://github.com/ollily",
           "role": "Project Owner, Developer"
+        },
+        {
+          "name": "oglowa",
+          "email": "36665428+oglowa@users.noreply.github.com",
+          "homepage": "https://github.com/The-oGlow",
+          "role": "Developer"
         }
       ],
       "description": "Simplify the usage of - Testing with PHPUnit - Reflection with PHP - Developer shortkeys for composer",
@@ -1014,29 +846,34 @@
         "testcase"
       ],
       "support": {
-        "issues": "https://github.com/ollily/ezkoding/issues"
+        "issues": "https://github.com/ollily/ezkoding/issues",
+        "source": "https://github.com/The-oGlow/ezkoding/tree/8.4.001"
       },
-      "transport-options": {
-        "relative": true
-      }
+      "time": "2026-06-04T13:31:53+00:00"
     },
     {
       "name": "ollily/ezlogging",
-      "version": "8.4",
+      "version": "8.4.000",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/The-oGlow/ezlogging.git",
+        "reference": "94232f8ee2a76d628a56d55ef0a6f1e2be6b9a44"
+      },
       "dist": {
-        "type": "path",
-        "url": "../ezlogging",
-        "reference": "df943ac603828ccee6a190ccd806d25b514d48a4"
+        "type": "zip",
+        "url": "https://api.github.com/repos/The-oGlow/ezlogging/zipball/94232f8ee2a76d628a56d55ef0a6f1e2be6b9a44",
+        "reference": "94232f8ee2a76d628a56d55ef0a6f1e2be6b9a44",
+        "shasum": ""
       },
       "require": {
-        "monolog/monolog": "^3.0",
+        "monolog/monolog": "^2.10",
         "ollily/ezkoding": "^8.4",
         "php": ">=8.4.1",
         "php-ds/php-ds": "^1.0",
-        "psr/log": "^2.0||^3.0"
+        "psr/log": "^1.0||^2.0||^3.0"
       },
       "provide": {
-        "psr/log-implementation": "^2.0||^3.0"
+        "psr/log-implementation": "^1.0||^2.0||^3.0"
       },
       "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.0",
@@ -1055,82 +892,7 @@
           "Monolog\\": "src/Monolog"
         }
       },
-      "autoload-dev": {
-        "psr-4": {
-          "Monolog\\": "tests/Monolog"
-        }
-      },
-      "scripts": {
-        "c-all": [
-          "composer c-check",
-          "composer c-test",
-          "composer c-format"
-        ],
-        "c-check": [
-          "composer c-phpstan",
-          "composer c-psalm",
-          "composer c-phpmd"
-        ],
-        "c-da": [
-          "@composer dump-autoload"
-        ],
-        "c-dry-fix": [
-          "@php -d xdebug.mode=off vendor/bin/php-cs-fixer check --allow-unsupported-php-version=yes --allow-risky=yes --format txt"
-        ],
-        "c-fix": [
-          "@php -d xdebug.mode=off vendor/bin/php-cs-fixer fix --allow-unsupported-php-version=yes --allow-risky=yes"
-        ],
-        "c-format": [
-          "composer c-fix",
-          "composer c-phpcbf",
-          "composer c-phpcs"
-        ],
-        "c-package": [
-          "@composer archive --format=zip --dir=target/staging"
-        ],
-        "c-phpcs": [
-          "bash -c 'echo PHP Code Sniffer checking ...'",
-          "bash -c 'mkdir --p target/analysis/phpcs'",
-          "bash -c 'rm -f target/analysis/phpcs/phpcsniffer-report.txt'",
-          "@php -d xdebug.mode=off vendor/bin/phpcs --colors || true",
-          "bash -c 'if [ -s target/analysis/phpcs/phpcsniffer-report.txt ]; then cat target/analysis/phpcs/phpcsniffer-report.txt; exit 0; else exit 0; fi'"
-        ],
-        "c-phpcbf": [
-          "bash -c 'echo PHP Code Sniffer FIXING ...'",
-          "bash -c 'mkdir --p target/analysis/phpcs'",
-          "bash -c 'rm -f target/analysis/phpcs/phpcsniffer-report.txt'",
-          "@php -d xdebug.mode=off vendor/bin/phpcbf || true",
-          "bash -c 'if [ -s target/analysis/phpcs/phpcsniffer-report.txt ]; then cat target/analysis/phpcs/phpcsniffer-report.txt; exit 0; else exit 0; fi'"
-        ],
-        "c-phpdoc": [
-          "phpDocumentor run"
-        ],
-        "c-phpmd": [
-          "bash -c 'echo PHP Mess Dectector running ...'",
-          "bash -c 'rm -f target/analysis/phpmd/phpmd-report.txt'",
-          "@php -d xdebug.mode=off vendor/bin/phpmd src,tests text .phpmd.xml.dist --report-file=target/analysis/phpmd/phpmd-report.txt --error-file=target/analysis/phpmd/zzz-phpmd-error.txt --color --cache --ignore-errors-on-exit --ignore-violations-on-exit",
-          "bash -c 'if [ -s target/analysis/phpmd/phpmd-report.txt ]; then cat target/analysis/phpmd/phpmd-report.txt; exit 1; else exit 0; fi'"
-        ],
-        "c-phpstan": [
-          "@php -d xdebug.mode=off vendor/bin/phpstan analyse"
-        ],
-        "c-psalm": [
-          "@php -d xdebug.mode=off vendor/bin/psalm --report=target/analysis/psalm/psalm-report.txt"
-        ],
-        "c-dry-psalter": [
-          "@php -d xdebug.mode=off vendor/bin/psalter --dry-run --issues=MissingReturnType,MissingClosureReturnType,MissingParamType,MissingPropertyType,PossiblyUndefinedVariable,PossiblyUndefinedGlobalVariable,ParamNameMismatch"
-        ],
-        "c-psalter": [
-          "@php -d xdebug.mode=off vendor/bin/psalter --issues=MissingReturnType,MissingClosureReturnType,MissingParamType,MissingPropertyType,PossiblyUndefinedVariable,PossiblyUndefinedGlobalVariable,ParamNameMismatch"
-        ],
-        "c-sonar": [
-          "composer c-test",
-          "@php -d xdebug.mode=off -Dproject.settings=sonar-project.properties vendor/bin/sonar-scanner"
-        ],
-        "c-test": [
-          "@php -d xdebug.mode=coverage vendor/bin/phpunit -c phpunit.xml.cov"
-        ]
-      },
+      "notification-url": "https://packagist.org/downloads/",
       "license": [
         "Apache-2.0"
       ],
@@ -1140,6 +902,12 @@
           "email": "426229+ollily@users.noreply.github.com",
           "homepage": "https://github.com/ollily",
           "role": "Project Owner, Developer"
+        },
+        {
+          "name": "oglowa",
+          "email": "36665428+oglowa@users.noreply.github.com",
+          "homepage": "https://github.com/The-oGlow",
+          "role": "Developer"
         }
       ],
       "description": "Simplify the usage of - Logging with Monolog",
@@ -1151,11 +919,10 @@
         "php"
       ],
       "support": {
-        "issues": "https://github.com/ollily/ezlogging/issues"
+        "issues": "https://github.com/ollily/ezlogging/issues",
+        "source": "https://github.com/The-oGlow/ezlogging/tree/8.4.000"
       },
-      "transport-options": {
-        "relative": true
-      }
+      "time": "2026-06-04T13:39:45+00:00"
     },
     {
       "name": "php-ds/php-ds",
@@ -2112,16 +1879,16 @@
     },
     {
       "name": "symfony/polyfill-mbstring",
-      "version": "v1.38.1",
+      "version": "v1.38.2",
       "source": {
         "type": "git",
         "url": "https://github.com/symfony/polyfill-mbstring.git",
-        "reference": "14c5439eec4ccff081ac14eca2dc57feb2a66d92"
+        "reference": "d3d318bad5e7a1bfbd026009c8bfb8d8f99ae6b6"
       },
       "dist": {
         "type": "zip",
-        "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/14c5439eec4ccff081ac14eca2dc57feb2a66d92",
-        "reference": "14c5439eec4ccff081ac14eca2dc57feb2a66d92",
+        "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/d3d318bad5e7a1bfbd026009c8bfb8d8f99ae6b6",
+        "reference": "d3d318bad5e7a1bfbd026009c8bfb8d8f99ae6b6",
         "shasum": ""
       },
       "require": {
@@ -2173,7 +1940,7 @@
         "shim"
       ],
       "support": {
-        "source": "https://github.com/symfony/polyfill-mbstring/tree/v1.38.1"
+        "source": "https://github.com/symfony/polyfill-mbstring/tree/v1.38.2"
       },
       "funding": [
         {
@@ -2193,7 +1960,7 @@
           "type": "tidelift"
         }
       ],
-      "time": "2026-05-26T12:51:13+00:00"
+      "time": "2026-05-27T06:59:30+00:00"
     },
     {
       "name": "symfony/polyfill-php73",
@@ -3645,140 +3412,6 @@
       "time": "2022-12-23T10:58:28+00:00"
     },
     {
-      "name": "crysalead/dir",
-      "version": "2.0.4",
-      "source": {
-        "type": "git",
-        "url": "https://github.com/crysalead/dir.git",
-        "reference": "0390ac74a8f1634b1ec1adffdd118125f1271976"
-      },
-      "dist": {
-        "type": "zip",
-        "url": "https://api.github.com/repos/crysalead/dir/zipball/0390ac74a8f1634b1ec1adffdd118125f1271976",
-        "reference": "0390ac74a8f1634b1ec1adffdd118125f1271976",
-        "shasum": ""
-      },
-      "require": {
-        "php": ">=5.4"
-      },
-      "require-dev": {
-        "kahlan/kahlan": "~5.0"
-      },
-      "type": "library",
-      "autoload": {
-        "psr-4": {
-          "Lead\\Dir\\": "src/"
-        }
-      },
-      "notification-url": "https://packagist.org/downloads/",
-      "license": [
-        "MIT"
-      ],
-      "description": "Recursive directory scanner to locate directories and/or files in a file system",
-      "keywords": [
-        "Directory Scanner",
-        "directory",
-        "file",
-        "file system"
-      ],
-      "support": {
-        "issues": "https://github.com/crysalead/dir/issues",
-        "source": "https://github.com/crysalead/dir/tree/2.0.4"
-      },
-      "time": "2022-05-17T17:12:17+00:00"
-    },
-    {
-      "name": "danieljharvey/file-wrapper",
-      "version": "2.1.2",
-      "source": {
-        "type": "git",
-        "url": "https://github.com/danieljharvey/file-wrapper.git",
-        "reference": "8e3cc2455d180590bd59a4a2d78ecd97edeed1e8"
-      },
-      "dist": {
-        "type": "zip",
-        "url": "https://api.github.com/repos/danieljharvey/file-wrapper/zipball/8e3cc2455d180590bd59a4a2d78ecd97edeed1e8",
-        "reference": "8e3cc2455d180590bd59a4a2d78ecd97edeed1e8",
-        "shasum": ""
-      },
-      "require": {
-        "php": ">=5.3.0"
-      },
-      "require-dev": {
-        "phpunit/phpunit": "4.0.*"
-      },
-      "type": "library",
-      "autoload": {
-        "psr-4": {
-          "DanielJHarvey\\FileWrapper\\": "src/"
-        }
-      },
-      "notification-url": "https://packagist.org/downloads/",
-      "license": [
-        "MIT"
-      ],
-      "authors": [
-        {
-          "name": "Daniel Harvey",
-          "email": "danieljamesharvey@gmail.com"
-        }
-      ],
-      "description": "A simple file system function wrapper that can be easily mocked or stubbed for testing",
-      "keywords": [
-        "file",
-        "testing",
-        "wrapper"
-      ],
-      "support": {
-        "issues": "https://github.com/danieljharvey/file-wrapper/issues",
-        "source": "https://github.com/danieljharvey/file-wrapper/tree/master"
-      },
-      "time": "2017-09-11T10:00:31+00:00"
-    },
-    {
-      "name": "danieljharvey/php-git-branch",
-      "version": "1.1.1",
-      "source": {
-        "type": "git",
-        "url": "https://github.com/danieljharvey/php-git-branch.git",
-        "reference": "72aeb3367a0293d893828f264cd684aa79dcee96"
-      },
-      "dist": {
-        "type": "zip",
-        "url": "https://api.github.com/repos/danieljharvey/php-git-branch/zipball/72aeb3367a0293d893828f264cd684aa79dcee96",
-        "reference": "72aeb3367a0293d893828f264cd684aa79dcee96",
-        "shasum": ""
-      },
-      "require": {
-        "danieljharvey/file-wrapper": ">=2.1"
-      },
-      "require-dev": {
-        "phpunit/phpunit": "^6.2"
-      },
-      "type": "library",
-      "autoload": {
-        "psr-4": {
-          "DanielJHarvey\\PHPGitBranch\\": "src/"
-        }
-      },
-      "notification-url": "https://packagist.org/downloads/",
-      "license": [
-        "MIT"
-      ],
-      "authors": [
-        {
-          "name": "Daniel Harvey",
-          "email": "danieljamesharvey@gmail.com"
-        }
-      ],
-      "description": "Library for working out which git branch you are on in PHP",
-      "support": {
-        "issues": "https://github.com/danieljharvey/php-git-branch/issues",
-        "source": "https://github.com/danieljharvey/php-git-branch/tree/master"
-      },
-      "time": "2017-08-08T10:38:23+00:00"
-    },
-    {
       "name": "danog/advanced-json-rpc",
       "version": "v3.2.3",
       "source": {
@@ -4194,16 +3827,16 @@
     },
     {
       "name": "friendsofphp/php-cs-fixer",
-      "version": "v3.95.4",
+      "version": "v3.95.5",
       "source": {
         "type": "git",
         "url": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer.git",
-        "reference": "3f8f68856837a77e1f1d870354eca3c8747f2f72"
+        "reference": "7f86d8763063f5d2e2e2d0e1e45bb2f15895361d"
       },
       "dist": {
         "type": "zip",
-        "url": "https://api.github.com/repos/PHP-CS-Fixer/PHP-CS-Fixer/zipball/3f8f68856837a77e1f1d870354eca3c8747f2f72",
-        "reference": "3f8f68856837a77e1f1d870354eca3c8747f2f72",
+        "url": "https://api.github.com/repos/PHP-CS-Fixer/PHP-CS-Fixer/zipball/7f86d8763063f5d2e2e2d0e1e45bb2f15895361d",
+        "reference": "7f86d8763063f5d2e2e2d0e1e45bb2f15895361d",
         "shasum": ""
       },
       "require": {
@@ -4221,7 +3854,7 @@
         "react/event-loop": "^1.5",
         "react/socket": "^1.16",
         "react/stream": "^1.4",
-        "sebastian/diff": "^4.0.6 || ^5.1.1 || ^6.0.2 || ^7.0 || ^8.0",
+        "sebastian/diff": "^4.0.6 || ^5.1.1 || ^6.0.2 || ^7.0 || ^8.0 || ^9.0",
         "symfony/console": "^5.4.47 || ^6.4.24 || ^7.0 || ^8.0",
         "symfony/event-dispatcher": "^5.4.45 || ^6.4.24 || ^7.0 || ^8.0",
         "symfony/filesystem": "^5.4.45 || ^6.4.24 || ^7.0 || ^8.0",
@@ -4287,7 +3920,7 @@
       ],
       "support": {
         "issues": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/issues",
-        "source": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/tree/v3.95.4"
+        "source": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/tree/v3.95.5"
       },
       "funding": [
         {
@@ -4295,7 +3928,7 @@
           "type": "github"
         }
       ],
-      "time": "2026-06-03T18:02:44+00:00"
+      "time": "2026-06-09T14:55:16+00:00"
     },
     {
       "name": "kelunik/certificate",
@@ -5310,16 +4943,16 @@
     },
     {
       "name": "phpunit/php-code-coverage",
-      "version": "14.2.0",
+      "version": "14.2.2",
       "source": {
         "type": "git",
         "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-        "reference": "ab8a36c9bd98c51f6cfe665a732bfadf72e18e8d"
+        "reference": "10d7da3628a99289cdf4c662dd7f0d73f1baec83"
       },
       "dist": {
         "type": "zip",
-        "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/ab8a36c9bd98c51f6cfe665a732bfadf72e18e8d",
-        "reference": "ab8a36c9bd98c51f6cfe665a732bfadf72e18e8d",
+        "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/10d7da3628a99289cdf4c662dd7f0d73f1baec83",
+        "reference": "10d7da3628a99289cdf4c662dd7f0d73f1baec83",
         "shasum": ""
       },
       "require": {
@@ -5338,7 +4971,7 @@
         "theseer/tokenizer": "^2.0.1"
       },
       "require-dev": {
-        "phpunit/phpunit": "^13.1.14"
+        "phpunit/phpunit": "^13.2.0"
       },
       "suggest": {
         "ext-pcov": "PHP extension that provides line coverage",
@@ -5376,7 +5009,7 @@
       "support": {
         "issues": "https://github.com/sebastianbergmann/php-code-coverage/issues",
         "security": "https://github.com/sebastianbergmann/php-code-coverage/security/policy",
-        "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/14.2.0"
+        "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/14.2.2"
       },
       "funding": [
         {
@@ -5396,7 +5029,7 @@
           "type": "tidelift"
         }
       ],
-      "time": "2026-06-05T02:59:08+00:00"
+      "time": "2026-06-08T11:50:38+00:00"
     },
     {
       "name": "phpunit/php-file-iterator",
@@ -6522,61 +6155,6 @@
         "source": "https://github.com/revoltphp/event-loop/tree/v1.0.9"
       },
       "time": "2026-05-16T17:55:38+00:00"
-    },
-    {
-      "name": "rogervila/php-sonarqube-scanner",
-      "version": "1.1.0",
-      "source": {
-        "type": "git",
-        "url": "https://github.com/rogervila/php-sonarqube-scanner.git",
-        "reference": "262a79012b1fc94c2814c9e9a76c1e533577b18e"
-      },
-      "dist": {
-        "type": "zip",
-        "url": "https://api.github.com/repos/rogervila/php-sonarqube-scanner/zipball/262a79012b1fc94c2814c9e9a76c1e533577b18e",
-        "reference": "262a79012b1fc94c2814c9e9a76c1e533577b18e",
-        "shasum": ""
-      },
-      "require": {
-        "crysalead/dir": "^2.0",
-        "danieljharvey/php-git-branch": "^1.1",
-        "ext-zip": "*",
-        "tivie/php-os-detector": "^1.1"
-      },
-      "require-dev": {
-        "creativestyle/app-http-server-mock": "^1.0",
-        "phpunit/phpunit": "^7.0 || ^8.0 || ^9.0",
-        "symfony/process": "^4.1 || ^5.0"
-      },
-      "bin": [
-        "sonar-scanner"
-      ],
-      "type": "library",
-      "autoload": {
-        "psr-4": {
-          "Sonar\\": "src/"
-        }
-      },
-      "notification-url": "https://packagist.org/downloads/",
-      "license": [
-        "MIT"
-      ],
-      "authors": [
-        {
-          "name": "Roger Vilà",
-          "email": "rogervila@me.com"
-        }
-      ],
-      "description": "Run SonarQube Scanner with composer",
-      "keywords": [
-        "sonar scanner php",
-        "sonarqube scanner php"
-      ],
-      "support": {
-        "issues": "https://github.com/rogervila/php-sonarqube-scanner/issues",
-        "source": "https://github.com/rogervila/php-sonarqube-scanner/tree/1.1.0"
-      },
-      "time": "2020-12-09T07:46:28+00:00"
     },
     {
       "name": "sebastian/cli-parser",
@@ -8217,16 +7795,16 @@
     },
     {
       "name": "symfony/polyfill-deepclone",
-      "version": "v1.37.0",
+      "version": "v1.38.2",
       "source": {
         "type": "git",
         "url": "https://github.com/symfony/polyfill-deepclone.git",
-        "reference": "2ca9e9e75ead5174f2b44613a646bdc9338b8eb4"
+        "reference": "c1b95c370cb2ee4ee221f0a317f5ae5dfae9a42e"
       },
       "dist": {
         "type": "zip",
-        "url": "https://api.github.com/repos/symfony/polyfill-deepclone/zipball/2ca9e9e75ead5174f2b44613a646bdc9338b8eb4",
-        "reference": "2ca9e9e75ead5174f2b44613a646bdc9338b8eb4",
+        "url": "https://api.github.com/repos/symfony/polyfill-deepclone/zipball/c1b95c370cb2ee4ee221f0a317f5ae5dfae9a42e",
+        "reference": "c1b95c370cb2ee4ee221f0a317f5ae5dfae9a42e",
         "shasum": ""
       },
       "require": {
@@ -8280,7 +7858,7 @@
         "shim"
       ],
       "support": {
-        "source": "https://github.com/symfony/polyfill-deepclone/tree/v1.37.0"
+        "source": "https://github.com/symfony/polyfill-deepclone/tree/v1.38.2"
       },
       "funding": [
         {
@@ -8300,7 +7878,7 @@
           "type": "tidelift"
         }
       ],
-      "time": "2026-04-26T13:03:27+00:00"
+      "time": "2026-06-08T20:10:26+00:00"
     },
     {
       "name": "symfony/stopwatch",
@@ -8502,58 +8080,6 @@
       "time": "2025-12-08T11:19:18+00:00"
     },
     {
-      "name": "tivie/php-os-detector",
-      "version": "1.1.0",
-      "source": {
-        "type": "git",
-        "url": "https://github.com/tivie/php-os-detector.git",
-        "reference": "9461dcd85c00e03842264f2fc8ccdc8d46867321"
-      },
-      "dist": {
-        "type": "zip",
-        "url": "https://api.github.com/repos/tivie/php-os-detector/zipball/9461dcd85c00e03842264f2fc8ccdc8d46867321",
-        "reference": "9461dcd85c00e03842264f2fc8ccdc8d46867321",
-        "shasum": ""
-      },
-      "require": {
-        "php": ">=5.3.0"
-      },
-      "require-dev": {
-        "phpunit/phpunit": "4.3.*"
-      },
-      "type": "library",
-      "autoload": {
-        "psr-4": {
-          "Tivie\\OS\\": "src/"
-        }
-      },
-      "notification-url": "https://packagist.org/downloads/",
-      "license": [
-        "APACHE 2.0"
-      ],
-      "authors": [
-        {
-          "name": "Estevão Soares dos Santos",
-          "email": "estevao@soares-dos-santos.com"
-        }
-      ],
-      "description": "A small utility library that detects the OS the server is running on",
-      "homepage": "http://tivie.github.com/php-os-detector/",
-      "keywords": [
-        "detection",
-        "detector",
-        "identification",
-        "operating system",
-        "os",
-        "os detection"
-      ],
-      "support": {
-        "issues": "https://github.com/tivie/php-os-detector/issues",
-        "source": "https://github.com/tivie/php-os-detector/tree/master"
-      },
-      "time": "2017-10-21T03:33:59+00:00"
-    },
-    {
       "name": "vimeo/psalm",
       "version": "6.16.1",
       "source": {
@@ -8749,8 +8275,5 @@
     "ext-json": "*"
   },
   "platform-dev": {},
-  "platform-overrides": {
-    "php": "8.4.3"
-  },
   "plugin-api-version": "2.9.0"
 }

@@ -68,10 +68,10 @@ interface IStatistic extends \Stringable
      */
     public function header(): array;
 
-    //    /**
-    //     * @return string
-    //     */
-    //    public function flattenHeader(): string;
+        /**
+         * @return string
+         */
+        public function flattenHeader(): string;
 
     /**
      * @inheritDoc
