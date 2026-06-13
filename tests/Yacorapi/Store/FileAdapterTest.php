@@ -33,12 +33,12 @@ class FileAdapterTest extends EasyGoingTestCase
     private static string $fileName;
 
     public static function setUpBeforeClass(): void
-{
+    {
         self::$logger = new ConsoleLogger(FileAdapterTest::class);
         self::$logger->debug('START');
 
         parent::setUpBeforeClass();
-        
+
         self::$logger->debug('END');
     }
 

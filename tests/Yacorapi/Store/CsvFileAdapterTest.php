@@ -33,8 +33,8 @@ class CsvFileAdapterTest extends EasyGoingTestCase
     private static string $fileName;
 
     #[\Override]
-    public static function setUpBeforeClass():void
-{
+    public static function setUpBeforeClass(): void
+    {
         self::$logger = new ConsoleLogger(CsvFileAdapterTest::class);
         self::$logger->debug('START');
 

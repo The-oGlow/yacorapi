@@ -167,33 +167,33 @@ abstract class AbstractStatistic implements IStatistic
         return $header;
     }
 
-        /**
-         * @return string
-         */
+    /**
+     * @return string
+     */
     #[\Override]
     public function flattenHeader(): string
-        {
-            //        $header = $this->getExportName() . static::C_ITEM_SEP;
-            //        if (!(empty($this->items))) {
-            //            $firstItem = $this->items[array_key_first($this->items)];
-            //            if ($firstItem instanceof IStatistic) {
-            //                $header .= $firstItem->flattenHeader() . static::C_ITEM_SEP;
-            //            } else {
-            //                $header .= $this->customerHeader() . static::C_ITEM_SEP;
+    {
+        //        $header = $this->getExportName() . static::C_ITEM_SEP;
+        //        if (!(empty($this->items))) {
+        //            $firstItem = $this->items[array_key_first($this->items)];
+        //            if ($firstItem instanceof IStatistic) {
+        //                $header .= $firstItem->flattenHeader() . static::C_ITEM_SEP;
+        //            } else {
+        //                $header .= $this->customerHeader() . static::C_ITEM_SEP;
+        //            }
+        //        }
+        $flatten = '';
+        $header = $this->header();
+        if (!empty($header)) {
+            $flatten = $this->implode_recursive(static::C_ITEM_SEP, $header);
+            //            $header = str_replace(str_repeat(static::C_ITEM_SEP, 2), static::C_ITEM_SEP, $header);
+            //            if (str_ends_with($header, static::C_ITEM_SEP)) {
+            //                $header = substr($header, 0, strlen($header) - 1);
             //            }
-            //        }
-            $flatten = '';
-            $header = $this->header();
-            if (!empty($header)) {
-                $flatten = $this->implode_recursive(static::C_ITEM_SEP, $header);
-                //            $header = str_replace(str_repeat(static::C_ITEM_SEP, 2), static::C_ITEM_SEP, $header);
-                //            if (str_ends_with($header, static::C_ITEM_SEP)) {
-                //                $header = substr($header, 0, strlen($header) - 1);
-                //            }
-            }
-    
-            return $flatten;
         }
+
+        return $flatten;
+    }
 
     /**
      * @return array<mixed,mixed>
