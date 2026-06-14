@@ -19,9 +19,9 @@ interface IStoreItem extends \Stringable
 
     public const string EXT_CSV = 'csv';
 
-    public const C_FILE_SEP = '.';
+    public const string C_FILE_SEP = '.';
 
-    public const C_PATH_SEP = DIRECTORY_SEPARATOR;
+    public const string C_PATH_SEP = DIRECTORY_SEPARATOR;
 
     /**
      * @param string $dir
@@ -62,5 +62,6 @@ interface IStoreItem extends \Stringable
     /**
      * @return string
      */
+    #[\Override]
     public function __toString(): string;
 }

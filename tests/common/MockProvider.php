@@ -22,25 +22,32 @@ use oglow\tools\Yacorapi\Provider\AbstractProvider;
 use oglow\tools\Yacorapi\Request\RequestType;
 use oglow\tools\Yacorapi\YacorapiTestData;
 use Psr\Log\LoggerInterface;
-use Psr\Log\LogLevel;
 
+/**
+ * @phpstan-import-type LoggingLevel from AbstractProvider
+ */
 class MockProvider extends AbstractProvider
 {
     private static LoggerInterface $logger;
 
-    public function __construct(string $logLevel = LogLevel::INFO)
+    /**
+     * @param int|string $level
+     *
+     * @see AbstractProvider::LEVEL_DEFAULT
+     *
+     * @phpstan-param LoggingLevel $level
+     */
+    public function __construct(int|string $level = self::LEVEL_DEFAULT)
     {
         // Init Dynamic Consts
-        self::$logger = new ConsoleLogger(MockProvider::class, $logLevel);
-        parent::__construct($logLevel);
+        self::$logger = new ConsoleLogger(name:MockProvider::class, level: $level);
+        parent::__construct($level);
     }
 
     /**
-     * @param string $execUrl
-     * @param int    $reqType
-     *
-     * @return array<mixed,mixed>
+     * @inheritDoc
      */
+    #[\Override]
     protected function execInternal(string $execUrl, int $reqType): array
     {
         self::$logger->debug('START - execUrl,reqType', [$execUrl, $reqType]);
@@ -53,12 +60,9 @@ class MockProvider extends AbstractProvider
     }
 
     /**
-     * @param string           $execUrl
-     * @param Map<mixed,mixed> $parameters
-     * @param int              $reqType
-     *
-     * @return array<mixed,mixed>
+     * @inheritDoc
      */
+    #[\Override]
     protected function execPostInternal(string $execUrl, Map $parameters, int $reqType): array
     {
         self::$logger->debug('START - execUrl,parameters,reqType', [$execUrl, $parameters, $reqType]);

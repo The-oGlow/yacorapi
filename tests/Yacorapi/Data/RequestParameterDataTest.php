@@ -17,7 +17,7 @@ use PHPUnit\Framework\ConstantCheckTestCase;
 
 class RequestParameterDataTest extends ConstantCheckTestCase
 {
-    protected const CLASS_PREFIX     = RequestParameterData::class . self::C_STATIC_SEP;
+    protected const string CLASS_PREFIX     = RequestParameterData::class . self::C_STATIC_SEP;
 
     private const int   EXPECTED_PROPERTY_COUT  = 19;
 
@@ -25,22 +25,22 @@ class RequestParameterDataTest extends ConstantCheckTestCase
 
     protected const bool WITH_CONST_CROSSCHECK = true;
 
-    /**
-     * @return RequestParameterData
-     */
+    #[\Override]
     protected static function prepareO2t(): RequestParameterData
     {
         return new RequestParameterData();
     }
 
     /**
-     * @return RequestParameterData
+     * @inheritDoc
      */
+    #[\Override]
     protected function getCasto2t(): RequestParameterData
     {
         return $this->o2t;
     }
 
+    #[\Override]
     public static function setUpBeforeClass(bool $withConstCrossCheck = self::WITH_CONST_CROSSCHECK, int $expectedConstsCount = self::EXPECTED_CONSTANT_COUNT): void
     {
         parent::setUpBeforeClass($withConstCrossCheck, $expectedConstsCount);

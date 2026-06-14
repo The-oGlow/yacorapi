@@ -17,28 +17,28 @@ use PHPUnit\Framework\ConstantCheckTestCase;
 
 class ExitCodesTest extends ConstantCheckTestCase
 {
-    public const CLASS_PREFIX = ExitCodesTest::class . self::C_STATIC_SEP;
+    public const string CLASS_PREFIX = ExitCodesTest::class . self::C_STATIC_SEP;
 
     protected const int EXPECTED_CONSTANT_COUNT = 8;
 
     protected const bool WITH_CONST_CROSSCHECK = true;
 
-    /**
-     * @return ExitCodes
-     */
+    #[\Override]
     protected static function prepareO2t(): ExitCodes
     {
         return new ExitCodes();
     }
 
     /**
-     * @return ExitCodes
+     * @inheritDoc
      */
+    #[\Override]
     protected function getCasto2t(): ExitCodes
     {
         return $this->o2t;
     }
 
+    #[\Override]
     public static function setUpBeforeClass(bool $withConstCrossCheck = self::WITH_CONST_CROSSCHECK, int $expectedConstsCount = self::EXPECTED_CONSTANT_COUNT): void
     {
         parent::setUpBeforeClass($withConstCrossCheck, $expectedConstsCount);

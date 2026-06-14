@@ -17,7 +17,7 @@ use Ds\Vector;
 
 class SingleAddon extends AbstractAddon
 {
-    public const ADDON_SINGLE = 1;
+    public const int ADDON_SINGLE = 1;
 
     protected function init(): void
     {

@@ -18,13 +18,13 @@ namespace oglow\tools\Yacorapi\Store;
  */
 interface IStoreAdapter
 {
-    public const KEY_KEY    = 'key';
+    public const string KEY_KEY    = 'key';
 
-    public const KEY_LINKS  = '_links';
+    public const string KEY_LINKS  = '_links';
 
-    public const KEY_TINYUI = 'tinyui';
+    public const string KEY_TINYUI = 'tinyui';
 
-    public const KEY_TITLE  = 'title';
+    public const string KEY_TITLE  = 'title';
 
     /**
      * @param mixed $dataContent

@@ -20,17 +20,16 @@ use PHPUnit\Framework\EasyGoingTestCase;
 
 class PrepPermissionTraitTest extends EasyGoingTestCase
 {
-    /**
-     * @return PrepPermissionTraitTestClazz
-     */
+    #[\Override]
     protected static function prepareO2t(): PrepPermissionTraitTestClazz
     {
         return new PrepPermissionTraitTestClazz();
     }
 
     /**
-     * @return PrepPermissionTraitTestClazz
+     * @inheritDoc
      */
+    #[\Override]
     protected function getCasto2t(): PrepPermissionTraitTestClazz
     {
         return $this->o2t;

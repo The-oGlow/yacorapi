@@ -30,7 +30,6 @@ use oglow\tools\Yacorapi\Statistic\IStatistic;
 use oglow\tools\Yacorapi\Statistic\PagetypeStatistic;
 use oglow\tools\Yacorapi\Statistic\ValueStatistic;
 use Psr\Log\LoggerInterface;
-use Psr\Log\LogLevel;
 
 /**
  * @SuppressWarnings("PHPMD.TooManyPublicMethods")
@@ -45,6 +44,7 @@ class RapiClient extends AbstractRapiClient // NOSONAR: php:S1448
     /**
      * @inheritDoc
      */
+    #[\Override]
     public static function newClient(?int $modeExtension = null, ?IConnectionProvider $connectionProvider = null, ?AddonMacroData $addons = null): IRapiClient
     {
         return new RapiClient($modeExtension, $connectionProvider, $addons);
@@ -60,7 +60,7 @@ class RapiClient extends AbstractRapiClient // NOSONAR: php:S1448
     protected function __construct(?int $modeExtension = null, ?IConnectionProvider $connectionProvider = null, ?AddonMacroData $addons = null)
     {
         // Init Logger
-        self::$logger = new ConsoleLogger(RapiClient::class, LogLevel::DEBUG);
+        self::$logger = new ConsoleLogger(name: RapiClient::class, level: self::LEVEL_DEFAULT);
         self::$logger->debug('START');
 
         parent::__construct($modeExtension, $connectionProvider, $addons);
@@ -73,6 +73,7 @@ class RapiClient extends AbstractRapiClient // NOSONAR: php:S1448
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function readPageByPageId(int $pageId): IResponse
     {
         self::$logger->debug('START - pageId', [$pageId]);
@@ -85,6 +86,7 @@ class RapiClient extends AbstractRapiClient // NOSONAR: php:S1448
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function readPagesWithFilter(string $filterTerm, string $spaceKey = ''): IResponse
     {
         self::$logger->debug('START - filterTerm,spaceKey', [$filterTerm, $spaceKey]);
@@ -97,6 +99,7 @@ class RapiClient extends AbstractRapiClient // NOSONAR: php:S1448
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function scanPagesWithFilter(string $filterTerm, string $spaceKey = ''): IResponse
     {
         self::$logger->debug('START - filterTerm,spaceKey', [$filterTerm, $spaceKey]);
@@ -109,6 +112,7 @@ class RapiClient extends AbstractRapiClient // NOSONAR: php:S1448
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function searchPagesWithFilter(
         string $filterTerm,
         string $spaceKey,
@@ -129,6 +133,7 @@ class RapiClient extends AbstractRapiClient // NOSONAR: php:S1448
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function countItemsinSpace(string $spaceKey, string $itemType = RequestParameterData::ITEM_TYPE_PAGE): IStatistic
     {
         self::$logger->debug('START - spaceKey, itemType', [$spaceKey, $itemType]);
@@ -150,6 +155,7 @@ class RapiClient extends AbstractRapiClient // NOSONAR: php:S1448
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function readRestrictionsByPageId(int $pageId): IResponse
     {
         self::$logger->debug('START - pageId', [$pageId]);
@@ -164,6 +170,7 @@ class RapiClient extends AbstractRapiClient // NOSONAR: php:S1448
      *
      * @inheritDoc
      */
+    #[\Override]
     public function writeRestrictionsByPageId(int $pageId, array $writeRestrictions = [], array $readRestrictions = []): bool // NOSONAR: php:S1172
     {
         throw new \BadMethodCallException('API-Function does not work or description is wrong');
@@ -174,6 +181,7 @@ class RapiClient extends AbstractRapiClient // NOSONAR: php:S1448
      *
      * @inheritDoc
      */
+    #[\Override]
     public function listSpaces(string $spaceType = RequestParameterData::SPACE_TYPE_GLOBAL, int $limit = RequestParameterData::SPACE_LIMIT_DEFAULT): IResponse
     {
         self::$logger->debug('START - spaceType,limit', [$spaceType, $limit]);
@@ -186,6 +194,7 @@ class RapiClient extends AbstractRapiClient // NOSONAR: php:S1448
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function countMacrosInSpace(string $spaceKey, ResponseAddonMacroDecorate $addonSet, ?IStatistic $outputMatrix): IStatistic
     {
         self::$logger->debug('START - spaceKey,addonSet', [$spaceKey, $addonSet]);
@@ -202,6 +211,7 @@ class RapiClient extends AbstractRapiClient // NOSONAR: php:S1448
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function movePage(int $pageId, int $newParentId): IResponse
     {
         self::$logger->debug('START - pageId,newParentId', [$pageId, $newParentId]);
@@ -238,6 +248,7 @@ class RapiClient extends AbstractRapiClient // NOSONAR: php:S1448
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function createPage(
         string $spaceKey,
         string $pageTitle,
@@ -282,6 +293,7 @@ class RapiClient extends AbstractRapiClient // NOSONAR: php:S1448
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function updatePage(
         int $pageId,
         string $pageBody,
@@ -331,6 +343,7 @@ class RapiClient extends AbstractRapiClient // NOSONAR: php:S1448
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function prepareAddonSet($mode = AllAddon::ADDON_ALL): ResponseAddonMacroDecorate
     {
         self::$logger->debug('START - mode', [$mode]);

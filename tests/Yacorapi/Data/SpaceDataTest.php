@@ -17,17 +17,16 @@ use PHPUnit\Framework\EasyGoingTestCase;
 
 class SpaceDataTest extends EasyGoingTestCase
 {
-    /**
-     * @return SpaceData
-     */
+    #[\Override]
     protected static function prepareO2t(): SpaceData
     {
         return new SpaceData();
     }
 
     /**
-     * @return SpaceData
+     * @inheritDoc
      */
+    #[\Override]
     protected function getCasto2t(): SpaceData
     {
         return $this->o2t;

@@ -89,15 +89,16 @@ class CsvFileAdapter extends FileAdapter
     }
 
     /**
-     * @param mixed $dataContent
+     * @inheritDoc
      */
+    #[\Override]
     public function storeData(mixed $dataContent): void
     {
         self::$logger->debug('START');
         self::$logger->debug('dataContent', [$dataContent]);
 
         if (!is_null($dataContent)) {
-            $csvLine = $this->implode_recursive(self::C_ITEM_SEP, $dataContent, false, false);
+            $csvLine = self::implode_recursive(self::C_ITEM_SEP, $dataContent, false, false);
             $csvLine = str_replace(self::C_ITEM_SEP . '[', self::C_ITEM_SEP . "\n[", $csvLine);
             $this->writeData($this->storeItem, $csvLine);
         }
@@ -106,8 +107,9 @@ class CsvFileAdapter extends FileAdapter
     }
 
     /**
-     * @param string|string[] $dataHeader
+     * @inheritDoc
      */
+    #[\Override]
     public function storeDataHeader(string|array $dataHeader): void
     {
         self::$logger->debug("START");

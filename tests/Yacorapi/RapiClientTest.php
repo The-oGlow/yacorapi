@@ -44,6 +44,7 @@ class RapiClientTest extends EasyGoingTestCase
 
     private static LoggerInterface $logger;
 
+    #[\Override]
     public function setUp(): void
     {
         self::$logger = new ConsoleLogger(RapiClientTest::class);
@@ -52,17 +53,13 @@ class RapiClientTest extends EasyGoingTestCase
         self::$logger->debug('END');
     }
 
-    /**
-     * @return IRapiClient
-     */
+    #[\Override]
     protected static function prepareO2t(): IRapiClient
     {
         return RapiClient::newClient(IExtension::EXTENSION_ALL, new MockProvider(LogLevel::DEBUG));
     }
 
-    /**
-     * @return IRapiClient
-     */
+    #[\Override]
     protected function getCasto2t(): IRapiClient
     {
         return $this->o2t;

@@ -25,22 +25,19 @@ class ExtensionTraitTest extends EasyGoingTestCase
 {
     private static LoggerInterface $logger;
 
-    /**
-     * @return ExtensionTraitTestClazz
-     */
+    #[\Override]
     protected static function prepareO2t(): ExtensionTraitTestClazz
     {
         return new ExtensionTraitTestClazz();
     }
 
-    /**
-     * @return ExtensionTraitTestClazz
-     */
+    #[\Override]
     protected function getCasto2t(): ExtensionTraitTestClazz
     {
         return $this->o2t;
     }
 
+    #[\Override]
     public function setUp(): void
     {
         self::$logger = new ConsoleLogger(ExtensionTraitTest::class);

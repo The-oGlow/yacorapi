@@ -18,17 +18,16 @@ use PHPUnit\Framework\EasyGoingTestCase;
 
 class ResponseAddonMacroDecorateTest extends EasyGoingTestCase
 {
-    /**
-     * @return ResponseAddonMacroDecorate
-     */
+    #[\Override]
     protected static function prepareO2t(): ResponseAddonMacroDecorate
     {
         return new ResponseAddonMacroDecorate(SingleAddon::ADDON_SINGLE);
     }
 
     /**
-     * @return ResponseAddonMacroDecorate
+     * @inheritDoc
      */
+    #[\Override]
     protected function getCasto2t(): ResponseAddonMacroDecorate
     {
         return $this->o2t;

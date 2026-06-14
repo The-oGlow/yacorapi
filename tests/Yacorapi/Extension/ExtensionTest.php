@@ -23,7 +23,7 @@ use PHPUnit\Framework\ConstantCheckTestCase;
 
 class ExtensionTest extends ConstantCheckTestCase
 {
-    public const  CLASS_PREFIX = IExtension::class . self::C_STATIC_SEP;
+    public const string CLASS_PREFIX = IExtension::class . self::C_STATIC_SEP;
 
     protected const int EXPECTED_CONSTANT_COUNT = 8;
 
@@ -32,6 +32,7 @@ class ExtensionTest extends ConstantCheckTestCase
     /**
      * @return ExtensionTestDummyClazz
      */
+    #[\Override]
     protected static function prepareO2t(): ExtensionTestDummyClazz
     {
         return new ExtensionTestDummyClazz();
@@ -40,11 +41,13 @@ class ExtensionTest extends ConstantCheckTestCase
     /**
      * @return ExtensionTestDummyClazz
      */
+    #[\Override]
     protected function getCasto2t(): ExtensionTestDummyClazz
     {
         return $this->o2t;
     }
 
+    #[\Override]
     public static function setUpBeforeClass(bool $withConstCrossCheck = self::WITH_CONST_CROSSCHECK, int $expectedConstsCount = self::EXPECTED_CONSTANT_COUNT): void
     {
         parent::setUpBeforeClass($withConstCrossCheck, $expectedConstsCount);

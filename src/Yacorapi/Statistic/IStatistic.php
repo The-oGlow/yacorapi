@@ -17,12 +17,12 @@ use Ds\Set;
 
 interface IStatistic extends \Stringable
 {
-    public const ITEM_SEP = ';';
+    public const string ITEM_SEP = ';';
 
-    public const KEY_COUNT = 'count';
+    public const string KEY_COUNT = 'count';
 
     /**
-     * @return Set<string>
+     * @return Set<mixed>
      */
     public function keys(): Set;
 
@@ -57,13 +57,19 @@ interface IStatistic extends \Stringable
     public function getExportName(): string;
 
     /**
-     * @param bool $displayKeys
+     * Implode this object and its subitems to a single string with separator.
+     *
+     * @param bool $displayKeys the items will have their keyname shown
      *
      * @return string
+     *
+     * @see IStatistic::ITEM_SEP
      */
     public function flatten(bool $displayKeys = true): string;
 
     /**
+     * Give the column names for this object and its subitems as array.
+     *
      * @return array<string>
      */
     public function header(): array;
@@ -76,5 +82,6 @@ interface IStatistic extends \Stringable
     /**
      * @inheritDoc
      */
-    public function __toString();
+    #[\Override]
+    public function __toString(): string;
 }

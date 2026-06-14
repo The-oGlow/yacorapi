@@ -17,16 +17,19 @@ use Ds\Map;
 
 class AbstractSingletonTestDummyClazz extends AbstractSingleton
 {
+    /**
+     * @inheritDoc
+     */
+    #[\Override]
     protected function prepareSettings(): void
     {
         // Nothing to do
     }
 
     /**
-     * @param Map<mixed, mixed> $overrideParameters
-     *
-     * @return bool
+     * @inheritDoc
      */
+    #[\Override]
     protected function validateSettings(Map $overrideParameters): bool
     {
         if ($overrideParameters->isEmpty()) {

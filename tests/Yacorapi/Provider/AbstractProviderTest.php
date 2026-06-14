@@ -21,6 +21,7 @@ use PHPUnit\Framework\EasyGoingTestCase;
 
 class AbstractProviderTest extends EasyGoingTestCase
 {
+    #[\Override]
     public function setUp(): void
     {
         parent::setUp();
@@ -29,6 +30,7 @@ class AbstractProviderTest extends EasyGoingTestCase
     /**
      * @return AbstractProviderTestDummyClazz
      */
+    #[\Override]
     protected static function prepareO2t(): AbstractProviderTestDummyClazz
     {
         return new AbstractProviderTestDummyClazz();
@@ -37,6 +39,7 @@ class AbstractProviderTest extends EasyGoingTestCase
     /**
      * @return AbstractProviderTestDummyClazz
      */
+    #[\Override]
     protected function getCasto2t(): AbstractProviderTestDummyClazz
     {
         return $this->o2t;

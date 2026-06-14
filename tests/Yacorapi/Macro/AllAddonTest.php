@@ -18,17 +18,16 @@ use PHPUnit\Framework\EasyGoingTestCase;
 
 class AllAddonTest extends EasyGoingTestCase
 {
-    /**
-     * @return AllAddon
-     */
+    #[\Override]
     protected static function prepareO2t(): AllAddon
     {
         return new AllAddon();
     }
 
     /**
-     * @return AllAddon
+     * @inheritDoc
      */
+    #[\Override]
     protected function getCasto2t(): AllAddon
     {
         return $this->o2t;

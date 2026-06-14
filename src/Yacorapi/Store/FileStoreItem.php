@@ -18,11 +18,11 @@ use Psr\Log\LoggerInterface;
 
 class FileStoreItem extends AbstractStoreItem
 {
-    public const DIR  = 'DIR';
+    public const string DIR  = 'DIR';
 
-    public const FILE = 'FILE';
+    public const string FILE = 'FILE';
 
-    public const EXT  = 'EXT';
+    public const string EXT  = 'EXT';
 
     private static LoggerInterface $logger;
 
@@ -51,6 +51,7 @@ class FileStoreItem extends AbstractStoreItem
         self::$logger->debug("END");
     }
 
+    #[\Override]
     public function setDir(string $dir): IStoreItem
     {
         $this->storeItems->put(self::DIR, $dir);
@@ -58,11 +59,13 @@ class FileStoreItem extends AbstractStoreItem
         return $this;
     }
 
+    #[\Override]
     public function getDir(): string
     {
         return $this->storeItems->get(self::DIR, '');
     }
 
+    #[\Override]
     public function setFile(string $file): IStoreItem
     {
         $this->storeItems->put(self::FILE, $file);
@@ -70,11 +73,13 @@ class FileStoreItem extends AbstractStoreItem
         return $this;
     }
 
+    #[\Override]
     public function getFile(): string
     {
         return $this->storeItems->get(self::FILE, '');
     }
 
+    #[\Override]
     public function setExt(string $ext = self::EXT_TEXT): IStoreItem
     {
         $this->storeItems->put(self::EXT, $ext);
@@ -82,12 +87,14 @@ class FileStoreItem extends AbstractStoreItem
         return $this;
     }
 
+    #[\Override]
     public function getExt(): string
     {
         return $this->storeItems->get(self::EXT, self::EXT_TEXT);
     }
 
-    public function __toString()
+    #[\Override]
+    public function __toString(): string
     {
         return $this->getDir() . self::C_PATH_SEP . $this->getFile() . self::C_FILE_SEP . $this->getExt();
     }

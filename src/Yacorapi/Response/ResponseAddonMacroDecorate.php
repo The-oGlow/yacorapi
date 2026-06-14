@@ -42,6 +42,7 @@ class ResponseAddonMacroDecorate extends AbstractResponse
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function getResult(int $idx): void
     {
         throw new \BadFunctionCallException('Use instead ResponseAddonMacroDecorate->getValue()');

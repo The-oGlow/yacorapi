@@ -20,20 +20,20 @@ use Psr\Log\LoggerInterface;
 
 abstract class AbstractStoreAdapter implements IStoreAdapter
 {
-    public const ERR_NOT_INVOKED = 30;
+    public const int ERR_NOT_INVOKED = 30;
 
     /** Field Separator */
-    public const            C_ITEM_SEP = ';';
+    public const            string C_ITEM_SEP = ';';
 
-    protected const         C_DIR_REK = true;
+    protected const         bool C_DIR_REK = true;
 
-    protected const         C_CODE_UTF8 = 'UTF-8';
+    protected const         string C_CODE_UTF8 = 'UTF-8';
 
-    protected const         C_CHAR_LENGTH = 1000;
+    protected const         int C_CHAR_LENGTH = 1000;
 
-    protected const         C_FILE_READ = 'r';
+    protected const         string C_FILE_READ = 'r';
 
-    protected const         C_DIR_MASK = 0o777;
+    protected const         int C_DIR_MASK = 0o777;
 
     protected ConstData $constData;
 
@@ -228,7 +228,7 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
             if (!empty($fHandle)) {
                 while ($line = fgets($fHandle, self::C_CHAR_LENGTH)) {
                     $convertedLine = mb_convert_encoding($line, self::C_CODE_UTF8);
-                    if (is_string($convertedLine)) {
+                    if (is_string($convertedLine)) { // @phpstan-ignore function.alreadyNarrowedType
                         $resultList[] = explode(self::C_ITEM_SEP, $convertedLine);
                     }
                 }

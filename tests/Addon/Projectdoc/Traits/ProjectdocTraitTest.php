@@ -19,17 +19,16 @@ use PHPUnit\Framework\EasyGoingTestCase;
 
 class ProjectdocTraitTest extends EasyGoingTestCase
 {
-    /**
-     * @return ProjectdocTraitTestClazz
-     */
+    #[\Override]
     protected static function prepareO2t(): ProjectdocTraitTestClazz
     {
         return new ProjectdocTraitTestClazz();
     }
 
     /**
-     * @return ProjectdocTraitTestClazz
+     * @inheritDoc
      */
+    #[\Override]
     protected function getCasto2t(): ProjectdocTraitTestClazz
     {
         return $this->o2t;

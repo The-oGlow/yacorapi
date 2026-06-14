@@ -23,22 +23,22 @@ class ConstDataTest extends ConstantCheckTestCase
 
     protected const bool WITH_CONST_CROSSCHECK = true;
 
-    /**
-     * @return ConstData
-     */
+    #[\Override]
     protected static function prepareO2t(): ConstData
     {
         return new ConstData();
     }
 
     /**
-     * @return ConstData
+     * @inheritDoc
      */
+    #[\Override]
     protected function getCasto2t(): ConstData
     {
         return $this->o2t;
     }
 
+    #[\Override]
     public static function setUpBeforeClass(bool $withConstCrossCheck = self::WITH_CONST_CROSSCHECK, int $expectedConstsCount = self::EXPECTED_CONSTANT_COUNT): void
     {
         parent::setUpBeforeClass($withConstCrossCheck, $expectedConstsCount);

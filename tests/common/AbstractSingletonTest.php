@@ -19,17 +19,16 @@ use PHPUnit\Framework\EasyGoingTestCase;
 
 class AbstractSingletonTest extends EasyGoingTestCase
 {
-    /**
-     * @return AbstractSingletonTestDummyClazz
-     */
+    #[\Override]
     protected static function prepareO2t(): AbstractSingletonTestDummyClazz
     {
         return new AbstractSingletonTestDummyClazz();
     }
 
     /**
-     * @return AbstractSingletonTestDummyClazz
+     * @inheritDoc
      */
+    #[\Override]
     protected function getCasto2t(): AbstractSingletonTestDummyClazz
     {
         return $this->o2t;

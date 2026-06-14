@@ -17,18 +17,17 @@ use Ds\Set;
 
 class ValueStatistic extends AbstractStatistic
 {
-    public const    C_STATISTIC_NAME = 'statisticName';
+    public const string   C_STATISTIC_NAME = 'statisticName';
 
-    public const    C_EXPORT_NAME1   = 'exportName';
+    public const string   C_EXPORT_NAME1   = 'exportName';
 
-    public const    C_VALUE          = 'value';
+    public const string   C_VALUE          = 'value';
 
-    protected const EXPORT_NAME = self::C_VALUE;
+    protected const string EXPORT_NAME = self::C_VALUE;
 
     /** @var Set<mixed> */
     private Set $keysForValue;
 
-    /** @var mixed */
     private mixed $value;
 
     /**
@@ -43,41 +42,36 @@ class ValueStatistic extends AbstractStatistic
     }
 
     /**
-     * @return Set<mixed>
+     * @inheritDoc
      */
+    #[\Override]
     public function keys(): Set
     {
         return $this->keysForValue;
     }
 
     /**
-     * @param mixed $key
-     *
-     * @return bool
+     * @inheritDoc
      */
+    #[\Override]
     public function keyExists(mixed $key): bool
     {
         return $this->keysForValue->contains($key);
     }
 
     /**
-     * @param mixed      $key
-     * @param IStatistic $item
-     *
-     * @see addValue()
+     * @inheritDoc
      */
+    #[\Override]
     public function addItem(mixed $key, IStatistic $item): void
     {
         throw new \BadMethodCallException('Use instead \'->addValue\'');
     }
 
     /**
-     * @param mixed $key
-     *
-     * @return null|IStatistic
-     *
-     * @see getValue()
+     * @inheritDoc
      */
+    #[\Override]
     public function getItem(mixed $key): ?IStatistic
     {
         throw new \BadMethodCallException('Use instead \'->getValue\'');
@@ -104,7 +98,8 @@ class ValueStatistic extends AbstractStatistic
      *
      * @SuppressWarnings("PHPMD.CamelCaseMethodName")
      */
-    protected function __toStringValues(): array
+    #[\Override]
+    protected function __toStringValues(): mixed
     {
         return [
             self::C_STATISTIC_NAME => $this->getStatisticName(),

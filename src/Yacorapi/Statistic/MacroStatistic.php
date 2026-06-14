@@ -15,5 +15,5 @@ namespace oglow\tools\Yacorapi\Statistic;
 
 class MacroStatistic extends AbstractStatistic
 {
-    protected const EXPORT_NAME = 'macroname';
+    protected const string EXPORT_NAME = 'macroname';
 }

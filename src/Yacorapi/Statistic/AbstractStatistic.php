@@ -24,13 +24,13 @@ abstract class AbstractStatistic implements IStatistic
 {
     use ToStringTrait;
 
-    /** Defines the column name when exporting */
+    /** @var string Defines the column name when exporting */
     protected const string EXPORT_NAME = '';
 
     /** The column name when {@link EXPORT_NAME} is not set */
     protected const string UDF = 'undefined';
 
-    /** @var Map<string,IStatistic> */
+    /** @var Map<mixed,IStatistic> */
     private Map $items;
 
     private string $statisticName;
@@ -58,7 +58,7 @@ abstract class AbstractStatistic implements IStatistic
     }
 
     /**
-     * @return Set<string>
+     * @inheritDoc
      */
     #[\Override]
     public function keys(): Set
@@ -67,9 +67,7 @@ abstract class AbstractStatistic implements IStatistic
     }
 
     /**
-     * @param string $key
-     *
-     * @return bool
+     * @inheritDoc
      */
     #[\Override]
     public function keyExists(string $key): bool
@@ -78,9 +76,7 @@ abstract class AbstractStatistic implements IStatistic
     }
 
     /**
-     * @param string $key
-     *
-     * @return null|IStatistic
+     * @inheritDoc
      */
     #[\Override]
     public function getItem(string $key): ?IStatistic
@@ -94,8 +90,7 @@ abstract class AbstractStatistic implements IStatistic
     }
 
     /**
-     * @param string     $key
-     * @param IStatistic $item
+     * @inheritDoc
      */
     #[\Override]
     public function addItem(string $key, IStatistic $item): void
@@ -104,7 +99,7 @@ abstract class AbstractStatistic implements IStatistic
     }
 
     /**
-     * @return string
+     * @inheritDoc
      */
     #[\Override]
     public function getStatisticName(): string
@@ -113,7 +108,7 @@ abstract class AbstractStatistic implements IStatistic
     }
 
     /**
-     * @return string
+     * @inheritDoc
      */
     #[\Override]
     public function getExportName(): string
@@ -122,18 +117,12 @@ abstract class AbstractStatistic implements IStatistic
     }
 
     /**
-     * Implode this object and its subitems to a single string with separator.
-     *
-     * @param bool $displayKeys the items will have their keyname shown
-     *
-     * @return string
-     *
-     * @see IStatistic::ITEM_SEP
+     * @inheritDoc
      */
     #[\Override]
     public function flatten(bool $displayKeys = true): string
     {
-        $flatData = $this->implode_recursive(static::ITEM_SEP, $this->items, false, $displayKeys);
+        $flatData = self::implode_recursive(static::ITEM_SEP, $this->items, false, $displayKeys);
         $flatData = str_replace('\\"', 'x', $flatData);
 
         self::$logger->debug('', [$flatData]);
@@ -142,9 +131,7 @@ abstract class AbstractStatistic implements IStatistic
     }
 
     /**
-     * Give the column names for this object and its subitems as array.
-     *
-     * @return array<string>
+     * @inheritDoc
      */
     #[\Override]
     public function header(): array
@@ -168,7 +155,7 @@ abstract class AbstractStatistic implements IStatistic
     }
 
     /**
-     * @return string
+     * @inheritDoc
      */
     #[\Override]
     public function flattenHeader(): string
@@ -185,7 +172,7 @@ abstract class AbstractStatistic implements IStatistic
         $flatten = '';
         $header = $this->header();
         if (!empty($header)) {
-            $flatten = $this->implode_recursive(static::C_ITEM_SEP, $header);
+            $flatten = self::implode_recursive(static::ITEM_SEP, $header);
             //            $header = str_replace(str_repeat(static::C_ITEM_SEP, 2), static::C_ITEM_SEP, $header);
             //            if (str_ends_with($header, static::C_ITEM_SEP)) {
             //                $header = substr($header, 0, strlen($header) - 1);
@@ -196,12 +183,12 @@ abstract class AbstractStatistic implements IStatistic
     }
 
     /**
-     * @return array<mixed,mixed>
+     * @inheritDoc
      *
      * @SuppressWarnings("PHPMD.CamelCaseMethodName")
      */
     #[\Override]
-    protected function __toStringValues(): array
+    protected function __toStringValues(): mixed
     {
         return [
             'statisticName' => $this->statisticName,

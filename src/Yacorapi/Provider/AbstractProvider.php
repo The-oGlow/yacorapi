@@ -23,25 +23,36 @@ use oglow\tools\Yacorapi\Response\Response;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 
+/**
+ * @phpstan-type LoggingLevel 100|200|250|300|400|500|550|600|'alert'|'critical'|'debug'|'emergency'|'error'|'info'|'notice'|'warning'|\Psr\Log\LogLevel::*
+ */
 abstract class AbstractProvider implements IConnectionProvider
 {
+    /** Default output level (INFO) */
+    public const string LEVEL_DEFAULT = LogLevel::INFO;
+
     private static LoggerInterface $logger;
 
     protected ConstData $constData;
 
-    public function __construct(string $logLevel = LogLevel::INFO)
+    /**
+     * @param int|string $level
+     *
+     * @see AbstractProvider::LEVEL_DEFAULT
+     *
+     * @phpstan-param LoggingLevel $level
+     */
+    public function __construct(int|string $level = self::LEVEL_DEFAULT)
     {
         // Init Dynamic Consts
         $this->constData = new ConstData(AbstractProvider::class);
-        self::$logger = new ConsoleLogger(AbstractProvider::class, $logLevel);
+        self::$logger = new ConsoleLogger(name:AbstractProvider::class, level: $level);
     }
 
     /**
-     * @param string $execUrl
-     * @param int    $reqType
-     *
-     * @return IResponse
+     * @inheritDoc
      */
+    #[\Override]
     public function exec(string $execUrl, int $reqType = RequestType::REQ_TYP_GET): IResponse
     {
         self::$logger->debug('START - execUrl,reqType', [$execUrl, $reqType]);
@@ -55,12 +66,9 @@ abstract class AbstractProvider implements IConnectionProvider
     }
 
     /**
-     * @param string            $execUrl
-     * @param Map<mixed, mixed> $parameters
-     * @param int               $reqType
-     *
-     * @return IResponse
+     * @inheritDoc
      */
+    #[\Override]
     public function execPost(string $execUrl, Map $parameters, int $reqType = RequestType::REQ_TYP_PUT): IResponse
     {
         self::$logger->debug('START - execUrl,parameters,reqType', [$execUrl, $parameters, $reqType]);

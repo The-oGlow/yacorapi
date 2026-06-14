@@ -29,10 +29,6 @@ parameters:
                 - tests/*/*Test.php
 
         # Custom
-        -   
-            identifier: assign.propertyType
-            paths:
-                - src/Yacorapi/Client/AbstractRapiClient.php
         -
             identifier: class.notFound
             paths:

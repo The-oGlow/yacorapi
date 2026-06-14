@@ -20,17 +20,16 @@ use PHPUnit\Framework\EasyGoingTestCase;
 
 class ResponseTest extends EasyGoingTestCase
 {
-    /**
-     * @return Response
-     */
+    #[\Override]
     protected static function prepareO2t(): Response
     {
         return new Response();
     }
 
     /**
-     * @return Response
+     * @inheritDoc
      */
+    #[\Override]
     protected function getCasto2t(): Response
     {
         return $this->o2t;

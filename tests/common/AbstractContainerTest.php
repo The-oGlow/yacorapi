@@ -17,17 +17,16 @@ use PHPUnit\Framework\EasyGoingTestCase;
 
 class AbstractContainerTest extends EasyGoingTestCase
 {
-    /**
-     * @return AbstractContainerTestClazz
-     */
+    #[\Override]
     protected static function prepareO2t(): AbstractContainerTestClazz
     {
         return new AbstractContainerTestClazz();
     }
 
     /**
-     * @return AbstractContainerTestClazz
+     * @inheritDoc
      */
+    #[\Override]
     protected function getCasto2t(): AbstractContainerTestClazz
     {
         return $this->o2t;

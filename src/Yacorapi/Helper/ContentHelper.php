@@ -19,31 +19,31 @@ use Psr\Log\LoggerInterface;
 
 class ContentHelper extends AbstractHelper
 {
-    public const MACROBODY_PLAIN = 'html;';
+    public const string MACROBODY_PLAIN = 'html;';
 
-    public const MACROBODY_RICHTEXT = 'section;column;';
+    public const string MACROBODY_RICHTEXT = 'section;column;';
 
-    public const CHOOSE_BODY_RICHTEXT = 'rich';
+    public const string CHOOSE_BODY_RICHTEXT = 'rich';
 
-    public const CHOOSE_BODY_PLAIN = 'plain';
+    public const string CHOOSE_BODY_PLAIN = 'plain';
 
-    public const TAG_PARAM_START = "\n<ac:parameters ac:name=\"%s\">";
+    public const string TAG_PARAM_START = "\n<ac:parameters ac:name=\"%s\">";
 
-    public const TAG_PARAM_END = "</ac:parameters>";
+    public const string TAG_PARAM_END = "</ac:parameters>";
 
-    public const TAG_PLAIN_START = "<ac:plain-text-body><![CDATA[";
+    public const string TAG_PLAIN_START = "<ac:plain-text-body><![CDATA[";
 
-    public const TAG_PLAIN_END = "]]></ac:plain-text-body>";
+    public const string TAG_PLAIN_END = "]]></ac:plain-text-body>";
 
-    public const TAG_RICH_START = "<ac:rich-text-body>\n";
+    public const string TAG_RICH_START = "<ac:rich-text-body>\n";
 
-    public const TAG_RICH_END = "\n</ac:rich-text-body>";
+    public const string TAG_RICH_END = "\n</ac:rich-text-body>";
 
-    public const TAG_MACRO_START = "<ac:structured-macro ac:name=\"%s\" ac:schema-version=\"%s\">\n";
+    public const string TAG_MACRO_START = "<ac:structured-macro ac:name=\"%s\" ac:schema-version=\"%s\">\n";
 
-    public const TAG_MACRO_END = "\n</ac:structured-macro>";
+    public const string TAG_MACRO_END = "\n</ac:structured-macro>";
 
-    public const TAG_MACRO_VERSION = "1";
+    public const string TAG_MACRO_VERSION = "1";
 
     private static LoggerInterface $logger;
 
@@ -147,16 +147,19 @@ class ContentHelper extends AbstractHelper
         return $newTag;
     }
 
+    /**
+     * @inheritDoc
+     */
+    #[\Override]
     protected function prepareSettings(): void
     {
         // NothingToDo
     }
 
     /**
-     * @param Map<mixed, mixed> $overrideParameters
-     *
-     * @return bool
+     * @inheritDoc
      */
+    #[\Override]
     final protected function validateSettings(Map $overrideParameters): bool
     {
         return true;

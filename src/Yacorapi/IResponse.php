@@ -18,90 +18,90 @@ use Ds\Set;
 
 interface IResponse extends \Stringable
 {
-    public const KEY_ANCESTORS = 'ancestors';
+    public const string KEY_ANCESTORS = 'ancestors';
 
-    public const KEY_ARCHIVED = 'archived';
+    public const string KEY_ARCHIVED = 'archived';
 
-    public const KEY_BASE = 'base';
+    public const string KEY_BASE = 'base';
 
-    public const KEY_BODY = 'body';
+    public const string KEY_BODY = 'body';
 
-    public const KEY_CONTENT = 'content';
+    public const string KEY_CONTENT = 'content';
 
-    public const KEY_COUNT = 'count';
+    public const string KEY_COUNT = 'count';
 
-    public const KEY_DESCRIPTION = 'description';
+    public const string KEY_DESCRIPTION = 'description';
 
-    public const KEY_GROUP = 'group';
+    public const string KEY_GROUP = 'group';
 
-    public const KEY_KEY = 'key';
+    public const string KEY_KEY = 'key';
 
-    public const KEY_ID = 'id';
+    public const string KEY_ID = 'id';
 
-    public const KEY_LIMIT = 'limit';
+    public const string KEY_LIMIT = 'limit';
 
-    public const KEY_LINKS = '_links';
+    public const string KEY_LINKS = '_links';
 
-    public const KEY_MAX_RESULT = 'max-result';
+    public const string KEY_MAX_RESULT = 'max-result';
 
-    public const KEY_MESSAGE = 'message';
+    public const string KEY_MESSAGE = 'message';
 
-    public const KEY_NAME = 'name';
+    public const string KEY_NAME = 'name';
 
-    public const KEY_OPERATION = 'operation';
+    public const string KEY_OPERATION = 'operation';
 
-    public const KEY_PLAIN = 'plain';
+    public const string KEY_PLAIN = 'plain';
 
-    public const KEY_READ = 'read';
+    public const string KEY_READ = 'read';
 
-    public const KEY_REASON = 'reason';
+    public const string KEY_REASON = 'reason';
 
-    public const KEY_RESPONSE = 'response';
+    public const string KEY_RESPONSE = 'response';
 
-    public const KEY_RESTRICTIONS = 'restrictions';
+    public const string KEY_RESTRICTIONS = 'restrictions';
 
-    public const KEY_RESULTS = 'results';
+    public const string KEY_RESULTS = 'results';
 
-    public const KEY_SIZE = 'size';
+    public const string KEY_SIZE = 'size';
 
-    public const KEY_SPACE = 'space';
+    public const string KEY_SPACE = 'space';
 
-    public const KEY_SPACES = 'spaces';
+    public const string KEY_SPACES = 'spaces';
 
-    public const KEY_START = 'start';
+    public const string KEY_START = 'start';
 
-    public const KEY_START_INDEX = 'start-index';
+    public const string KEY_START_INDEX = 'start-index';
 
-    public const KEY_STATUS = 'status';
+    public const string KEY_STATUS = 'status';
 
-    public const KEY_STATUS_CODE = 'statusCode';
+    public const string KEY_STATUS_CODE = 'statusCode';
 
-    public const KEY_STORAGE = 'storage';
+    public const string KEY_STORAGE = 'storage';
 
-    public const KEY_TITLE = 'title';
+    public const string KEY_TITLE = 'title';
 
-    public const KEY_TOTAL = 'total';
+    public const string KEY_TOTAL = 'total';
 
-    public const KEY_TOTAL_SIZE = 'totalSize';
+    public const string KEY_TOTAL_SIZE = 'totalSize';
 
-    public const KEY_TYPE = 'type';
+    public const string KEY_TYPE = 'type';
 
-    public const KEY_UPDATE = 'update';
+    public const string KEY_UPDATE = 'update';
 
-    public const KEY_URL = 'url';
+    public const string KEY_URL = 'url';
 
-    public const KEY_USER = 'user';
+    public const string KEY_USER = 'user';
 
-    public const KEY_VALUE = 'value';
+    public const string KEY_VALUE = 'value';
 
-    public const KEY_WEBUI = 'webui';
+    public const string KEY_WEBUI = 'webui';
 
     // Messages
-    public const MSG_ERROR = 'Error with Status';
+    public const string MSG_ERROR = 'Error with Status';
 
-    public const VAL_TRUE = 'true';
+    public const string VAL_TRUE = 'true';
 
-    public const VAL_FALSE = 'false';
+    public const string VAL_FALSE = 'false';
 
     /**
      * @return Map<mixed,mixed>
@@ -181,5 +181,6 @@ interface IResponse extends \Stringable
     /**
      * @inheritDoc
      */
-    public function __toString();
+    #[\Override]
+    public function __toString(): string;
 }

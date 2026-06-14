@@ -21,17 +21,16 @@ use PHPUnit\Framework\EasyGoingTestCase;
 
 class AddonMacroDataTest extends EasyGoingTestCase
 {
-    /**
-     * @return AddonMacroData
-     */
+    #[\Override]
     protected static function prepareO2t(): AddonMacroData
     {
         return new AddonMacroData();
     }
 
     /**
-     * @return AddonMacroData
+     * @inheritDoc
      */
+    #[\Override]
     protected function getCasto2t(): AddonMacroData
     {
         return $this->o2t;

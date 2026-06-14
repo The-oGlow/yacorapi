@@ -29,7 +29,7 @@ class AddonMacroData extends AbstractContainer
 {
     use ExtensionTrait;
 
-    protected const SHOW_ITEMS_MAX = 20;
+    protected const int SHOW_ITEMS_MAX = 20;
 
     private static LoggerInterface $logger;
 

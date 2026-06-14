@@ -17,17 +17,16 @@ use PHPUnit\Framework\EasyGoingTestCase;
 
 class RapiClientExtensionTest extends EasyGoingTestCase
 {
-    /**
-     * @return RapiClientExtension
-     */
+    #[\Override]
     protected static function prepareO2t(): RapiClientExtension
     {
         return new RapiClientExtension();
     }
 
     /**
-     * @return RapiClientExtension
+     * @inheritDoc
      */
+    #[\Override]
     protected function getCasto2t(): RapiClientExtension
     {
         return $this->o2t;

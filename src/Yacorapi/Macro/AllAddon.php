@@ -22,7 +22,7 @@ class AllAddon extends AbstractAddon
 {
     use ExtensionTrait;
 
-    public const ADDON_ALL = 99;
+    public const int ADDON_ALL = 99;
 
     private static LoggerInterface $logger;
 

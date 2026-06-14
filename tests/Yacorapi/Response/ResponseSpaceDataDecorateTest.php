@@ -20,17 +20,16 @@ use PHPUnit\Framework\EasyGoingTestCase;
 
 class ResponseSpaceDataDecorateTest extends EasyGoingTestCase
 {
-    /**
-     * @return ResponseSpaceDataDecorate
-     */
+    #[\Override]
     protected static function prepareO2t(): ResponseSpaceDataDecorate
     {
         return new ResponseSpaceDataDecorate(new Response());
     }
 
     /**
-     * @return ResponseSpaceDataDecorate
+     * @inheritDoc
      */
+    #[\Override]
     protected function getCasto2t(): ResponseSpaceDataDecorate
     {
         return $this->o2t;
@@ -109,11 +108,7 @@ class ResponseSpaceDataDecorateTest extends EasyGoingTestCase
     public function testGetResult(): void
     {
         self::expectException(\BadFunctionCallException::class);
-        /** @var mixed */
-        $actual = $this->getCasto2t()->getResult(YacorapiTestData::KEY_NUM1);
-
-        self::assertIsArray($actual);
-        self::assertNotEmpty($actual);
+        $this->getCasto2t()->getResult(YacorapiTestData::KEY_NUM1);
     }
 
     public function testIsResultsAvailable(): void

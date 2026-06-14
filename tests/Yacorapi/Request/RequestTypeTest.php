@@ -17,7 +17,7 @@ use PHPUnit\Framework\ConstantCheckTestCase;
 
 class RequestTypeTest extends ConstantCheckTestCase
 {
-    public const  CLASS_PREFIX = RequestType::class . self::C_STATIC_SEP;
+    public const string CLASS_PREFIX = RequestType::class . self::C_STATIC_SEP;
 
     protected const int EXPECTED_CONSTANT_COUNT = 4;
 
@@ -26,6 +26,7 @@ class RequestTypeTest extends ConstantCheckTestCase
     /**
      * @return RequestType
      */
+    #[\Override]
     protected static function prepareO2t(): RequestType
     {
         return new RequestType();
@@ -34,11 +35,13 @@ class RequestTypeTest extends ConstantCheckTestCase
     /**
      * @return RequestType
      */
+    #[\Override]
     protected function getCasto2t(): RequestType
     {
         return  $this->o2t;
     }
 
+    #[\Override]
     public static function setUpBeforeClass(bool $withConstCrossCheck = self::WITH_CONST_CROSSCHECK, int $expectedConstsCount = self::EXPECTED_CONSTANT_COUNT): void
     {
         parent::setUpBeforeClass($withConstCrossCheck, $expectedConstsCount);

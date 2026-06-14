@@ -27,15 +27,15 @@ class ResponseDryRun implements IResponse
 {
     use ImplodeTrait;
 
-    public const DUMMY_BODY  = 'dummy-body';
+    public const string DUMMY_BODY  = 'dummy-body';
 
-    public const DUMMY_KEY   = 'dummy-key';
+    public const string DUMMY_KEY   = 'dummy-key';
 
-    public const DUMMY_TITLE = 'dummy-title';
+    public const string DUMMY_TITLE = 'dummy-title';
 
-    public const DUMMY_TYPE  = 'dummy-type';
+    public const string DUMMY_TYPE  = 'dummy-type';
 
-    public const DUMMY_WEBUI = 'dummy-webui';
+    public const string DUMMY_WEBUI = 'dummy-webui';
 
     /**
      * @return array<mixed,mixed>
@@ -99,8 +99,9 @@ class ResponseDryRun implements IResponse
     }
 
     /**
-     * @return Map<mixed,mixed>
+     * @inheritDoc
      */
+    #[\Override]
     public function getResponse(): Map
     {
         return self::prepareResponse(true);
@@ -109,6 +110,7 @@ class ResponseDryRun implements IResponse
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function keyExists($key): bool
     {
         return true;
@@ -117,15 +119,19 @@ class ResponseDryRun implements IResponse
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function keys(): Set
     {
-        return new Map()->keys();
+        $map = new Map();
+
+        return $map->keys();
     }
 
     /**
      * @inheritDoc
      */
-    public function getValue($key, $default = '')
+    #[\Override]
+    public function getValue(mixed $key, mixed $default = ''): mixed
     {
         return $default;
     }
@@ -133,6 +139,7 @@ class ResponseDryRun implements IResponse
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function checkStatus(): bool
     {
         return true;
@@ -141,6 +148,7 @@ class ResponseDryRun implements IResponse
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function getResults(): Map
     {
         $response = new Map();
@@ -158,7 +166,8 @@ class ResponseDryRun implements IResponse
     /**
      * @inheritDoc
      */
-    public function getResult(int $idx)
+    #[\Override]
+    public function getResult(int $idx): mixed
     {
         return self::dummyResultEntry(true);
     }
@@ -166,6 +175,7 @@ class ResponseDryRun implements IResponse
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function isResultsAvailable(): bool // NOSONAR: php:S4144
     {
         return true;
@@ -174,6 +184,7 @@ class ResponseDryRun implements IResponse
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function checkData(): bool
     {
         // TODO: Implement checkData() method.
@@ -183,7 +194,8 @@ class ResponseDryRun implements IResponse
     /**
      * @inheritDoc
      */
-    public function checkDataWrite()
+    #[\Override]
+    public function checkDataWrite(): mixed
     {
         // TODO: Implement checkDataWrite() method.
         return false;
@@ -192,6 +204,7 @@ class ResponseDryRun implements IResponse
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function getBody(): string
     {
         // TODO: Implement method.
@@ -201,6 +214,7 @@ class ResponseDryRun implements IResponse
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function getRestrictions(): array
     {
         // TODO: Implement method.
@@ -210,8 +224,9 @@ class ResponseDryRun implements IResponse
     /**
      * @inheritDoc
      */
-    public function __toString()
+    #[\Override]
+    public function __toString(): string
     {
-        return $this->implode_recursive(';', $this->getResponse()->toArray());
+        return self::implode_recursive(';', $this->getResponse()->toArray());
     }
 }

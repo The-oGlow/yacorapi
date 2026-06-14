@@ -20,13 +20,13 @@ use Psr\Log\LoggerInterface;
 
 class CsvFileAdapterTest extends EasyGoingTestCase
 {
-    private const RAND_MIN = 10;
+    private const int RAND_MIN = 10;
 
-    private const RAND_MAX = 30;
+    private const int RAND_MAX = 30;
 
-    private const CHAR_MIN = 64;
+    private const int CHAR_MIN = 64;
 
-    private const CHAR_MAX = self::CHAR_MIN + 26;
+    private const int CHAR_MAX = self::CHAR_MIN + 26;
 
     private static LoggerInterface $logger;
 
@@ -43,22 +43,19 @@ class CsvFileAdapterTest extends EasyGoingTestCase
         self::$logger->debug('END');
     }
 
-    /**
-     * @return CsvFileAdapter
-     */
+    #[\Override]
     protected static function prepareO2t(): CsvFileAdapter
     {
         return new CsvFileAdapter(self::$fileName);
     }
 
-    /**
-     * @return CsvFileAdapter
-     */
+    #[\Override]
     protected function getCasto2t(): CsvFileAdapter
     {
         return $this->o2t;
     }
 
+    #[\Override]
     public function setUp(): void
     {
         self::$fileName = YacorapiTestData::FILE_FILENAME . '-' . microtime(true);

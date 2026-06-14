@@ -17,17 +17,16 @@ use PHPUnit\Framework\EasyGoingTestCase;
 
 class MockProviderTest extends EasyGoingTestCase
 {
-    /**
-     * @return MockProvider
-     */
+    #[\Override]
     protected static function prepareO2t(): MockProvider
     {
         return new MockProvider();
     }
 
     /**
-     * @return MockProvider
+     * @inheritDoc
      */
+    #[\Override]
     protected function getCasto2t(): MockProvider
     {
         return $this->o2t;

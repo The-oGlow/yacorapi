@@ -26,6 +26,7 @@ class FooClazzTest extends EasyGoingTestCase
 
     private static LoggerInterface $logger;
 
+    #[\Override]
     public static function setUpBeforeClass(): void
     {
         self::$logger = new ConsoleLogger(FooClazzTest::class);
@@ -34,17 +35,16 @@ class FooClazzTest extends EasyGoingTestCase
         self::$logger->debug('END');
     }
 
-    /**
-     * @return FooClazz Ccast to business class
-     */
+    #[\Override]
     protected static function prepareO2t(): FooClazz
     {
         return new FooClazz();
     }
 
     /**
-     * @return FooClazz Cast to business class
+     * @inheritDoc
      */
+    #[\Override]
     protected function getCasto2t(): FooClazz
     {
         return $this->o2t;

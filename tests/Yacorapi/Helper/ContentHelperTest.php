@@ -19,13 +19,13 @@ use PHPUnit\Framework\ConstantCheckTestCase;
 
 class ContentHelperTest extends ConstantCheckTestCase
 {
-    public const CLASS_PREFIX = ContentHelperTest::class . self::C_STATIC_SEP;
+    public const string CLASS_PREFIX = ContentHelperTest::class . self::C_STATIC_SEP;
 
-    public const MACRO_HTML = 'html';
+    public const string MACRO_HTML = 'html';
 
-    public const MACRO_SECTION = 'section';
+    public const string MACRO_SECTION = 'section';
 
-    public const MACRO_COLUMN = 'column';
+    public const string MACRO_COLUMN = 'column';
 
     protected const int EXPECTED_CONSTANT_COUNT = 13;
 

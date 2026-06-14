@@ -25,17 +25,15 @@ class MySpacesTest extends EasyGoingTestCase
 {
     use UnavailableMethodsTrait;
 
-    public const METHOD_PREFIX    = 'getMySpaceList';
+    public const string METHOD_PREFIX    = 'getMySpaceList';
 
-    public const METHOD_IGNORED   = [SpaceData::SPACE_SINGLE_METHOD, SpaceData::SPACE_SIMPLE_METHOD, SpaceData::SPACE_ALL_METHOD];
+    public const array METHOD_IGNORED   = [SpaceData::SPACE_SINGLE_METHOD, SpaceData::SPACE_SIMPLE_METHOD, SpaceData::SPACE_ALL_METHOD];
 
-    public const METHOD_REFERENCE = SpaceData::SPACE_ALL_METHOD;
+    public const string METHOD_REFERENCE = SpaceData::SPACE_ALL_METHOD;
 
     private static LoggerInterface $logger;
 
-    /**
-     * @return null|PersonalSpaces
-     */
+    #[\Override]
     protected static function prepareO2t(): ?PersonalSpaces
     {
         try {
@@ -50,14 +48,13 @@ class MySpacesTest extends EasyGoingTestCase
         return null;
     }
 
-    /**
-     * @return PersonalSpaces
-     */
+    #[\Override]
     protected function getCasto2t(): PersonalSpaces
     {
         return $this->o2t;
     }
 
+    #[\Override]
     public function setUp(): void
     {
         self::$logger = new ConsoleLogger(MySpacesTest::class);

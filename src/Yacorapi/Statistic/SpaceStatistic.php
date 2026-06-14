@@ -15,5 +15,5 @@ namespace oglow\tools\Yacorapi\Statistic;
 
 class SpaceStatistic extends AbstractStatistic
 {
-    protected const EXPORT_NAME = 'spacekey';
+    protected const string EXPORT_NAME = 'spacekey';
 }

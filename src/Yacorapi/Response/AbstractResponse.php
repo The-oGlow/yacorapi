@@ -50,6 +50,7 @@ abstract class AbstractResponse implements IResponse
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function getResponse(): Map
     {
         return $this->response;
@@ -58,6 +59,7 @@ abstract class AbstractResponse implements IResponse
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function keyExists($key): bool
     {
         return !empty($key) && $this->response->hasKey($key);
@@ -66,6 +68,7 @@ abstract class AbstractResponse implements IResponse
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function keys(): Set
     {
         return $this->response->keys();
@@ -74,7 +77,8 @@ abstract class AbstractResponse implements IResponse
     /**
      * @inheritDoc
      */
-    public function getValue($key, $default = '')
+    #[\Override]
+    public function getValue(mixed $key, mixed $default = ''): mixed
     {
         $value = $default;
         if ($this->keyExists($key)) {
@@ -87,6 +91,7 @@ abstract class AbstractResponse implements IResponse
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function checkStatus(): bool
     {
         self::$logger->debug('START');
@@ -108,6 +113,7 @@ abstract class AbstractResponse implements IResponse
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function checkData(): bool
     {
         self::$logger->debug('START');
@@ -135,7 +141,8 @@ abstract class AbstractResponse implements IResponse
     /**
      * @inheritDoc
      */
-    public function checkDataWrite()
+    #[\Override]
+    public function checkDataWrite(): mixed
     {
         self::$logger->debug('START');
 
@@ -164,6 +171,7 @@ abstract class AbstractResponse implements IResponse
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function getResults(): Map
     {
         return $this->results;
@@ -172,7 +180,8 @@ abstract class AbstractResponse implements IResponse
     /**
      * @inheritDoc
      */
-    public function getResult(int $idx)
+    #[\Override]
+    public function getResult(int $idx): mixed
     {
         $result = null;
         if ($this->isResultsAvailable()) {
@@ -185,6 +194,7 @@ abstract class AbstractResponse implements IResponse
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function isResultsAvailable(): bool
     {
         return !$this->results->isEmpty();
@@ -193,6 +203,7 @@ abstract class AbstractResponse implements IResponse
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function getBody(): string
     {
         $body = '';
@@ -211,6 +222,7 @@ abstract class AbstractResponse implements IResponse
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function getRestrictions(): array
     {
         $restrictions = [];
@@ -222,11 +234,12 @@ abstract class AbstractResponse implements IResponse
     }
 
     /**
-     * @return array<mixed,mixed>
+     * @return mixed
      *
      * @SuppressWarnings("PHPMD.CamelCaseMethodName")
      */
-    protected function __toStringValues(): array
+    #[\Override]
+    protected function __toStringValues(): mixed
     {
         return [self::KEY_RESPONSE => $this->response, self::KEY_RESULTS => $this->results];
     }

@@ -46,7 +46,6 @@ class FileAdapter extends AbstractStoreAdapter
             $resultsEntry[self::KEY_LINKS][self::KEY_TINYUI],
             $resultsEntry[self::KEY_TITLE]
         );
-        // self::$logger->debug('', [$line]);
 
         self::$logger->debug('Writing results to ', [$this->storeItem]);
 
@@ -56,8 +55,9 @@ class FileAdapter extends AbstractStoreAdapter
     }
 
     /**
-     * @param mixed $dataContent
+     * @inheritDoc
      */
+    #[\Override]
     public function storeData(mixed $dataContent): void
     {
         self::$logger->debug('START');
@@ -69,8 +69,9 @@ class FileAdapter extends AbstractStoreAdapter
     }
 
     /**
-     * @param string|string[] $dataHeader
+     * @inheritDoc
      */
+    #[\Override]
     public function storeDataHeader(string|array $dataHeader): void
     {
         self::$logger->debug('START');

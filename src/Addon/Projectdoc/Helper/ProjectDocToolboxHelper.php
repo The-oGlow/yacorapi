@@ -113,16 +113,19 @@ class ProjectDocToolboxHelper extends AbstractHelper
         return $modified;
     }
 
+    /**
+     * @inheritDoc
+     */
+    #[\Override]
     protected function prepareSettings(): void
     {
         // NothingToDo
     }
 
     /**
-     * @param Map<mixed, mixed> $overrideParameters
-     *
-     * @return bool
+     * @inheritDoc
      */
+    #[\Override]
     final protected function validateSettings(Map $overrideParameters): bool
     {
         return true;

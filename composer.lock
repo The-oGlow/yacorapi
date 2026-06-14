@@ -4,7 +4,7 @@
     "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
     "This file is @generated automatically"
   ],
-  "content-hash": "6193008143b3fd6667a40a21de7fb118",
+  "content-hash": "13430f0c7bf8e8b3c84672a980983c01",
   "packages": [
     {
       "name": "composer/ca-bundle",
@@ -877,11 +877,17 @@
     },
     {
       "name": "ollily/ezkoding",
-      "version": "8.4.999",
+      "version": "8.4.002",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/The-oGlow/ezkoding.git",
+        "reference": "895f476415df6f94ccc1b1dfc751697f52dbb68b"
+      },
       "dist": {
-        "type": "path",
-        "url": "../ezkoding",
-        "reference": "a3608e2c26bf88e08f04b83eba97818115e3edd0"
+        "type": "zip",
+        "url": "https://api.github.com/repos/The-oGlow/ezkoding/zipball/895f476415df6f94ccc1b1dfc751697f52dbb68b",
+        "reference": "895f476415df6f94ccc1b1dfc751697f52dbb68b",
+        "shasum": ""
       },
       "require": {
         "composer/composer": "^2.0",
@@ -903,88 +909,11 @@
       "autoload": {
         "psr-4": {
           "Monolog\\": "src/Monolog",
-          "ollily\\Tools\\": "src/Tools",
-          "PHPUnit\\": "src/PHPUnit"
+          "PHPUnit\\": "src/PHPUnit",
+          "ollily\\Tools\\": "src/Tools"
         }
       },
-      "autoload-dev": {
-        "psr-4": {
-          "Monolog\\": "tests/Monolog",
-          "ollily\\Tools\\": "tests/Tools",
-          "PHPUnit\\": "tests/PHPUnit"
-        }
-      },
-      "scripts": {
-        "c-all": [
-          "composer c-check",
-          "composer c-test",
-          "composer c-format"
-        ],
-        "c-check": [
-          "composer c-phpstan",
-          "composer c-psalm",
-          "composer c-phpmd"
-        ],
-        "c-da": [
-          "@composer dump-autoload"
-        ],
-        "c-dry-fix": [
-          "@php vendor/bin/php-cs-fixer check --allow-unsupported-php-version=yes --allow-risky=yes --format txt"
-        ],
-        "c-fix": [
-          "@php vendor/bin/php-cs-fixer fix --allow-unsupported-php-version=yes --allow-risky=yes"
-        ],
-        "c-format": [
-          "composer c-fix",
-          "composer c-phpcbf",
-          "composer c-phpcs"
-        ],
-        "c-package": [
-          "@composer archive --format=zip --dir=target/staging"
-        ],
-        "c-phpcs": [
-          "echo PHP Code Sniffer checking ...",
-          "bash -c 'mkdir --p target/analysis/phpcs'",
-          "bash -c 'rm -f target/analysis/phpcs/phpcsniffer-report.txt'",
-          "@php vendor/bin/phpcs --colors || true",
-          "bash -c 'if [ -s target/analysis/phpcs/phpcsniffer-report.txt ]; then cat target/analysis/phpcs/phpcsniffer-report.txt; exit 0; else exit 0; fi'"
-        ],
-        "c-phpcbf": [
-          "echo PHP Code Sniffer FIXING ...",
-          "bash -c 'mkdir --p target/analysis/phpcs'",
-          "bash -c 'rm -f target/analysis/phpcs/phpcsniffer-report.txt'",
-          "@php vendor/bin/phpcbf || true",
-          "bash -c 'if [ -s target/analysis/phpcs/phpcsniffer-report.txt ]; then cat target/analysis/phpcs/phpcsniffer-report.txt; exit 0; else exit 0; fi'"
-        ],
-        "c-phpdoc": [
-          "phpDocumentor run"
-        ],
-        "c-phpmd": [
-          "echo PHP Mess Dectector running ...",
-          "bash -c 'rm -f target/analysis/phpmd/phpmd-report.txt'",
-          "@php vendor/bin/phpmd src,tests text .phpmd.xml.dist --report-file=target/analysis/phpmd/phpmd-report.txt --error-file=target/analysis/phpmd/zzz-phpmd-error.txt --color --cache --ignore-errors-on-exit --ignore-violations-on-exit",
-          "bash -c 'if [ -s target/analysis/phpmd/phpmd-report.txt ]; then cat target/analysis/phpmd/phpmd-report.txt; exit 1; else exit 0; fi'"
-        ],
-        "c-phpstan": [
-          "@php vendor/bin/phpstan analyse"
-        ],
-        "c-psalm": [
-          "@php vendor/bin/psalm --report=target/analysis/psalm/psalm-report.txt"
-        ],
-        "c-dry-psalter": [
-          "@php vendor/bin/psalter --dry-run --issues=MissingReturnType,MissingClosureReturnType,MissingParamType,MissingPropertyType,PossiblyUndefinedVariable,PossiblyUndefinedGlobalVariable,ParamNameMismatch"
-        ],
-        "c-psalter": [
-          "@php vendor/bin/psalter --issues=MissingReturnType,MissingClosureReturnType,MissingParamType,MissingPropertyType,PossiblyUndefinedVariable,PossiblyUndefinedGlobalVariable,ParamNameMismatch"
-        ],
-        "c-sonar": [
-          "composer c-test",
-          "@php -Dproject.settings=sonar-project.properties vendor/bin/sonar-scanner"
-        ],
-        "c-test": [
-          "@php -d xdebug.mode=coverage vendor/bin/phpunit -c phpunit.xml.cov"
-        ]
-      },
+      "notification-url": "https://packagist.org/downloads/",
       "license": [
         "Apache-2.0"
       ],
@@ -1006,19 +935,24 @@
         "testcase"
       ],
       "support": {
-        "issues": "https://github.com/ollily/ezkoding/issues"
+        "issues": "https://github.com/ollily/ezkoding/issues",
+        "source": "https://github.com/The-oGlow/ezkoding/tree/8.4.002"
       },
-      "transport-options": {
-        "relative": true
-      }
+      "time": "2026-06-14T13:10:35+00:00"
     },
     {
       "name": "ollily/ezlogging",
-      "version": "8.4.999",
+      "version": "8.4.001",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/The-oGlow/ezlogging.git",
+        "reference": "8a2b9cbe2c9fec7007f6e46e034e8e2bdd89e5b2"
+      },
       "dist": {
-        "type": "path",
-        "url": "../ezlogging",
-        "reference": "16a5f7e3bfae3255fe424cfaab25cf7b4945f639"
+        "type": "zip",
+        "url": "https://api.github.com/repos/The-oGlow/ezlogging/zipball/8a2b9cbe2c9fec7007f6e46e034e8e2bdd89e5b2",
+        "reference": "8a2b9cbe2c9fec7007f6e46e034e8e2bdd89e5b2",
+        "shasum": ""
       },
       "require": {
         "monolog/monolog": "^3.0",
@@ -1043,82 +977,7 @@
           "Monolog\\": "src/Monolog"
         }
       },
-      "autoload-dev": {
-        "psr-4": {
-          "Monolog\\": "tests/Monolog"
-        }
-      },
-      "scripts": {
-        "c-all": [
-          "composer c-check",
-          "composer c-test",
-          "composer c-format"
-        ],
-        "c-check": [
-          "composer c-phpstan",
-          "composer c-psalm",
-          "composer c-phpmd"
-        ],
-        "c-da": [
-          "@composer dump-autoload"
-        ],
-        "c-dry-fix": [
-          "@php vendor/bin/php-cs-fixer check --allow-unsupported-php-version=yes --allow-risky=yes --format txt"
-        ],
-        "c-fix": [
-          "@php vendor/bin/php-cs-fixer fix --allow-unsupported-php-version=yes --allow-risky=yes"
-        ],
-        "c-format": [
-          "composer c-fix",
-          "composer c-phpcbf",
-          "composer c-phpcs"
-        ],
-        "c-package": [
-          "@composer archive --format=zip --dir=target/staging"
-        ],
-        "c-phpcs": [
-          "echo PHP Code Sniffer checking ...",
-          "bash -c 'mkdir --p target/analysis/phpcs'",
-          "bash -c 'rm -f target/analysis/phpcs/phpcsniffer-report.txt'",
-          "@php vendor/bin/phpcs --colors || true",
-          "bash -c 'if [ -s target/analysis/phpcs/phpcsniffer-report.txt ]; then cat target/analysis/phpcs/phpcsniffer-report.txt; exit 0; else exit 0; fi'"
-        ],
-        "c-phpcbf": [
-          "echo PHP Code Sniffer FIXING ...",
-          "bash -c 'mkdir --p target/analysis/phpcs'",
-          "bash -c 'rm -f target/analysis/phpcs/phpcsniffer-report.txt'",
-          "@php vendor/bin/phpcbf || true",
-          "bash -c 'if [ -s target/analysis/phpcs/phpcsniffer-report.txt ]; then cat target/analysis/phpcs/phpcsniffer-report.txt; exit 0; else exit 0; fi'"
-        ],
-        "c-phpdoc": [
-          "phpDocumentor run"
-        ],
-        "c-phpmd": [
-          "echo PHP Mess Dectector running ...",
-          "bash -c 'rm -f target/analysis/phpmd/phpmd-report.txt'",
-          "@php vendor/bin/phpmd src,tests text .phpmd.xml.dist --report-file=target/analysis/phpmd/phpmd-report.txt --error-file=target/analysis/phpmd/zzz-phpmd-error.txt --color --cache --ignore-errors-on-exit --ignore-violations-on-exit",
-          "bash -c 'if [ -s target/analysis/phpmd/phpmd-report.txt ]; then cat target/analysis/phpmd/phpmd-report.txt; exit 1; else exit 0; fi'"
-        ],
-        "c-phpstan": [
-          "@php vendor/bin/phpstan analyse"
-        ],
-        "c-psalm": [
-          "@php vendor/bin/psalm --report=target/analysis/psalm/psalm-report.txt"
-        ],
-        "c-dry-psalter": [
-          "@php vendor/bin/psalter --dry-run --issues=MissingReturnType,MissingClosureReturnType,MissingParamType,MissingPropertyType,PossiblyUndefinedVariable,PossiblyUndefinedGlobalVariable,ParamNameMismatch"
-        ],
-        "c-psalter": [
-          "@php vendor/bin/psalter --issues=MissingReturnType,MissingClosureReturnType,MissingParamType,MissingPropertyType,PossiblyUndefinedVariable,PossiblyUndefinedGlobalVariable,ParamNameMismatch"
-        ],
-        "c-sonar": [
-          "composer c-test",
-          "@php -Dproject.settings=sonar-project.properties vendor/bin/sonar-scanner"
-        ],
-        "c-test": [
-          "@php -d xdebug.mode=coverage vendor/bin/phpunit -c phpunit.xml.cov"
-        ]
-      },
+      "notification-url": "https://packagist.org/downloads/",
       "license": [
         "Apache-2.0"
       ],
@@ -1139,11 +998,10 @@
         "php"
       ],
       "support": {
-        "issues": "https://github.com/ollily/ezlogging/issues"
+        "issues": "https://github.com/ollily/ezlogging/issues",
+        "source": "https://github.com/The-oGlow/ezlogging/tree/8.4.001"
       },
-      "transport-options": {
-        "relative": true
-      }
+      "time": "2026-06-14T13:13:14+00:00"
     },
     {
       "name": "php-ds/php-ds",

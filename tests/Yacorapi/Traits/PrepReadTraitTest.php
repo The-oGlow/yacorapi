@@ -20,19 +20,18 @@ use PHPUnit\Framework\EasyGoingTestCase;
 
 class PrepReadTraitTest extends EasyGoingTestCase
 {
-    private const C_FILTER_SPACEKEY = '&spaceKey=';
+    private const string C_FILTER_SPACEKEY = '&spaceKey=';
 
-    /**
-     * @return PrepReadTraitTestClazz
-     */
+    #[\Override]
     protected static function prepareO2t(): PrepReadTraitTestClazz
     {
         return new PrepReadTraitTestClazz();
     }
 
     /**
-     * @return PrepReadTraitTestClazz
+     * @inheritDoc
      */
+    #[\Override]
     protected function getCasto2t(): PrepReadTraitTestClazz
     {
         return $this->o2t;

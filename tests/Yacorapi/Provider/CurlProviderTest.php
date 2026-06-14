@@ -18,17 +18,16 @@ use Psr\Log\LogLevel;
 
 class CurlProviderTest extends EasyGoingTestCase
 {
-    /**
-     * @return CurlProvider
-     */
+    #[\Override]
     protected static function prepareO2t(): CurlProvider
     {
         return new CurlProvider(null, LogLevel::DEBUG);
     }
 
     /**
-     * @return CurlProvider
+     * @inheritDoc
      */
+    #[\Override]
     protected function getCasto2t(): CurlProvider
     {
         return  $this->o2t;

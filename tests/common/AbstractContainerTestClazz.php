@@ -15,11 +15,11 @@ namespace oglow\tools\common;
 
 class AbstractContainerTestClazz extends AbstractContainer
 {
-    public const TEST_MODE = 1;
+    public const int TEST_MODE = 1;
 
-    public const DATA_A = 'a';
+    public const string DATA_A = 'a';
 
-    public const DATA_B = 'b';
+    public const string DATA_B = 'b';
 
     protected function prepareModes(): void
     {

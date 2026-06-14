@@ -18,9 +18,7 @@ use PHPUnit\Framework\EasyGoingTestCase;
 
 class FileStoreItemTest extends EasyGoingTestCase
 {
-    /**
-     * @return IStoreItem
-     */
+    #[\Override]
     protected static function prepareO2t(): IStoreItem
     {
         return FileStoreItem::prepareTargetFile(
@@ -31,8 +29,9 @@ class FileStoreItemTest extends EasyGoingTestCase
     }
 
     /**
-     * @return FileStoreItem
+     * @inheritDoc
      */
+    #[\Override]
     protected function getCasto2t(): FileStoreItem
     {
         return $this->o2t;

@@ -41,6 +41,7 @@ use oglow\tools\Yacorapi\Statistic\ValueStatistic;
 use oglow\tools\Yacorapi\Traits\ExtensionTrait;
 use ollily\Tools\Emergency;
 use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 
 /**
  * @psalm-suppress PropertyNotSetInConstructor
@@ -49,13 +50,16 @@ abstract class AbstractRapiClient implements IRapiClient
 {
     use ExtensionTrait;
 
-    public const MSG_PARENT_ID_MUST_BE_NUMERIC = 'parentId must be numeric!';
+    /** Default output level (INFO) */
+    public const string LEVEL_DEFAULT = LogLevel::INFO;
 
-    public const MSG_MOVED_TO_NEW_PARENT = 'Page moved to new parent ';
+    public const string MSG_PARENT_ID_MUST_BE_NUMERIC = 'parentId must be numeric!';
 
-    public const MSG_SPACE_IS_EMPTY = 'spaceKey is empty!';
+    public const string MSG_MOVED_TO_NEW_PARENT = 'Page moved to new parent ';
 
-    public const MSG_UPDATE_PAGE_WITHOUT_CHANGES = 'Update page without changes';
+    public const string MSG_SPACE_IS_EMPTY = 'spaceKey is empty!';
+
+    public const string MSG_UPDATE_PAGE_WITHOUT_CHANGES = 'Update page without changes';
 
     protected ConstData $constData;
 
@@ -292,8 +296,6 @@ abstract class AbstractRapiClient implements IRapiClient
 
     /**
      * @param int $modeExtension
-     *
-     * @psalm-suppress PropertyTypeCoercion
      */
     protected function loadExtensions(int $modeExtension): void
     {

@@ -15,11 +15,11 @@ namespace oglow\tools\Yacorapi\Request;
 
 class RequestType
 {
-    public const REQ_TYP_GET    = 0;
+    public const int REQ_TYP_GET    = 0;
 
-    public const REQ_TYP_PUT    = 1;
+    public const int REQ_TYP_PUT    = 1;
 
-    public const REQ_TYP_DELETE = 4;
+    public const int REQ_TYP_DELETE = 4;
 
-    public const REQ_TYP_POST   = 2;
+    public const int REQ_TYP_POST   = 2;
 }

@@ -35,10 +35,10 @@ class YacorapiTestData extends TestData
 
       /** All extensions */
 
-    public const EXTENSIONS_COUNT_TOTAL = 6;
+    public const int EXTENSIONS_COUNT_TOTAL = 6;
 
     /** Definition of all extensions */
-    public const EXTENSIONS_NAMES = [
+    public const array EXTENSIONS_NAMES = [
         IExtension::EXTENSION_RAPI_CLIENT => RapiClientExtension::class,
         IExtension::EXTENSION_ATLASSIAN => AtlassianExtension::class,
         IExtension::EXTENSION_ATLASSIAN_ADMIN => AdminExtension::class,
@@ -48,34 +48,34 @@ class YacorapiTestData extends TestData
     ];
 
     /** Array of extensions which will be verified */
-    public const EXTENSIONS_VERIFY = [RapiClientExtension::class, AtlassianExtension::class];
+    public const array EXTENSIONS_VERIFY = [RapiClientExtension::class, AtlassianExtension::class];
 
     /** Single extension which will be verified */
-    public const EXTENSION_VERIFY = [RapiClientExtension::class];
+    public const array EXTENSION_VERIFY = [RapiClientExtension::class];
 
-    public const EXT_USER_MACRO_MACRO = 3;
+    public const int EXT_USER_MACRO_MACRO = 3;
 
-    public const EXT_USER_MACRO_ADDON = 1;
+    public const int EXT_USER_MACRO_ADDON = 1;
 
-    public const EXT_ATLASSIAN_ADDON = 2;
+    public const int EXT_ATLASSIAN_ADDON = 2;
 
-    public const EXT_PDT_ADDON = 4;
+    public const int EXT_PDT_ADDON = 4;
 
-    public const EXT_3PARTY_MACRO = 69;
+    public const int EXT_3PARTY_MACRO = 69;
 
-    public const EXT_ATLASSIAN_MACRO = 60;
+    public const int EXT_ATLASSIAN_MACRO = 60;
 
-    public const EXT_PDT_MACRO = 87;
+    public const int EXT_PDT_MACRO = 87;
 
-    public const EXT_3PARTY_ADDON = 11;
+    public const int EXT_3PARTY_ADDON = 11;
 
     // Atlassian Addon
 
     /** All addons from all extensions */
-    public const ADDONS_COUNT_TOTAL = 18;
+    public const int ADDONS_COUNT_TOTAL = 18;
 
     /** Names of one addon from each extension */
-    public const ADDONS_NAMES = [
+    public const array ADDONS_NAMES = [
         'Atlassian Confluence Macros Addon',
         'Confluence HTML Macros',
         'Confluence User Macros',
@@ -96,174 +96,174 @@ class YacorapiTestData extends TestData
         'projectdoc Toolbox for Confluence',
     ];
 
-    public const CLAZZ_ALL_ADDON = '\oglow\tools\Yacorapi\Macro\AllAddon';
+    public const string CLAZZ_ALL_ADDON = '\oglow\tools\Yacorapi\Macro\AllAddon';
 
-    public const CLAZZ_SINGLE_ADDON = '\oglow\tools\Yacorapi\Macro\SingleAddon';
+    public const string CLAZZ_SINGLE_ADDON = '\oglow\tools\Yacorapi\Macro\SingleAddon';
 
-    public const CLAZZ_PDT = '\oglow\tools\Addon\Projectdoc\Macro\ProjectdocAddon';
+    public const string CLAZZ_PDT = '\oglow\tools\Addon\Projectdoc\Macro\ProjectdocAddon';
 
-    public const CLAZZ_3PARTY = '\oglow\tools\Addon\ThirdParty\Macro\ThirdPartyAddon';
+    public const string CLAZZ_3PARTY = '\oglow\tools\Addon\ThirdParty\Macro\ThirdPartyAddon';
 
-    public const CLAZZ_BLOCKER_ADDON = '\oglow\tools\Yacorapi\Macro\BlockerAddon';
+    public const string CLAZZ_BLOCKER_ADDON = '\oglow\tools\Yacorapi\Macro\BlockerAddon';
 
-    public const CLAZZ_ATLASSIAN_ADDON = '\oglow\tools\Addon\Atlassian\Macro\AtlassianAddon';
+    public const string CLAZZ_ATLASSIAN_ADDON = '\oglow\tools\Addon\Atlassian\Macro\AtlassianAddon';
 
-    public const CLAZZ_USER_MACRO_ADDON = '\oglow\tools\Addon\UserMacro\Macro\UserMacroAddon';
+    public const string CLAZZ_USER_MACRO_ADDON = '\oglow\tools\Addon\UserMacro\Macro\UserMacroAddon';
 
     /** The name of an addon which does not exists in the system */
-    public const ADDONS_NAME_NOTEXIST = 'NOTEXIST-ADDON';
+    public const string ADDONS_NAME_NOTEXIST = 'NOTEXIST-ADDON';
 
     /** Array of specific addons which will be checked */
-    public const ADDONS_VERIFY = ['Atlassian Confluence Macros Addon', 'Confluence User Macros'];
+    public const array ADDONS_VERIFY = ['Atlassian Confluence Macros Addon', 'Confluence User Macros'];
 
     /** Single addon which will be verified */
-    public const ADDON_VERIFY = 'Atlassian Confluence Macros Addon';
+    public const string ADDON_VERIFY = 'Atlassian Confluence Macros Addon';
 
     // (Addon-) Mode
-    public const MODE_NOTEXIST = 'NOTEXIST-MODE';
+    public const string MODE_NOTEXIST = 'NOTEXIST-MODE';
 
-    public const MODE_SINGLE_ADDON_COUNT_TOTAL = 1;
+    public const int MODE_SINGLE_ADDON_COUNT_TOTAL = 1;
 
-    public const MODE_SINGLE_MACRO_COUNT_TOTAL = 5;
+    public const int MODE_SINGLE_MACRO_COUNT_TOTAL = 5;
 
-    public const MODE_SINGLE_ADDON_NAME = 'single-addon';
+    public const string MODE_SINGLE_ADDON_NAME = 'single-addon';
 
-    public const MODE_SINGLE_ADDON_NAME_MACRO_COUNT = 5;
+    public const int MODE_SINGLE_ADDON_NAME_MACRO_COUNT = 5;
 
-    public const MODE_SINGLE_ADDON_NAME_NOTEXIST = self::ADDONS_NAME_NOTEXIST;
+    public const string MODE_SINGLE_ADDON_NAME_NOTEXIST = self::ADDONS_NAME_NOTEXIST;
 
-    public const MODE_SINGLE_ADDON_NAME_NOTEXIST_MACRO_COUNT = 0;
+    public const int MODE_SINGLE_ADDON_NAME_NOTEXIST_MACRO_COUNT = 0;
 
-    public const MODE_BLOCKER_ADDON_COUNT_TOTAL = 11;
+    public const int MODE_BLOCKER_ADDON_COUNT_TOTAL = 11;
 
-    public const MODE_BLOCKER_MACRO_COUNT_TOTAL = 87;
+    public const int MODE_BLOCKER_MACRO_COUNT_TOTAL = 87;
 
-    public const MODE_BLOCKER_ADDON_NAME = 'Scroll Runtime for Confluence';
+    public const string MODE_BLOCKER_ADDON_NAME = 'Scroll Runtime for Confluence';
 
-    public const MODE_BLOCKER_ADDON_NAME_MACRO_COUNT = 7;
+    public const int MODE_BLOCKER_ADDON_NAME_MACRO_COUNT = 7;
 
-    public const MODE_BLOCKER_ADDON_NAME_NOTEXISTS = self::ADDONS_NAME_NOTEXIST;
+    public const string MODE_BLOCKER_ADDON_NAME_NOTEXISTS = self::ADDONS_NAME_NOTEXIST;
 
-    public const MODE_BLOCKER_ADDON_NAME_NOTEXISTS_MACRO_COUNT = 0;
+    public const int MODE_BLOCKER_ADDON_NAME_NOTEXISTS_MACRO_COUNT = 0;
 
-    public const MODE_ALL_ADDON_COUNT_TOTAL = 18;
+    public const int MODE_ALL_ADDON_COUNT_TOTAL = 18;
 
-    public const MODE_ALL_MACRO_COUNT_TOTAL = 219;
+    public const int MODE_ALL_MACRO_COUNT_TOTAL = 219;
 
-    public const MODE_ALL_ADDON_NAME = 'Scroll Documents for Confluence';
+    public const string MODE_ALL_ADDON_NAME = 'Scroll Documents for Confluence';
 
-    public const MODE_ALL_ADDON_NAME_MACRO_COUNT = 1;
+    public const int MODE_ALL_ADDON_NAME_MACRO_COUNT = 1;
 
-    public const MODE_ALL_ADDON_NAME_NOTEXIST = self::ADDONS_NAME_NOTEXIST;
+    public const string MODE_ALL_ADDON_NAME_NOTEXIST = self::ADDONS_NAME_NOTEXIST;
 
-    public const MODE_ALL_ADDON_NAME_NOTEXIST_MACRO_COUNT = 0;
+    public const int MODE_ALL_ADDON_NAME_NOTEXIST_MACRO_COUNT = 0;
 
     // Atlassian Macro
 
     /** All macros from all addons */
-    public const MACROS_COUNT_TOTAL = 219;
+    public const int MACROS_COUNT_TOTAL = 219;
 
     /** Array of specific macros which will be checked */
-    public const MACROS_VERIFY = ['children', 'code', 'create-from-template', 'section', 'toc'];
+    public const array MACROS_VERIFY = ['children', 'code', 'create-from-template', 'section', 'toc'];
 
     /** Single macro which will be checked */
-    public const MACRO_VERIFY = 'create-from-template';
+    public const string MACRO_VERIFY = 'create-from-template';
 
     // Unspecific test data
-    public const ADDON_1 = 'MyAddon';
+    public const string ADDON_1 = 'MyAddon';
 
-    public const ADDON_1_A = 'macro1';
+    public const string ADDON_1_A = 'macro1';
 
-    public const ADDON_1_B = 'macro3';
+    public const string ADDON_1_B = 'macro3';
 
-    public const ADDON_1_C = 'macro5';
+    public const string ADDON_1_C = 'macro5';
 
-    public const ADDON_1_ORDER = [YacorapiTestData::ADDON_1_A, YacorapiTestData::ADDON_1_B, YacorapiTestData::ADDON_1_C];
+    public const array ADDON_1_ORDER = [YacorapiTestData::ADDON_1_A, YacorapiTestData::ADDON_1_B, YacorapiTestData::ADDON_1_C];
 
-    public const ADDON_2 = 'OtherAddon';
+    public const string ADDON_2 = 'OtherAddon';
 
-    public const ADDON_2_A = 'macro2';
+    public const string ADDON_2_A = 'macro2';
 
-    public const ADDON_2_C = 'macro6';
+    public const string ADDON_2_C = 'macro6';
 
-    public const ADDON_2_B = 'macro4';
+    public const string ADDON_2_B = 'macro4';
 
-    public const ADDON_2_ORDER = [YacorapiTestData::ADDON_2_A, YacorapiTestData::ADDON_2_B, YacorapiTestData::ADDON_2_C];
+    public const array ADDON_2_ORDER = [YacorapiTestData::ADDON_2_A, YacorapiTestData::ADDON_2_B, YacorapiTestData::ADDON_2_C];
 
-    public const C_RESPONSE_SIZE_EMPTY = 0;
+    public const int C_RESPONSE_SIZE_EMPTY = 0;
 
-    public const C_PAGEID_NOTEXIST = 0;
+    public const int C_PAGEID_NOTEXIST = 0;
 
-    public const C_PAGEID_EXIST = 2;
+    public const int C_PAGEID_EXIST = 2;
 
-    public const C_PAGEID_NEW = 11;
+    public const int C_PAGEID_NEW = 11;
 
-    public const C_SPACE_EMPTY = '';
+    public const string C_SPACE_EMPTY = '';
 
-    public const C_SPACE_EXIST_KEY = 'SPCEX';
+    public const string C_SPACE_EXIST_KEY = 'SPCEX';
 
-    public const C_SPACE_EXIST_ID = 12345;
+    public const int C_SPACE_EXIST_ID = 12345;
 
-    public const C_SPACE_EXIST_NAME = 'Existing Space';
+    public const string C_SPACE_EXIST_NAME = 'Existing Space';
 
-    public const C_SPACE_EXIST_DESCRIPTION = 'A space which exists.';
+    public const string C_SPACE_EXIST_DESCRIPTION = 'A space which exists.';
 
-    public const C_SPACE_EXIST_STATUS = RequestParameterData::STATUS_TYPE_CURRENT;
+    public const string C_SPACE_EXIST_STATUS = RequestParameterData::STATUS_TYPE_CURRENT;
 
-    public const C_SPACE_EXIST_TYPE = RequestParameterData::SPACE_TYPE_GLOBAL;
+    public const string C_SPACE_EXIST_TYPE = RequestParameterData::SPACE_TYPE_GLOBAL;
 
-    public const C_FILTERTERM_01 = 'filter=1';
+    public const string C_FILTERTERM_01 = 'filter=1';
 
-    public const C_PREPURL_01 = 'title~Test';
+    public const string C_PREPURL_01 = 'title~Test';
 
-    public const C_SEARCHTERM_EMPTY = '';
+    public const string C_SEARCHTERM_EMPTY = '';
 
-    public const C_SEARCHTERM_01 = 'searchtext';
+    public const string C_SEARCHTERM_01 = 'searchtext';
 
-    public const C_SEARCHPAGEID_01 = 532951146;
+    public const int C_SEARCHPAGEID_01 = 532951146;
 
-    public const C_SEARCHPAGETITLE_01 = 'SEARCHPAGETITLE_01';
+    public const string C_SEARCHPAGETITLE_01 = 'SEARCHPAGETITLE_01';
 
-    public const C_SEARCHPAGESPACE_01 = self::C_SPACE_EXIST_KEY;
+    public const string C_SEARCHPAGESPACE_01 = self::C_SPACE_EXIST_KEY;
 
-    public const C_SEARCHPAGESPARENT_01 = self::C_PAGEID_EXIST;
+    public const int C_SEARCHPAGESPARENT_01 = self::C_PAGEID_EXIST;
 
-    public const HTML_PAGE = '<!DOCTYPE html><html><head><title>#pagetitle#</title></head><body></body></html>';
+    public const string HTML_PAGE = '<!DOCTYPE html><html><head><title>#pagetitle#</title></head><body></body></html>';
 
     // Macro Code
-    public const MACR_PH = '#ph#';
+    public const string MACR_PH = '#ph#';
 
-    public const MACR_MACRO_ID = '12345678-1234-1234-1234-123456789012';
+    public const string MACR_MACRO_ID = '12345678-1234-1234-1234-123456789012';
 
-    public const MACR_MACRO_TAG_START = '<ac:structured-macro ac:macro-id="' .
+    public const string MACR_MACRO_TAG_START = '<ac:structured-macro ac:macro-id="' .
         self::MACR_MACRO_ID .
         '" ac:name="' .
         self::MACR_PH .
         '" ac:schema-version="1">';
 
-    public const MACR_MACRO_TAG_END = '</ac:structured-macro>';
+    public const string MACR_MACRO_TAG_END = '</ac:structured-macro>';
 
-    public const MACR_BODY_EMPTY = '';
+    public const string MACR_BODY_EMPTY = '';
 
-    public const MACR_BODY_SIMPLE = '<body></body>';
+    public const string MACR_BODY_SIMPLE = '<body></body>';
 
-    public const MACR_BODY_INVALID = 'invalidBody';
+    public const string MACR_BODY_INVALID = 'invalidBody';
 
     // Macro Doctype
-    public const MACR_DOCTYPE_NEW = 'newDT';
+    public const string MACR_DOCTYPE_NEW = 'newDT';
 
-    public const MACR_DOCTYPE_OLD = 'oldDT';
+    public const string MACR_DOCTYPE_OLD = 'oldDT';
 
-    public const MACR_DOCTYPE_WRONG = self::NOTEXIST_NAME;
+    public const string MACR_DOCTYPE_WRONG = self::NOTEXIST_NAME;
 
-    public const MACR_DOCTYPE_EMPTY = '';
+    public const string MACR_DOCTYPE_EMPTY = '';
     // Macro Code Name
 
-    public const MACR_PROJECTDOC_PROPERTIES_MARKER = 'projectdoc-properties-marker';
+    public const string MACR_PROJECTDOC_PROPERTIES_MARKER = 'projectdoc-properties-marker';
 
-    public const MACR_PDT_PROPERTIES_MARKER_01 = '<ac:parameter ac:name="doctype">';
+    public const string MACR_PDT_PROPERTIES_MARKER_01 = '<ac:parameter ac:name="doctype">';
 
-    public const MACR_PDT_PROPERTIES_MARKER_02 = '</ac:parameter>';
+    public const string MACR_PDT_PROPERTIES_MARKER_02 = '</ac:parameter>';
 
     // Response
 
@@ -282,7 +282,7 @@ class YacorapiTestData extends TestData
     /** @var array<mixed,mixed> */
     private static array $RESP_SCAN_RESULT;
 
-    public const RESP_RESTRICTION = [
+    public const array RESP_RESTRICTION = [
         IResponse::KEY_RESTRICTIONS => [
             IResponse::KEY_READ => [
                 IResponse::KEY_OPERATION => IResponse::KEY_READ,

@@ -36,83 +36,83 @@ final class ConstData extends AbstractSingleton
     //
     // Public Consts
     // Page Consts
-    public const PAGE_START = 0;
+    public const int PAGE_START = 0;
 
-    public const PAGE_LIMIT = 50;
+    public const int PAGE_LIMIT = 50;
 
-    public const PAGE_MAX_PAGES = 20;
+    public const int PAGE_MAX_PAGES = 20;
 
-    public const PAGE_MAX_RESULTS = 50 * 20;
+    public const int PAGE_MAX_RESULTS = 50 * 20;
 
     // Instance Consts
-    public const KEY_USE_PROD = 'USE_PROD';
+    public const string KEY_USE_PROD = 'USE_PROD';
 
-    public const KEY_CONF_BASE_URL = 'CONF_BASE_URL';
+    public const string KEY_CONF_BASE_URL = 'CONF_BASE_URL';
 
-    public const KEY_AUTH_TOKEN_NAME = 'AUTH_TOKEN_NAME';
+    public const string KEY_AUTH_TOKEN_NAME = 'AUTH_TOKEN_NAME';
 
-    public const KEY_MY_CERT_CA = 'MY_CERT_CA';
+    public const string KEY_MY_CERT_CA = 'MY_CERT_CA';
 
     // Folder Consts
-    public const KEY_MY_DIR = 'MY_DIR';
-    //    public const KEY_SCRIPT_NAME_PH    = 'SCRIPT_NAME_PH';
+    public const string KEY_MY_DIR = 'MY_DIR';
+    //    public const string KEY_SCRIPT_NAME_PH    = 'SCRIPT_NAME_PH';
 
-    public const KEY_PROJECT_ROOT = 'PROJECT_ROOT';
+    public const string KEY_PROJECT_ROOT = 'PROJECT_ROOT';
 
-    public const KEY_TARGET_ROOTDIR = 'TARGET_ROOTDIR';
+    public const string KEY_TARGET_ROOTDIR = 'TARGET_ROOTDIR';
 
-    public const KEY_TARGET_DIR = 'TARGET_DIR';
-    //    public const KEY_TARGET_FILENAME   = 'TARGET_FILENAME';
+    public const string KEY_TARGET_DIR = 'TARGET_DIR';
+    //    public const string KEY_TARGET_FILENAME   = 'TARGET_FILENAME';
 
-    public const KEY_INPUT_ROOTDIR = 'INPUT_ROOTDIR';
+    public const string KEY_INPUT_ROOTDIR = 'INPUT_ROOTDIR';
 
-    public const KEY_INPUT_DIR = 'INPUT_DIR';
+    public const string KEY_INPUT_DIR = 'INPUT_DIR';
 
     // Url Consts
-    public const KEY_CONF_CONTENT_URL = 'CONF_CONTENT_URL';
+    public const string KEY_CONF_CONTENT_URL = 'CONF_CONTENT_URL';
 
-    public const KEY_CONF_SEARCH_URL = 'CONF_SEARCH_URL';
+    public const string KEY_CONF_SEARCH_URL = 'CONF_SEARCH_URL';
 
-    public const KEY_CONF_SPACE_URL = 'CONF_SPACE_URL';
+    public const string KEY_CONF_SPACE_URL = 'CONF_SPACE_URL';
 
     // Misc Consts
-    public const KEY_WEB_SHOW_PAGEID = 'WEB_SHOW_PAGEID';
+    public const string KEY_WEB_SHOW_PAGEID = 'WEB_SHOW_PAGEID';
 
-    public const KEY_SEARCH_LIMIT = 'SEARCH_LIMIT';
+    public const string KEY_SEARCH_LIMIT = 'SEARCH_LIMIT';
 
-    public const TARGET_ORGDIR = 'org';
+    public const string TARGET_ORGDIR = 'org';
 
-    public const TARGET_MODDIR = 'mod';
+    public const string TARGET_MODDIR = 'mod';
 
-    public const C_RAPI_CONTENT = '/rest/api/content';
+    public const string C_RAPI_CONTENT = '/rest/api/content';
 
-    public const C_RAPI_SCAN = self::C_RAPI_CONTENT . '/scan';
+    public const string C_RAPI_SCAN = self::C_RAPI_CONTENT . '/scan';
 
-    public const C_RAPI_SEARCH = '/rest/api/search';
+    public const string C_RAPI_SEARCH = '/rest/api/search';
 
-    public const C_RAPI_SPACE = '/rest/api/space';
+    public const string C_RAPI_SPACE = '/rest/api/space';
 
-    public const C_RAPI_VIEWPAGE = '/pages/viewpage.action?pageId=';
+    public const string C_RAPI_VIEWPAGE = '/pages/viewpage.action?pageId=';
 
-    public const C_RAPI_RESTRICTION = '/restriction';
+    public const string C_RAPI_RESTRICTION = '/restriction';
 
-    public const C_RAPI_RESTRICTION_BYOP = '/restriction/byOperation';
+    public const string C_RAPI_RESTRICTION_BYOP = '/restriction/byOperation';
 
     //
     // Private Consts
     // User Configuration Consts
-    private const CONF_USERCERTFILE = 'cacert.pem';
+    private const string CONF_USERCERTFILE = 'cacert.pem';
 
-    private const CONF_USERAUTHFILE = 'MyAuth.php';
+    private const string CONF_USERAUTHFILE = 'MyAuth.php';
 
-    private const CONF_USERFOLDER = '.yacorapi';
+    private const string CONF_USERFOLDER = '.yacorapi';
 
     // Auth Consts
-    private const CONF_PAT_PROD = 'CONF_PAT_PROD';
+    private const string CONF_PAT_PROD = 'CONF_PAT_PROD';
 
-    private const CONF_PAT_TEST = 'CONF_PAT_TEST';
+    private const string CONF_PAT_TEST = 'CONF_PAT_TEST';
 
-    private const CLI_LONG_OPTS = [self::KEY_USE_PROD . ':'];
+    private const array CLI_LONG_OPTS = [self::KEY_USE_PROD . ':'];
 
     private static LoggerInterface $logger;
 
@@ -123,10 +123,7 @@ final class ConstData extends AbstractSingleton
     /** @var Map<string,scalar> */
     private Map $definedConst;
 
-    /**
-     * @psalm-suppress UndefinedDocblockClass
-     * @psalm-suppress PropertyNotSetInConstructor
-     */
+    /** @psalm-suppress UndefinedClass */
     private PersonalAuth $userAuth;
 
     public function __construct(string $key = '', bool $withLogger = false)
@@ -233,6 +230,10 @@ final class ConstData extends AbstractSingleton
         return $fullTargetFile;
     }
 
+    /**
+     * @inheritDoc
+     */
+    #[\Override]
     protected function prepareSettings(): void
     {
         self::$logger->debug('START');
@@ -249,10 +250,9 @@ final class ConstData extends AbstractSingleton
     }
 
     /**
-     * @param Map<mixed, mixed> $overrideParameters
-     *
-     * @return bool
+     * @inheritDoc
      */
+    #[\Override]
     protected function validateSettings(Map $overrideParameters): bool
     {
         self::$logger->debug('START');

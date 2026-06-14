@@ -22,22 +22,19 @@ class ProjectDocToolboxHelperTest extends EasyGoingTestCase
 {
     private string $cleanupFile = '';
 
-    /**
-     * @return ProjectDocToolboxHelper
-     */
+    #[\Override]
     protected static function prepareO2t(): ProjectDocToolboxHelper
     {
         return new ProjectDocToolboxHelper();
     }
 
-    /**
-     * @return ProjectDocToolboxHelper
-     */
+    #[\Override]
     protected function getCasto2t(): ProjectDocToolboxHelper
     {
         return $this->o2t;
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         parent::tearDown();
@@ -135,6 +132,7 @@ class ProjectDocToolboxHelperTest extends EasyGoingTestCase
     {
         $actual = $this->getCasto2t()->replaceDoctype($body, $oldDoctype, $newDoctype);
 
+        self::assertNotNull($actual);
         if ($isContains) {
             self::assertStringContainsString($newDoctype, $actual);
         } else {

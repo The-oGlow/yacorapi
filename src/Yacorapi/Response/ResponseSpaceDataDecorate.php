@@ -21,9 +21,9 @@ use Psr\Log\LoggerInterface;
 
 class ResponseSpaceDataDecorate extends AbstractResponse
 {
-    public const SPACE_ARCH_FLAG1  = '[archived]';
+    public const string SPACE_ARCH_FLAG1  = '[archived]';
 
-    public const SPACE_ARCH_FLAG2  = '[archive]';
+    public const string SPACE_ARCH_FLAG2  = '[archive]';
 
     private static LoggerInterface $logger;
 
@@ -52,6 +52,7 @@ class ResponseSpaceDataDecorate extends AbstractResponse
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function keyExists($key): bool
     {
         return !empty($key) && array_key_exists($key, $this->spaces);
@@ -60,6 +61,7 @@ class ResponseSpaceDataDecorate extends AbstractResponse
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function keys(): Set
     {
         return new Set(array_keys($this->spaces));
@@ -68,7 +70,8 @@ class ResponseSpaceDataDecorate extends AbstractResponse
     /**
      * @inheritDoc
      */
-    public function getValue($key, $default = '')
+    #[\Override]
+    public function getValue(mixed $key, mixed $default = ''): mixed
     {
         $value = $default;
         if ($this->keyExists($key)) {
@@ -82,6 +85,7 @@ class ResponseSpaceDataDecorate extends AbstractResponse
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function getResults(): Map
     {
         return new Map($this->getSpaces());
@@ -90,6 +94,7 @@ class ResponseSpaceDataDecorate extends AbstractResponse
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function getResult(int $idx): void
     {
         throw new \BadFunctionCallException('Try instead ResponseSpaceDataDecorate->getValue()');
@@ -98,6 +103,7 @@ class ResponseSpaceDataDecorate extends AbstractResponse
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function isResultsAvailable(): bool
     {
         return !empty($this->spaces);
@@ -207,7 +213,8 @@ class ResponseSpaceDataDecorate extends AbstractResponse
      *
      * @SuppressWarnings("PHPMD.CamelCaseMethodName")
      */
-    protected function __toStringValues()
+    #[\Override]
+    protected function __toStringValues(): mixed
     {
         return [self::KEY_SPACES => $this->spaces];
     }

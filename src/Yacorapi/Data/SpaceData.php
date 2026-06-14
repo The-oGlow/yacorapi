@@ -23,27 +23,27 @@ use Psr\Log\LoggerInterface;
 
 class SpaceData extends AbstractContainer
 {
-    public const           SPACE_SINGLE = 1;
+    public const           int SPACE_SINGLE = 1;
 
-    public const           SPACE_SINGLE_METHOD = 'getMySpaceListSingle';
+    public const           string SPACE_SINGLE_METHOD = 'getMySpaceListSingle';
 
-    public const           SPACE_SIMPLE                      = 2;
+    public const           int SPACE_SIMPLE                      = 2;
 
-    public const           SPACE_SIMPLE_METHOD               = 'getMySpaceListSimple';
+    public const           string SPACE_SIMPLE_METHOD               = 'getMySpaceListSimple';
 
-    public const           SPACE_ALL                         = 99;
+    public const           int SPACE_ALL                         = 99;
 
-    public const           SPACE_ALL_METHOD                  = 'getMySpaceListAll';
+    public const           string SPACE_ALL_METHOD                  = 'getMySpaceListAll';
 
-    public const           MY_SPACE_NS_SEP = '\\';
+    public const           string MY_SPACE_NS_SEP = '\\';
 
-    public const           MY_SPACES_NS                      = 'oglow\\tools\\Yacorapi';
+    public const           string MY_SPACES_NS                      = 'oglow\\tools\\Yacorapi';
 
-    public const           MY_SPACES_CLAZZ                   = 'MySpaces';
+    public const           string MY_SPACES_CLAZZ                   = 'MySpaces';
 
-    public const           MY_SPACES_NS_CLAZZ                = self::MY_SPACE_NS_SEP . self::MY_SPACES_NS . self::MY_SPACE_NS_SEP . self::MY_SPACES_CLAZZ;
+    public const           string MY_SPACES_NS_CLAZZ                = self::MY_SPACE_NS_SEP . self::MY_SPACES_NS . self::MY_SPACE_NS_SEP . self::MY_SPACES_CLAZZ;
 
-    public const           MY_SPACES_FILE                    = self::MY_SPACES_CLAZZ . '.php';
+    public const           string MY_SPACES_FILE                    = self::MY_SPACES_CLAZZ . '.php';
 
     private static LoggerInterface $logger;
 

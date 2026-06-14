@@ -24,6 +24,9 @@ abstract class AbstractSingleton implements ISingleton
 
     private string $key;
 
+    /**
+     * Initialize this singleton.
+     */
     abstract protected function prepareSettings(): void;
 
     /**
