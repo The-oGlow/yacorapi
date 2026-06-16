@@ -15,6 +15,7 @@ namespace oglow\tools\Addon\Projectdoc\Traits;
 
 use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Response\Response;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\EasyGoingTestCase;
 
 class ProjectdocTraitTest extends EasyGoingTestCase
@@ -37,9 +38,8 @@ class ProjectdocTraitTest extends EasyGoingTestCase
     /**
      * @param bool      $expected
      * @param IResponse $response
-     *
-     * @dataProvider providerResponse
      */
+    #[DataProvider('providerResponse')]
     public function testCheckDataPdtDocument(bool $expected, IResponse $response): void
     {
         $actual = $this->getCasto2t()->checkDataPdtDocument($response);
@@ -50,9 +50,8 @@ class ProjectdocTraitTest extends EasyGoingTestCase
     /**
      * @param bool      $expected
      * @param IResponse $response
-     *
-     * @dataProvider providerResponse
      */
+    #[DataProvider('providerResponse')]
     public function testCheckDataPdtProperty(bool $expected, IResponse $response): void
     {
         $actual = $this->getCasto2t()->checkDataPdtProperty($response);
@@ -64,9 +63,8 @@ class ProjectdocTraitTest extends EasyGoingTestCase
      * @param string    $expected
      * @param IResponse $response
      * @param string    $propertyName
-     *
-     * @dataProvider providerPropertyName
      */
+    #[DataProvider('providerPropertyName')]
     public function testshowResultsPdt(string $expected, IResponse $response, string $propertyName): void
     {
         $actual = $this->getCasto2t()->showResultsPdt($response, $propertyName);
@@ -78,9 +76,8 @@ class ProjectdocTraitTest extends EasyGoingTestCase
      * @param IResponse $expected
      * @param int       $pageId
      * @param string    $propertyName
-     *
-     * @dataProvider providerPdtReadProperty
      */
+    #[DataProvider('providerPdtReadProperty')]
     public function testPdtReadProperty(IResponse $expected, int $pageId, string $propertyName): void
     {
         $actual = $this->getCasto2t()->pdtReadProperty($pageId, $propertyName);
@@ -93,9 +90,8 @@ class ProjectdocTraitTest extends EasyGoingTestCase
      * @param array<mixed,mixed> $propertyNames
      * @param string             $spaceKey
      * @param string             $where
-     *
-     * @dataProvider providerPdtReadDocument
      */
+    #[DataProvider('providerPdtReadDocument')]
     public function testPdtReadDocument(
         IResponse $expected,
         array $propertyNames,
@@ -110,7 +106,7 @@ class ProjectdocTraitTest extends EasyGoingTestCase
     /**
      * @return array<mixed,mixed>
      */
-    public function providerResponse(): array
+    public static function providerResponse(): array
     {
         return [
             'empty' => [ false, new Response()],
@@ -120,7 +116,7 @@ class ProjectdocTraitTest extends EasyGoingTestCase
     /**
      * @return array<mixed,mixed>
      */
-    public function providerPropertyName(): array
+    public static function providerPropertyName(): array
     {
         return [
             'empty' => [ '', new Response(), ''],
@@ -130,7 +126,7 @@ class ProjectdocTraitTest extends EasyGoingTestCase
     /**
      * @return array<mixed,mixed>
      */
-    public function providerPdtReadProperty(): array
+    public static function providerPdtReadProperty(): array
     {
         return [
             'empty' => [ new Response(), 0,''],
@@ -140,7 +136,7 @@ class ProjectdocTraitTest extends EasyGoingTestCase
     /**
      * @return array<mixed,mixed>
      */
-    public function providerPdtReadDocument(): array
+    public static function providerPdtReadDocument(): array
     {
         return [
             'empty' => [ new Response(), [],'',''],

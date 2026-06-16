@@ -32,7 +32,6 @@ parameters:
         -
             identifier: class.notFound
             paths:
-                - src/Yacorapi/ConstData.php
                 - tests/Yacorapi/MySpacesTest.php
         -
             identifier: property.onlyWritten

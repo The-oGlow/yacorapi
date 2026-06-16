@@ -19,7 +19,7 @@ class ExitCodesTest extends ConstantCheckTestCase
 {
     public const string CLASS_PREFIX = ExitCodesTest::class . self::C_STATIC_SEP;
 
-    protected const int EXPECTED_CONSTANT_COUNT = 8;
+    protected const int EXPECTED_CONSTANT_COUNT = 9;
 
     protected const bool WITH_CONST_CROSSCHECK = true;
 
@@ -55,6 +55,7 @@ class ExitCodesTest extends ConstantCheckTestCase
             self::CLASS_PREFIX . 'ERR_CODE_BLOCKER_ADDON_NOT_INIT',
             self::CLASS_PREFIX . 'ERR_CODE_SINGLEADDON_NOT_INIT',
             self::CLASS_PREFIX . 'ERR_CODE_ALLADDON_NOT_INIT',
+            self::CLASS_PREFIX . 'ERR_CODE_CURL_INIT',
         ];
         static::updateActualConsts($const);
 

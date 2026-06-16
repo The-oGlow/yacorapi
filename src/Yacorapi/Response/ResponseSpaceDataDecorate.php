@@ -95,7 +95,7 @@ class ResponseSpaceDataDecorate extends AbstractResponse
      * @inheritDoc
      */
     #[\Override]
-    public function getResult(int $idx): void
+    public function getResult(int $idx): mixed
     {
         throw new \BadFunctionCallException('Try instead ResponseSpaceDataDecorate->getValue()');
     }

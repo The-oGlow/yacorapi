@@ -22,6 +22,7 @@ use oglow\tools\Yacorapi\Macro\BlockerAddon;
 use oglow\tools\Yacorapi\Macro\SingleAddon;
 use oglow\tools\Yacorapi\Response\Response;
 use oglow\tools\Yacorapi\Statistic\SpaceStatistic;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\EasyGoingTestCase;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
@@ -68,9 +69,8 @@ class RapiClientTest extends EasyGoingTestCase
     /**
      * @param string $expected
      * @param int    $pageId
-     *
-     * @dataProvider providerReadPageByPageId
      */
+    #[DataProvider('providerReadPageByPageId')]
     public function testReadPageByPageId(string $expected, int $pageId): void
     {
         self::$logger->info('START');
@@ -90,7 +90,7 @@ class RapiClientTest extends EasyGoingTestCase
     /**
      * @return array<mixed,mixed>
      */
-    public function providerReadPageByPageId(): array
+    public static function providerReadPageByPageId(): array
     {
         return [
             'exists' => [YacorapiTestData::HTML_PAGE, YacorapiTestData::C_SEARCHPAGEID_01],
@@ -303,9 +303,8 @@ class RapiClientTest extends EasyGoingTestCase
     /**
      * @param int $expected
      * @param int $mode
-     *
-     * @dataProvider providerPrepareAddonSet
      */
+    #[DataProvider('providerPrepareAddonSet')]
     public function testPrepareAddonSet(int $expected, int $mode): void
     {
         self::$logger->info('START');
@@ -324,7 +323,7 @@ class RapiClientTest extends EasyGoingTestCase
     /**
      * @return array<mixed,mixed>
      */
-    public function providerPrepareAddonSet(): array
+    public static function providerPrepareAddonSet(): array
     {
         return [
             'default' => [18, AllAddon::ADDON_ALL],

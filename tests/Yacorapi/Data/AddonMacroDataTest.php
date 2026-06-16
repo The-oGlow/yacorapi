@@ -17,6 +17,7 @@ use oglow\tools\Yacorapi\Macro\AllAddon;
 use oglow\tools\Yacorapi\Macro\BlockerAddon;
 use oglow\tools\Yacorapi\Macro\SingleAddon;
 use oglow\tools\Yacorapi\YacorapiTestData;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\EasyGoingTestCase;
 
 class AddonMacroDataTest extends EasyGoingTestCase
@@ -39,9 +40,8 @@ class AddonMacroDataTest extends EasyGoingTestCase
     /**
      * @param int             $expected
      * @param null|int|string $mode
-     *
-     * @dataProvider providerGetMacro
      */
+    #[DataProvider('providerGetMacro')]
     public function testGetMacros(int $expected, int|string|null $mode = null): void
     {
         if (is_null($mode)) {
@@ -56,7 +56,7 @@ class AddonMacroDataTest extends EasyGoingTestCase
     /**
      * @return array<string,array<int,mixed>>
      */
-    public function providerGetMacro(): array
+    public static function providerGetMacro(): array
     {
         return [
             'DefaultMode' => [YacorapiTestData::MODE_SINGLE_MACRO_COUNT_TOTAL, null],
@@ -71,9 +71,8 @@ class AddonMacroDataTest extends EasyGoingTestCase
      * @param int        $expected
      * @param int|string $mode
      * @param string     $addon
-     *
-     * @dataProvider providerGetMacroNamesByAddon
      */
+    #[DataProvider('providerGetMacroNamesByAddon')]
     public function testgetMacroNamesByAddon(int $expected, int|string $mode = '', string $addon = ''): void
     {
         $actual = $this->getCasto2t()->getMacroNamesByAddon($mode, $addon);
@@ -85,7 +84,7 @@ class AddonMacroDataTest extends EasyGoingTestCase
     /**
      * @return array<string,array<int,mixed>>
      */
-    public function providerGetMacroNamesByAddon(): array
+    public static function providerGetMacroNamesByAddon(): array
     {
         return [
             'SingleMode'          => [
@@ -129,9 +128,8 @@ class AddonMacroDataTest extends EasyGoingTestCase
     /**
      * @param int             $expected
      * @param null|int|string $mode
-     *
-     * @dataProvider providerGetMacro
      */
+    #[DataProvider('providerGetMacro')]
     public function testGetMacroNamesByMode(int $expected, int|string|null $mode = null): void
     {
         if (is_null($mode)) {

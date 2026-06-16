@@ -15,6 +15,7 @@ namespace oglow\tools\Yacorapi\Helper;
 
 use Ds\Map;
 use ollily\Tools\Test\TestData;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\ConstantCheckTestCase;
 
 class ContentHelperTest extends ConstantCheckTestCase
@@ -80,9 +81,8 @@ class ContentHelperTest extends ConstantCheckTestCase
     /**
      * @param string                $expected
      * @param null|Map<mixed,mixed> $parameters
-     *
-     * @dataProvider providerParameters
      */
+    #[DataProvider('providerParameters')]
     public function testPrepareMacroParameter(string $expected, ?Map $parameters): void
     {
         $actual = $this->getCasto2t()::prepareMacroParameter($parameters);
@@ -93,9 +93,8 @@ class ContentHelperTest extends ConstantCheckTestCase
     /**
      * @param string $expected
      * @param string $body
-     *
-     * @dataProvider providerPlainBody
      */
+    #[DataProvider('providerPlainBody')]
     public function testPreparePlainBody(string $expected, string $body): void
     {
         $actual = $this->getCasto2t()::preparePlainBody($body);
@@ -106,9 +105,8 @@ class ContentHelperTest extends ConstantCheckTestCase
     /**
      * @param string $expected
      * @param string $body
-     *
-     * @dataProvider providerRichBody
      */
+    #[DataProvider('providerRichBody')]
     public function testPrepareRichTextBody(string $expected, string $body): void
     {
         $actual = $this->getCasto2t()::prepareRichTextBody($body);
@@ -120,9 +118,8 @@ class ContentHelperTest extends ConstantCheckTestCase
      * @param string $expected
      * @param string $macroName
      * @param string $body
-     *
-     * @dataProvider providerMacroNameBody
      */
+    #[DataProvider('providerMacroNameBody')]
     public function testPrepareMacroBody(string $expected, string $macroName, string $body): void
     {
         $actual = $this->getCasto2t()::prepareMacroBody($macroName, $body);
@@ -133,9 +130,8 @@ class ContentHelperTest extends ConstantCheckTestCase
     /**
      * @param string $expected
      * @param string $macroName
-     *
-     * @dataProvider providerChooseMacroBody
      */
+    #[DataProvider('providerChooseMacroBody')]
     public function testChooseMacroBody(string $expected, string $macroName): void
     {
         $actual = $this->getCasto2t()::chooseMacroBody($macroName);
@@ -148,9 +144,8 @@ class ContentHelperTest extends ConstantCheckTestCase
      * @param string                $macroName
      * @param null|Map<mixed,mixed> $parameters
      * @param string                $body
-     *
-     * @dataProvider providerMacroNameParametersBody
      */
+    #[DataProvider('providerMacroNameParametersBody')]
     public function testPrepareMacro(string $expected, string $macroName, ?Map $parameters, string $body): void
     {
         $actual = $this->getCasto2t()::prepareMacro($macroName, $parameters, $body);
@@ -163,7 +158,7 @@ class ContentHelperTest extends ConstantCheckTestCase
     /**
      * @return array<mixed,mixed>
      */
-    public function providerPlainBody(): array
+    public static function providerPlainBody(): array
     {
         return [
             'empty' => [TestData::DATA_EMPTY, TestData::DATA_EMPTY],
@@ -176,7 +171,7 @@ class ContentHelperTest extends ConstantCheckTestCase
     /**
      * @return array<mixed,mixed>
      */
-    public function providerRichBody(): array
+    public static function providerRichBody(): array
     {
         return [
             'empty' => [TestData::DATA_EMPTY, TestData::DATA_EMPTY],
@@ -189,7 +184,7 @@ class ContentHelperTest extends ConstantCheckTestCase
     /**
      * @return array<mixed,mixed>
      */
-    public function providerMacroName(): array
+    public static function providerMacroName(): array
     {
         return [
             'empty' => [false, TestData::DATA_EMPTY],
@@ -202,7 +197,7 @@ class ContentHelperTest extends ConstantCheckTestCase
     /**
      * @return array<mixed,mixed>
      */
-    public function providerChooseMacroBody(): array
+    public static function providerChooseMacroBody(): array
     {
         return [
             'empty' => [ContentHelper::CHOOSE_BODY_PLAIN, TestData::DATA_EMPTY],
@@ -215,7 +210,7 @@ class ContentHelperTest extends ConstantCheckTestCase
     /**
      * @return array<mixed,mixed>
      */
-    public function providerParameters(): array
+    public static function providerParameters(): array
     {
         return [
             'null' => ['', null],
@@ -236,7 +231,7 @@ class ContentHelperTest extends ConstantCheckTestCase
     /**
      * @return array<mixed,mixed>
      */
-    public function providerMacroNameBody(): array
+    public static function providerMacroNameBody(): array
     {
         return [
             'emptyAll' => [TestData::DATA_EMPTY, TestData::DATA_EMPTY, TestData::DATA_EMPTY],
@@ -261,7 +256,7 @@ class ContentHelperTest extends ConstantCheckTestCase
     /**
      * @return array<mixed,mixed>
      */
-    public function providerMacroNameParametersBody(): array
+    public static function providerMacroNameParametersBody(): array
     {
         return [
             'nullParam' => [

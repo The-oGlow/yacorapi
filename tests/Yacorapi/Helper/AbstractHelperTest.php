@@ -15,6 +15,7 @@ namespace oglow\tools\Yacorapi\Helper;
 
 use Ds\Map;
 use oglow\tools\Yacorapi\YacorapiTestData;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\EasyGoingTestCase;
 
 class AbstractHelperTest extends EasyGoingTestCase
@@ -38,9 +39,8 @@ class AbstractHelperTest extends EasyGoingTestCase
      * @param mixed  $expected
      * @param string $key
      * @param bool   $withLogger
-     *
-     * @dataProvider providerConstruct
      */
+    #[DataProvider('providerConstruct')]
     public function testConstruct(mixed $expected, string $key, bool $withLogger): void
     {
         $actual = new AbstractHelperTestDummyClazz($key, $withLogger);
@@ -52,7 +52,7 @@ class AbstractHelperTest extends EasyGoingTestCase
     /**
      * @return array<mixed,mixed>
      */
-    public function providerConstruct(): array
+    public static function providerConstruct(): array
     {
         return [
             'emptyTrue' => [AbstractHelperTestDummyClazz::class, YacorapiTestData::DATA_EMPTY, YacorapiTestData::DATA_BOOL_T],

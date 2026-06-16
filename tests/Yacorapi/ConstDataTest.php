@@ -19,7 +19,7 @@ class ConstDataTest extends ConstantCheckTestCase
 {
     public const string  CLASS_PREFIX = ConstData::class . self::C_STATIC_SEP;
 
-    protected const int EXPECTED_CONSTANT_COUNT = 34;
+    protected const int EXPECTED_CONSTANT_COUNT = 37;
 
     protected const bool WITH_CONST_CROSSCHECK = true;
 
@@ -96,12 +96,15 @@ class ConstDataTest extends ConstantCheckTestCase
     public function testConfigConstsExists(): void
     {
         $const              = [
-            self::CLASS_PREFIX . 'CONF_PAT_PROD',
-            self::CLASS_PREFIX . 'CONF_PAT_TEST',
+            self::CLASS_PREFIX . 'KEY_CONF_PAT_PROD',
+            self::CLASS_PREFIX . 'KEY_CONF_PAT_TEST',
             self::CLASS_PREFIX . 'CONF_USERCERTFILE',
             self::CLASS_PREFIX . 'CONF_USERAUTHFILE',
             self::CLASS_PREFIX . 'CONF_USERFOLDER',
+            self::CLASS_PREFIX . 'CONF_AUTH_CLAZZ',
             self::CLASS_PREFIX . 'KEY_USE_PROD',
+            self::CLASS_PREFIX . 'KEY_TEST_URL',
+            self::CLASS_PREFIX . 'KEY_PROD_URL',
             self::CLASS_PREFIX . 'KEY_CONF_BASE_URL',
             self::CLASS_PREFIX . 'KEY_AUTH_TOKEN_NAME',
             self::CLASS_PREFIX . 'KEY_MY_CERT_CA',

@@ -47,9 +47,7 @@ abstract class AbstractContainer implements IContainer
         self::$logger->debug('END');
     }
 
-    /**
-     * @return array<mixed,mixed>
-     */
+    #[\Override]
     public function getAllData(): array
     {
         return $this->data;
@@ -63,27 +61,19 @@ abstract class AbstractContainer implements IContainer
         $this->data = $allData;
     }
 
-    /**
-     * @return array<mixed,mixed>
-     */
+    #[\Override]
     public function getKeys(): array
     {
         return array_keys($this->getAllData());
     }
 
-    /**
-     * @param mixed $key
-     *
-     * @return bool
-     */
+    #[\Override]
     public function keyExists(mixed $key): bool
     {
         return !empty($key) && array_key_exists($key, $this->getAllData());
     }
 
-    /**
-     * @return int[]|string[]
-     */
+    #[\Override]
     public function getModes(): array
     {
         return $this->modes;
@@ -97,11 +87,7 @@ abstract class AbstractContainer implements IContainer
         $this->modes = $modes;
     }
 
-    /**
-     * @param int|string $mode
-     *
-     * @return mixed
-     */
+    #[\Override]
     public function getDataByMode(int|string $mode): mixed
     {
         self::$logger->debug('START', [$mode]);
@@ -122,11 +108,10 @@ abstract class AbstractContainer implements IContainer
     }
 
     /**
-     * @return array<mixed,mixed>
-     *
      * @SuppressWarnings("PHPMD.CamelCaseMethodName")
      */
-    protected function __toStringValues(): array
+    #[\Override]
+    protected function __toStringValues(): mixed
     {
         return $this->getAllData();
     }

@@ -30,7 +30,7 @@ class CurlProvider extends AbstractProvider
 {
     private static LoggerInterface $logger;
 
-    private ?IResponse $dryRunResponse;
+    private ?IResponse $dryRunResponse = null;
 
     /**
      * @param null|IResponse $dryRunResponse

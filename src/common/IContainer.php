@@ -47,5 +47,6 @@ interface IContainer extends \Stringable
     /**
      * @inheritDoc
      */
-    public function __toString();
+    #[\Override]
+    public function __toString(): string;
 }

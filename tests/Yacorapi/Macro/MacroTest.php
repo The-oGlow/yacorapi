@@ -17,6 +17,7 @@ use Ds\Map;
 use Ds\Vector;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\YacorapiTestData;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class MacroTest extends TestCase
@@ -26,9 +27,8 @@ class MacroTest extends TestCase
      * @param int    $expectedAddons
      * @param int    $expectedMacros
      * @param bool   $withConstData
-     *
-     * @dataProvider providerGetAddonsGetMacros
      */
+    #[DataProvider('providerGetAddonsGetMacros')]
     public function testMacro(string $macroClazz, int $expectedAddons, int $expectedMacros = -1, bool $withConstData = false): void
     {
         if ($withConstData) {
@@ -50,7 +50,7 @@ class MacroTest extends TestCase
     /**
      * @return array<string,array<int,mixed>>
      */
-    public function providerGetAddonsGetMacros(): array
+    public static function providerGetAddonsGetMacros(): array
     {
         return [
             'AllAddon'        => [

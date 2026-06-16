@@ -19,6 +19,7 @@ use oglow\tools\Addon\Projectdoc\Extension\ProjectdocExtension;
 use oglow\tools\Addon\ThirdParty\Extension\ThirdPartyExtension;
 use oglow\tools\Addon\UserMacro\Extension\UserMacroExtension;
 use oglow\tools\Yacorapi\ConstData;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\ConstantCheckTestCase;
 
 class ExtensionTest extends ConstantCheckTestCase
@@ -57,9 +58,8 @@ class ExtensionTest extends ConstantCheckTestCase
      * @param mixed $clazz
      * @param mixed $expected
      * @param int   $extensionId
-     *
-     * @dataProvider providerExtensions
      */
+    #[DataProvider('providerExtensions')]
     public function testExtension(mixed $clazz, mixed $expected, int $extensionId): void
     {
         /** @var IExtension $newInstance */
@@ -73,7 +73,7 @@ class ExtensionTest extends ConstantCheckTestCase
     /**
      * @return array<string,array<int,mixed>>
      */
-    public function providerExtensions(): array
+    public static function providerExtensions(): array
     {
         return [
             'RAPIClientExtension' => [RapiClientExtension::class, RapiClientExtension::class, IExtension::EXTENSION_RAPI_CLIENT],

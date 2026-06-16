@@ -23,27 +23,27 @@ use Psr\Log\LoggerInterface;
 
 class SpaceData extends AbstractContainer
 {
-    public const           int SPACE_SINGLE = 1;
+    public const int SPACE_SINGLE = 1;
 
-    public const           string SPACE_SINGLE_METHOD = 'getMySpaceListSingle';
+    public const string SPACE_SINGLE_METHOD = 'getMySpaceListSingle';
 
-    public const           int SPACE_SIMPLE                      = 2;
+    public const int SPACE_SIMPLE = 2;
 
-    public const           string SPACE_SIMPLE_METHOD               = 'getMySpaceListSimple';
+    public const string SPACE_SIMPLE_METHOD = 'getMySpaceListSimple';
 
-    public const           int SPACE_ALL                         = 99;
+    public const int SPACE_ALL = 99;
 
-    public const           string SPACE_ALL_METHOD                  = 'getMySpaceListAll';
+    public const string SPACE_ALL_METHOD = 'getMySpaceListAll';
 
-    public const           string MY_SPACE_NS_SEP = '\\';
+    public const string MY_SPACE_NS_SEP = '\\';
 
-    public const           string MY_SPACES_NS                      = 'oglow\\tools\\Yacorapi';
+    public const string MY_SPACES_NS = 'oglow\\tools\\Yacorapi';
 
-    public const           string MY_SPACES_CLAZZ                   = 'MySpaces';
+    public const string MY_SPACES_CLAZZ = 'MySpaces';
 
-    public const           string MY_SPACES_NS_CLAZZ                = self::MY_SPACE_NS_SEP . self::MY_SPACES_NS . self::MY_SPACE_NS_SEP . self::MY_SPACES_CLAZZ;
+    public const string MY_SPACES_NS_CLAZZ = self::MY_SPACE_NS_SEP . self::MY_SPACES_NS . self::MY_SPACE_NS_SEP . self::MY_SPACES_CLAZZ;
 
-    public const           string MY_SPACES_FILE                    = self::MY_SPACES_CLAZZ . '.php';
+    public const string MY_SPACES_FILE = self::MY_SPACES_CLAZZ . '.php';
 
     private static LoggerInterface $logger;
 
@@ -65,8 +65,7 @@ class SpaceData extends AbstractContainer
      */
     public static function prepareMySpacesContent(array $spaces): string
     {
-        $line =
-            "<?php\ndeclare(strict_types=1);\n" .
+        $line = "<?php\ndeclare(strict_types=1);\n" .
             "namespace " .
             self::MY_SPACES_NS .
             ";\n" .
@@ -116,20 +115,22 @@ class SpaceData extends AbstractContainer
         return $loaded;
     }
 
+    #[\Override]
     protected function prepareModes(): void
     {
         $allModes = [self::SPACE_SINGLE, self::SPACE_SIMPLE, self::SPACE_ALL];
         $this->setModes($allModes);
     }
 
+    #[\Override]
     protected function prepareData(): void
     {
-        $this->mySpaceFileDefault = ((string)$this->constData->c(ConstData::KEY_MY_DIR)) . DIRECTORY_SEPARATOR . self::MY_SPACES_FILE;
+        $this->mySpaceFileDefault = ((string) $this->constData->c(ConstData::KEY_MY_DIR)) . DIRECTORY_SEPARATOR . self::MY_SPACES_FILE;
 
-        $allData                     = [];
-        $allData[self::SPACE_SINGLE] = $this->dynamiCall(self::SPACE_SINGLE_METHOD, $this->mySpaceFileDefault);
-        $allData[self::SPACE_SIMPLE] = $this->dynamiCall(self::SPACE_SIMPLE_METHOD, $this->mySpaceFileDefault);
-        $allData[self::SPACE_ALL]    = $this->dynamiCall(self::SPACE_ALL_METHOD, $this->mySpaceFileDefault);
+        $allData = [];
+        $allData[self::SPACE_SINGLE] = $this->prepareSpaces(self::SPACE_SINGLE_METHOD, $this->mySpaceFileDefault);
+        $allData[self::SPACE_SIMPLE] = $this->prepareSpaces(self::SPACE_SIMPLE_METHOD, $this->mySpaceFileDefault);
+        $allData[self::SPACE_ALL] = $this->prepareSpaces(self::SPACE_ALL_METHOD, $this->mySpaceFileDefault);
         $this->setAllData($allData);
     }
 
@@ -139,7 +140,7 @@ class SpaceData extends AbstractContainer
      *
      * @return mixed
      */
-    private function dynamiCall(string $mySpacesFunc, string $mySpaceFile): mixed
+    private function prepareSpaces(string $mySpacesFunc, string $mySpaceFile): mixed
     {
         self::loadPersonalSpaces($mySpaceFile);
         $mySpaces = [];
@@ -149,8 +150,8 @@ class SpaceData extends AbstractContainer
          */
         if (method_exists(self::MY_SPACES_NS_CLAZZ, $mySpacesFunc)) {
             $refInstance = new \ReflectionClass(self::MY_SPACES_NS_CLAZZ); // @phpstan-ignore argument.type
-            $refObject   = new \ReflectionMethod(self::MY_SPACES_NS_CLAZZ, $mySpacesFunc);
-            $mySpaces    = $refObject->invoke($refInstance);
+            $refObject = new \ReflectionMethod(self::MY_SPACES_NS_CLAZZ, $mySpacesFunc);
+            $mySpaces = $refObject->invoke($refInstance);
         } else {
             self::$logger->warning('MySpaces not loaded!', [$mySpacesFunc]);
         }

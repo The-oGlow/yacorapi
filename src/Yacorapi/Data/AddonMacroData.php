@@ -130,12 +130,20 @@ class AddonMacroData extends AbstractContainer
         return $macroNames;
     }
 
+    /**
+     * @inheritDoc
+     */
+    #[\Override]
     protected function prepareModes(): void
     {
         $allModes = [SingleAddon::ADDON_SINGLE, BlockerAddon::ADDON_BLOCKER, AllAddon::ADDON_ALL];
         $this->setModes($allModes);
     }
 
+    /**
+     * @inheritDoc
+     */
+    #[\Override]
     protected function prepareData(): void
     {
         $allData = [];

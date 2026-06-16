@@ -18,7 +18,6 @@ use Monolog\ConsoleLogger;
 use Monolog\DoNothingLogger;
 use oglow\tools\common\AbstractSingleton;
 use oglow\tools\Yacorapi\Data\RequestParameterData;
-use oglow\tools\Yacorapi\MyAuth as PersonalAuth;
 use ollily\Tools\Emergency;
 use ollily\Tools\EnvironmentVariableTrait;
 use Psr\Log\LoggerInterface;
@@ -36,82 +35,123 @@ final class ConstData extends AbstractSingleton
     //
     // Public Consts
     // Page Consts
+    /** First line on a page */
     public const int PAGE_START = 0;
 
+    /** Last line on a page */
     public const int PAGE_LIMIT = 50;
 
+    /** Max count of pages */
     public const int PAGE_MAX_PAGES = 20;
 
+    /** Max count of lines */
     public const int PAGE_MAX_RESULTS = 50 * 20;
 
     // Instance Consts
-    public const string KEY_USE_PROD = 'USE_PROD';
-
+    /** Key: URL of the confluence instance */
     public const string KEY_CONF_BASE_URL = 'CONF_BASE_URL';
 
-    public const string KEY_AUTH_TOKEN_NAME = 'AUTH_TOKEN_NAME';
-
-    public const string KEY_MY_CERT_CA = 'MY_CERT_CA';
-
     // Folder Consts
+    /** Key: Folder where the personal information are stored */
     public const string KEY_MY_DIR = 'MY_DIR';
-    //    public const string KEY_SCRIPT_NAME_PH    = 'SCRIPT_NAME_PH';
 
+    /** Key: Folder of the project-root */
     public const string KEY_PROJECT_ROOT = 'PROJECT_ROOT';
 
+    /** Key: Basefolder of the generated files */
     public const string KEY_TARGET_ROOTDIR = 'TARGET_ROOTDIR';
 
+    /** Key: Folder for the target with the current run */
     public const string KEY_TARGET_DIR = 'TARGET_DIR';
-    //    public const string KEY_TARGET_FILENAME   = 'TARGET_FILENAME';
 
+    /** Key: Basefolder for all input files */
     public const string KEY_INPUT_ROOTDIR = 'INPUT_ROOTDIR';
 
+    /** Key: Folder for the input files with the current run */
     public const string KEY_INPUT_DIR = 'INPUT_DIR';
 
     // Url Consts
+    /** Key: Confluence URL for accessing the content */
     public const string KEY_CONF_CONTENT_URL = 'CONF_CONTENT_URL';
 
+    /** Key: Confluence URL for using the search */
     public const string KEY_CONF_SEARCH_URL = 'CONF_SEARCH_URL';
 
+    /** Key: Confluence URL for accessing space data */
     public const string KEY_CONF_SPACE_URL = 'CONF_SPACE_URL';
 
     // Misc Consts
+    /** Key: Confluence URL for recieving the rendered page content */
     public const string KEY_WEB_SHOW_PAGEID = 'WEB_SHOW_PAGEID';
 
+    /** Key: Currently defined max count of search results */
     public const string KEY_SEARCH_LIMIT = 'SEARCH_LIMIT';
 
+    /** Foldername for the original recieved files */
     public const string TARGET_ORGDIR = 'org';
 
+    /** Foldername for the modified files */
     public const string TARGET_MODDIR = 'mod';
 
+    /** URL path for accessing the content */
     public const string C_RAPI_CONTENT = '/rest/api/content';
 
+    /** URL path for using the search with 'scan' */
     public const string C_RAPI_SCAN = self::C_RAPI_CONTENT . '/scan';
 
+    /** URL path for using the search with 'search' */
     public const string C_RAPI_SEARCH = '/rest/api/search';
 
+    /** URL path for accessing space data */
     public const string C_RAPI_SPACE = '/rest/api/space';
 
+    /** URL path for receiving the rendered page content */
     public const string C_RAPI_VIEWPAGE = '/pages/viewpage.action?pageId=';
 
+    /** URL path for accessing page restrictions */
     public const string C_RAPI_RESTRICTION = '/restriction';
 
+    /** URL path for accessing page restrictions by mode */
     public const string C_RAPI_RESTRICTION_BYOP = '/restriction/byOperation';
 
     //
     // Private Consts
     // User Configuration Consts
+    /** Filename of the certificate file */
     private const string CONF_USERCERTFILE = 'cacert.pem';
 
+    /** Filename of the authorisation class */
     private const string CONF_USERAUTHFILE = 'MyAuth.php';
 
+    /** Foldername where the personal information are stored */
     private const string CONF_USERFOLDER = '.yacorapi';
 
+    /** Classname of the authorisation class */
+    private const string CONF_AUTH_CLAZZ = '\oglow\tools\Yacorapi\MyAuth';
+
     // Auth Consts
-    private const string CONF_PAT_PROD = 'CONF_PAT_PROD';
+    /** Key: Name of the token the authentication is stored */
+    public const string KEY_AUTH_TOKEN_NAME = 'AUTH_TOKEN_NAME';
 
-    private const string CONF_PAT_TEST = 'CONF_PAT_TEST';
+    /** Key: Filename of the certificate file */
+    public const string KEY_MY_CERT_CA = 'MY_CERT_CA';
 
+    /** Key: Flag, which instance is used, true=production, false=test */
+    public const string KEY_USE_PROD = 'USE_PROD';
+
+    /** Key: URL of the test-instance */
+    public const string KEY_TEST_URL = 'TEST_URL';
+
+    /** Key: URL of the production-instance */
+    public const string KEY_PROD_URL = 'PROD_URL';
+
+    /** Key: Authorisation token for production instance */
+    private const string KEY_CONF_PAT_PROD = 'CONF_PAT_PROD';
+
+    /** Key: Authorisation token for test instance */
+    private const string KEY_CONF_PAT_TEST = 'CONF_PAT_TEST';
+
+    /** List of options (long) */
     private const array CLI_LONG_OPTS = [self::KEY_USE_PROD . ':'];
 
     private static LoggerInterface $logger;
@@ -123,8 +163,7 @@ final class ConstData extends AbstractSingleton
     /** @var Map<string,scalar> */
     private Map $definedConst;
 
-    /** @psalm-suppress UndefinedClass */
-    private PersonalAuth $userAuth;
+    private object $userAuth;
 
     public function __construct(string $key = '', bool $withLogger = false)
     {
@@ -150,8 +189,15 @@ final class ConstData extends AbstractSingleton
     {
         $url = '';
 
-        if (class_exists(PersonalAuth::class)) {
-            $url = (PersonalAuth::USE_PROD ? PersonalAuth::PROD_URL : PersonalAuth::TEST_URL);
+        if (class_exists(self::CONF_AUTH_CLAZZ)) {
+            /** 
+             * @psalm-suppress ArgumentTypeCoercion
+             * @phpstan-ignore argument.type
+             */
+            $clazz = new \ReflectionClass(self::CONF_AUTH_CLAZZ);
+            /** @var bool */
+            $useProd =  $clazz->getConstant(self::KEY_USE_PROD);
+            $url = $useProd ? $clazz->getConstant(self::KEY_PROD_URL) : $clazz->getConstant(self::KEY_TEST_URL);
         }
 
         return $url;
@@ -201,11 +247,9 @@ final class ConstData extends AbstractSingleton
     }
 
     /**
-     * @return PersonalAuth
-     *
-     * @psalm-suppress UndefinedClass
+     * @return object
      */
-    public function getPersonalAuth(): PersonalAuth
+    public function getPersonalAuth(): object
     {
         return $this->userAuth;
     }
@@ -241,7 +285,7 @@ final class ConstData extends AbstractSingleton
         $this->definedConst = new Map();
 
         $this->putConst(self::KEY_MY_DIR, self::getHome() . DIRECTORY_SEPARATOR . self::CONF_USERFOLDER);
-        $this->prepareUserAuthorization((string) $this->definedConst->get(self::KEY_MY_DIR), self::CONF_USERAUTHFILE);
+        $this->prepareUserAuthorization((string) $this->definedConst->get(self::KEY_MY_DIR), self::CONF_USERAUTHFILE, self::CONF_AUTH_CLAZZ);
 
         $this->putConst(self::KEY_CONF_BASE_URL, static::CONF_BASE_URL());
         $this->defineConsts();
@@ -268,10 +312,11 @@ final class ConstData extends AbstractSingleton
     /**
      * @param string $authFilePath
      * @param string $authFileName
+     * @param string $authClazzName
      *
      * @return bool
      */
-    protected function prepareUserAuthorization(string $authFilePath, string $authFileName): bool
+    protected function prepareUserAuthorization(string $authFilePath, string $authFileName, string $authClazzName): bool
     {
         self::$logger->debug('START');
 
@@ -280,8 +325,9 @@ final class ConstData extends AbstractSingleton
         $authFile = $authFilePath . DIRECTORY_SEPARATOR . $authFileName;
         if (file_exists($authFile)) {
             include_once $authFile; // NOSONAR: php:S4832
-            if (class_exists(PersonalAuth::class)) {
-                $this->userAuth = new PersonalAuth();
+            if (class_exists($authClazzName)) {
+                $clazz = new \ReflectionClass($authClazzName);
+                $this->userAuth = $clazz->newInstance();
                 $prepared = true;
             } else {
                 Emergency::breakSystem(ExitCodes::ERR_CODE_AUTH_CLASS_NOT_EXISTS, sprintf('User athorization not loaded: %s', $authFile));
@@ -366,11 +412,11 @@ final class ConstData extends AbstractSingleton
         if ($this->getConst(self::KEY_USE_PROD, false) === true) {
             self::$logger->notice('+++ RUNNING ON PRODUCTION IS OK 4 U? +++');
             if (!$this->isDefined(self::KEY_AUTH_TOKEN_NAME)) {
-                $this->putConst(self::KEY_AUTH_TOKEN_NAME, self::CONF_PAT_PROD);
+                $this->putConst(self::KEY_AUTH_TOKEN_NAME, self::KEY_CONF_PAT_PROD);
             }
         } else {
             if (!$this->isDefined(self::KEY_AUTH_TOKEN_NAME)) {
-                $this->putConst(self::KEY_AUTH_TOKEN_NAME, self::CONF_PAT_TEST);
+                $this->putConst(self::KEY_AUTH_TOKEN_NAME, self::KEY_CONF_PAT_TEST);
             }
         }
 
@@ -402,8 +448,9 @@ final class ConstData extends AbstractSingleton
     }
 
     /**
-     * @return array<mixed,mixed>
+     * @inheritDoc
      */
+    #[\Override]
     protected function prepareLongOpts(): array
     {
         return self::CLI_LONG_OPTS;

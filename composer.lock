@@ -3906,16 +3906,16 @@
     },
     {
       "name": "friendsofphp/php-cs-fixer",
-      "version": "v3.95.7",
+      "version": "v3.95.8",
       "source": {
         "type": "git",
         "url": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer.git",
-        "reference": "4fa4102a5617acae53f804f7c81475aaa2d6e813"
+        "reference": "4140023f552ff02346df9b1329742532166f677f"
       },
       "dist": {
         "type": "zip",
-        "url": "https://api.github.com/repos/PHP-CS-Fixer/PHP-CS-Fixer/zipball/4fa4102a5617acae53f804f7c81475aaa2d6e813",
-        "reference": "4fa4102a5617acae53f804f7c81475aaa2d6e813",
+        "url": "https://api.github.com/repos/PHP-CS-Fixer/PHP-CS-Fixer/zipball/4140023f552ff02346df9b1329742532166f677f",
+        "reference": "4140023f552ff02346df9b1329742532166f677f",
         "shasum": ""
       },
       "require": {
@@ -3999,7 +3999,7 @@
       ],
       "support": {
         "issues": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/issues",
-        "source": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/tree/v3.95.7"
+        "source": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/tree/v3.95.8"
       },
       "funding": [
         {
@@ -4007,7 +4007,7 @@
           "type": "github"
         }
       ],
-      "time": "2026-06-13T17:51:53+00:00"
+      "time": "2026-06-16T09:52:26+00:00"
     },
     {
       "name": "kelunik/certificate",
@@ -8278,16 +8278,16 @@
     },
     {
       "name": "webmozart/assert",
-      "version": "2.4.0",
+      "version": "2.4.1",
       "source": {
         "type": "git",
         "url": "https://github.com/webmozarts/assert.git",
-        "reference": "9007ea6f45ecf352a9422b36644e4bfc039b9155"
+        "reference": "2ccb7c2e821038c03a3e6e1700c570c158c55f70"
       },
       "dist": {
         "type": "zip",
-        "url": "https://api.github.com/repos/webmozarts/assert/zipball/9007ea6f45ecf352a9422b36644e4bfc039b9155",
-        "reference": "9007ea6f45ecf352a9422b36644e4bfc039b9155",
+        "url": "https://api.github.com/repos/webmozarts/assert/zipball/2ccb7c2e821038c03a3e6e1700c570c158c55f70",
+        "reference": "2ccb7c2e821038c03a3e6e1700c570c158c55f70",
         "shasum": ""
       },
       "require": {
@@ -8338,9 +8338,9 @@
       ],
       "support": {
         "issues": "https://github.com/webmozarts/assert/issues",
-        "source": "https://github.com/webmozarts/assert/tree/2.4.0"
+        "source": "https://github.com/webmozarts/assert/tree/2.4.1"
       },
-      "time": "2026-05-20T13:07:01+00:00"
+      "time": "2026-06-15T15:31:57+00:00"
     }
   ],
   "aliases": [],

@@ -26,7 +26,7 @@ abstract class AbstractExtension implements IExtension
 
     protected ConstData $constData;
 
-    protected ?IAddon $addons;
+    protected ?IAddon $addons = null;
 
     public function __construct()
     {
