@@ -34,7 +34,9 @@ class ExitCodes extends AbstractSingleton
 
     public const int ERR_CODE_ALLADDON_NOT_INIT        = 27;
 
-    public const int ERR_CODE_CURL_INIT = 28;
+    public const int ERR_CODE_CURL_INIT = 30;
+
+    public const int ERR_CODE_RESPONSE_INVALID_OR_NULL = 31;
 
     /**
      * @inheritDoc

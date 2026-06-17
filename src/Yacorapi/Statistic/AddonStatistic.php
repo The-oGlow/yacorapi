@@ -15,5 +15,5 @@ namespace oglow\tools\Yacorapi\Statistic;
 
 class AddonStatistic extends AbstractStatistic
 {
-    protected const string EXPORT_NAME = 'addon';
+    public const string EXPORT_NAME = 'addon';
 }

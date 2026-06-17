@@ -24,11 +24,14 @@ abstract class AbstractStatistic implements IStatistic
 {
     use ToStringTrait;
 
-    /** @var string Defines the column name when exporting */
-    protected const string EXPORT_NAME = '';
+    /** The unique name if this statistic element */
+    public const string STATISTIC_NAME = '';
+
+    /** Defines the column name when exporting */
+    public const string EXPORT_NAME = '';
 
     /** The column name when {@link EXPORT_NAME} is not set */
-    protected const string UDF = 'undefined';
+    public const string UDF = 'undefined';
 
     /** @var Map<mixed,IStatistic> */
     private Map $items;
@@ -49,7 +52,10 @@ abstract class AbstractStatistic implements IStatistic
 
         $this->items = new Map([]);
 
-        $this->statisticName = $statisticName;
+        $this->statisticName = static::STATISTIC_NAME;
+        if (!empty($statisticName)) {
+            $this->statisticName = $statisticName;
+        }
         $this->exportName    = $this->statisticName;
         if (!empty(static::EXPORT_NAME)) {
             $this->exportName = static::EXPORT_NAME;
@@ -123,7 +129,16 @@ abstract class AbstractStatistic implements IStatistic
     public function flatten(bool $displayKeys = true): string
     {
         $flatData = self::implode_recursive(static::ITEM_SEP, $this->items, false, $displayKeys);
-        $flatData = str_replace('\\"', 'x', $flatData);
+        // FIXME: Refactor the output of the ValueStatistic->__toString()
+        if (!is_null($flatData)) {
+            $flatData = preg_replace("/^\{.+\:\[(.+)\]\}$/", "$1", $flatData);
+        }
+        if (!is_null($flatData)) {
+            $flatData = str_replace('\\"', 'x', $flatData);
+        }
+        if (!is_null($flatData)) {
+            $flatData = str_replace('count,value,', '', $flatData);
+        }
 
         self::$logger->debug('', [$flatData]);
 
@@ -160,23 +175,10 @@ abstract class AbstractStatistic implements IStatistic
     #[\Override]
     public function flattenHeader(): string
     {
-        //        $header = $this->getExportName() . static::C_ITEM_SEP;
-        //        if (!(empty($this->items))) {
-        //            $firstItem = $this->items[array_key_first($this->items)];
-        //            if ($firstItem instanceof IStatistic) {
-        //                $header .= $firstItem->flattenHeader() . static::C_ITEM_SEP;
-        //            } else {
-        //                $header .= $this->customerHeader() . static::C_ITEM_SEP;
-        //            }
-        //        }
         $flatten = '';
         $header = $this->header();
         if (!empty($header)) {
             $flatten = self::implode_recursive(static::ITEM_SEP, $header);
-            //            $header = str_replace(str_repeat(static::C_ITEM_SEP, 2), static::C_ITEM_SEP, $header);
-            //            if (str_ends_with($header, static::C_ITEM_SEP)) {
-            //                $header = substr($header, 0, strlen($header) - 1);
-            //            }
         }
 
         return $flatten;

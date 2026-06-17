@@ -121,7 +121,7 @@ abstract class AbstractRapiClient implements IRapiClient
             $this->addons = $addons;
         }
         if (empty($connectionProvider)) {
-            $this->connectionProvider = new CurlProvider(new ResponseDryRun());
+            $this->connectionProvider = new CurlProvider(new ResponseDryRun(), self::LEVEL_DEFAULT);
         } else {
             $this->connectionProvider = $connectionProvider;
         }
@@ -188,7 +188,7 @@ abstract class AbstractRapiClient implements IRapiClient
      */
     protected function prepareMatrix(?IStatistic $spaceResult, string $spaceKey, string $addon, string $macroName, int $macroCount): IStatistic
     {
-        self::$logger->debug('START - spaceResult,spaceKey,addon,macroName,macroCount', [$spaceResult, $spaceKey, $addon, $macroName, $macroCount]);
+        self::$logger->info('START - spaceKey,addon,macroName,macroCount', [$spaceKey, $addon, $macroName, $macroCount]);
 
         if (empty($spaceResult)) {
             $spaceResult = new SpaceStatistic($spaceKey);
@@ -209,7 +209,12 @@ abstract class AbstractRapiClient implements IRapiClient
         if (empty($valueResult)) {
             $valueResult = new ValueStatistic(IResponse::KEY_COUNT);
         }
-        $valueResult->addValue($macroCount + (int) $valueResult->getValue());
+        self::$logger->info(var_export($valueResult->getValue(),true));
+        if (is_numeric($valueResult->getValue())) {
+            $valueResult->addValue($macroCount + (int) $valueResult->getValue());
+        } else {
+            $valueResult->addValue($macroCount);
+        }
 
         $macroResult->addItem(IResponse::KEY_COUNT, $valueResult);
         $addonResult->addItem($macroName, $macroResult);
@@ -232,8 +237,10 @@ abstract class AbstractRapiClient implements IRapiClient
     {
         self::$logger->debug('START - spaceKey,addOn,macroNames', [$spaceKey, $addOn, $macroNames]);
 
+        $cntMacros = count($macroNames);
+        $cntIdx = 0;
         foreach ($macroNames as $macroName) {
-            self::$logger->debug('Checking Space with Macro - START', [$spaceKey, $addOn, $macroName]);
+            self::$logger->debug('Checking Space with Macro - START', [++$cntIdx, $cntMacros, $spaceKey, $addOn, $macroName]);
 
             $searchTerm = "macroName:$macroName";
             $prepareUrl = $this->commonExtension->prepareSearchUrlExt(
@@ -246,7 +253,7 @@ abstract class AbstractRapiClient implements IRapiClient
             $countMacros = $this->commonExtension->analyzeResponse($response);
 
             $outputMatrix = $this->prepareMatrix($outputMatrix, $spaceKey, $addOn, $macroName, $countMacros);
-            self::$logger->debug('Found', [$spaceKey, $addOn, $macroName, $countMacros]);
+            self::$logger->info('Found', [$cntIdx, $cntMacros, $spaceKey, $addOn, $macroName, $countMacros]);
 
             self::$logger->debug('Checking Space with Macro - END');
         }
@@ -271,8 +278,10 @@ abstract class AbstractRapiClient implements IRapiClient
     {
         self::$logger->debug('START - spaceKey,mode,addons', [$spaceKey, $mode, $mapAddons]);
 
+        $cntAddons = count($mapAddons);
+        $cntIdx = 0;
         foreach ($mapAddons as $addOnKey => $addonValue) {
-            self::$logger->debug('Checking Addon - START', [$spaceKey, $addOnKey]);
+            self::$logger->info('Checking Addon - START', [++$cntIdx, $cntAddons, $spaceKey, $addOnKey]);
             if (!is_array($addonValue)) {
                 $macroNames = $this->addons->getMacroNamesByAddon($mode, $addOnKey);
                 $addonName = $addOnKey;

@@ -15,56 +15,43 @@ namespace oglow\tools\Yacorapi\Statistic;
 
 use Ds\Set;
 
-class ValueStatistic extends AbstractStatistic
-{
-    public const string   C_STATISTIC_NAME = 'statisticName';
+class ValueStatistic extends AbstractStatistic {
 
-    public const string   C_EXPORT_NAME1   = 'exportName';
+    public const string STATISTIC_NAME = 'statisticName';
+    public const string EXPORT_NAME = 'value';
 
-    public const string   C_VALUE          = 'value';
-
-    protected const string EXPORT_NAME = self::C_VALUE;
-
-    /** @var Set<mixed> */
-    private Set $keysForValue;
-
-    private mixed $value;
+    private mixed $value = null;
 
     /**
      * ValueStatistic constructor.
      *
      * @param string $statisticName
      */
-    public function __construct(string $statisticName)
-    {
+    public function __construct(string $statisticName) {
         parent::__construct($statisticName);
-        $this->keysForValue = new Set([self::EXPORT_NAME]);
     }
 
     /**
      * @inheritDoc
      */
     #[\Override]
-    public function keys(): Set
-    {
-        return $this->keysForValue;
+    public function keys(): Set {
+        return new Set([self::EXPORT_NAME]);
     }
 
     /**
      * @inheritDoc
      */
     #[\Override]
-    public function keyExists(mixed $key): bool
-    {
-        return $this->keysForValue->contains($key);
+    public function keyExists(mixed $key): bool {
+        return $key === self::EXPORT_NAME;
     }
 
     /**
      * @inheritDoc
      */
     #[\Override]
-    public function addItem(mixed $key, IStatistic $item): void
-    {
+    public function addItem(mixed $key, IStatistic $item): void {
         throw new \BadMethodCallException('Use instead \'->addValue\'');
     }
 
@@ -72,24 +59,21 @@ class ValueStatistic extends AbstractStatistic
      * @inheritDoc
      */
     #[\Override]
-    public function getItem(mixed $key): ?IStatistic
-    {
+    public function getItem(mixed $key): ?IStatistic {
         throw new \BadMethodCallException('Use instead \'->getValue\'');
     }
 
     /**
      * @param mixed $item
      */
-    public function addValue(mixed $item): void
-    {
+    public function addValue(mixed $item): void {
         $this->value = $item;
     }
 
     /**
      * @return mixed
      */
-    public function getValue(): mixed
-    {
+    public function getValue(): mixed {
         return $this->value;
     }
 
@@ -99,12 +83,11 @@ class ValueStatistic extends AbstractStatistic
      * @SuppressWarnings("PHPMD.CamelCaseMethodName")
      */
     #[\Override]
-    protected function __toStringValues(): mixed
-    {
+    protected function __toStringValues(): mixed {
         return [
-            self::C_STATISTIC_NAME => $this->getStatisticName(),
-            self::C_EXPORT_NAME1   => $this->getExportName(),
-            self::C_VALUE          => $this->value,
+            'statisticName' => $this->getStatisticName(),
+            'exportName' => $this->getExportName(),
+            'value' => $this->value,
         ];
     }
 }

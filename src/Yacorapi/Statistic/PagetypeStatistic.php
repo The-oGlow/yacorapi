@@ -15,5 +15,5 @@ namespace oglow\tools\Yacorapi\Statistic;
 
 class PagetypeStatistic extends AbstractStatistic
 {
-    protected const string EXPORT_NAME = 'pagetype';
+    public const string EXPORT_NAME = 'pagetype';
 }
