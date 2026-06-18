@@ -27,9 +27,8 @@ class PagetypeStatisticTest extends EasyGoingTestCase {
     }
 
     public function testToString(): void {
-        $expected = sprintf("%s:[%s,%s,%s]",
-                PagetypeStatistic::class,
-                PagetypeStatistic::STATISTIC_NAME,
+        $expected = sprintf("%s:[%s,%s]",
+                PagetypeStatisticTest::class,
                 PagetypeStatistic::EXPORT_NAME, '{}');
 
         $actual = $this->getCasto2t()->__toString();

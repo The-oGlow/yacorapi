@@ -100,9 +100,8 @@ class AbstractStatisticTest extends EasyGoingTestCase {
     }
 
     public function testToString(): void {
-        $expected = sprintf("%s:[%s,%s,%s]",
+        $expected = sprintf("%s:[%s,%s]",
                 AbstractStatisticTestDummyClazz::class,
-                AbstractStatisticTestDummyClazz::STATISTIC_NAME,
                 AbstractStatisticTestDummyClazz::EXPORT_NAME,
                 '{}');
 

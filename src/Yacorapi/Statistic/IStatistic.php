@@ -36,15 +36,15 @@ interface IStatistic extends \Stringable
     /**
      * @param string $key
      *
-     * @return null|IStatistic
+     * @return null|IStatistic|mixed
      */
-    public function getItem(string $key): ?IStatistic;
+    public function getItem(string $key): mixed;
 
     /**
      * @param string     $key
-     * @param IStatistic $item
+     * @param IStatistic|mixed $item
      */
-    public function addItem(string $key, IStatistic $item): void;
+    public function addItem(string $key, mixed $item): void;
 
     /**
      * @return string

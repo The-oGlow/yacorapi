@@ -33,7 +33,7 @@ abstract class AbstractStatistic implements IStatistic
     /** The column name when {@link EXPORT_NAME} is not set */
     public const string UDF = 'undefined';
 
-    /** @var Map<mixed,IStatistic> */
+    /** @var Map<mixed,IStatistic|mixed> */
     private Map $items;
 
     private string $statisticName;
@@ -85,7 +85,7 @@ abstract class AbstractStatistic implements IStatistic
      * @inheritDoc
      */
     #[\Override]
-    public function getItem(string $key): ?IStatistic
+    public function getItem(string $key): mixed
     {
         $item = null;
         if ($this->keyExists($key)) {
@@ -99,7 +99,7 @@ abstract class AbstractStatistic implements IStatistic
      * @inheritDoc
      */
     #[\Override]
-    public function addItem(string $key, IStatistic $item): void
+    public function addItem(string $key, mixed $item): void
     {
         $this->items[$key] = $item;
     }
@@ -130,17 +130,16 @@ abstract class AbstractStatistic implements IStatistic
     {
         $flatData = self::implode_recursive(static::ITEM_SEP, $this->items, false, $displayKeys);
         // FIXME: Refactor the output of the ValueStatistic->__toString()
-        if (!is_null($flatData)) {
-            $flatData = preg_replace("/^\{.+\:\[(.+)\]\}$/", "$1", $flatData);
-        }
+//        if (!is_null($flatData)) {
+//            $flatData = preg_replace("/^\{.+\:\[(.+)\]\}$/", "$1", $flatData);
+//        }
         if (!is_null($flatData)) {
             $flatData = str_replace('\\"', 'x', $flatData);
         }
-        if (!is_null($flatData)) {
-            $flatData = str_replace('count,value,', '', $flatData);
-        }
+//        if (!is_null($flatData)) {
+//            $flatData = str_replace('count,value,', '', $flatData);
+//        }
 
-        self::$logger->debug('', [$flatData]);
 
         return $flatData;
     }
@@ -193,7 +192,6 @@ abstract class AbstractStatistic implements IStatistic
     protected function __toStringValues(): mixed
     {
         return [
-            'statisticName' => $this->statisticName,
             'exportName'    => $this->exportName,
             'items'         => $this->items,
         ];

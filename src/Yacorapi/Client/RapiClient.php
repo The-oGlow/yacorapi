@@ -143,7 +143,8 @@ class RapiClient extends AbstractRapiClient // NOSONAR: php:S1448
 
         $itemCount = $response->getValue(IResponse::KEY_TOTAL_SIZE, 0);
         $valueStatistic = new ValueStatistic(ValueStatistic::KEY_COUNT);
-        $valueStatistic->addValue($itemCount);
+//        $valueStatistic->addValue($itemCount);
+        $valueStatistic->addItem(ValueStatistic::KEY_COUNT, $itemCount);
         $singleStatistic = new PagetypeStatistic($itemType);
         $singleStatistic->addItem($itemType, $valueStatistic);
 

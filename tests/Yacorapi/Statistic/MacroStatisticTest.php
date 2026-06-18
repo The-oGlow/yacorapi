@@ -27,9 +27,8 @@ class MacroStatisticTest extends EasyGoingTestCase {
     }
 
     public function testToString(): void {
-        $expected = sprintf("%s:[%s,%s,%s]",
+        $expected = sprintf("%s:[%s,%s]",
                 MacroStatistic::class,
-                MacroStatistic::STATISTIC_NAME,
                 MacroStatistic::EXPORT_NAME, '{}');
 
         $actual = $this->getCasto2t()->__toString();

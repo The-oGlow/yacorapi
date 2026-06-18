@@ -24,7 +24,7 @@ class ValueStatisticTest extends EasyGoingTestCase {
 
     #[\Override]
     protected static function prepareO2t(): ValueStatistic {
-        return new ValueStatistic('');
+        return new ValueStatistic('A');
     }
 
     public function testKeys(): void {
@@ -60,9 +60,18 @@ class ValueStatisticTest extends EasyGoingTestCase {
         self::assertNull($actual);
     }
 
+    public function testHeader(): void {
+        $expected = [ValueStatistic::EXPORT_NAME];
+        
+        $actual = $this->getCasto2t()->header();
+        
+        self::assertEquals($expected, $actual);
+    }
+    
     public function testAddValue(): void {
 
-        $value = TestData::DATA_ALPHA1;
+        $value = TestData::DATA_NUM1;
+
         $actual = $this->getCasto2t()->getValue();
         self::assertNull($actual);
 
@@ -74,10 +83,11 @@ class ValueStatisticTest extends EasyGoingTestCase {
     }
 
     public function testToString(): void {
-        $expected = sprintf("%s:[%s,%s,%s]",
-                ValueStatistic::class,
-                ValueStatistic::STATISTIC_NAME,
-                ValueStatistic::EXPORT_NAME, '');
+        $value = TestData::DATA_NUM2;
+        $this->getCasto2t()->addValue($value);
+
+        $expected = sprintf("%s:[%s]",                
+                ValueStatistic::class, $value);
 
         $actual = $this->getCasto2t()->__toString();
 

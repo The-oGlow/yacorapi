@@ -17,66 +17,60 @@ use Ds\Set;
 
 class ValueStatistic extends AbstractStatistic {
 
-    public const string STATISTIC_NAME = 'statisticName';
-    public const string EXPORT_NAME = 'value';
+    public const string EXPORT_NAME = 'count';
 
-    private mixed $value = null;
+//    private mixed $value = null;
 
-    /**
-     * ValueStatistic constructor.
-     *
-     * @param string $statisticName
-     */
-    public function __construct(string $statisticName) {
-        parent::__construct($statisticName);
+//    /**
+//     * @inheritDoc
+//     */
+//    #[\Override]
+//    public function keys(): Set {
+//        return new Set([self::EXPORT_NAME]);
+//    }
+//
+//    /**
+//     * @inheritDoc
+//     */
+//    #[\Override]
+//    public function keyExists(mixed $key): bool {
+//        return $key === self::EXPORT_NAME;
+//    }
+//
+//    /**
+//     * @inheritDoc
+//     */
+//    #[\Override]
+//    public function addItem(mixed $key, IStatistic $item): void {
+//        throw new \BadMethodCallException('Use instead \'->addValue\'');
+//    }
+//
+//    /**
+//     * @inheritDoc
+//     */
+//    #[\Override]
+//    public function getItem(mixed $key): ?IStatistic {
+//        throw new \BadMethodCallException('Use instead \'->getValue\'');
+//    }
+//
+//    /**
+//     * @param mixed $item
+//     */
+//    public function addValue(mixed $item): void {
+//        $this->value = $item;
+//    }
+//
+//    /**
+//     * @return mixed
+//     */
+//    public function getValue(): mixed {
+//        return $this->value;
+//    }
+
+    public function header(): array {
+        return [$this->getExportName()];
     }
-
-    /**
-     * @inheritDoc
-     */
-    #[\Override]
-    public function keys(): Set {
-        return new Set([self::EXPORT_NAME]);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[\Override]
-    public function keyExists(mixed $key): bool {
-        return $key === self::EXPORT_NAME;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[\Override]
-    public function addItem(mixed $key, IStatistic $item): void {
-        throw new \BadMethodCallException('Use instead \'->addValue\'');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[\Override]
-    public function getItem(mixed $key): ?IStatistic {
-        throw new \BadMethodCallException('Use instead \'->getValue\'');
-    }
-
-    /**
-     * @param mixed $item
-     */
-    public function addValue(mixed $item): void {
-        $this->value = $item;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getValue(): mixed {
-        return $this->value;
-    }
-
+            
     /**
      * @inheritDoc
      *
@@ -85,9 +79,7 @@ class ValueStatistic extends AbstractStatistic {
     #[\Override]
     protected function __toStringValues(): mixed {
         return [
-            'statisticName' => $this->getStatisticName(),
-            'exportName' => $this->getExportName(),
-            'value' => $this->value,
+            $this->getExportName() => $this->getItem(self::KEY_COUNT),
         ];
     }
 }

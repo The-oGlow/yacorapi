@@ -27,9 +27,8 @@ class AddonStatisticTest extends EasyGoingTestCase {
     }
 
     public function testToString(): void {
-        $expected = sprintf("%s:[%s,%s,%s]",
+        $expected = sprintf("%s:[%s,%s]",
                 AddonStatistic::class,
-                AddonStatistic::STATISTIC_NAME,
                 AddonStatistic::EXPORT_NAME, '{}');
 
         $actual = $this->getCasto2t()->__toString();

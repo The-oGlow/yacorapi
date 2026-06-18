@@ -27,9 +27,8 @@ class SpaceStatisticTest extends EasyGoingTestCase {
     }
 
     public function testToString(): void {
-        $expected = sprintf("%s:[%s,%s,%s]",
+        $expected = sprintf("%s:[%s,%s]",
                 SpaceStatistic::class,
-                SpaceStatistic::STATISTIC_NAME,
                 SpaceStatistic::EXPORT_NAME, '{}');
 
         $actual = $this->getCasto2t()->__toString();
