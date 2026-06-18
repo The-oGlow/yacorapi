@@ -27,7 +27,8 @@ use oglow\tools\Yacorapi\Response\Response;
 use oglow\tools\Yacorapi\Response\ResponseAddonMacroDecorate;
 use oglow\tools\Yacorapi\Response\ResponseSpaceDataDecorate;
 use oglow\tools\Yacorapi\Statistic\IStatistic;
-use oglow\tools\Yacorapi\Statistic\PagetypeStatistic;
+use oglow\tools\Yacorapi\Statistic\StatisticStatistic;
+use oglow\tools\Yacorapi\Statistic\StatisticTypeEnum;
 use oglow\tools\Yacorapi\Statistic\ValueStatistic;
 use Psr\Log\LoggerInterface;
 
@@ -142,10 +143,9 @@ class RapiClient extends AbstractRapiClient // NOSONAR: php:S1448
         $response = $this->exec($prepareUrl);
 
         $itemCount = $response->getValue(IResponse::KEY_TOTAL_SIZE, 0);
-        $valueStatistic = new ValueStatistic(ValueStatistic::KEY_COUNT);
-//        $valueStatistic->addValue($itemCount);
-        $valueStatistic->addItem(ValueStatistic::KEY_COUNT, $itemCount);
-        $singleStatistic = new PagetypeStatistic($itemType);
+        $valueStatistic = new ValueStatistic(ValueStatistic::EMPTY_STRING, null);
+        $valueStatistic->addItem(ValueStatistic::EMPTY_STRING, $itemCount);
+        $singleStatistic = new StatisticStatistic($itemType, StatisticTypeEnum::PAGETYPE);
         $singleStatistic->addItem($itemType, $valueStatistic);
 
         self::$logger->debug('END');

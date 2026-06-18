@@ -13,73 +13,80 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Statistic;
 
-use Ds\Set;
+// use Ds\Set;
 
-class ValueStatistic extends AbstractStatistic {
+/**
+ * A statistic element which contains a constant and primitive value;.
+ */
+class ValueStatistic extends AbstractStatistic
+{
+    public const string KEY_COUNT = StatisticTypeEnum::VALUE->value;
 
-    public const string EXPORT_NAME = 'count';
-
-//    private mixed $value = null;
-
-//    /**
-//     * @inheritDoc
-//     */
-//    #[\Override]
-//    public function keys(): Set {
-//        return new Set([self::EXPORT_NAME]);
-//    }
-//
-//    /**
-//     * @inheritDoc
-//     */
-//    #[\Override]
-//    public function keyExists(mixed $key): bool {
-//        return $key === self::EXPORT_NAME;
-//    }
-//
-//    /**
-//     * @inheritDoc
-//     */
-//    #[\Override]
-//    public function addItem(mixed $key, IStatistic $item): void {
-//        throw new \BadMethodCallException('Use instead \'->addValue\'');
-//    }
-//
-//    /**
-//     * @inheritDoc
-//     */
-//    #[\Override]
-//    public function getItem(mixed $key): ?IStatistic {
-//        throw new \BadMethodCallException('Use instead \'->getValue\'');
-//    }
-//
-//    /**
-//     * @param mixed $item
-//     */
-//    public function addValue(mixed $item): void {
-//        $this->value = $item;
-//    }
-//
-//    /**
-//     * @return mixed
-//     */
-//    public function getValue(): mixed {
-//        return $this->value;
-//    }
-
-    public function header(): array {
-        return [$this->getExportName()];
+    /**
+     * @param string $statisticName
+     * @param mixed  $value
+     * @param string $exportName
+     */
+    public function __construct(string $statisticName, mixed $value, string $exportName = StatisticStatistic::EMPTY_STRING)
+    {
+        if (empty($statisticName)) {
+            $statisticName = self::KEY_COUNT;
+        }
+        if (empty($exportName)) {
+            $exportName = self::KEY_COUNT;
+        }
+        parent::__construct($statisticName, $exportName, StatisticTypeEnum::VALUE);
+        $this->addItem(self::EMPTY_STRING, $value);
     }
-            
+    //    private mixed $value = null;
+
+    //    /**
+    //     * @inheritDoc
+    //     */
+    //    #[\Override]
+    //    public function keys(): Set {
+    //        return new Set([self::EXPORT_NAME]);
+    //    }
+    //
+    //    /**
+    //     * @inheritDoc
+    //     */
+    //    #[\Override]
+    //    public function keyExists(mixed $key): bool {
+    //        return $key === self::EXPORT_NAME;
+    //    }
+
     /**
      * @inheritDoc
-     *
-     * @SuppressWarnings("PHPMD.CamelCaseMethodName")
      */
     #[\Override]
-    protected function __toStringValues(): mixed {
-        return [
-            $this->getExportName() => $this->getItem(self::KEY_COUNT),
-        ];
+    public function addItem(mixed $key, mixed $item): void
+    {
+        parent::addItem(self::KEY_COUNT, $item);
     }
+
+    /**
+     * @inheritDoc
+     */
+    #[\Override]
+    public function getItem(mixed $key): mixed
+    {
+        return parent::getItem(self::KEY_COUNT);
+    }
+
+    //    public function header(): array {
+    //        return [$this->getExportName()];
+    //    }
+
+    //    /**
+    //     * @inheritDoc
+    //     *
+    //     * @SuppressWarnings("PHPMD.CamelCaseMethodName")
+    //     */
+    //    #[\Override]
+    //    protected function __toStringValues(): mixed {
+    //        return [
+    //            $this->getExportName() => $this->getItem(self::KEY_COUNT),
+    //        ];
+    //    }
 }

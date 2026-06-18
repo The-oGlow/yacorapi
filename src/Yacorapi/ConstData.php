@@ -190,7 +190,7 @@ final class ConstData extends AbstractSingleton
         $url = '';
 
         if (class_exists(self::CONF_AUTH_CLAZZ)) {
-            /** 
+            /**
              * @psalm-suppress ArgumentTypeCoercion
              * @phpstan-ignore argument.type
              */

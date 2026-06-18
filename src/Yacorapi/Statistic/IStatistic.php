@@ -19,42 +19,44 @@ interface IStatistic extends \Stringable
 {
     public const string ITEM_SEP = ';';
 
-    public const string KEY_COUNT = 'count';
-
     /**
      * @return Set<mixed>
      */
     public function keys(): Set;
 
     /**
-     * @param string $key
+     * @param mixed $key
      *
      * @return bool
      */
-    public function keyExists(string $key): bool;
+    public function keyExists(mixed $key): bool;
 
     /**
-     * @param string $key
+     * @param mixed $key
      *
-     * @return null|IStatistic|mixed
+     * @return mixed
      */
-    public function getItem(string $key): mixed;
+    public function getItem(mixed $key): mixed;
 
     /**
-     * @param string     $key
-     * @param IStatistic|mixed $item
+     * @param mixed $key
+     * @param mixed $item
      */
-    public function addItem(string $key, mixed $item): void;
+    public function addItem(mixed $key, mixed $item): void;
 
     /**
-     * @return string
-     */
-    public function getStatisticName(): string;
-
-    /**
+     * Returns the column name for an export.
+     *
      * @return string
      */
     public function getExportName(): string;
+
+    /**
+     * Returns the name of this statistic element.
+     *
+     * @return string
+     */
+    public function getStatisticName(): string;
 
     /**
      * Implode this object and its subitems to a single string with separator.
@@ -71,11 +73,17 @@ interface IStatistic extends \Stringable
      * Give the column names for this object and its subitems as array.
      *
      * @return array<string>
+     *
+     * @see IStatistic::flattenHeader()
      */
     public function header(): array;
 
     /**
+     * The header will be imploded to a single string.
+     *
      * @return string
+     *
+     * @see IStatistic::header()
      */
     public function flattenHeader(): string;
 

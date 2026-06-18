@@ -33,10 +33,9 @@ use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Provider\CurlProvider;
 use oglow\tools\Yacorapi\Request\RequestType;
 use oglow\tools\Yacorapi\Response\ResponseDryRun;
-use oglow\tools\Yacorapi\Statistic\AddonStatistic;
 use oglow\tools\Yacorapi\Statistic\IStatistic;
-use oglow\tools\Yacorapi\Statistic\MacroStatistic;
-use oglow\tools\Yacorapi\Statistic\SpaceStatistic;
+use oglow\tools\Yacorapi\Statistic\StatisticStatistic;
+use oglow\tools\Yacorapi\Statistic\StatisticTypeEnum;
 use oglow\tools\Yacorapi\Statistic\ValueStatistic;
 use oglow\tools\Yacorapi\Traits\ExtensionTrait;
 use ollily\Tools\Emergency;
@@ -191,32 +190,33 @@ abstract class AbstractRapiClient implements IRapiClient
         self::$logger->info('START - spaceKey,addon,macroName,macroCount', [$spaceKey, $addon, $macroName, $macroCount]);
 
         if (empty($spaceResult)) {
-            $spaceResult = new SpaceStatistic($spaceKey);
+            $spaceResult = new StatisticStatistic($spaceKey, StatisticTypeEnum::SPACE);
         }
 
         $addonResult = $spaceResult->getItem($addon);
         if (empty($addonResult)) {
-            $addonResult = new AddonStatistic($addon);
+            $addonResult = new StatisticStatistic($addon, StatisticTypeEnum::ADDON);
         }
 
         $macroResult = $addonResult->getItem($macroName);
         if (empty($macroResult)) {
-            $macroResult = new MacroStatistic($macroName);
+            $macroResult = new StatisticStatistic($macroName, StatisticTypeEnum::MACRO);
         }
 
         /** @var null|ValueStatistic $valueResult */
-        $valueResult = $macroResult->getItem(IResponse::KEY_COUNT);
+        $valueResult = $macroResult->getItem(ValueStatistic::KEY_COUNT);
         if (empty($valueResult)) {
-            $valueResult = new ValueStatistic(IResponse::KEY_COUNT);
+            $valueResult = new ValueStatistic(ValueStatistic::EMPTY_STRING, null);
         }
-        self::$logger->info(var_export($valueResult->getValue(),true));
-        if (is_numeric($valueResult->getValue())) {
-            $valueResult->addValue($macroCount + (int) $valueResult->getValue());
+        self::$logger->info(var_export($valueResult->getItem(ValueStatistic::EMPTY_STRING), true));
+        $value = $valueResult->getItem(ValueStatistic::EMPTY_STRING);
+        if (is_numeric($value)) {
+            $valueResult->addItem(ValueStatistic::EMPTY_STRING, $macroCount + (int) $value);
         } else {
-            $valueResult->addValue($macroCount);
+            $valueResult->addItem(ValueStatistic::EMPTY_STRING, $macroCount);
         }
 
-        $macroResult->addItem(IResponse::KEY_COUNT, $valueResult);
+        $macroResult->addItem(ValueStatistic::KEY_COUNT, $valueResult);
         $addonResult->addItem($macroName, $macroResult);
         $spaceResult->addItem($addon, $addonResult);
 
@@ -258,7 +258,7 @@ abstract class AbstractRapiClient implements IRapiClient
             self::$logger->debug('Checking Space with Macro - END');
         }
         if (empty($outputMatrix)) {
-            $outputMatrix = new SpaceStatistic($spaceKey);
+            $outputMatrix = new StatisticStatistic($spaceKey, StatisticTypeEnum::SPACE);
         }
 
         self::$logger->debug('END');
@@ -296,7 +296,7 @@ abstract class AbstractRapiClient implements IRapiClient
             self::$logger->debug('Checking Addon - END');
         }
         if (empty($outputMatrix)) {
-            $outputMatrix = new SpaceStatistic($spaceKey);
+            $outputMatrix = new StatisticStatistic($spaceKey, StatisticTypeEnum::SPACE);
         }
         self::$logger->debug('END');
 

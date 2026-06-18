@@ -1,15 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/PHPClass.php to edit this template
+ * This file is part of ezlogging
+ *
+ * (c) 2024 Oliver Glowa, coding.glowa.com
+ *
+ * This source file is subject to the Apache-2.0 license that is bundled
+ * with this source code in the file LICENSE.
  */
 
 namespace oglow\tools\Yacorapi\Statistic;
 
-class AbstractStatisticTestDummyClazz extends AbstractStatistic {
-
-    public const string STATISTIC_NAME = 'abstractDummyClazz';
-    
-    public const string EXPORT_NAME='dummyName';
+class AbstractStatisticTestDummyClazz extends AbstractStatistic
+{
 }

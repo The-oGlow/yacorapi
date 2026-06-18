@@ -21,7 +21,8 @@ use oglow\tools\Yacorapi\Macro\AllAddon;
 use oglow\tools\Yacorapi\Macro\BlockerAddon;
 use oglow\tools\Yacorapi\Macro\SingleAddon;
 use oglow\tools\Yacorapi\Response\Response;
-use oglow\tools\Yacorapi\Statistic\SpaceStatistic;
+use oglow\tools\Yacorapi\Statistic\StatisticStatistic;
+use oglow\tools\Yacorapi\Statistic\StatisticTypeEnum;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\EasyGoingTestCase;
 use Psr\Log\LoggerInterface;
@@ -287,7 +288,7 @@ class RapiClientTest extends EasyGoingTestCase
 
         $spaceKey = YacorapiTestData::C_SPACE_EXIST_KEY;
 
-        $outputMatrix = new SpaceStatistic($spaceKey);
+        $outputMatrix = new StatisticStatistic($spaceKey, StatisticTypeEnum::SPACE);
 
         $statistic = $this->getCasto2t()->countMacrosInSpace($spaceKey, $this->getCasto2t()->prepareAddonSet(), $outputMatrix);
 

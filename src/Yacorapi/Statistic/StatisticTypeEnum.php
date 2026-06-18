@@ -13,7 +13,11 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Statistic;
 
-class PagetypeStatistic extends AbstractStatistic
+enum StatisticTypeEnum: string
 {
-    public const string EXPORT_NAME = 'pagetype';
+    case ADDON = 'addon';
+    case MACRO = 'macroname';
+    case PAGETYPE = 'pagetype';
+    case SPACE = 'spacekey';
+    case VALUE = 'count';
 }

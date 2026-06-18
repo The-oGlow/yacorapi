@@ -16,24 +16,24 @@ namespace oglow\tools\Yacorapi\Statistic;
 use ollily\Tools\Test\TestData;
 use PHPUnit\Framework\EasyGoingTestCase;
 
-class AbstractStatisticTest extends EasyGoingTestCase
+class StatisticStatisticTest extends EasyGoingTestCase
 {
-    private const StatisticTypeEnum STATISTIC_TYPE = StatisticTypeEnum::SPACE;
+    private const StatisticTypeEnum STATISTIC_TYPE = StatisticTypeEnum::ADDON;
 
     private const string EXPORT_NAME = TestData::DATA_ALPHA2 . self::STATISTIC_TYPE->value;
 
     private const string STATISTIC_NAME = TestData::DATA_ALPHA1;
 
     #[\Override]
-    protected function getCasto2t(): AbstractStatisticTestDummyClazz
+    protected function getCasto2t(): StatisticStatistic
     {
         return $this->o2t;
     }
 
     #[\Override]
-    protected static function prepareO2t(): AbstractStatisticTestDummyClazz
+    protected static function prepareO2t(): StatisticStatistic
     {
-        return new AbstractStatisticTestDummyClazz(self::STATISTIC_NAME, self::EXPORT_NAME, self::STATISTIC_TYPE);
+        return new StatisticStatistic(self::STATISTIC_NAME, self::STATISTIC_TYPE, self::EXPORT_NAME);
     }
 
     public function testKeys(): void
@@ -81,7 +81,16 @@ class AbstractStatisticTest extends EasyGoingTestCase
 
     public function testFlatten(): void
     {
-        $expected = '';
+        $item = $this->prepareSimpleStatistic();
+        $this->getCasto2t()->addItem(TestData::KEY_NUM1, $item);
+
+        $expected = sprintf(
+            "'%s'=>{%s:[%s,%s]}",
+            TestData::KEY_NUM1,
+            StatisticStatistic::class,
+            StatisticTypeEnum::PAGETYPE->value,
+            '{}'
+        );
 
         $actual = $this->getCasto2t()->flatten();
 
@@ -108,12 +117,12 @@ class AbstractStatisticTest extends EasyGoingTestCase
 
     public function testToString(): void
     {
-        $item = $this->prepareSimpleStatistic();
+        $item = $this->prepareComplexStatistic();
         $this->getCasto2t()->addItem(TestData::KEY_ALPHA1, $item);
 
         $expected = sprintf(
             "%s:[%s,{{%s}}]",
-            AbstractStatisticTestDummyClazz::class,
+            StatisticStatistic::class,
             self::EXPORT_NAME,
             $item
         );
@@ -125,6 +134,15 @@ class AbstractStatisticTest extends EasyGoingTestCase
 
     private function prepareSimpleStatistic(): IStatistic
     {
-        return new AbstractStatisticTestDummyClazz(self::STATISTIC_NAME, AbstractStatisticTestDummyClazz::EMPTY_STRING, StatisticTypeEnum::PAGETYPE);
+        return new StatisticStatistic(self::STATISTIC_NAME, StatisticTypeEnum::PAGETYPE);
+    }
+
+    private function prepareComplexStatistic(): IStatistic
+    {
+        $value = new ValueStatistic(ValueStatistic::EMPTY_STRING, TestData::DATA_NUM5, TestData::KEY_ALPHA2);
+        $item = new StatisticStatistic(self::STATISTIC_NAME, StatisticTypeEnum::MACRO);
+        $item->addItem(StatisticStatistic::EMPTY_STRING, $value);
+
+        return $item;
     }
 }

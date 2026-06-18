@@ -172,18 +172,21 @@ class CurlProvider extends AbstractProvider
                 curl_close($execSession);
 
                 // Decode the response
-                $isJson = json_validate($curlResponse);
-                if ($isJson) {
-                    $rawData = json_decode($curlResponse, true);
+                if (is_string($curlResponse)) {
+                    $isJson = json_validate($curlResponse);
+                    if ($isJson) {
+                        $rawData = json_decode($curlResponse, true);
+                    } else {
+                        Emergency::breakSystem(ExitCodes::ERR_CODE_RESPONSE_INVALID_OR_NULL, 'Response is invalid or null');
+                    }
                 } else {
                     Emergency::breakSystem(ExitCodes::ERR_CODE_RESPONSE_INVALID_OR_NULL, 'Response is invalid or null');
                 }
-                
             }
         }
-        
+
         if (is_null($rawData)) {
-            $rawData=[];
+            $rawData = [];
             Emergency::breakSystem(ExitCodes::ERR_CODE_RESPONSE_INVALID_OR_NULL, 'Response is null');
         }
         self::$logger->debug('END');
@@ -268,7 +271,6 @@ class CurlProvider extends AbstractProvider
         self::$logger->debug('START - parameters', [$parameters]);
         echo "\n\n\n++++\n\n\n";
         var_export(json_encode($parameters));
-
 
         if ($execSession instanceof CurlHandle) {
             curl_setopt($execSession, CURLOPT_POST, true);
