@@ -98,8 +98,12 @@ abstract class AbstractStatistic implements IStatistic
     public function getItem(mixed $key): mixed
     {
         $item = null;
-        if ($this->keyExists($key)) {
-            $item = $this->items[$key];
+        if (!is_null($key)) {
+            if ($this->keyExists($key)) {
+                $item = $this->items->get( $key);
+            }
+        } else {
+            throw new \InvalidArgumentException('Key must not be null!');
         }
 
         return $item;
@@ -111,7 +115,11 @@ abstract class AbstractStatistic implements IStatistic
     #[\Override]
     public function addItem(mixed $key, mixed $item): void
     {
-        $this->items[$key] = $item;
+        if (!is_null($key)) {
+            $this->items->put($key ,$item);
+        } else {
+            throw new \InvalidArgumentException('Key must not be null!');
+        }
     }
 
     /**
@@ -140,17 +148,18 @@ abstract class AbstractStatistic implements IStatistic
     {
         $flatData = self::implode_recursive(static::ITEM_SEP, $this->items, false, $displayKeys);
         // FIXME: Refactor the output of the ValueStatistic->__toString()
-        if (!is_null($flatData)) { // @phpstan-ignore function.impossibleType
-            $flatData = preg_replace("/^\{.+\:\[(.+)\]\}$/", "$1", $flatData);
-        }
+        $flatData = preg_replace("/^\{.+\:\[(.+)\]\}$/", "$1", $flatData);
         if (!is_null($flatData)) {
             $flatData = str_replace('\\"', 'x', $flatData);
         }
         if (!is_null($flatData)) {
             $flatData = str_replace('count,value,', '', $flatData);
         }
+        if (is_null($flatData)) {
+            $flatData='';
+        }
 
-        return $flatData; // @phpstan-ignore return.type
+            return $flatData;
     }
 
     /**

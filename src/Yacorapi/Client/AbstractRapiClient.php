@@ -193,22 +193,26 @@ abstract class AbstractRapiClient implements IRapiClient
             $spaceResult = new StatisticStatistic($spaceKey, StatisticTypeEnum::SPACE);
         }
 
+        /** @var null|IStatistic */
         $addonResult = $spaceResult->getItem($addon);
         if (empty($addonResult)) {
             $addonResult = new StatisticStatistic($addon, StatisticTypeEnum::ADDON);
         }
 
+        /** @var null|IStatistic */
         $macroResult = $addonResult->getItem($macroName);
         if (empty($macroResult)) {
             $macroResult = new StatisticStatistic($macroName, StatisticTypeEnum::MACRO);
         }
 
-        /** @var null|ValueStatistic $valueResult */
+        /** @var null|ValueStatistic */
         $valueResult = $macroResult->getItem(ValueStatistic::KEY_COUNT);
         if (empty($valueResult)) {
             $valueResult = new ValueStatistic(ValueStatistic::EMPTY_STRING, null);
         }
+        
         self::$logger->info(var_export($valueResult->getItem(ValueStatistic::EMPTY_STRING), true));
+
         $value = $valueResult->getItem(ValueStatistic::EMPTY_STRING);
         if (is_numeric($value)) {
             $valueResult->addItem(ValueStatistic::EMPTY_STRING, $macroCount + (int) $value);

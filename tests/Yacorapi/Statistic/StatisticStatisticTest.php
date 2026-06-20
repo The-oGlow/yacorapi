@@ -85,7 +85,7 @@ class StatisticStatisticTest extends EasyGoingTestCase
         $this->getCasto2t()->addItem(TestData::KEY_NUM1, $item);
 
         $expected = sprintf(
-            "'%s'=>{%s:[%s,%s]}",
+            "%s=>{%s:[%s,%s]}",
             TestData::KEY_NUM1,
             StatisticStatistic::class,
             StatisticTypeEnum::PAGETYPE->value,
