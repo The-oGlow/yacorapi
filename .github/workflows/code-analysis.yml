@@ -104,7 +104,7 @@ jobs:
         run: composer update --no-ansi --no-interaction --no-progress
 
       - name: install programm
-        run: install/install.sh
+        run: bash ${{ GITHUB_PROJECT_DIR }}/install/install.sh
           
       - name: execute tests
         run: composer c-test
