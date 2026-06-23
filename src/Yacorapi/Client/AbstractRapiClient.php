@@ -210,7 +210,7 @@ abstract class AbstractRapiClient implements IRapiClient
         if (empty($valueResult)) {
             $valueResult = new ValueStatistic(ValueStatistic::EMPTY_STRING, null);
         }
-        
+
         self::$logger->info(var_export($valueResult->getItem(ValueStatistic::EMPTY_STRING), true));
 
         $value = $valueResult->getItem(ValueStatistic::EMPTY_STRING);

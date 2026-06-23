@@ -26,6 +26,7 @@
     </rule>
     <rule ref="rulesets/design.xml">
         <exclude name="CouplingBetweenObjects"/>
+        <exclude name="DepthOfInheritance"/>
     </rule>
     <rule ref="rulesets/naming.xml">
         <!-- refine -->
@@ -54,12 +55,19 @@
         <properties>
             <property name="ignore-global" value="true"/>
         </properties>
-    </rule>
+    </rule>    
     <rule ref="rulesets/design.xml/CouplingBetweenObjects">
         <!-- refine -->
         <priority>1</priority>
         <properties>
             <property name="maximum" value="30"/>
+        </properties>
+    </rule>
+    <rule ref="rulesets/design.xml/DepthOfInheritance">
+        <!-- refine -->
+        <priority>1</priority>
+        <properties>
+            <property name="minimum" value="10"/>
         </properties>
     </rule>
     <rule ref="rulesets/naming.xml/LongClassName">

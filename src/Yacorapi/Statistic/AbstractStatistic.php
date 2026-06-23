@@ -100,7 +100,7 @@ abstract class AbstractStatistic implements IStatistic
         $item = null;
         if (!is_null($key)) {
             if ($this->keyExists($key)) {
-                $item = $this->items->get( $key);
+                $item = $this->items->get($key);
             }
         } else {
             throw new \InvalidArgumentException('Key must not be null!');
@@ -116,7 +116,7 @@ abstract class AbstractStatistic implements IStatistic
     public function addItem(mixed $key, mixed $item): void
     {
         if (!is_null($key)) {
-            $this->items->put($key ,$item);
+            $this->items->put($key, $item);
         } else {
             throw new \InvalidArgumentException('Key must not be null!');
         }
@@ -156,10 +156,10 @@ abstract class AbstractStatistic implements IStatistic
             $flatData = str_replace('count,value,', '', $flatData);
         }
         if (is_null($flatData)) {
-            $flatData='';
+            $flatData = '';
         }
 
-            return $flatData;
+        return $flatData;
     }
 
     /**
