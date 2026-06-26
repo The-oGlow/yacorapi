@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi;
 
+use Ds\Set;
 use Monolog\ConsoleLogger;
 use oglow\tools\common\MockProvider;
 use oglow\tools\Yacorapi\Client\RapiClient;
@@ -30,6 +31,12 @@ use Psr\Log\LogLevel;
 
 class RapiClientTest extends EasyGoingTestCase
 {
+    public const array AVAILABLE_METHODS = [
+        'newClient', 'readPageByPageId', 'readPagesWithFilter', 'scanPagesWithFilter', 'searchPagesWithFilter', 'countItemsinSpace',
+        'readRestrictionsByPageId', 'writeRestrictionsByPageId', 'listSpaces', 'countMacrosInSpace', 'movePage', 'createPage', 'updatePage',
+        'prepareAddonSet', 'rapiMethods', 'getExtensionAddonMacros',
+    ];
+
     /** Space on test instance */
     public const string SPACE_KEY = 'NMAS';
 
@@ -65,6 +72,24 @@ class RapiClientTest extends EasyGoingTestCase
     protected function getCasto2t(): IRapiClient
     {
         return $this->o2t;
+    }
+
+    public function testRapiMethods(): void
+    {
+        $expected = new Set(self::AVAILABLE_METHODS);
+
+        /** @var Set<non-empty-string> */
+        $actual = $this->getCasto2t()::rapiMethods();
+
+        self::assertInstanceOf(Set::class, $actual);
+        foreach ($actual->getIterator() as $item) {
+            if ($expected->contains($item)) {
+                $expected->remove($item);
+            } else {
+                $expected->add($item);
+            }
+        }
+        self::assertTrue($expected->isEmpty(), sprintf("Forgotten: '%s'", join('\'(),\'', $expected->toArray())));
     }
 
     /**
@@ -151,7 +176,7 @@ class RapiClientTest extends EasyGoingTestCase
         self::$logger->info('END');
     }
 
-    public function ztestMovePage(): void
+    public function testMovePage(): void
     {
         self::$logger->info('START');
 
@@ -223,7 +248,7 @@ class RapiClientTest extends EasyGoingTestCase
         self::$logger->info('END');
     }
 
-    public function ztestCountItemsinSpace(): void
+    public function testCountItemsinSpace(): void
     {
         self::$logger->info('START');
 
@@ -282,7 +307,7 @@ class RapiClientTest extends EasyGoingTestCase
         self::$logger->info('END');
     }
 
-    public function ztestCountMacrosInSpace(): void
+    public function testCountMacrosInSpace(): void
     {
         self::$logger->info('START');
 

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Client;
 
 use Ds\Map;
+use Ds\Set;
 use Ds\Vector;
 use Monolog\ConsoleLogger;
 use oglow\tools\Addon\Atlassian\Extension\AdminExtension;
@@ -39,6 +40,7 @@ use oglow\tools\Yacorapi\Statistic\StatisticTypeEnum;
 use oglow\tools\Yacorapi\Statistic\ValueStatistic;
 use oglow\tools\Yacorapi\Traits\ExtensionTrait;
 use ollily\Tools\Emergency;
+use ollily\Tools\Reflection\MagicPublicFunctionTrait;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 
@@ -48,6 +50,7 @@ use Psr\Log\LogLevel;
 abstract class AbstractRapiClient implements IRapiClient
 {
     use ExtensionTrait;
+    use MagicPublicFunctionTrait;
 
     /** Default output level (INFO) */
     public const string LEVEL_DEFAULT = LogLevel::INFO;
@@ -94,6 +97,15 @@ abstract class AbstractRapiClient implements IRapiClient
         ?IConnectionProvider $connectionProvider = null,
         ?AddonMacroData $addons = null
     ): IRapiClient;
+
+    /**
+     * @inheritDoc
+     */
+    #[\Override]
+    public static function rapiMethods(): Set
+    {
+        return self::existingMethodNames();
+    }
 
     /**
      * RapiClient constructor.
