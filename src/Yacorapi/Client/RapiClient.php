@@ -46,9 +46,14 @@ class RapiClient extends AbstractRapiClient // NOSONAR: php:S1448
      * @inheritDoc
      */
     #[\Override]
-    public static function newClient(?int $modeExtension = null, ?IConnectionProvider $connectionProvider = null, ?AddonMacroData $addons = null): IRapiClient
+    public static function newClient(
+            ?int $modeExtension = null, 
+            ?IConnectionProvider $connectionProvider = null, 
+            ?AddonMacroData $addons = null,
+            mixed $level = self::LEVEL_DEFAULT
+            ): IRapiClient
     {
-        return new RapiClient($modeExtension, $connectionProvider, $addons);
+        return new RapiClient($modeExtension, $connectionProvider, $addons, $level);
     }
 
     /**
@@ -57,14 +62,24 @@ class RapiClient extends AbstractRapiClient // NOSONAR: php:S1448
      * @param null|int                 $modeExtension
      * @param null|IConnectionProvider $connectionProvider
      * @param null|AddonMacroData      $addons
+     * @param int|\Psr\Log\LogLevel::*|string $level The minimum logging level at which this handler will be triggered 
+     *                                                (Default: {@link AbstractRapiClient::LEVEL_DEFAULT})
+     * 
+     * @see AbstractRapiClient::LEVEL_DEFAULT
+     *
      */
-    protected function __construct(?int $modeExtension = null, ?IConnectionProvider $connectionProvider = null, ?AddonMacroData $addons = null)
+    protected function __construct(
+            ?int $modeExtension = null, 
+            ?IConnectionProvider $connectionProvider = null, 
+            ?AddonMacroData $addons = null, 
+            mixed $level = self::LEVEL_DEFAULT
+            )
     {
         // Init Logger
-        self::$logger = new ConsoleLogger(name: RapiClient::class, level: self::LEVEL_DEFAULT);
+        self::$logger = new ConsoleLogger(name: RapiClient::class, level: $level);
         self::$logger->debug('START');
 
-        parent::__construct($modeExtension, $connectionProvider, $addons);
+        parent::__construct($modeExtension, $connectionProvider, $addons, $level);
 
         self::$logger->debug('END');
     }
@@ -279,7 +294,7 @@ class RapiClient extends AbstractRapiClient // NOSONAR: php:S1448
             $parameters->put(RequestParameterData::PROP_SPACE, [RequestParameterData::PROP_KEY => $spaceKey]);
         }
         if (is_numeric($parentId)) {
-            $parameters->put(RequestParameterData::PROP_ANCESTORS, [RequestParameterData::PROP_ID => $parentId]);
+            $parameters->put(RequestParameterData::PROP_ANCESTORS,[[RequestParameterData::PROP_ID => $parentId]]);
         } else {
             throw new \InvalidArgumentException(self::MSG_PARENT_ID_MUST_BE_NUMERIC);
         }

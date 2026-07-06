@@ -269,12 +269,10 @@ class CurlProvider extends AbstractProvider
     private function preparePostParameter(&$execSession, Map $parameters): void
     {
         self::$logger->debug('START - parameters', [$parameters]);
-        echo "\n\n\n++++\n\n\n";
-        var_export(json_encode($parameters));
 
         if ($execSession instanceof CurlHandle) {
             curl_setopt($execSession, CURLOPT_POST, true);
-            $parametersAsString = json_encode($parameters);
+            $parametersAsString = json_encode($parameters->toArray());
             self::$logger->debug('parameters', [$parametersAsString]);
             if (is_string($parametersAsString)) {
                 curl_setopt($execSession, CURLOPT_POSTFIELDS, $parametersAsString);

@@ -21,23 +21,23 @@ class ContentHelper extends AbstractHelper
 {
     public const string MACROBODY_PLAIN = 'html;';
 
-    public const string MACROBODY_RICHTEXT = 'section;column;';
+    public const string MACROBODY_RICHTEXT = 'section;column;panel;';
 
     public const string CHOOSE_BODY_RICHTEXT = 'rich';
 
     public const string CHOOSE_BODY_PLAIN = 'plain';
 
-    public const string TAG_PARAM_START = "\n<ac:parameters ac:name=\"%s\">";
+    public const string TAG_PARAM_START = "\n<ac:parameter ac:name=\"%s\">";
 
-    public const string TAG_PARAM_END = "</ac:parameters>";
+    public const string TAG_PARAM_END = "</ac:parameter>";
 
     public const string TAG_PLAIN_START = "<ac:plain-text-body><![CDATA[";
 
     public const string TAG_PLAIN_END = "]]></ac:plain-text-body>";
 
-    public const string TAG_RICH_START = "<ac:rich-text-body>\n";
+    public const string TAG_RICH_START = "\n<ac:rich-text-body>";
 
-    public const string TAG_RICH_END = "\n</ac:rich-text-body>";
+    public const string TAG_RICH_END = "</ac:rich-text-body>";
 
     public const string TAG_MACRO_START = "<ac:structured-macro ac:name=\"%s\" ac:schema-version=\"%s\">\n";
 

@@ -89,13 +89,17 @@ abstract class AbstractRapiClient implements IRapiClient
      * @param null|int                 $modeExtension
      * @param null|IConnectionProvider $connectionProvider
      * @param null|AddonMacroData      $addons
+     * @param int|string|LogLevel      $level (Default: {@link AbstractRapiClient::LEVEL_DEFAULT})
      *
      * @return IRapiClient
+     * 
+     * @see AbstractRapiClient::LEVEL_DEFAULT
      */
     abstract public static function newClient(
         ?int $modeExtension = null,
         ?IConnectionProvider $connectionProvider = null,
-        ?AddonMacroData $addons = null
+        ?AddonMacroData $addons = null,
+        mixed $level = self::LEVEL_DEFAULT
     ): IRapiClient;
 
     /**
@@ -113,11 +117,19 @@ abstract class AbstractRapiClient implements IRapiClient
      * @param null|int                 $modeExtension
      * @param null|IConnectionProvider $connectionProvider
      * @param null|AddonMacroData      $addons
+     * @param int|string|LogLevel      $level (Default: {@link AbstractRapiClient::LEVEL_DEFAULT})
+     * 
+     * @see AbstractRapiClient::LEVEL_DEFAULT
      */
-    protected function __construct(?int $modeExtension = null, ?IConnectionProvider $connectionProvider = null, ?AddonMacroData $addons = null)
+    protected function __construct(
+            ?int $modeExtension = null, 
+            ?IConnectionProvider $connectionProvider = null, 
+            ?AddonMacroData $addons = null, 
+            mixed $level = self::LEVEL_DEFAULT
+            )
     {
         // Init Logger
-        self::$logger = new ConsoleLogger(AbstractRapiClient::class);
+        self::$logger = new ConsoleLogger(name:AbstractRapiClient::class, level:$level);
         self::$logger->debug('START');
 
         // Init Dynamic Consts
@@ -132,7 +144,7 @@ abstract class AbstractRapiClient implements IRapiClient
             $this->addons = $addons;
         }
         if (empty($connectionProvider)) {
-            $this->connectionProvider = new CurlProvider(new ResponseDryRun(), self::LEVEL_DEFAULT);
+            $this->connectionProvider = new CurlProvider(new ResponseDryRun(), $level);
         } else {
             $this->connectionProvider = $connectionProvider;
         }

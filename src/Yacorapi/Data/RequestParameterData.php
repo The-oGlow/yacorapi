@@ -55,7 +55,7 @@ class RequestParameterData extends AbstractSingleton
 
     public const string PROP_GROUP = 'group';
 
-    public const string PROP_ID = 'key';
+    public const string PROP_ID = 'id';
 
     public const string PROP_KEY = 'key';
 
