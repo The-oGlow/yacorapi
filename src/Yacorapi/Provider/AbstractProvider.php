@@ -38,7 +38,7 @@ abstract class AbstractProvider implements IConnectionProvider
     /**
      * @param int|string $level
      *
-     * @see AbstractProvider::LEVEL_DEFAULT
+     * @see self::LEVEL_DEFAULT
      *
      * @phpstan-param LoggingLevel $level
      */

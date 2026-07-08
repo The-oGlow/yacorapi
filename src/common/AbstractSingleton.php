@@ -26,8 +26,10 @@ abstract class AbstractSingleton implements ISingleton
 
     /**
      * Initialize this singleton.
+     * 
+     * @param Map<mixed, mixed> $overrideParameters
      */
-    abstract protected function prepareSettings(): void;
+    abstract protected function prepareSettings(Map $overrideParameters): void;
 
     /**
      * @param Map<mixed, mixed> $overrideParameters
@@ -35,6 +37,21 @@ abstract class AbstractSingleton implements ISingleton
      * @return bool
      */
     abstract protected function validateSettings(Map $overrideParameters): bool;
+
+    /**
+     * @param Map<mixed, mixed> $overrideParameters
+     * @param string            $keyName
+     *
+     * @return mixed
+     */
+    protected static function parseBool(Map $overrideParameters, string $keyName): mixed {
+        $foundBool = $overrideParameters->get($keyName, '');
+        if (!empty($foundBool)) {
+            $foundBool = filter_var($foundBool, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+        }
+
+        return $foundBool;
+    }
 
     public function __construct(string $key = '', bool $withLogger = true)
     {
@@ -50,7 +67,7 @@ abstract class AbstractSingleton implements ISingleton
         }
         $overrideParameters = $this->parseArguments($this->prepareShortOpts(), $this->prepareLongOpts());
         $this->key          = $key;
-        $this->prepareSettings();
+        $this->prepareSettings($overrideParameters);
         $valid = $this->validateSettings($overrideParameters);
 
         self::$logger->debug('END - Is initiated', [$valid]);
@@ -75,22 +92,6 @@ abstract class AbstractSingleton implements ISingleton
     protected function prepareLongOpts(): array
     {
         return [];
-    }
-
-    /**
-     * @param Map<mixed, mixed> $overrideParameters
-     * @param string            $keyName
-     *
-     * @return mixed
-     */
-    protected function parseBool(Map $overrideParameters, string $keyName): mixed
-    {
-        $ovUseProd = $overrideParameters->get($keyName, '');
-        if (!empty($ovUseProd)) {
-            $ovUseProd = filter_var($ovUseProd, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
-        }
-
-        return $ovUseProd;
     }
 
     /**

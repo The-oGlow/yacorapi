@@ -117,7 +117,7 @@ class ProjectDocToolboxHelper extends AbstractHelper
      * @inheritDoc
      */
     #[\Override]
-    protected function prepareSettings(): void
+    protected function prepareSettings(Map $overrideParameters): void
     {
         // NothingToDo
     }

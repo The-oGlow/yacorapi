@@ -42,7 +42,7 @@ class ExitCodes extends AbstractSingleton
      * @inheritDoc
      */
     #[\Override]
-    protected function prepareSettings(): void
+    protected function prepareSettings(Map $overrideParameters): void
     {
         // Nothing2Do
     }

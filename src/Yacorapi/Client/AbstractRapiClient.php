@@ -89,11 +89,11 @@ abstract class AbstractRapiClient implements IRapiClient
      * @param null|int                 $modeExtension
      * @param null|IConnectionProvider $connectionProvider
      * @param null|AddonMacroData      $addons
-     * @param int|string|LogLevel      $level (Default: {@link AbstractRapiClient::LEVEL_DEFAULT})
+     * @param int|string|LogLevel      $level (Default: {@link self::LEVEL_DEFAULT})
      *
      * @return IRapiClient
      * 
-     * @see AbstractRapiClient::LEVEL_DEFAULT
+     * @see self::LEVEL_DEFAULT
      */
     abstract public static function newClient(
         ?int $modeExtension = null,
@@ -117,9 +117,9 @@ abstract class AbstractRapiClient implements IRapiClient
      * @param null|int                 $modeExtension
      * @param null|IConnectionProvider $connectionProvider
      * @param null|AddonMacroData      $addons
-     * @param int|string|LogLevel      $level (Default: {@link AbstractRapiClient::LEVEL_DEFAULT})
+     * @param int|string|LogLevel      $level (Default: {@link self::LEVEL_DEFAULT})
      * 
-     * @see AbstractRapiClient::LEVEL_DEFAULT
+     * @see self::LEVEL_DEFAULT
      */
     protected function __construct(
             ?int $modeExtension = null, 

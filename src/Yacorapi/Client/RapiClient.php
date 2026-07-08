@@ -63,9 +63,9 @@ class RapiClient extends AbstractRapiClient // NOSONAR: php:S1448
      * @param null|IConnectionProvider $connectionProvider
      * @param null|AddonMacroData      $addons
      * @param int|\Psr\Log\LogLevel::*|string $level The minimum logging level at which this handler will be triggered 
-     *                                                (Default: {@link AbstractRapiClient::LEVEL_DEFAULT})
+     *                                                (Default: {@link self::LEVEL_DEFAULT})
      * 
-     * @see AbstractRapiClient::LEVEL_DEFAULT
+     * @see self::LEVEL_DEFAULT
      *
      */
     protected function __construct(

@@ -33,7 +33,7 @@ class MockProvider extends AbstractProvider
     /**
      * @param int|string $level
      *
-     * @see AbstractProvider::LEVEL_DEFAULT
+     * @see self::LEVEL_DEFAULT
      *
      * @phpstan-param LoggingLevel $level
      */

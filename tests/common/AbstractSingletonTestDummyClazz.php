@@ -21,7 +21,7 @@ class AbstractSingletonTestDummyClazz extends AbstractSingleton
      * @inheritDoc
      */
     #[\Override]
-    protected function prepareSettings(): void
+    protected function prepareSettings(Map $overrideParameters): void
     {
         // Nothing to do
     }

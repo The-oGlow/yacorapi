@@ -183,9 +183,13 @@ final class ConstData extends AbstractSingleton
     }
 
     /**
+     * @param bool $ovUseProd Overrides the USE_PROD flag by commandline
+     * 
      * @return string
+     * 
+     * @see ConstData::KEY_USE_PROD
      */
-    public static function CONF_BASE_URL(): string // NOSONAR: php:S100
+    public static function CONF_BASE_URL(mixed $ovUseProd=null): string // NOSONAR: php:S100
     {
         $url = '';
 
@@ -196,7 +200,10 @@ final class ConstData extends AbstractSingleton
              */
             $clazz = new \ReflectionClass(self::CONF_AUTH_CLAZZ);
             /** @var bool */
-            $useProd =  $clazz->getConstant(self::KEY_USE_PROD);
+            $useProd = $clazz->getConstant(self::KEY_USE_PROD);
+            if (is_bool($ovUseProd)) {
+                $useProd = $ovUseProd;
+            }
             $url = $useProd ? $clazz->getConstant(self::KEY_PROD_URL) : $clazz->getConstant(self::KEY_TEST_URL);
         }
 
@@ -278,16 +285,28 @@ final class ConstData extends AbstractSingleton
      * @inheritDoc
      */
     #[\Override]
-    protected function prepareSettings(): void
+    protected function prepareSettings(Map $overrideParameters): void
     {
         self::$logger->debug('START');
+
+        $ovUseProd = static::parseBool($overrideParameters, self::KEY_USE_PROD);
 
         $this->definedConst = new Map();
 
         $this->putConst(self::KEY_MY_DIR, self::getHome() . DIRECTORY_SEPARATOR . self::CONF_USERFOLDER);
         $this->prepareUserAuthorization((string) $this->definedConst->get(self::KEY_MY_DIR), self::CONF_USERAUTHFILE, self::CONF_AUTH_CLAZZ);
 
-        $this->putConst(self::KEY_CONF_BASE_URL, static::CONF_BASE_URL());
+        if (is_bool($ovUseProd)) {
+            $this->putConst(self::KEY_USE_PROD, $ovUseProd);
+            $this->putConst(self::KEY_CONF_BASE_URL, static::CONF_BASE_URL($ovUseProd));
+        } else {
+            if (class_exists(PersonalAuth::class)) {
+                $this->putConst(self::KEY_USE_PROD, PersonalAuth::USE_PROD);
+            } else {
+                $this->putConst(self::KEY_USE_PROD, false);
+            }
+            $this->putConst(self::KEY_CONF_BASE_URL, static::CONF_BASE_URL());
+        }
         $this->defineConsts();
 
         self::$logger->debug('END - Is prepared', ['true']);
@@ -302,7 +321,7 @@ final class ConstData extends AbstractSingleton
         self::$logger->debug('START');
 
         $valid1 = self::validateMandatory();
-        $valid2 = self::validateForProductionUse($overrideParameters);
+        $valid2 = self::validateForProductionUse();
 
         self::$logger->debug('END - Is valid', [$valid1, $valid2]);
 
@@ -385,29 +404,13 @@ final class ConstData extends AbstractSingleton
     }
 
     /**
-     * @param Map<mixed, mixed> $overrideParameters
-     *
      * @return bool
      */
-    protected function validateForProductionUse(Map $overrideParameters): bool
+    protected function validateForProductionUse(): bool
     {
         self::$logger->debug('START');
 
         $validated = true;
-
-        $ovUseProd = $this->parseBool($overrideParameters, self::KEY_USE_PROD);
-        if (!empty($ovUseProd)) {
-            $ovUseProd = filter_var($ovUseProd, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
-        }
-        if (is_bool($ovUseProd)) {
-            $this->putConst(self::KEY_USE_PROD, $ovUseProd);
-        } else {
-            if (class_exists(PersonalAuth::class)) {
-                $this->putConst(self::KEY_USE_PROD, PersonalAuth::USE_PROD);
-            } else {
-                $this->putConst(self::KEY_USE_PROD, false);
-            }
-        }
 
         if ($this->getConst(self::KEY_USE_PROD, false) === true) {
             self::$logger->notice('+++ RUNNING ON PRODUCTION IS OK 4 U? +++');
