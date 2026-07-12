@@ -178,11 +178,11 @@ trait ProjectdocTrait
         return $status;
     }
 
-    public function showResultsPdt(IResponse $response, string $propertyName, ?int $idx = null): string
+    public function showResultsPdt(IResponse $response, string $propertyName, int $idx = 0): string
     {
         $line = '';
 
-        if (isset($idx)) {
+        if ($idx > 0) {
             $line = sprintf('%s;', $idx);
         }
         $line .= $this->prepareCsvLinePdtProperty($response, $propertyName);

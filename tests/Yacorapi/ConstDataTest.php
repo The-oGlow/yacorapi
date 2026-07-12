@@ -19,7 +19,7 @@ class ConstDataTest extends ConstantCheckTestCase
 {
     public const string  CLASS_PREFIX = ConstData::class . self::C_STATIC_SEP;
 
-    protected const int EXPECTED_CONSTANT_COUNT = 37;
+    protected const int EXPECTED_CONSTANT_COUNT = 40;
 
     protected const bool WITH_CONST_CROSSCHECK = true;
 
@@ -120,6 +120,9 @@ class ConstDataTest extends ConstantCheckTestCase
             self::CLASS_PREFIX . 'C_RAPI_VIEWPAGE',
             self::CLASS_PREFIX . 'C_RAPI_RESTRICTION_BYOP',
             self::CLASS_PREFIX . 'C_RAPI_RESTRICTION',
+            self::CLASS_PREFIX . 'ENV_HOME',
+            self::CLASS_PREFIX . 'ENV_OFFSET',
+            self::CLASS_PREFIX . 'ENV_USERPROFILE',
         ];
         static::updateActualConsts($const);
 

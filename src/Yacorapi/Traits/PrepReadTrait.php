@@ -28,19 +28,19 @@ trait PrepReadTrait
         return $prepareUrl;
     }
 
-    public function prepareSearchUrl(string $searchTerm, string $spaceKey = '', ?string $pageType = null, ?bool $withBody = null): string
+    public function prepareSearchUrl(string $searchTerm, string $spaceKey = '', string $pageType = 'page', bool $withBody = false): string
     {
+        $result='';
         if (function_exists('_prepareSearchUrl')) {
-            return _prepareSearchUrl($searchTerm, $spaceKey, null, null, $pageType, $withBody);
-        } else {
-            return '';
+            $result= _prepareSearchUrl($searchTerm, $spaceKey, null, null, $pageType, $withBody);
         }
+        return $result;
     }
 
     public function prepareSearchUrlExt(
         string $searchTerm,
         string $spaceKey,
-        ?int $searchFromPos = 0,
+        int $searchFromPos = 0,
         int $searchLimit = -1,
         string $pageType = 'page',
         bool $withBody = false

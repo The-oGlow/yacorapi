@@ -21,17 +21,20 @@ class ProjectdocExtension extends AbstractExtension
 {
     use ProjectdocTrait;
 
+    #[\Override]
     protected function init(): void
     {
         parent::init();
         $this->addons = new ProjectdocAddon();
     }
 
+    #[\Override]
     public static function getName(): string
     {
         return 'Projectdoc Toolbox Extension';
     }
 
+    #[\Override]
     public static function getId(): int
     {
         return 32;

@@ -26,7 +26,7 @@ abstract class AbstractExtension implements IExtension
 
     protected ConstData $constData;
 
-    protected ?IAddon $addons = null;
+    protected IAddon $addons;
 
     public function __construct()
     {
@@ -42,11 +42,13 @@ abstract class AbstractExtension implements IExtension
     /**
      * @inheritDoc
      */
+    #[\Override]
     abstract public static function getName(): string;
 
     /**
      * @inheritDoc
      */
+    #[\Override]
     abstract public static function getId(): int;
 
     protected function init(): void
@@ -56,11 +58,12 @@ abstract class AbstractExtension implements IExtension
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function getAddons(): Map
     {
         /** @var Map<mixed,Vector<mixed>> */
         $addonsTmp = new Map();
-        if (!is_null($this->addons)) {
+        if (isset($this->addons)) {
             $addonsTmp = $this->addons->getAddons();
         }
 
@@ -70,11 +73,12 @@ abstract class AbstractExtension implements IExtension
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function getMacros(): Vector
     {
         /** @var Vector<mixed> $macrosTmp */
         $macrosTmp = new Vector();
-        if (!is_null($this->addons)) {
+        if (isset($this->addons)) {
             $macrosTmp = $this->addons->getMacros();
         }
 

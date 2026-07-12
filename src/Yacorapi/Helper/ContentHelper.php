@@ -58,14 +58,14 @@ class ContentHelper extends AbstractHelper
     }
 
     /**
-     * @param null|Map<string,string> $parameters
+     * @param Map<string,string> $parameters
      *
      * @return string
      */
-    public static function prepareMacroParameter(?Map $parameters = null): string
+    public static function prepareMacroParameter(Map $parameters): string
     {
         $newTag = '';
-        if (!is_null($parameters) && !$parameters->isEmpty()) {
+        if (!$parameters->isEmpty()) {
             foreach ($parameters as $item => $value) {
                 $newTag .= sprintf(self::TAG_PARAM_START . '%s' . self::TAG_PARAM_END, $item, $value);
             }
@@ -131,12 +131,12 @@ class ContentHelper extends AbstractHelper
 
     /**
      * @param string                  $macroName
-     * @param null|Map<string,string> $parameters
+     * @param Map<string,string> $parameters
      * @param string                  $body
      *
      * @return string
      */
-    public static function prepareMacro(string $macroName, ?Map $parameters = null, string $body = ''): string
+    public static function prepareMacro(string $macroName, Map $parameters, string $body = ''): string
     {
         $newTag = '';
         $newTag .= sprintf(self::TAG_MACRO_START, $macroName, self::TAG_MACRO_VERSION);

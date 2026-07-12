@@ -26,9 +26,9 @@ class ResponseAddonMacroDecorate extends AbstractResponse
      * ResponseAddonMacroDecorate constructor.
      *
      * @param int                     $mode
-     * @param null|array<mixed,mixed> $data
+     * @param array<mixed,mixed> $data
      */
-    public function __construct(int $mode, ?array $data = null)
+    public function __construct(int $mode, array $data = [])
     {
         self::$logger = new ConsoleLogger(ResponseAddonMacroDecorate::class);
         self::$logger->debug('START');

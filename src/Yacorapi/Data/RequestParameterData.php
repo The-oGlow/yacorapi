@@ -110,6 +110,8 @@ class RequestParameterData extends AbstractSingleton
 
     public const int SEARCH_LIMIT_MAX = 100;
 
+    public const int NO_PARENT = 0;
+    
     public const string USER_TYPE_KNOWN = 'known';
 
     /**

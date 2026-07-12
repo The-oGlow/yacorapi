@@ -42,6 +42,7 @@ abstract class AbstractAddon implements IAddon
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function getAddons(): Map
     {
         return $this->addonsMacros;
@@ -50,6 +51,7 @@ abstract class AbstractAddon implements IAddon
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function getAddonNames(): Vector
     {
         return new Vector($this->addonsMacros->keys());
@@ -58,6 +60,7 @@ abstract class AbstractAddon implements IAddon
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function getMacros(): Vector
     {
         $macros = new Vector();
@@ -75,6 +78,7 @@ abstract class AbstractAddon implements IAddon
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function getMacrosArray(): array
     {
         return $this->getMacros()->toArray();

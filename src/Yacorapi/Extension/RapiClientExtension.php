@@ -23,11 +23,13 @@ class RapiClientExtension extends AbstractExtension
     use PrepSpaceTrait;
     use PrepWriteTrait;
 
+    #[\Override]
     public static function getName(): string
     {
         return 'RAPI-Client Extension';
     }
 
+    #[\Override]
     public static function getId(): int
     {
         return 1;

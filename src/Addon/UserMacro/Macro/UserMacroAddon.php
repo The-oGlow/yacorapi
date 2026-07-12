@@ -23,6 +23,7 @@ use oglow\tools\Yacorapi\Macro\AbstractAddon;
  */
 class UserMacroAddon extends AbstractAddon
 {
+    #[\Override]
     protected function init(): void
     {
         parent::init();

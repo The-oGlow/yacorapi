@@ -211,7 +211,7 @@ class RapiClient extends AbstractRapiClient // NOSONAR: php:S1448
      * @inheritDoc
      */
     #[\Override]
-    public function countMacrosInSpace(string $spaceKey, ResponseAddonMacroDecorate $addonSet, ?IStatistic $outputMatrix): IStatistic
+    public function countMacrosInSpace(string $spaceKey, ResponseAddonMacroDecorate $addonSet, IStatistic $outputMatrix): IStatistic
     {
         self::$logger->debug('START - spaceKey,addonSet', [$spaceKey, $addonSet]);
 
@@ -269,7 +269,7 @@ class RapiClient extends AbstractRapiClient // NOSONAR: php:S1448
         string $spaceKey,
         string $pageTitle,
         string $pageBody,
-        ?int $parentId = null,
+        int $parentId = RequestParameterData::NO_PARENT,
         string $itemType = RequestParameterData::ITEM_TYPE_PAGE
     ): IResponse {
         self::$logger->debug('START - spaceKey,pageTitle,parentId,pageType,pageBody', [$spaceKey, $pageTitle, $parentId, $itemType, empty($pageBody)]);

@@ -21,7 +21,7 @@ class RequestParameterDataTest extends ConstantCheckTestCase
 
     private const int   EXPECTED_PROPERTY_COUT  = 19;
 
-    protected const int EXPECTED_CONSTANT_COUNT = 42;
+    protected const int EXPECTED_CONSTANT_COUNT = 43;
 
     protected const bool WITH_CONST_CROSSCHECK = true;
 
@@ -87,6 +87,7 @@ class RequestParameterDataTest extends ConstantCheckTestCase
             self::CLASS_PREFIX . 'SEARCH_LIMIT_MAX',
             self::CLASS_PREFIX . 'STATUS_TYPE_CURRENT',
             self::CLASS_PREFIX . 'USER_TYPE_KNOWN',
+            self::CLASS_PREFIX . 'NO_PARENT',
         ];
         static::updateActualConsts($const);
 

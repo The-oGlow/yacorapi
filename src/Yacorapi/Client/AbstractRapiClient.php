@@ -257,11 +257,11 @@ abstract class AbstractRapiClient implements IRapiClient
      * @param string          $spaceKey
      * @param string          $addOn
      * @param Vector<string>  $macroNames
-     * @param null|IStatistic $outputMatrix
+     * @param IStatistic $outputMatrix
      *
      * @return IStatistic
      */
-    protected function loopAddonMacros(string $spaceKey, string $addOn, Vector $macroNames, ?IStatistic $outputMatrix): IStatistic
+    protected function loopAddonMacros(string $spaceKey, string $addOn, Vector $macroNames, IStatistic $outputMatrix): IStatistic
     {
         self::$logger->debug('START - spaceKey,addOn,macroNames', [$spaceKey, $addOn, $macroNames]);
 
@@ -298,11 +298,11 @@ abstract class AbstractRapiClient implements IRapiClient
      * @param string            $spaceKey
      * @param int               $mode
      * @param Map<mixed, mixed> $mapAddons
-     * @param null|IStatistic   $outputMatrix
+     * @param IStatistic   $outputMatrix
      *
      * @return IStatistic
      */
-    protected function loopAddons(string $spaceKey, int $mode, Map $mapAddons, ?IStatistic $outputMatrix): IStatistic
+    protected function loopAddons(string $spaceKey, int $mode, Map $mapAddons, IStatistic $outputMatrix): IStatistic
     {
         self::$logger->debug('START - spaceKey,mode,addons', [$spaceKey, $mode, $mapAddons]);
 

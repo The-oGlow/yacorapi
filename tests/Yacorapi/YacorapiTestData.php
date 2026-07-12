@@ -319,8 +319,8 @@ class YacorapiTestData extends TestData
             IResponse::KEY_ID => self::C_SEARCHPAGEID_01,
             IResponse::KEY_TITLE => self::C_SEARCHPAGETITLE_01,
         ];
-        self::$RESP_HEAD_SEARCHPAGEID_01 = array_merge(self::$RESP_HEAD_SEARCHPAGEID_01, self::prepareResponseSpace(self::C_SEARCHPAGESPACE_01));
-        self::$RESP_HEAD_SEARCHPAGEID_01 = array_merge(self::$RESP_HEAD_SEARCHPAGEID_01, self::prepareResponseAncestor(self::C_SEARCHPAGESPARENT_01));
+        self::$RESP_HEAD_SEARCHPAGEID_01 = array_merge(self::$RESP_HEAD_SEARCHPAGEID_01, self::prepareResponseSpace(self::C_SEARCHPAGESPACE_01, new Map()));
+        self::$RESP_HEAD_SEARCHPAGEID_01 = array_merge(self::$RESP_HEAD_SEARCHPAGEID_01, self::prepareResponseAncestor(self::C_SEARCHPAGESPARENT_01, new Map()));
 
         return self::$RESP_HEAD_SEARCHPAGEID_01;
     }
@@ -330,7 +330,7 @@ class YacorapiTestData extends TestData
      */
     public static function RESP_BODY(): array
     {
-        self::$RESP_BODY =             self::prepareResponseBody(YacorapiTestData::HTML_PAGE)        ;
+        self::$RESP_BODY =             self::prepareResponseBody(YacorapiTestData::HTML_PAGE, new Map());
 
         return self::$RESP_BODY;
     }
@@ -400,14 +400,17 @@ class YacorapiTestData extends TestData
 
     /**
      * @param string                $text
-     * @param null|Map<mixed,mixed> $parameters
+     * @param Map<mixed,mixed> $parameters
      *
      * @return array<mixed,mixed>
      */
-    public static function prepareResponseSpace(string $text = '', ?Map $parameters = null): array
+    public static function prepareResponseSpace(string $text, Map $parameters): array
     {
-        if (!is_null($parameters)) {
-            $text = $parameters->get(RequestParameterData::PROP_SPACE)[RequestParameterData::PROP_KEY];
+        if (!$parameters->isEmpty()) {
+            $value = $parameters->get(RequestParameterData::PROP_SPACE);
+            if (is_array($value) && count($value)>0) {
+                $text = $value[RequestParameterData::PROP_KEY];
+            }
         }
 
         return [
@@ -418,14 +421,17 @@ class YacorapiTestData extends TestData
 
     /**
      * @param mixed                 $text
-     * @param null|Map<mixed,mixed> $parameters
+     * @param Map<mixed,mixed> $parameters
      *
      * @return array<mixed,mixed>
      */
-    public static function prepareResponseAncestor(mixed $text = '', ?Map $parameters = null): array
+    public static function prepareResponseAncestor(mixed $text, Map $parameters): array
     {
-        if (!is_null($parameters)) {
-            $text = $parameters->get(RequestParameterData::PROP_ANCESTORS)[RequestParameterData::PROP_KEY];
+        if (!$parameters->isEmpty()) {
+            $value = $parameters->get(RequestParameterData::PROP_ANCESTORS);
+            if (is_array($value) && count($value)>0) {
+                $text = $value[0][RequestParameterData::PROP_ID];
+            }
         }
 
         return [
@@ -436,14 +442,17 @@ class YacorapiTestData extends TestData
 
     /**
      * @param string                $text
-     * @param null|Map<mixed,mixed> $parameters
+     * @param Map<mixed,mixed> $parameters
      *
      * @return array<mixed,mixed>
      */
-    public static function prepareResponseBody(string $text = '', ?Map $parameters = null): array
+    public static function prepareResponseBody(string $text, Map $parameters): array
     {
-        if (!is_null($parameters)) {
-            $text = $parameters->get(RequestParameterData::PROP_BODY)[RequestParameterData::PROP_STORAGE][RequestParameterData::PROP_VALUE];
+        if (!$parameters->isEmpty()) {
+            $value = $parameters->get(RequestParameterData::PROP_BODY);
+            if (is_array($value) && count($value)>0) {
+                $text = $value[RequestParameterData::PROP_STORAGE][RequestParameterData::PROP_VALUE];
+            }
         }
 
         return [

@@ -26,6 +26,7 @@ class ThirdPartyAddon extends AbstractAddon
     /**
      * @SuppressWarnings("PHPMD.ExcessiveMethodLength")
      */
+    #[\Override]
     protected function init(): void // NOSONAR: php:S138
     {
         parent::init();

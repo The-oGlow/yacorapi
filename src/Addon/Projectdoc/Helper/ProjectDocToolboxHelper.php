@@ -51,9 +51,9 @@ class ProjectDocToolboxHelper extends AbstractHelper
      * @param string $oldDoctype
      * @param string $newDoctype
      *
-     * @return null|string
+     * @return string
      */
-    public function replaceDoctype(string $body, string $oldDoctype, string $newDoctype): ?string
+    public function replaceDoctype(string $body, string $oldDoctype, string $newDoctype): string
     {
         $newBody = $body;
         if (!empty($oldDoctype)) {

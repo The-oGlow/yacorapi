@@ -18,17 +18,20 @@ use oglow\tools\Yacorapi\Extension\AbstractExtension;
 
 class ThirdPartyExtension extends AbstractExtension
 {
+    #[\Override]
     protected function init(): void
     {
         parent::init();
         $this->addons = new ThirdPartyAddon();
     }
 
+    #[\Override]
     public static function getName(): string
     {
         return 'Third Party Extension';
     }
 
+    #[\Override]
     public static function getId(): int
     {
         return 16;

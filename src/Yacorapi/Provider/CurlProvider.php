@@ -30,17 +30,17 @@ class CurlProvider extends AbstractProvider
 {
     private static LoggerInterface $logger;
 
-    private ?IResponse $dryRunResponse = null;
+    private IResponse $dryRunResponse;
 
     /**
-     * @param null|IResponse $dryRunResponse
+     * @param IResponse $dryRunResponse
      * @param int|string     $level
      *
      * @see self::LEVEL_DEFAULT
      *
      * @phpstan-param LoggingLevel $level
      */
-    public function __construct(?IResponse $dryRunResponse = null, int|string $level = self::LEVEL_DEFAULT)
+    public function __construct(IResponse $dryRunResponse, int|string $level = self::LEVEL_DEFAULT)
     {
         self::$logger = new ConsoleLogger(name: CurlProvider::class, level: $level);
         self::$logger->debug('START');

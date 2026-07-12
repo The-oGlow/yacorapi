@@ -80,10 +80,10 @@ class ContentHelperTest extends ConstantCheckTestCase
 
     /**
      * @param string                $expected
-     * @param null|Map<mixed,mixed> $parameters
+     * @param Map<mixed,mixed> $parameters
      */
     #[DataProvider('providerParameters')]
-    public function testPrepareMacroParameter(string $expected, ?Map $parameters): void
+    public function testPrepareMacroParameter(string $expected, Map $parameters): void
     {
         $actual = $this->getCasto2t()::prepareMacroParameter($parameters);
 
@@ -142,11 +142,11 @@ class ContentHelperTest extends ConstantCheckTestCase
     /**
      * @param string                $expected
      * @param string                $macroName
-     * @param null|Map<mixed,mixed> $parameters
+     * @param Map<mixed,mixed> $parameters
      * @param string                $body
      */
     #[DataProvider('providerMacroNameParametersBody')]
-    public function testPrepareMacro(string $expected, string $macroName, ?Map $parameters, string $body): void
+    public function testPrepareMacro(string $expected, string $macroName, Map $parameters, string $body): void
     {
         $actual = $this->getCasto2t()::prepareMacro($macroName, $parameters, $body);
 
@@ -213,7 +213,6 @@ class ContentHelperTest extends ConstantCheckTestCase
     public static function providerParameters(): array
     {
         return [
-            'null' => ['', null],
             'empty' => ['', new Map()],
             'oneParam' => [
                 sprintf(ContentHelper::TAG_PARAM_START . TestData::DATA_ALPHA1 . ContentHelper::TAG_PARAM_END, 0),
@@ -259,9 +258,6 @@ class ContentHelperTest extends ConstantCheckTestCase
     public static function providerMacroNameParametersBody(): array
     {
         return [
-            'nullParam' => [
-                sprintf(ContentHelper::TAG_MACRO_START . ContentHelper::TAG_MACRO_END, TestData::DATA_EMPTY, ContentHelper::TAG_MACRO_VERSION),
-                TestData::DATA_EMPTY, null, TestData::DATA_EMPTY],
             'emptyParam' => [
                 sprintf(ContentHelper::TAG_MACRO_START . ContentHelper::TAG_MACRO_END, TestData::DATA_EMPTY, ContentHelper::TAG_MACRO_VERSION),
                 TestData::DATA_EMPTY, new Map(), TestData::DATA_EMPTY],

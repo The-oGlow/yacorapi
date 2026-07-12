@@ -35,9 +35,9 @@ abstract class AbstractResponse implements IResponse
     /**
      * Response constructor.
      *
-     * @param null|array<mixed,mixed> $data
+     * @param array<mixed,mixed> $data
      */
-    public function __construct(?array $data = null)
+    public function __construct(array $data = [])
     {
         self::$logger = new ConsoleLogger(AbstractResponse::class);
         self::$logger->debug('START');
@@ -247,7 +247,7 @@ abstract class AbstractResponse implements IResponse
     /**
      * @param null|array<mixed,mixed> $data
      */
-    private function prepareData(?array $data = null): void
+    private function prepareData(array $data = []): void
     {
         if (is_null($data)) {
             $data = [];

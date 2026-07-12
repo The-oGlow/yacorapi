@@ -137,13 +137,13 @@ interface IRapiClient
      *
      * @param string                     $spaceKey     Limited to the space
      * @param ResponseAddonMacroDecorate $addonSet     The set of addons containing the macros to scan for
-     * @param null|IStatistic            $outputMatrix An empty or previous statistic to add
+     * @param IStatistic            $outputMatrix An empty or previous statistic to add
      *
      * @return IStatistic The found and counted macros
      *
      * @see IRapiClient::prepareAddonSet()
      */
-    public function countMacrosInSpace(string $spaceKey, ResponseAddonMacroDecorate $addonSet, ?IStatistic $outputMatrix): IStatistic;
+    public function countMacrosInSpace(string $spaceKey, ResponseAddonMacroDecorate $addonSet, IStatistic $outputMatrix): IStatistic;
 
     /**
      * Moves a confluence page from one parent page to another parent page.
@@ -161,7 +161,7 @@ interface IRapiClient
      * @param string   $spaceKey  The space for the new page
      * @param string   $pageTitle The page title of the new page
      * @param string   $pageBody  The page body of the new page
-     * @param null|int $parentId  The target parent page for the new page
+     * @param int $parentId  The target parent page for the new page
      * @param string   $itemType  The type of the new page (Default: PAGE);
      *
      * @return IResponse The new created page or empty
@@ -172,7 +172,7 @@ interface IRapiClient
         string $spaceKey,
         string $pageTitle,
         string $pageBody,
-        ?int $parentId = null,
+        int $parentId = RequestParameterData::NO_PARENT,
         string $itemType = RequestParameterData::ITEM_TYPE_PAGE
     ): IResponse;
 

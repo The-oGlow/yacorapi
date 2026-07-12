@@ -18,17 +18,20 @@ use oglow\tools\Yacorapi\Extension\AbstractExtension;
 
 class UserMacroExtension extends AbstractExtension
 {
+    #[\Override]
     protected function init(): void
     {
         parent::init();
         $this->addons = new UserMacroAddon();
     }
 
+    #[\Override]
     public static function getName(): string
     {
         return 'Atlassian User Macro Extension';
     }
 
+    #[\Override]
     public static function getId(): int
     {
         return 8;

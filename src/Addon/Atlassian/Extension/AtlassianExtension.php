@@ -18,17 +18,20 @@ use oglow\tools\Yacorapi\Extension\AbstractExtension;
 
 class AtlassianExtension extends AbstractExtension
 {
+    #[\Override]
     protected function init(): void
     {
         parent::init();
         $this->addons = new AtlassianAddon();
     }
 
+    #[\Override]
     public static function getName(): string
     {
         return 'Atlassian Extension';
     }
 
+    #[\Override]
     public static function getId(): int
     {
         return 2;
