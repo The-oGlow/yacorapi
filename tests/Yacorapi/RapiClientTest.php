@@ -34,7 +34,7 @@ class RapiClientTest extends EasyGoingTestCase
     public const array AVAILABLE_METHODS = [
         'newClient', 'readPageByPageId', 'readPagesWithFilter', 'scanPagesWithFilter', 'searchPagesWithFilter', 'countItemsinSpace',
         'readRestrictionsByPageId', 'writeRestrictionsByPageId', 'listSpaces', 'countMacrosInSpace', 'movePage', 'createPage', 'updatePage',
-        'prepareAddonSet', 'rapiMethods', 'getExtensionAddonMacros',
+        'prepareAddonSet', 'taskitemMethods', 'getExtensionAddonMacros',
     ];
 
     /** Space on test instance */
@@ -79,7 +79,7 @@ class RapiClientTest extends EasyGoingTestCase
         $expected = new Set(self::AVAILABLE_METHODS);
 
         /** @var Set<non-empty-string> */
-        $actual = $this->getCasto2t()::rapiMethods();
+        $actual = $this->getCasto2t()::taskitemMethods();
 
         self::assertInstanceOf(Set::class, $actual);
         foreach ($actual->getIterator() as $item) {
@@ -89,7 +89,7 @@ class RapiClientTest extends EasyGoingTestCase
                 $expected->add($item);
             }
         }
-        self::assertTrue($expected->isEmpty(), sprintf("Forgotten: '%s'", join('\'(),\'', $expected->toArray())));
+        self::assertTrue($expected->isEmpty(), sprintf("Forgotten: '%s'", join('()\',\'', $expected->toArray())));
     }
 
     /**

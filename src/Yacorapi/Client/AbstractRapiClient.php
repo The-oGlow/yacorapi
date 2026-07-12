@@ -15,7 +15,6 @@ namespace oglow\tools\Yacorapi\Client;
 
 use Ds\Map;
 use Ds\Set;
-use Ds\Vector;
 use Monolog\ConsoleLogger;
 use oglow\tools\Addon\Atlassian\Extension\AdminExtension;
 use oglow\tools\Addon\Atlassian\Extension\AtlassianExtension;
@@ -25,7 +24,6 @@ use oglow\tools\Addon\UserMacro\Extension\UserMacroExtension;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\Data\AddonMacroData;
 use oglow\tools\Yacorapi\Data\RequestParameterData;
-use oglow\tools\Yacorapi\ExitCodes;
 use oglow\tools\Yacorapi\Extension\IExtension;
 use oglow\tools\Yacorapi\Extension\RapiClientExtension;
 use oglow\tools\Yacorapi\IConnectionProvider;
@@ -34,12 +32,7 @@ use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Provider\CurlProvider;
 use oglow\tools\Yacorapi\Request\RequestType;
 use oglow\tools\Yacorapi\Response\ResponseDryRun;
-use oglow\tools\Yacorapi\Statistic\IStatistic;
-use oglow\tools\Yacorapi\Statistic\StatisticStatistic;
-use oglow\tools\Yacorapi\Statistic\StatisticTypeEnum;
-use oglow\tools\Yacorapi\Statistic\ValueStatistic;
 use oglow\tools\Yacorapi\Traits\ExtensionTrait;
-use ollily\Tools\Emergency;
 use ollily\Tools\Reflection\MagicPublicFunctionTrait;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
@@ -50,6 +43,7 @@ use Psr\Log\LogLevel;
 abstract class AbstractRapiClient implements IRapiClient
 {
     use ExtensionTrait;
+    use RapiExtensionTrait;
     use MagicPublicFunctionTrait;
 
     /** Default output level (INFO) */
@@ -89,10 +83,10 @@ abstract class AbstractRapiClient implements IRapiClient
      * @param null|int                 $modeExtension
      * @param null|IConnectionProvider $connectionProvider
      * @param null|AddonMacroData      $addons
-     * @param int|string|LogLevel      $level (Default: {@link self::LEVEL_DEFAULT})
+     * @param int|LogLevel|string      $level              (Default: {@link self::LEVEL_DEFAULT})
      *
      * @return IRapiClient
-     * 
+     *
      * @see self::LEVEL_DEFAULT
      */
     abstract public static function newClient(
@@ -106,7 +100,7 @@ abstract class AbstractRapiClient implements IRapiClient
      * @inheritDoc
      */
     #[\Override]
-    public static function rapiMethods(): Set
+    public static function taskitemMethods(): Set
     {
         return self::existingMethodNames();
     }
@@ -114,21 +108,22 @@ abstract class AbstractRapiClient implements IRapiClient
     /**
      * RapiClient constructor.
      *
-     * @param null|int                 $modeExtension
-     * @param null|IConnectionProvider $connectionProvider
-     * @param null|AddonMacroData      $addons
-     * @param int|string|LogLevel      $level (Default: {@link self::LEVEL_DEFAULT})
-     * 
+     * @param null|int                        $modeExtension
+     * @param null|IConnectionProvider        $connectionProvider
+     * @param null|AddonMacroData             $addons
+     * @param int|\Psr\Log\LogLevel::*|string $level              The minimum logging level at which this handler will be triggered
+     *                                                            (Default: {@link self::LEVEL_DEFAULT})
+     *
      * @see self::LEVEL_DEFAULT
      */
     protected function __construct(
-            ?int $modeExtension = null, 
-            ?IConnectionProvider $connectionProvider = null, 
-            ?AddonMacroData $addons = null, 
-            mixed $level = self::LEVEL_DEFAULT
-            )
-    {
+        ?int $modeExtension = null,
+        ?IConnectionProvider $connectionProvider = null,
+        ?AddonMacroData $addons = null,
+        mixed $level = self::LEVEL_DEFAULT
+    ) {
         // Init Logger
+        /** @psalm-suppress ArgumentTypeCoercion @phpstan-ignore argument.type */
         self::$logger = new ConsoleLogger(name:AbstractRapiClient::class, level:$level);
         self::$logger->debug('START');
 
@@ -144,6 +139,7 @@ abstract class AbstractRapiClient implements IRapiClient
             $this->addons = $addons;
         }
         if (empty($connectionProvider)) {
+            /** @psalm-suppress ArgumentTypeCoercion @phpstan-ignore argument.type */
             $this->connectionProvider = new CurlProvider(new ResponseDryRun(), $level);
         } else {
             $this->connectionProvider = $connectionProvider;
@@ -198,174 +194,5 @@ abstract class AbstractRapiClient implements IRapiClient
     {
         return $page[RequestParameterData::PROP_CONTENT][RequestParameterData::PROP_SPACE][RequestParameterData::PROP_KEY] ??
         $page[RequestParameterData::PROP_SPACE][RequestParameterData::PROP_KEY];
-    }
-
-    /**
-     * @param null|IStatistic $spaceResult
-     * @param string          $spaceKey
-     * @param string          $addon
-     * @param string          $macroName
-     * @param int             $macroCount
-     *
-     * @return IStatistic
-     */
-    protected function prepareMatrix(?IStatistic $spaceResult, string $spaceKey, string $addon, string $macroName, int $macroCount): IStatistic
-    {
-        self::$logger->info('START - spaceKey,addon,macroName,macroCount', [$spaceKey, $addon, $macroName, $macroCount]);
-
-        if (empty($spaceResult)) {
-            $spaceResult = new StatisticStatistic($spaceKey, StatisticTypeEnum::SPACE);
-        }
-
-        /** @var null|IStatistic */
-        $addonResult = $spaceResult->getItem($addon);
-        if (empty($addonResult)) {
-            $addonResult = new StatisticStatistic($addon, StatisticTypeEnum::ADDON);
-        }
-
-        /** @var null|IStatistic */
-        $macroResult = $addonResult->getItem($macroName);
-        if (empty($macroResult)) {
-            $macroResult = new StatisticStatistic($macroName, StatisticTypeEnum::MACRO);
-        }
-
-        /** @var null|ValueStatistic */
-        $valueResult = $macroResult->getItem(ValueStatistic::KEY_COUNT);
-        if (empty($valueResult)) {
-            $valueResult = new ValueStatistic(ValueStatistic::EMPTY_STRING, null);
-        }
-
-        self::$logger->info(var_export($valueResult->getItem(ValueStatistic::EMPTY_STRING), true));
-
-        $value = $valueResult->getItem(ValueStatistic::EMPTY_STRING);
-        if (is_numeric($value)) {
-            $valueResult->addItem(ValueStatistic::EMPTY_STRING, $macroCount + (int) $value);
-        } else {
-            $valueResult->addItem(ValueStatistic::EMPTY_STRING, $macroCount);
-        }
-
-        $macroResult->addItem(ValueStatistic::KEY_COUNT, $valueResult);
-        $addonResult->addItem($macroName, $macroResult);
-        $spaceResult->addItem($addon, $addonResult);
-
-        self::$logger->debug('END');
-
-        return $spaceResult;
-    }
-
-    /**
-     * @param string          $spaceKey
-     * @param string          $addOn
-     * @param Vector<string>  $macroNames
-     * @param IStatistic $outputMatrix
-     *
-     * @return IStatistic
-     */
-    protected function loopAddonMacros(string $spaceKey, string $addOn, Vector $macroNames, IStatistic $outputMatrix): IStatistic
-    {
-        self::$logger->debug('START - spaceKey,addOn,macroNames', [$spaceKey, $addOn, $macroNames]);
-
-        $cntMacros = count($macroNames);
-        $cntIdx = 0;
-        foreach ($macroNames as $macroName) {
-            self::$logger->debug('Checking Space with Macro - START', [++$cntIdx, $cntMacros, $spaceKey, $addOn, $macroName]);
-
-            $searchTerm = "macroName:$macroName";
-            $prepareUrl = $this->commonExtension->prepareSearchUrlExt(
-                $searchTerm,
-                $spaceKey,
-                RequestParameterData::SEARCH_START,
-                RequestParameterData::SEARCH_LIMIT_1ENTRY
-            );
-            $response = $this->exec($prepareUrl);
-            $countMacros = $this->commonExtension->analyzeResponse($response);
-
-            $outputMatrix = $this->prepareMatrix($outputMatrix, $spaceKey, $addOn, $macroName, $countMacros);
-            self::$logger->info('Found', [$cntIdx, $cntMacros, $spaceKey, $addOn, $macroName, $countMacros]);
-
-            self::$logger->debug('Checking Space with Macro - END');
-        }
-        if (empty($outputMatrix)) {
-            $outputMatrix = new StatisticStatistic($spaceKey, StatisticTypeEnum::SPACE);
-        }
-
-        self::$logger->debug('END');
-
-        return $outputMatrix;
-    }
-
-    /**
-     * @param string            $spaceKey
-     * @param int               $mode
-     * @param Map<mixed, mixed> $mapAddons
-     * @param IStatistic   $outputMatrix
-     *
-     * @return IStatistic
-     */
-    protected function loopAddons(string $spaceKey, int $mode, Map $mapAddons, IStatistic $outputMatrix): IStatistic
-    {
-        self::$logger->debug('START - spaceKey,mode,addons', [$spaceKey, $mode, $mapAddons]);
-
-        $cntAddons = count($mapAddons);
-        $cntIdx = 0;
-        foreach ($mapAddons as $addOnKey => $addonValue) {
-            self::$logger->info('Checking Addon - START', [++$cntIdx, $cntAddons, $spaceKey, $addOnKey]);
-            if (!is_array($addonValue)) {
-                $macroNames = $this->addons->getMacroNamesByAddon($mode, $addOnKey);
-                $addonName = $addOnKey;
-            } else {
-                $macroNames = $addonValue;
-                $addonName = $addOnKey;
-            }
-            self::$logger->debug('Found :', [$addonName, $macroNames]);
-
-            $outputMatrix = $this->loopAddonMacros($spaceKey, $addonName, new Vector($macroNames), $outputMatrix);
-
-            self::$logger->debug('Checking Addon - END');
-        }
-        if (empty($outputMatrix)) {
-            $outputMatrix = new StatisticStatistic($spaceKey, StatisticTypeEnum::SPACE);
-        }
-        self::$logger->debug('END');
-
-        return $outputMatrix;
-    }
-
-    /**
-     * @param int $modeExtension
-     */
-    protected function loadExtensions(int $modeExtension): void
-    {
-        self::$logger->debug('START', [$modeExtension]);
-
-        $extensions = $this->initExtensions($modeExtension);
-
-        foreach ($extensions as $key => $extension) {
-            self::$logger->debug('Key,Ext', [$key]);
-
-            switch (true) {
-                case IExtension::EXTENSION_RAPI_CLIENT == $key:
-                    $this->commonExtension = $extension;
-                    break;
-                case IExtension::EXTENSION_ATLASSIAN == $key:
-                    $this->atlassianExtension = $extension;
-                    break;
-                case IExtension::EXTENSION_ATLASSIAN_ADMIN == $key:
-                    $this->adminExtension = $extension;
-                    break;
-                case IExtension::EXTENSION_ATLASSIAN_USER_MACRO == $key:
-                    $this->userMacroExtension = $extension;
-                    break;
-                case IExtension::EXTENSION_THIRD_PARTY == $key:
-                    $this->thirdPartyExtension = $extension;
-                    break;
-                case IExtension::EXTENSION_PROJECTDOC_TOOLBOX == $key:
-                    $this->projectdocExtension = $extension;
-                    break;
-                default:
-                    Emergency::breakSystem(ExitCodes::ERR_CODE_EXTENSION_NOT_LOADED, sprintf('Extension not loaded: %s, %s ', $key, print_r($extension, true)));
-            }
-        }
-        self::$logger->debug('END');
     }
 }

@@ -25,7 +25,7 @@ class ResponseAddonMacroDecorate extends AbstractResponse
     /**
      * ResponseAddonMacroDecorate constructor.
      *
-     * @param int                     $mode
+     * @param int                $mode
      * @param array<mixed,mixed> $data
      */
     public function __construct(int $mode, array $data = [])

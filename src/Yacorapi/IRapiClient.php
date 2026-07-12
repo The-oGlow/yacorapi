@@ -26,7 +26,7 @@ interface IRapiClient
      *
      * @phpstan-return Set<non-empty-string>
      */
-    public static function rapiMethods(): Set;
+    public static function taskitemMethods(): Set;
 
     /**
      * Loads a confluence page by its page id.
@@ -137,7 +137,7 @@ interface IRapiClient
      *
      * @param string                     $spaceKey     Limited to the space
      * @param ResponseAddonMacroDecorate $addonSet     The set of addons containing the macros to scan for
-     * @param IStatistic            $outputMatrix An empty or previous statistic to add
+     * @param IStatistic                 $outputMatrix An empty or previous statistic to add
      *
      * @return IStatistic The found and counted macros
      *
@@ -158,11 +158,11 @@ interface IRapiClient
     /**
      * Creates a new confluence page in a space.
      *
-     * @param string   $spaceKey  The space for the new page
-     * @param string   $pageTitle The page title of the new page
-     * @param string   $pageBody  The page body of the new page
-     * @param int $parentId  The target parent page for the new page
-     * @param string   $itemType  The type of the new page (Default: PAGE);
+     * @param string $spaceKey  The space for the new page
+     * @param string $pageTitle The page title of the new page
+     * @param string $pageBody  The page body of the new page
+     * @param int    $parentId  The target parent page for the new page
+     * @param string $itemType  The type of the new page (Default: PAGE);
      *
      * @return IResponse The new created page or empty
      *

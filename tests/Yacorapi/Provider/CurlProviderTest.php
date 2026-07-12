@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Provider;
 
+use oglow\tools\Yacorapi\Response\ResponseDryRun;
 use PHPUnit\Framework\EasyGoingTestCase;
 use Psr\Log\LogLevel;
-use oglow\tools\Yacorapi\Response\ResponseDryRun;
 
 class CurlProviderTest extends EasyGoingTestCase
 {

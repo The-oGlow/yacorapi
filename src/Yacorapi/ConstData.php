@@ -183,13 +183,13 @@ final class ConstData extends AbstractSingleton
     }
 
     /**
-     * @param bool $ovUseProd Overrides the USE_PROD flag by commandline
-     * 
+     * @param mixed $ovUseProd Overrides the USE_PROD flag by commandline
+     *
      * @return string
-     * 
+     *
      * @see ConstData::KEY_USE_PROD
      */
-    public static function CONF_BASE_URL(mixed $ovUseProd=null): string // NOSONAR: php:S100
+    public static function CONF_BASE_URL(mixed $ovUseProd = ''): string // NOSONAR: php:S100
     {
         $url = '';
 

@@ -245,13 +245,10 @@ abstract class AbstractResponse implements IResponse
     }
 
     /**
-     * @param null|array<mixed,mixed> $data
+     * @param array<mixed,mixed> $data
      */
     private function prepareData(array $data = []): void
     {
-        if (is_null($data)) {
-            $data = [];
-        }
         if (array_key_exists(self::KEY_RESULTS, $data)) {
             $this->results = new Map($data[self::KEY_RESULTS]);
             unset($data[self::KEY_RESULTS]);

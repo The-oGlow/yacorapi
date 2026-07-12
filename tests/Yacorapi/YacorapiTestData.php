@@ -399,7 +399,7 @@ class YacorapiTestData extends TestData
     }
 
     /**
-     * @param string                $text
+     * @param string           $text
      * @param Map<mixed,mixed> $parameters
      *
      * @return array<mixed,mixed>
@@ -408,7 +408,7 @@ class YacorapiTestData extends TestData
     {
         if (!$parameters->isEmpty()) {
             $value = $parameters->get(RequestParameterData::PROP_SPACE);
-            if (is_array($value) && count($value)>0) {
+            if (is_array($value) && count($value) > 0) {
                 $text = $value[RequestParameterData::PROP_KEY];
             }
         }
@@ -420,7 +420,7 @@ class YacorapiTestData extends TestData
     }
 
     /**
-     * @param mixed                 $text
+     * @param mixed            $text
      * @param Map<mixed,mixed> $parameters
      *
      * @return array<mixed,mixed>
@@ -429,7 +429,7 @@ class YacorapiTestData extends TestData
     {
         if (!$parameters->isEmpty()) {
             $value = $parameters->get(RequestParameterData::PROP_ANCESTORS);
-            if (is_array($value) && count($value)>0) {
+            if (is_array($value) && count($value) > 0) {
                 $text = $value[0][RequestParameterData::PROP_ID];
             }
         }
@@ -441,7 +441,7 @@ class YacorapiTestData extends TestData
     }
 
     /**
-     * @param string                $text
+     * @param string           $text
      * @param Map<mixed,mixed> $parameters
      *
      * @return array<mixed,mixed>
@@ -450,7 +450,7 @@ class YacorapiTestData extends TestData
     {
         if (!$parameters->isEmpty()) {
             $value = $parameters->get(RequestParameterData::PROP_BODY);
-            if (is_array($value) && count($value)>0) {
+            if (is_array($value) && count($value) > 0) {
                 $text = $value[RequestParameterData::PROP_STORAGE][RequestParameterData::PROP_VALUE];
             }
         }

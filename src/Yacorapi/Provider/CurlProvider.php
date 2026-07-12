@@ -33,8 +33,8 @@ class CurlProvider extends AbstractProvider
     private IResponse $dryRunResponse;
 
     /**
-     * @param IResponse $dryRunResponse
-     * @param int|string     $level
+     * @param IResponse  $dryRunResponse
+     * @param int|string $level
      *
      * @see self::LEVEL_DEFAULT
      *
@@ -155,9 +155,7 @@ class CurlProvider extends AbstractProvider
         $rawData = [];
         if ($dryRun) {
             self::$logger->notice('DRYRUN is activated');
-            if (!is_null($this->dryRunResponse)) {
-                $rawData = $this->dryRunResponse->getResponse()->toArray();
-            }
+            $rawData = $this->dryRunResponse->getResponse()->toArray();
         } else {
             if ($execSession instanceof CurlHandle && !empty($execUrl)) {
                 curl_setopt($execSession, CURLOPT_URL, $execUrl);

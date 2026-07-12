@@ -28,32 +28,37 @@ trait PrepReadTrait
         return $prepareUrl;
     }
 
-    public function prepareSearchUrl(string $searchTerm, string $spaceKey = '', string $pageType = 'page', bool $withBody = false): string
-    {
-        $result='';
+    public function prepareSearchUrl(
+        string $searchTerm,
+        string $spaceKey = RequestParameterData::NO_SPACE,
+        string $pageType = RequestParameterData::ITEM_TYPE_PAGE,
+        bool $withBody = RequestParameterData::NO_BODY
+    ): string {
+        $result = '';
         if (function_exists('_prepareSearchUrl')) {
-            $result= _prepareSearchUrl($searchTerm, $spaceKey, null, null, $pageType, $withBody);
+            $result = _prepareSearchUrl($searchTerm, $spaceKey, null, null, $pageType, $withBody);
         }
+
         return $result;
     }
 
     public function prepareSearchUrlExt(
         string $searchTerm,
         string $spaceKey,
-        int $searchFromPos = 0,
-        int $searchLimit = -1,
-        string $pageType = 'page',
-        bool $withBody = false
+        int $searchFromPos = RequestParameterData::NO_SEARCH_START,
+        int $searchLimit = RequestParameterData::NO_SEARCH_LIMIT,
+        string $pageType = RequestParameterData::ITEM_TYPE_PAGE,
+        bool $withBody = RequestParameterData::NO_BODY
     ): string {
-        $searchLimit = $searchLimit <= 0 ? $this->constData->c(ConstData::KEY_SEARCH_LIMIT) : $searchLimit;
+        $searchLimit = $searchLimit <= RequestParameterData::SEARCH_LIMIT_ZERO ? $this->constData->c(ConstData::KEY_SEARCH_LIMIT) : $searchLimit;
         $prepareUrl  = sprintf('%s?cql=', $this->constData->c(ConstData::KEY_CONF_SEARCH_URL));
         $prepareUrl  .= sprintf('siteSearch~%s', urlencode("\"{$searchTerm}\""));
-        $prepareUrl  .= sprintf('+AND+space.type=%s', urlencode('global'));
+        $prepareUrl  .= sprintf('+AND+space.type=%s', urlencode(RequestParameterData::SPACE_TYPE_GLOBAL));
         $prepareUrl  .= sprintf('+AND+type=%s', urlencode("\"{$pageType}\""));
         if (!empty($spaceKey)) {
             $prepareUrl .= sprintf('+AND+space=%s', urlencode("\"{$spaceKey}\""));
         }
-        if (!is_null($searchFromPos)) {
+        if ($searchFromPos >= RequestParameterData::NO_SEARCH_START) {
             $prepareUrl .= sprintf('&start=%s&limit=%s', $searchFromPos, $searchLimit);
         }
         $prepareUrl .= sprintf('&%s', ($withBody ? RequestParameterData::REQP_SEARCH_FULL : RequestParameterData::REQP_SEARCH_LIGHT));
@@ -61,14 +66,14 @@ trait PrepReadTrait
         return $prepareUrl;
     }
 
-    public function prepareBrowseUrl(string $filterTerm, string $spaceKey = ''): string
+    public function prepareBrowseUrl(string $filterTerm, string $spaceKey = RequestParameterData::NO_SPACE): string
     {
         $prepareUrl = sprintf('%s?%s&%s', $this->constData->c(ConstData::KEY_CONF_CONTENT_URL), $filterTerm, RequestParameterData::REQP_LIGHT);
 
         return $this->addSpaceFilter($spaceKey, $prepareUrl);
     }
 
-    public function prepareScanUrl(string $filterTerm, string $spaceKey = ''): string
+    public function prepareScanUrl(string $filterTerm, string $spaceKey = RequestParameterData::NO_SPACE): string
     {
         $prepareUrl = sprintf('%s/scan?%s&%s', $this->constData->c(ConstData::KEY_CONF_CONTENT_URL), $filterTerm, RequestParameterData::REQP_LIGHT);
 

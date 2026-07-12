@@ -79,7 +79,7 @@ class ContentHelperTest extends ConstantCheckTestCase
     }
 
     /**
-     * @param string                $expected
+     * @param string           $expected
      * @param Map<mixed,mixed> $parameters
      */
     #[DataProvider('providerParameters')]
@@ -140,10 +140,10 @@ class ContentHelperTest extends ConstantCheckTestCase
     }
 
     /**
-     * @param string                $expected
-     * @param string                $macroName
+     * @param string           $expected
+     * @param string           $macroName
      * @param Map<mixed,mixed> $parameters
-     * @param string                $body
+     * @param string           $body
      */
     #[DataProvider('providerMacroNameParametersBody')]
     public function testPrepareMacro(string $expected, string $macroName, Map $parameters, string $body): void

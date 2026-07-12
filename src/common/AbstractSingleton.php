@@ -26,7 +26,7 @@ abstract class AbstractSingleton implements ISingleton
 
     /**
      * Initialize this singleton.
-     * 
+     *
      * @param Map<mixed, mixed> $overrideParameters
      */
     abstract protected function prepareSettings(Map $overrideParameters): void;
@@ -44,7 +44,8 @@ abstract class AbstractSingleton implements ISingleton
      *
      * @return mixed
      */
-    protected static function parseBool(Map $overrideParameters, string $keyName): mixed {
+    protected static function parseBool(Map $overrideParameters, string $keyName): mixed
+    {
         $foundBool = $overrideParameters->get($keyName, '');
         if (!empty($foundBool)) {
             $foundBool = filter_var($foundBool, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);

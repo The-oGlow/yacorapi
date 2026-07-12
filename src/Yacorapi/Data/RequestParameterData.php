@@ -104,14 +104,22 @@ class RequestParameterData extends AbstractSingleton
 
     public const int SEARCH_START = 0;
 
+    public const int NO_SEARCH_START = -1;
+
     public const int SEARCH_LIMIT_ZERO = 0;
 
     public const int SEARCH_LIMIT_1ENTRY = 1;
 
+    public const int NO_SEARCH_LIMIT = -1;
+
     public const int SEARCH_LIMIT_MAX = 100;
 
     public const int NO_PARENT = 0;
-    
+
+    public const string NO_SPACE = '';
+
+    public const bool NO_BODY = false;
+
     public const string USER_TYPE_KNOWN = 'known';
 
     /**

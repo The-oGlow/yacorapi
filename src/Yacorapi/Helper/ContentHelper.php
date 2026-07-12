@@ -130,9 +130,9 @@ class ContentHelper extends AbstractHelper
     }
 
     /**
-     * @param string                  $macroName
+     * @param string             $macroName
      * @param Map<string,string> $parameters
-     * @param string                  $body
+     * @param string             $body
      *
      * @return string
      */

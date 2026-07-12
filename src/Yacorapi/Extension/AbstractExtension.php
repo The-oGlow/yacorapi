@@ -63,6 +63,7 @@ abstract class AbstractExtension implements IExtension
     {
         /** @var Map<mixed,Vector<mixed>> */
         $addonsTmp = new Map();
+        /** @psalm-suppress RedundantPropertyInitializationCheck */
         if (isset($this->addons)) {
             $addonsTmp = $this->addons->getAddons();
         }
@@ -78,6 +79,7 @@ abstract class AbstractExtension implements IExtension
     {
         /** @var Vector<mixed> $macrosTmp */
         $macrosTmp = new Vector();
+        /** @psalm-suppress RedundantPropertyInitializationCheck */
         if (isset($this->addons)) {
             $macrosTmp = $this->addons->getMacros();
         }
