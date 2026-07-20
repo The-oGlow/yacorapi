@@ -20,6 +20,7 @@ use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\ExitCodes;
 use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Request\RequestType;
+use oglow\tools\Yacorapi\Response\ResponseDryRun;
 use ollily\Tools\Emergency;
 use Psr\Log\LoggerInterface;
 
@@ -33,20 +34,24 @@ class CurlProvider extends AbstractProvider
     private IResponse $dryRunResponse;
 
     /**
-     * @param IResponse  $dryRunResponse
-     * @param int|string $level
+     * @param int|string     $level
+     * @param null|IResponse $dryRunResponse
      *
      * @see self::LEVEL_DEFAULT
      *
      * @phpstan-param LoggingLevel $level
      */
-    public function __construct(IResponse $dryRunResponse, int|string $level = self::LEVEL_DEFAULT)
+    public function __construct(int|string $level = self::LEVEL_DEFAULT, null|IResponse $dryRunResponse = null)
     {
         self::$logger = new ConsoleLogger(name: CurlProvider::class, level: $level);
         self::$logger->debug('START');
 
         parent::__construct($level);
-        $this->dryRunResponse = $dryRunResponse;
+        if (is_null($dryRunResponse)) {
+            $this->dryRunResponse = new ResponseDryRun();
+        } else {
+            $this->dryRunResponse = $dryRunResponse;
+        }
 
         self::$logger->debug('END');
     }

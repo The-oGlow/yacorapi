@@ -18,6 +18,7 @@ use Ds\Vector;
 use Monolog\ConsoleLogger;
 use oglow\tools\common\AbstractContainer;
 use oglow\tools\Yacorapi\ExitCodes;
+use oglow\tools\Yacorapi\Macro\AddonTypeEnum;
 use oglow\tools\Yacorapi\Macro\AllAddon;
 use oglow\tools\Yacorapi\Macro\BlockerAddon;
 use oglow\tools\Yacorapi\Macro\SingleAddon;
@@ -41,16 +42,16 @@ class AddonMacroData extends AbstractContainer
     }
 
     /**
-     * @param int|string $mode
+     * @param AddonTypeEnum $mode
      *
      * @return mixed
      */
-    public function getMacros(int|string $mode = SingleAddon::ADDON_SINGLE): mixed
+    public function getMacros(AddonTypeEnum $mode = AddonTypeEnum::ADDON_SINGLE): mixed
     {
         self::$logger->debug('START', [$mode]);
         $macros = [];
-        if ($this->keyExists($mode)) {
-            $addons = $this->getDataByMode($mode);
+        if ($this->keyExists($mode->value)) {
+            $addons = $this->getDataByMode($mode->value);
             if ($addons instanceof Map) {
                 $macros = $this->getExtensionAddonMacrosArray($addons);
             } else {
@@ -68,18 +69,18 @@ class AddonMacroData extends AbstractContainer
     }
 
     /**
-     * @param int|string $mode
-     * @param string     $addon
+     * @param AddonTypeEnum $mode
+     * @param string        $addon
      *
      * @return array<mixed,mixed>
      */
-    public function getMacroNamesByAddon(int|string $mode, string $addon): array
+    public function getMacroNamesByAddon(AddonTypeEnum $mode, string $addon): array
     {
         self::$logger->debug('START', [$mode, $addon]);
 
         $macroNames = [];
-        if ($this->keyExists($mode)) {
-            $addons = $this->getDataByMode($mode);
+        if ($this->keyExists($mode->value)) {
+            $addons = $this->getDataByMode($mode->value);
 
             if ($addons instanceof Map) {
                 $vecMacros = $addons->get($addon, []);
@@ -101,17 +102,17 @@ class AddonMacroData extends AbstractContainer
     }
 
     /**
-     * @param int|string $mode
+     * @param AddonTypeEnum $mode
      *
      * @return array<mixed,mixed>
      */
-    public function getMacroNamesByMode(int|string $mode = SingleAddon::ADDON_SINGLE): array
+    public function getMacroNamesByMode(AddonTypeEnum $mode = AddonTypeEnum::ADDON_SINGLE): array
     {
         self::$logger->debug('START', [$mode]);
 
         $macroNames = [];
-        if ($this->keyExists($mode)) {
-            $addons = $this->getDataByMode($mode);
+        if ($this->keyExists($mode->value)) {
+            $addons = $this->getDataByMode($mode->value);
             foreach ($addons as $addon) {
                 if ($addon instanceof Vector) {
                     $macroNames = array_merge($macroNames, $addon->toArray());
@@ -136,7 +137,7 @@ class AddonMacroData extends AbstractContainer
     #[\Override]
     protected function prepareModes(): void
     {
-        $allModes = [SingleAddon::ADDON_SINGLE, BlockerAddon::ADDON_BLOCKER, AllAddon::ADDON_ALL];
+        $allModes = [AddonTypeEnum::ADDON_SINGLE->value, AddonTypeEnum::ADDON_BLOCKER->value, AddonTypeEnum::ADDON_ALL->value];
         $this->setModes($allModes);
     }
 
@@ -150,21 +151,21 @@ class AddonMacroData extends AbstractContainer
 
         try {
             $singleAddon                        = new SingleAddon();
-            $allData[SingleAddon::ADDON_SINGLE] = $singleAddon->getAddons();
+            $allData[AddonTypeEnum::ADDON_SINGLE->value] = $singleAddon->getAddons();
         } catch (\Exception $ex) {
             Emergency::breakSystem(ExitCodes::ERR_CODE_SINGLEADDON_NOT_INIT, sprintf('SingleAddon failed: %s', $ex->getMessage()));
         }
 
         try {
             $blockerAddon                         = new BlockerAddon();
-            $allData[BlockerAddon::ADDON_BLOCKER] = $blockerAddon->getAddons();
+            $allData[AddonTypeEnum::ADDON_BLOCKER->value] = $blockerAddon->getAddons();
         } catch (\Exception $ex) {
             Emergency::breakSystem(ExitCodes::ERR_CODE_BLOCKER_ADDON_NOT_INIT, sprintf('BlockerAddon failed: %s', $ex->getMessage()));
         }
 
         try {
             $allAddon                     = new AllAddon();
-            $allData[AllAddon::ADDON_ALL] = $allAddon->getAddons();
+            $allData[AddonTypeEnum::ADDON_ALL->value] = $allAddon->getAddons();
         } catch (\Exception $ex) {
             Emergency::breakSystem(ExitCodes::ERR_CODE_ALLADDON_NOT_INIT, sprintf('AllAddon failed: %s', $ex->getMessage()));
         }

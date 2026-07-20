@@ -15,12 +15,34 @@ namespace oglow\tools\Yacorapi;
 
 use Ds\Set;
 use oglow\tools\Yacorapi\Data\RequestParameterData;
-use oglow\tools\Yacorapi\Macro\AllAddon;
+use oglow\tools\Yacorapi\Macro\AddonTypeEnum;
 use oglow\tools\Yacorapi\Response\ResponseAddonMacroDecorate;
 use oglow\tools\Yacorapi\Statistic\IStatistic;
+use Psr\Log\LogLevel;
 
 interface IRapiClient
 {
+    /** Default output level (INFO) */
+    public const string LEVEL_DEFAULT = LogLevel::INFO;
+
+    public const string MSG_PARENT_ID_MUST_BE_NUMERIC = 'parentId must be numeric!';
+
+    public const string MSG_MOVED_TO_NEW_PARENT = 'Page moved to new parent ';
+
+    public const string MSG_SPACE_IS_EMPTY = 'spaceKey is empty!';
+
+    public const string MSG_UPDATE_PAGE_WITHOUT_CHANGES = 'Update page without changes';
+
+    public const int REQ_SEARCH_FROM_POS = RequestParameterData::SEARCH_START;
+
+    public const int REQ_SEARCH_LIMIT = RequestParameterData::SEARCH_LIMIT_ZERO;
+
+    public const int REQ_SEARCH_LIMIT_1ENTRY = RequestParameterData::SEARCH_LIMIT_1ENTRY;
+
+    public const string REQ_ITEM_TYPE_PAGE = RequestParameterData::ITEM_TYPE_PAGE;
+
+    public const int REQ_NO_PARENT = RequestParameterData::NO_PARENT;
+
     /**
      * @return Set<string> All available REST-API methods
      *
@@ -76,14 +98,13 @@ interface IRapiClient
      *
      * @see IRapiClient::scanPagesWithFilter()
      * @see IRapiClient::readPageByPageId()
-     * @see RequestParameterData::ITEM_TYPE_PAGE
      */
     public function searchPagesWithFilter(
         string $filterTerm,
         string $spaceKey,
-        int $searchFromPos = RequestParameterData::SEARCH_START,
-        int $searchLimit = RequestParameterData::SEARCH_LIMIT_ZERO,
-        string $itemType = RequestParameterData::ITEM_TYPE_PAGE
+        int $searchFromPos = self::REQ_SEARCH_FROM_POS,
+        int $searchLimit = self::REQ_SEARCH_LIMIT,
+        string $itemType = self::REQ_ITEM_TYPE_PAGE
     ): IResponse;
 
     /**
@@ -93,10 +114,8 @@ interface IRapiClient
      * @param string $itemType The type of the items (Default: PAGE);
      *
      * @return IStatistic The found and counted items
-     *
-     * @see RequestParameterData::ITEM_TYPE_PAGE
      */
-    public function countItemsinSpace(string $spaceKey, string $itemType = RequestParameterData::ITEM_TYPE_PAGE): IStatistic;
+    public function countItemsinSpace(string $spaceKey, string $itemType = self::REQ_ITEM_TYPE_PAGE): IStatistic;
 
     /**
      * Load the restrictions for this confluence page.
@@ -165,15 +184,13 @@ interface IRapiClient
      * @param string $itemType  The type of the new page (Default: PAGE);
      *
      * @return IResponse The new created page or empty
-     *
-     * @see RequestParameterData::ITEM_TYPE_PAGE
      */
     public function createPage(
         string $spaceKey,
         string $pageTitle,
         string $pageBody,
-        int $parentId = RequestParameterData::NO_PARENT,
-        string $itemType = RequestParameterData::ITEM_TYPE_PAGE
+        int $parentId = self::REQ_NO_PARENT,
+        string $itemType = self::REQ_ITEM_TYPE_PAGE
     ): IResponse;
 
     /**
@@ -188,25 +205,24 @@ interface IRapiClient
      * @return IResponse The changed page or empty
      *
      * @see IRapiClient::MSG_UPDATE_PAGE_WITHOUT_CHANGES
-     * @see RequestParameterData::ITEM_TYPE_PAGE
      */
     public function updatePage(
         int $pageId,
         string $pageBody,
         string $pageTitle = '',
         string $comment = '',
-        string $itemType = RequestParameterData::ITEM_TYPE_PAGE
+        string $itemType = self::REQ_ITEM_TYPE_PAGE
     ): IResponse;
 
     /**
      * Provide a set of addons, containing macros.
      *
-     * @param int $mode Predefined set of addons (Default: all addons)
+     * @param AddonTypeEnum $mode Predefined set of addons (Default: all addons)
      *
      * @return ResponseAddonMacroDecorate Set of Addons or empty
      *
-     * @see AllAddon::ADDON_ALL
+     * @see AddonTypeEnum::ADDON_ALL
      * @see IRapiClient::countMacrosInSpace()
      */
-    public function prepareAddonSet(int $mode = AllAddon::ADDON_ALL): ResponseAddonMacroDecorate;
+    public function prepareAddonSet(AddonTypeEnum $mode = AddonTypeEnum::ADDON_ALL): ResponseAddonMacroDecorate;
 }

@@ -17,6 +17,7 @@ use Ds\Map;
 use Ds\Vector;
 use oglow\tools\Yacorapi\Data\RequestParameterData;
 use oglow\tools\Yacorapi\IResponse;
+use oglow\tools\Yacorapi\Macro\AddonTypeEnum;
 use oglow\tools\Yacorapi\Response\ResponseAddonMacroDecorate;
 use oglow\tools\Yacorapi\Response\ResponseSpaceDataDecorate;
 use oglow\tools\Yacorapi\Statistic\IStatistic;
@@ -137,13 +138,13 @@ trait RapiStatisticTrait
 
     /**
      * @param string            $spaceKey
-     * @param int               $mode
+     * @param AddonTypeEnum     $mode
      * @param Map<mixed, mixed> $mapAddons
      * @param IStatistic        $outputMatrix
      *
      * @return IStatistic
      */
-    protected function loopAddons(string $spaceKey, int $mode, Map $mapAddons, IStatistic $outputMatrix): IStatistic
+    protected function loopAddons(string $spaceKey, AddonTypeEnum $mode, Map $mapAddons, IStatistic $outputMatrix): IStatistic
     {
         self::$logger->debug('START - spaceKey,mode,addons', [$spaceKey, $mode, $mapAddons]);
 
@@ -152,7 +153,7 @@ trait RapiStatisticTrait
         foreach ($mapAddons as $addOnKey => $addonValue) {
             self::$logger->info('Checking Addon - START', [++$cntIdx, $cntAddons, $spaceKey, $addOnKey]);
             if (!is_array($addonValue)) {
-                $macroNames = $this->addons->getMacroNamesByAddon($mode, $addOnKey);
+                $macroNames = $this->addons->getMacroNamesByAddon($mode, $addOnKey); // @phpstan-ignore method.notFound
                 $addonName = $addOnKey;
             } else {
                 $macroNames = $addonValue;
@@ -176,7 +177,7 @@ trait RapiStatisticTrait
      * @inheritDoc
      */
     #[\Override]
-    public function countItemsinSpace(string $spaceKey, string $itemType = RequestParameterData::ITEM_TYPE_PAGE): IStatistic
+    public function countItemsinSpace(string $spaceKey, string $itemType = self::REQ_ITEM_TYPE_PAGE): IStatistic
     {
         self::$logger->debug('START - spaceKey, itemType', [$spaceKey, $itemType]);
 

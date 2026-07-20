@@ -14,21 +14,22 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Response;
 
 use Monolog\ConsoleLogger;
+use oglow\tools\Yacorapi\Macro\AddonTypeEnum;
 use Psr\Log\LoggerInterface;
 
 class ResponseAddonMacroDecorate extends AbstractResponse
 {
     private static LoggerInterface $logger;
 
-    private int $mode;
+    private AddonTypeEnum $mode;
 
     /**
      * ResponseAddonMacroDecorate constructor.
      *
-     * @param int                $mode
+     * @param AddonTypeEnum      $mode
      * @param array<mixed,mixed> $data
      */
-    public function __construct(int $mode, array $data = [])
+    public function __construct(AddonTypeEnum $mode, array $data = [])
     {
         self::$logger = new ConsoleLogger(ResponseAddonMacroDecorate::class);
         self::$logger->debug('START');
@@ -49,9 +50,9 @@ class ResponseAddonMacroDecorate extends AbstractResponse
     }
 
     /**
-     * @return int
+     * @return AddonTypeEnum
      */
-    public function getMode(): int
+    public function getMode(): AddonTypeEnum
     {
         return $this->mode;
     }

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Provider;
 
-use oglow\tools\Yacorapi\Response\ResponseDryRun;
 use PHPUnit\Framework\EasyGoingTestCase;
 use Psr\Log\LogLevel;
 
@@ -22,7 +21,7 @@ class CurlProviderTest extends EasyGoingTestCase
     #[\Override]
     protected static function prepareO2t(): CurlProvider
     {
-        return new CurlProvider(new ResponseDryRun(), LogLevel::DEBUG);
+        return new CurlProvider(LogLevel::DEBUG);
     }
 
     /**

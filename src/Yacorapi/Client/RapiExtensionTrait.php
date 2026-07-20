@@ -13,14 +13,35 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Client;
 
+use oglow\tools\Addon\Atlassian\Extension\AdminExtension;
+use oglow\tools\Addon\Atlassian\Extension\AtlassianExtension;
+use oglow\tools\Addon\Projectdoc\Extension\ProjectdocExtension;
+use oglow\tools\Addon\ThirdParty\Extension\ThirdPartyExtension;
+use oglow\tools\Addon\UserMacro\Extension\UserMacroExtension;
+use oglow\tools\common\IContainer;
 use oglow\tools\Yacorapi\ExitCodes;
 use oglow\tools\Yacorapi\Extension\IExtension;
-use oglow\tools\Yacorapi\Macro\AllAddon;
+use oglow\tools\Yacorapi\Extension\RapiClientExtension;
+use oglow\tools\Yacorapi\Macro\AddonTypeEnum;
 use oglow\tools\Yacorapi\Response\ResponseAddonMacroDecorate;
 use ollily\Tools\Emergency;
 
 trait RapiExtensionTrait
 {
+    protected IContainer $addons;
+
+    protected RapiClientExtension $commonExtension;
+
+    protected AdminExtension $adminExtension;
+
+    protected AtlassianExtension $atlassianExtension;
+
+    protected UserMacroExtension $userMacroExtension;
+
+    protected ThirdPartyExtension $thirdPartyExtension;
+
+    protected ProjectdocExtension $projectdocExtension;
+
     /**
      * @param int $modeExtension
      */
@@ -63,11 +84,11 @@ trait RapiExtensionTrait
      * @inheritDoc
      */
     #[\Override]
-    public function prepareAddonSet($mode = AllAddon::ADDON_ALL): ResponseAddonMacroDecorate
+    public function prepareAddonSet(AddonTypeEnum $mode = AddonTypeEnum::ADDON_ALL): ResponseAddonMacroDecorate
     {
         self::$logger->debug('START - mode', [$mode]);
 
-        $data = $this->addons->getDataByMode($mode);
+        $data = $this->addons->getDataByMode($mode->value); // @phpstan-ignore method.notFound
         if (!empty($data)) {
             /** @psalm-suppress MixedMethodCall */
             $addonSet = new ResponseAddonMacroDecorate($mode, $data->toArray());

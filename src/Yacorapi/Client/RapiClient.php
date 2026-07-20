@@ -14,9 +14,8 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Client;
 
 use Monolog\ConsoleLogger;
+use oglow\tools\common\IContainer;
 use oglow\tools\Yacorapi\ConstData;
-use oglow\tools\Yacorapi\Data\AddonMacroData;
-use oglow\tools\Yacorapi\Data\RequestParameterData;
 use oglow\tools\Yacorapi\IConnectionProvider;
 use oglow\tools\Yacorapi\IRapiClient;
 use oglow\tools\Yacorapi\IResponse;
@@ -37,7 +36,7 @@ class RapiClient extends AbstractRapiClient // NOSONAR: php:S1448
     public static function newClient(
         ?int $modeExtension = null,
         ?IConnectionProvider $connectionProvider = null,
-        ?AddonMacroData $addons = null,
+        ?IContainer $addons = null,
         mixed $level = self::LEVEL_DEFAULT
     ): IRapiClient {
         /** @psalm-suppress PossiblyInvalidArgument
@@ -50,7 +49,7 @@ class RapiClient extends AbstractRapiClient // NOSONAR: php:S1448
      *
      * @param null|int                        $modeExtension
      * @param null|IConnectionProvider        $connectionProvider
-     * @param null|AddonMacroData             $addons
+     * @param null|IContainer                 $addons
      * @param int|\Psr\Log\LogLevel::*|string $level              The minimum logging level at which this handler will be triggered
      *                                                            (Default: {@link self::LEVEL_DEFAULT})
      *
@@ -59,11 +58,12 @@ class RapiClient extends AbstractRapiClient // NOSONAR: php:S1448
     protected function __construct(
         ?int $modeExtension = null,
         ?IConnectionProvider $connectionProvider = null,
-        ?AddonMacroData $addons = null,
+        ?IContainer $addons = null,
         mixed $level = self::LEVEL_DEFAULT
     ) {
         // Init Logger
-        /** @psalm-suppress ArgumentTypeCoercion @phpstan-ignore argument.type */
+        /** @psalm-suppress ArgumentTypeCoercion
+         * @phpstan-ignore argument.type */
         self::$logger = new ConsoleLogger(name: RapiClient::class, level: $level);
         self::$logger->debug('START');
 
@@ -120,15 +120,15 @@ class RapiClient extends AbstractRapiClient // NOSONAR: php:S1448
     public function searchPagesWithFilter(
         string $filterTerm,
         string $spaceKey,
-        int $searchFromPos = RequestParameterData::SEARCH_START,
-        int $searchLimit = RequestParameterData::SEARCH_LIMIT_ZERO,
-        string $itemType = RequestParameterData::ITEM_TYPE_PAGE
+        int $searchFromPos = self::REQ_SEARCH_FROM_POS,
+        int $searchLimit = self::REQ_SEARCH_LIMIT,
+        string $itemType = self::REQ_ITEM_TYPE_PAGE
     ): IResponse {
         self::$logger->debug(
             'START - filterTerm,spaceKey,searchFromPos,searchLimit,itemType',
             [$filterTerm, $spaceKey, $searchFromPos, $searchLimit, $itemType]
         );
-        $searchLimit = (int) ($searchLimit < RequestParameterData::SEARCH_LIMIT_1ENTRY ? $this->constData->c(ConstData::KEY_SEARCH_LIMIT) : $searchLimit);
+        $searchLimit = (int) ($searchLimit < self::REQ_SEARCH_LIMIT_1ENTRY ? $this->constData->c(ConstData::KEY_SEARCH_LIMIT) : $searchLimit);
         $prepareUrl = $this->commonExtension->prepareSearchUrlExt($filterTerm, $spaceKey, $searchFromPos, $searchLimit, $itemType);
 
         return $this->exec($prepareUrl);

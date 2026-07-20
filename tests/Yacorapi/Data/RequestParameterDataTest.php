@@ -72,7 +72,10 @@ class RequestParameterDataTest extends ConstantCheckTestCase
         static::updateActualConsts(array_keys($const));
 
         $this->verifyConstArrayAllExists($const);
+    }
 
+    public function testConstantsOthers(): void
+    {
         $const              = [
             self::CLASS_PREFIX . 'SPACE_LIMIT_DEFAULT',
             self::CLASS_PREFIX . 'SPACE_TYPE_GLOBAL',

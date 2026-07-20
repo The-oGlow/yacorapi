@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Response;
 
-use oglow\tools\Yacorapi\Macro\SingleAddon;
+use oglow\tools\Yacorapi\Macro\AddonTypeEnum;
 use PHPUnit\Framework\EasyGoingTestCase;
 
 class ResponseAddonMacroDecorateTest extends EasyGoingTestCase
@@ -21,7 +21,7 @@ class ResponseAddonMacroDecorateTest extends EasyGoingTestCase
     #[\Override]
     protected static function prepareO2t(): ResponseAddonMacroDecorate
     {
-        return new ResponseAddonMacroDecorate(SingleAddon::ADDON_SINGLE);
+        return new ResponseAddonMacroDecorate(AddonTypeEnum::ADDON_SINGLE);
     }
 
     /**
@@ -41,7 +41,7 @@ class ResponseAddonMacroDecorateTest extends EasyGoingTestCase
 
     public function testGetMode(): void
     {
-        $expected = SingleAddon::ADDON_SINGLE;
+        $expected = AddonTypeEnum::ADDON_SINGLE;
         $actual = $this->getCasto2t()->getMode();
 
         self::assertEquals($expected, $actual);

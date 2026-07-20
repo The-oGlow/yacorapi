@@ -18,9 +18,7 @@ use Monolog\ConsoleLogger;
 use oglow\tools\common\MockProvider;
 use oglow\tools\Yacorapi\Client\RapiClient;
 use oglow\tools\Yacorapi\Extension\IExtension;
-use oglow\tools\Yacorapi\Macro\AllAddon;
-use oglow\tools\Yacorapi\Macro\BlockerAddon;
-use oglow\tools\Yacorapi\Macro\SingleAddon;
+use oglow\tools\Yacorapi\Macro\AddonTypeEnum;
 use oglow\tools\Yacorapi\Response\Response;
 use oglow\tools\Yacorapi\Statistic\StatisticStatistic;
 use oglow\tools\Yacorapi\Statistic\StatisticTypeEnum;
@@ -327,11 +325,11 @@ class RapiClientTest extends EasyGoingTestCase
     }
 
     /**
-     * @param int $expected
-     * @param int $mode
+     * @param int           $expected
+     * @param AddonTypeEnum $mode
      */
     #[DataProvider('providerPrepareAddonSet')]
-    public function testPrepareAddonSet(int $expected, int $mode): void
+    public function testPrepareAddonSet(int $expected, AddonTypeEnum $mode): void
     {
         self::$logger->info('START');
 
@@ -352,10 +350,9 @@ class RapiClientTest extends EasyGoingTestCase
     public static function providerPrepareAddonSet(): array
     {
         return [
-            'default' => [18, AllAddon::ADDON_ALL],
-            'blocker' => [11, BlockerAddon::ADDON_BLOCKER],
-            'single' => [1, SingleAddon::ADDON_SINGLE],
-            'wrong' => [0, YacorapiTestData::NOTEXIST_ID],
+            'default' => [18, AddonTypeEnum::ADDON_ALL],
+            'blocker' => [11, AddonTypeEnum::ADDON_BLOCKER],
+            'single' => [1, AddonTypeEnum::ADDON_SINGLE],
         ];
     }
 }

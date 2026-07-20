@@ -29,8 +29,8 @@ trait RapiWriteTrait
         string $spaceKey,
         string $pageTitle,
         string $pageBody,
-        int $parentId = RequestParameterData::NO_PARENT,
-        string $itemType = RequestParameterData::ITEM_TYPE_PAGE
+        int $parentId = self::REQ_NO_PARENT,
+        string $itemType = self::REQ_ITEM_TYPE_PAGE
     ): IResponse {
         self::$logger->debug('START - spaceKey,pageTitle,parentId,pageType,pageBody', [$spaceKey, $pageTitle, $parentId, $itemType, empty($pageBody)]);
 
@@ -75,7 +75,7 @@ trait RapiWriteTrait
         string $pageBody,
         string $pageTitle = '',
         string $comment = '',
-        string $itemType = RequestParameterData::ITEM_TYPE_PAGE
+        string $itemType = self::REQ_ITEM_TYPE_PAGE
     ): IResponse {
         self::$logger->debug('START - pageId,pageTitle,pageType,bodySize,comment', [$pageId, $pageTitle, $itemType, strlen($pageBody), $comment]);
 
