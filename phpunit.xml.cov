@@ -43,8 +43,9 @@
     <coverage
         includeUncoveredFiles="true"
         ignoreDeprecatedCodeUnits="false"
-        pathCoverage="true"
-        disableCodeCoverageIgnore="false">
+        pathCoverage="false"
+        disableCodeCoverageIgnore="false"
+    >
         <report>
             <text outputFile="target/analysis/text/coverage.txt" showUncoveredFiles="true" showOnlySummary="false"/>
             <clover outputFile="target/analysis/clover/coverage.xml"/>
