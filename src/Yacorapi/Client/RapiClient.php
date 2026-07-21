@@ -16,6 +16,7 @@ namespace oglow\tools\Yacorapi\Client;
 use Monolog\ConsoleLogger;
 use oglow\tools\common\IContainer;
 use oglow\tools\Yacorapi\ConstData;
+use oglow\tools\Yacorapi\Data\ItemTypeEnum;
 use oglow\tools\Yacorapi\IConnectionProvider;
 use oglow\tools\Yacorapi\IRapiClient;
 use oglow\tools\Yacorapi\IResponse;
@@ -122,7 +123,7 @@ class RapiClient extends AbstractRapiClient // NOSONAR: php:S1448
         string $spaceKey,
         int $searchFromPos = self::REQ_SEARCH_FROM_POS,
         int $searchLimit = self::REQ_SEARCH_LIMIT,
-        string $itemType = self::REQ_ITEM_TYPE_PAGE
+        ItemTypeEnum $itemType = IRapiClient::REQ_ITEM_TYPE_PAGE
     ): IResponse {
         self::$logger->debug(
             'START - filterTerm,spaceKey,searchFromPos,searchLimit,itemType',

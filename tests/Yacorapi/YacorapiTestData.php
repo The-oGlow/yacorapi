@@ -20,6 +20,7 @@ use oglow\tools\Addon\Projectdoc\Extension\ProjectdocExtension;
 use oglow\tools\Addon\ThirdParty\Extension\ThirdPartyExtension;
 use oglow\tools\Addon\UserMacro\Extension\UserMacroExtension;
 use oglow\tools\Yacorapi\Data\RequestParameterData;
+use oglow\tools\Yacorapi\Data\SpaceTypeEnum;
 use oglow\tools\Yacorapi\Extension\IExtension;
 use oglow\tools\Yacorapi\Extension\RapiClientExtension;
 use ollily\Tools\Test\TestData;
@@ -210,7 +211,7 @@ class YacorapiTestData extends TestData
 
     public const string C_SPACE_EXIST_STATUS = RequestParameterData::STATUS_TYPE_CURRENT;
 
-    public const string C_SPACE_EXIST_TYPE = RequestParameterData::SPACE_TYPE_GLOBAL;
+    public const SpaceTypeEnum C_SPACE_EXIST_TYPE = SpaceTypeEnum::SPACE_TYPE_GLOBAL;
 
     public const string C_FILTERTERM_01 = 'filter=1';
 

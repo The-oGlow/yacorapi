@@ -15,7 +15,10 @@ namespace oglow\tools\Yacorapi\Client;
 
 use Ds\Map;
 use Ds\Vector;
+use oglow\tools\Yacorapi\Data\ItemTypeEnum;
 use oglow\tools\Yacorapi\Data\RequestParameterData;
+use oglow\tools\Yacorapi\Data\SpaceTypeEnum;
+use oglow\tools\Yacorapi\IRapiClient;
 use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Macro\AddonTypeEnum;
 use oglow\tools\Yacorapi\Response\ResponseAddonMacroDecorate;
@@ -33,7 +36,7 @@ trait RapiStatisticTrait
      * @inheritDoc
      */
     #[\Override]
-    public function listSpaces(string $spaceType = RequestParameterData::SPACE_TYPE_GLOBAL, int $limit = RequestParameterData::SPACE_LIMIT_DEFAULT): IResponse
+    public function listSpaces(SpaceTypeEnum $spaceType = SpaceTypeEnum::SPACE_TYPE_GLOBAL, int $limit = RequestParameterData::SPACE_LIMIT_DEFAULT): IResponse
     {
         self::$logger->debug('START - spaceType,limit', [$spaceType, $limit]);
 
@@ -177,7 +180,7 @@ trait RapiStatisticTrait
      * @inheritDoc
      */
     #[\Override]
-    public function countItemsinSpace(string $spaceKey, string $itemType = self::REQ_ITEM_TYPE_PAGE): IStatistic
+    public function countItemsinSpace(string $spaceKey, ItemTypeEnum $itemType = IRapiClient::REQ_ITEM_TYPE_PAGE): IStatistic
     {
         self::$logger->debug('START - spaceKey, itemType', [$spaceKey, $itemType]);
 
@@ -187,8 +190,8 @@ trait RapiStatisticTrait
         $itemCount = $response->getValue(IResponse::KEY_TOTAL_SIZE, 0);
         $valueStatistic = new ValueStatistic(ValueStatistic::EMPTY_STRING, null);
         $valueStatistic->addItem(ValueStatistic::EMPTY_STRING, $itemCount);
-        $singleStatistic = new StatisticStatistic($itemType, StatisticTypeEnum::PAGETYPE);
-        $singleStatistic->addItem($itemType, $valueStatistic);
+        $singleStatistic = new StatisticStatistic($itemType->value, StatisticTypeEnum::PAGETYPE);
+        $singleStatistic->addItem($itemType->value, $valueStatistic);
 
         self::$logger->debug('END');
 

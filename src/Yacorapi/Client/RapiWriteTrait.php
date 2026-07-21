@@ -14,9 +14,11 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Client;
 
 use Ds\Map;
+use oglow\tools\Yacorapi\Data\ItemTypeEnum;
 use oglow\tools\Yacorapi\Data\RequestParameterData;
+use oglow\tools\Yacorapi\IRapiClient;
 use oglow\tools\Yacorapi\IResponse;
-use oglow\tools\Yacorapi\Request\RequestType;
+use oglow\tools\Yacorapi\Request\RequestTypeEnum;
 use oglow\tools\Yacorapi\Response\Response;
 
 trait RapiWriteTrait
@@ -29,8 +31,8 @@ trait RapiWriteTrait
         string $spaceKey,
         string $pageTitle,
         string $pageBody,
-        int $parentId = self::REQ_NO_PARENT,
-        string $itemType = self::REQ_ITEM_TYPE_PAGE
+        int $parentId = IRapiClient::REQ_NO_PARENT,
+        ItemTypeEnum $itemType = IRapiClient::REQ_ITEM_TYPE_PAGE
     ): IResponse {
         self::$logger->debug('START - spaceKey,pageTitle,parentId,pageType,pageBody', [$spaceKey, $pageTitle, $parentId, $itemType, empty($pageBody)]);
 
@@ -49,17 +51,17 @@ trait RapiWriteTrait
             ]
         );
         if (empty($spaceKey)) {
-            throw new \InvalidArgumentException(self::MSG_SPACE_IS_EMPTY);
+            throw new \InvalidArgumentException(IRapiClient::MSG_SPACE_IS_EMPTY);
         } else {
             $parameters->put(RequestParameterData::PROP_SPACE, [RequestParameterData::PROP_KEY => $spaceKey]);
         }
         if ($parentId > RequestParameterData::NO_PARENT) {
             $parameters->put(RequestParameterData::PROP_ANCESTORS, [[RequestParameterData::PROP_ID => $parentId]]);
         } else {
-            throw new \InvalidArgumentException(self::MSG_PARENT_ID_MUST_BE_NUMERIC);
+            throw new \InvalidArgumentException(IRapiClient::MSG_PARENT_ID_MUST_BE_NUMERIC);
         }
         $prepareUrl = $this->commonExtension->prepareCreatePage();
-        $response = $this->execPost($prepareUrl, $parameters, RequestType::REQ_TYP_POST);
+        $response = $this->execPost($prepareUrl, $parameters, RequestTypeEnum::POST);
 
         self::$logger->debug('END');
 
@@ -75,7 +77,7 @@ trait RapiWriteTrait
         string $pageBody,
         string $pageTitle = '',
         string $comment = '',
-        string $itemType = self::REQ_ITEM_TYPE_PAGE
+        ItemTypeEnum $itemType = IRapiClient::REQ_ITEM_TYPE_PAGE
     ): IResponse {
         self::$logger->debug('START - pageId,pageTitle,pageType,bodySize,comment', [$pageId, $pageTitle, $itemType, strlen($pageBody), $comment]);
 
@@ -87,7 +89,7 @@ trait RapiWriteTrait
             $nextVersion = $currentVersion + 1;
 
             if (empty($comment)) {
-                $comment = self::MSG_UPDATE_PAGE_WITHOUT_CHANGES;
+                $comment = IRapiClient::MSG_UPDATE_PAGE_WITHOUT_CHANGES;
             }
             $prepareURL = $this->commonExtension->prepareUpdateURL($pageId);
             $parameters = new Map(
@@ -105,7 +107,7 @@ trait RapiWriteTrait
                 ]
             );
 
-            $response = $this->execPost($prepareURL, $parameters, RequestType::REQ_TYP_PUT);
+            $response = $this->execPost($prepareURL, $parameters, RequestTypeEnum::PUT);
             $success = $response->checkStatus();
             self::$logger->debug('Update page with title', [$pageId, $pageTitle, ($success ? 'successful' : 'failed')]);
         } else {
@@ -141,12 +143,12 @@ trait RapiWriteTrait
             RequestParameterData::PROP_VERSION,
             [
                 RequestParameterData::PROP_NUMBER => ++$pageVersion, // NOSONAR php:S881
-                RequestParameterData::PROP_MESSAGE => self::MSG_MOVED_TO_NEW_PARENT . $newParentId,
+                RequestParameterData::PROP_MESSAGE => IRapiClient::MSG_MOVED_TO_NEW_PARENT . $newParentId,
             ]
         );
 
         $prepareUrl = $this->commonExtension->prepareUpdateURL($pageId);
-        $response = $this->execPost($prepareUrl, $parameters, RequestType::REQ_TYP_PUT);
+        $response = $this->execPost($prepareUrl, $parameters, RequestTypeEnum::PUT);
 
         self::$logger->debug('END');
 

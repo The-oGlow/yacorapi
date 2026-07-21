@@ -15,28 +15,28 @@ namespace oglow\tools\Yacorapi\Request;
 
 use PHPUnit\Framework\ConstantCheckTestCase;
 
-class RequestTypeTest extends ConstantCheckTestCase
+class RequestTypeEnumTest extends ConstantCheckTestCase
 {
-    public const string CLASS_PREFIX = RequestType::class . self::C_STATIC_SEP;
+    public const string CLASS_PREFIX = RequestTypeEnum::class . self::C_STATIC_SEP;
 
     protected const int EXPECTED_CONSTANT_COUNT = 4;
 
     protected const bool WITH_CONST_CROSSCHECK = true;
 
     /**
-     * @return RequestType
+     * @return RequestTypeEnum
      */
     #[\Override]
-    protected static function prepareO2t(): RequestType
+    protected static function prepareO2t(): RequestTypeEnum
     {
-        return new RequestType();
+        return RequestTypeEnum::GET;
     }
 
     /**
-     * @return RequestType
+     * @return RequestTypeEnum
      */
     #[\Override]
-    protected function getCasto2t(): RequestType
+    protected function getCasto2t(): RequestTypeEnum
     {
         return  $this->o2t;
     }
@@ -50,10 +50,10 @@ class RequestTypeTest extends ConstantCheckTestCase
     public function testConstsExists(): void
     {
         $const              = [
-            self::CLASS_PREFIX . 'REQ_TYP_GET',
-            self::CLASS_PREFIX . 'REQ_TYP_PUT',
-            self::CLASS_PREFIX . 'REQ_TYP_DELETE',
-            self::CLASS_PREFIX . 'REQ_TYP_POST',
+            self::CLASS_PREFIX . 'GET',
+            self::CLASS_PREFIX . 'PUT',
+            self::CLASS_PREFIX . 'DELETE',
+            self::CLASS_PREFIX . 'POST',
         ];
         static::updateActualConsts($const);
 

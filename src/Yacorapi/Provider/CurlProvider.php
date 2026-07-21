@@ -19,7 +19,7 @@ use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\ExitCodes;
 use oglow\tools\Yacorapi\IResponse;
-use oglow\tools\Yacorapi\Request\RequestType;
+use oglow\tools\Yacorapi\Request\RequestTypeEnum;
 use oglow\tools\Yacorapi\Response\ResponseDryRun;
 use ollily\Tools\Emergency;
 use Psr\Log\LoggerInterface;
@@ -60,7 +60,7 @@ class CurlProvider extends AbstractProvider
      * @inheritDoc
      */
     #[\Override]
-    protected function execInternal(string $execUrl, int $reqType = RequestType::REQ_TYP_GET): array
+    protected function execInternal(string $execUrl, RequestTypeEnum $reqType = RequestTypeEnum::GET): array
     {
         self::$logger->debug('START - execUrl,reqType', [$execUrl, $reqType]);
 
@@ -77,7 +77,7 @@ class CurlProvider extends AbstractProvider
      * @inheritDoc
      */
     #[\Override]
-    protected function execPostInternal(string $execUrl, Map $parameters, int $reqType = RequestType::REQ_TYP_PUT): array
+    protected function execPostInternal(string $execUrl, Map $parameters, RequestTypeEnum $reqType = RequestTypeEnum::PUT): array
     {
         self::$logger->debug('START - execUrl,parameters,reqType', [$execUrl, $parameters, $reqType]);
 
@@ -91,11 +91,11 @@ class CurlProvider extends AbstractProvider
     }
 
     /**
-     * @param int $reqType
+     * @param RequestTypeEnum $reqType
      *
      * @return CurlHandle|false
      */
-    private function prepareCurl(int $reqType)
+    private function prepareCurl(RequestTypeEnum $reqType)
     {
         self::$logger->debug('START - reqType', [$reqType]);
 
@@ -118,21 +118,21 @@ class CurlProvider extends AbstractProvider
 
     /**
      * @param Map<mixed, mixed> $parameters
-     * @param int               $reqType
+     * @param RequestTypeEnum   $reqType
      *
      * @return CurlHandle|false
      */
-    private function prepareCurlWrite(Map $parameters, int $reqType)
+    private function prepareCurlWrite(Map $parameters, RequestTypeEnum $reqType)
     {
         self::$logger->debug('START - parameters,reqType', [$parameters, $reqType]);
 
         $execSession = $this->prepareCurl($reqType);
         switch ($reqType) {
-            case RequestType::REQ_TYP_POST: {
+            case RequestTypeEnum::POST: {
                 $this->preparePostParameter($execSession, $parameters);
                 break;
             }
-            case RequestType::REQ_TYP_PUT:
+            case RequestTypeEnum::PUT:
             default: {
                 $this->preparePutParameter($execSession, $parameters);
             }

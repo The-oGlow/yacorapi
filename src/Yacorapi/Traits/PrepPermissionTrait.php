@@ -16,7 +16,7 @@ namespace oglow\tools\Yacorapi\Traits;
 use Ds\Map;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\Data\RequestParameterData;
-use oglow\tools\Yacorapi\Request\RequestType;
+use oglow\tools\Yacorapi\Request\RequestTypeEnum;
 
 trait PrepPermissionTrait
 {
@@ -88,7 +88,7 @@ trait PrepPermissionTrait
         $prepareParameters->putAll($prefix);
         $prepareParameters->putAll($prepareParametersRestrictions);
         self::$logger->debug('prepareParameters', [json_encode($prepareParameters)]);
-        $response = $this->connectionProvider->execPost($prepareUrl, $prepareParameters, RequestType::REQ_TYP_PUT);
+        $response = $this->connectionProvider->execPost($prepareUrl, $prepareParameters, RequestTypeEnum::PUT);
 
         /**
          * @psalm-suppress RedundantCondition

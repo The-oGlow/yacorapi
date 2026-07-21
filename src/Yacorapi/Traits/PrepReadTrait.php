@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Traits;
 
 use oglow\tools\Yacorapi\ConstData;
+use oglow\tools\Yacorapi\Data\ItemTypeEnum;
 use oglow\tools\Yacorapi\Data\RequestParameterData;
+use oglow\tools\Yacorapi\Data\SpaceTypeEnum;
 use oglow\tools\Yacorapi\IResponse;
 
 trait PrepReadTrait
@@ -31,7 +33,7 @@ trait PrepReadTrait
     public function prepareSearchUrl(
         string $searchTerm,
         string $spaceKey = RequestParameterData::NO_SPACE,
-        string $pageType = RequestParameterData::ITEM_TYPE_PAGE,
+        ItemTypeEnum $pageType = ItemTypeEnum::PAGE,
         bool $withBody = RequestParameterData::NO_BODY
     ): string {
         $result = '';
@@ -47,14 +49,14 @@ trait PrepReadTrait
         string $spaceKey,
         int $searchFromPos = RequestParameterData::NO_SEARCH_START,
         int $searchLimit = RequestParameterData::NO_SEARCH_LIMIT,
-        string $pageType = RequestParameterData::ITEM_TYPE_PAGE,
+        ItemTypeEnum $pageType = ItemTypeEnum::PAGE,
         bool $withBody = RequestParameterData::NO_BODY
     ): string {
         $searchLimit = $searchLimit <= RequestParameterData::SEARCH_LIMIT_ZERO ? $this->constData->c(ConstData::KEY_SEARCH_LIMIT) : $searchLimit;
         $prepareUrl  = sprintf('%s?cql=', $this->constData->c(ConstData::KEY_CONF_SEARCH_URL));
         $prepareUrl  .= sprintf('siteSearch~%s', urlencode("\"{$searchTerm}\""));
-        $prepareUrl  .= sprintf('+AND+space.type=%s', urlencode(RequestParameterData::SPACE_TYPE_GLOBAL));
-        $prepareUrl  .= sprintf('+AND+type=%s', urlencode("\"{$pageType}\""));
+        $prepareUrl  .= sprintf('+AND+space.type=%s', urlencode(SpaceTypeEnum::SPACE_TYPE_GLOBAL->value));
+        $prepareUrl  .= sprintf('+AND+type=%s', urlencode("\"{$pageType->value}\""));
         if (!empty($spaceKey)) {
             $prepareUrl .= sprintf('+AND+space=%s', urlencode("\"{$spaceKey}\""));
         }
@@ -90,9 +92,9 @@ trait PrepReadTrait
         return sprintf('%s/%s?%s', $this->constData->c(ConstData::KEY_CONF_CONTENT_URL), $pageId, RequestParameterData::REQP_FULL);
     }
 
-    public function prepareCountItemsUrl(string $pageType, string $spaceKey): string
+    public function prepareCountItemsUrl(ItemTypeEnum $itemType, string $spaceKey): string
     {
-        return ((string)$this->constData->c(ConstData::KEY_CONF_SEARCH_URL)) . "?cql=type+in+($pageType)+AND+space=$spaceKey";
+        return ((string)$this->constData->c(ConstData::KEY_CONF_SEARCH_URL)) . "?cql=type+in+(" . $itemType->value . ")+AND+space=$spaceKey";
     }
 
     /**

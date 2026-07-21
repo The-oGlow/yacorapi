@@ -19,7 +19,7 @@ use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\Data\RequestParameterData;
 use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Provider\AbstractProvider;
-use oglow\tools\Yacorapi\Request\RequestType;
+use oglow\tools\Yacorapi\Request\RequestTypeEnum;
 use oglow\tools\Yacorapi\YacorapiTestData;
 use Psr\Log\LoggerInterface;
 
@@ -48,7 +48,7 @@ class MockProvider extends AbstractProvider
      * @inheritDoc
      */
     #[\Override]
-    protected function execInternal(string $execUrl, int $reqType): array
+    protected function execInternal(string $execUrl, RequestTypeEnum $reqType): array
     {
         self::$logger->debug('START - execUrl,reqType', [$execUrl, $reqType]);
 
@@ -63,7 +63,7 @@ class MockProvider extends AbstractProvider
      * @inheritDoc
      */
     #[\Override]
-    protected function execPostInternal(string $execUrl, Map $parameters, int $reqType): array
+    protected function execPostInternal(string $execUrl, Map $parameters, RequestTypeEnum $reqType): array
     {
         self::$logger->debug('START - execUrl,parameters,reqType', [$execUrl, $parameters, $reqType]);
 
@@ -75,17 +75,17 @@ class MockProvider extends AbstractProvider
     }
 
     /**
-     * @param string $execUrl
-     * @param int    $reqType
+     * @param string          $execUrl
+     * @param RequestTypeEnum $reqType
      *
      * @return array<mixed,mixed>
      */
-    protected function evaluateRequest(string $execUrl, int $reqType): array
+    protected function evaluateRequest(string $execUrl, RequestTypeEnum $reqType): array
     {
         $response = [];
 
         switch ($reqType) {
-            case RequestType::REQ_TYP_GET:
+            case RequestTypeEnum::GET:
                 if ($this->evalReadPagesWithFilter($execUrl, $reqType, $response)) {
                     break;
                 }
@@ -113,12 +113,12 @@ class MockProvider extends AbstractProvider
 
     /**
      * @param string             $execUrl
-     * @param int                $reqType
+     * @param RequestTypeEnum    $reqType
      * @param array<mixed,mixed> $response
      *
      * @return bool
      */
-    protected function evalReadPageByPageId(string $execUrl, int $reqType, array &$response): bool
+    protected function evalReadPageByPageId(string $execUrl, RequestTypeEnum $reqType, array &$response): bool
     {
         $done = false;
         $searchUrl = sprintf('%s/%s', ConstData::C_RAPI_CONTENT, YacorapiTestData::C_SEARCHPAGEID_01);
@@ -139,12 +139,12 @@ class MockProvider extends AbstractProvider
 
     /**
      * @param string             $execUrl
-     * @param int                $reqType
+     * @param RequestTypeEnum    $reqType
      * @param array<mixed,mixed> $response
      *
      * @return bool
      */
-    protected function evalReadPagesWithFilter(string $execUrl, int $reqType, array &$response): bool
+    protected function evalReadPagesWithFilter(string $execUrl, RequestTypeEnum $reqType, array &$response): bool
     {
         $done = false;
         $searchUrl = sprintf('%s?', ConstData::C_RAPI_CONTENT);
@@ -164,12 +164,12 @@ class MockProvider extends AbstractProvider
 
     /**
      * @param string             $execUrl
-     * @param int                $reqType
+     * @param RequestTypeEnum    $reqType
      * @param array<mixed,mixed> $response
      *
      * @return bool
      */
-    protected function evalSearchPagesWithFilter(string $execUrl, int $reqType, array &$response): bool
+    protected function evalSearchPagesWithFilter(string $execUrl, RequestTypeEnum $reqType, array &$response): bool
     {
         $done = false;
         $searchUrl = sprintf('%s?cql=', ConstData::C_RAPI_SEARCH);
@@ -189,12 +189,12 @@ class MockProvider extends AbstractProvider
 
     /**
      * @param string             $execUrl
-     * @param int                $reqType
+     * @param RequestTypeEnum    $reqType
      * @param array<mixed,mixed> $response
      *
      * @return bool
      */
-    protected function evalScanPagesWithFilter(string $execUrl, int $reqType, array &$response): bool
+    protected function evalScanPagesWithFilter(string $execUrl, RequestTypeEnum $reqType, array &$response): bool
     {
         $done = false;
         $searchUrl = sprintf('%s?', ConstData::C_RAPI_SCAN);
@@ -214,12 +214,12 @@ class MockProvider extends AbstractProvider
 
     /**
      * @param string             $execUrl
-     * @param int                $reqType
+     * @param RequestTypeEnum    $reqType
      * @param array<mixed,mixed> $response
      *
      * @return bool
      */
-    protected function evalListSpaces(string $execUrl, int $reqType, array &$response): bool
+    protected function evalListSpaces(string $execUrl, RequestTypeEnum $reqType, array &$response): bool
     {
         $done = false;
         $searchUrl = sprintf('%s?', ConstData::C_RAPI_SPACE);
@@ -254,22 +254,22 @@ class MockProvider extends AbstractProvider
     /**
      * @param string           $execUrl
      * @param Map<mixed,mixed> $parameters
-     * @param int              $reqType
+     * @param RequestTypeEnum  $reqType
      *
      * @return array<mixed,mixed>
      */
-    protected function evaluateParameterRequest(string $execUrl, Map $parameters, int $reqType): array
+    protected function evaluateParameterRequest(string $execUrl, Map $parameters, RequestTypeEnum $reqType): array
     {
         $response = [];
 
         switch ($reqType) {
-            case RequestType::REQ_TYP_POST:
+            case RequestTypeEnum::POST:
                 if ($this->evalCreatePage($execUrl, $parameters, $reqType, $response)) {
                     break;
                 }
                 self::$logger->notice('No mock result found', [$execUrl, $reqType, $parameters]);
                 break;
-            case RequestType::REQ_TYP_PUT:
+            case RequestTypeEnum::PUT:
                 if ($this->evalUpdatePage($execUrl, $parameters, $reqType, $response)) {
                     break;
                 }
@@ -286,12 +286,12 @@ class MockProvider extends AbstractProvider
     /**
      * @param string             $execUrl
      * @param Map<mixed,mixed>   $parameters
-     * @param int                $reqType
+     * @param RequestTypeEnum    $reqType
      * @param array<mixed,mixed> $response
      *
      * @return bool
      */
-    protected function evalCreatePage(string $execUrl, Map $parameters, int $reqType, array &$response): bool
+    protected function evalCreatePage(string $execUrl, Map $parameters, RequestTypeEnum $reqType, array &$response): bool
     {
         $done = false;
         $searchUrl = sprintf('%s/', ConstData::C_RAPI_CONTENT);
@@ -321,12 +321,12 @@ class MockProvider extends AbstractProvider
     /**
      * @param string             $execUrl
      * @param Map<mixed,mixed>   $parameters
-     * @param int                $reqType
+     * @param RequestTypeEnum    $reqType
      * @param array<mixed,mixed> $response
      *
      * @return bool
      */
-    protected function evalUpdatePage(string $execUrl, Map $parameters, int $reqType, array &$response): bool
+    protected function evalUpdatePage(string $execUrl, Map $parameters, RequestTypeEnum $reqType, array &$response): bool
     {
         $done = false;
         $searchUrl = sprintf('%s/', ConstData::C_RAPI_CONTENT);

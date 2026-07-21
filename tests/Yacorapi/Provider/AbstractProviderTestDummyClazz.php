@@ -13,27 +13,32 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Provider;
 
+use Ds\Map;
+use oglow\tools\Yacorapi\Request\RequestTypeEnum;
+
 class AbstractProviderTestDummyClazz extends AbstractProvider
 {
     /**
-     * @param string $execUrl
-     * @param int    $reqType
+     * @param string          $execUrl
+     * @param RequestTypeEnum $reqType
      *
      * @return array<mixed,mixed>
      */
-    protected function execInternal(string $execUrl, int $reqType): array
+    #[\Override]
+    protected function execInternal(string $execUrl, RequestTypeEnum $reqType): array
     {
         return [];
     }
 
     /**
-     * @param string               $execUrl
-     * @param \Ds\Map<mixed,mixed> $parameters
-     * @param int                  $reqType
+     * @param string           $execUrl
+     * @param Map<mixed,mixed> $parameters
+     * @param RequestTypeEnum  $reqType
      *
      * @return array<mixed,mixed>
      */
-    protected function execPostInternal(string $execUrl, \Ds\Map $parameters, int $reqType): array
+    #[\Override]
+    protected function execPostInternal(string $execUrl, Map $parameters, RequestTypeEnum $reqType): array
     {
         return [];
     }
@@ -41,24 +46,24 @@ class AbstractProviderTestDummyClazz extends AbstractProvider
     // Change visibility
 
     /**
-     * @param string $execUrl
-     * @param int    $reqType
+     * @param string          $execUrl
+     * @param RequestTypeEnum $reqType
      *
      * @return array<mixed,mixed>
      */
-    public function publicExecInternal(string $execUrl, int $reqType): array
+    public function publicExecInternal(string $execUrl, RequestTypeEnum $reqType): array
     {
         return $this->execInternal($execUrl, $reqType);
     }
 
     /**
-     * @param string               $execUrl
-     * @param \Ds\Map<mixed,mixed> $parameters
-     * @param int                  $reqType
+     * @param string           $execUrl
+     * @param Map<mixed,mixed> $parameters
+     * @param RequestTypeEnum  $reqType
      *
      * @return array<mixed,mixed>
      */
-    public function publicExecPostInternal(string $execUrl, \Ds\Map $parameters, int $reqType): array
+    public function publicExecPostInternal(string $execUrl, Map $parameters, RequestTypeEnum $reqType): array
     {
         return $this->execPostInternal($execUrl, $parameters, $reqType);
     }

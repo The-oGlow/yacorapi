@@ -18,7 +18,7 @@ use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\IConnectionProvider;
 use oglow\tools\Yacorapi\IResponse;
-use oglow\tools\Yacorapi\Request\RequestType;
+use oglow\tools\Yacorapi\Request\RequestTypeEnum;
 use oglow\tools\Yacorapi\Response\Response;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
@@ -53,7 +53,7 @@ abstract class AbstractProvider implements IConnectionProvider
      * @inheritDoc
      */
     #[\Override]
-    public function exec(string $execUrl, int $reqType = RequestType::REQ_TYP_GET): IResponse
+    public function exec(string $execUrl, RequestTypeEnum $reqType = RequestTypeEnum::GET): IResponse
     {
         self::$logger->debug('START - execUrl,reqType', [$execUrl, $reqType]);
 
@@ -69,7 +69,7 @@ abstract class AbstractProvider implements IConnectionProvider
      * @inheritDoc
      */
     #[\Override]
-    public function execPost(string $execUrl, Map $parameters, int $reqType = RequestType::REQ_TYP_PUT): IResponse
+    public function execPost(string $execUrl, Map $parameters, RequestTypeEnum $reqType = RequestTypeEnum::PUT): IResponse
     {
         self::$logger->debug('START - execUrl,parameters,reqType', [$execUrl, $parameters, $reqType]);
 
@@ -104,21 +104,21 @@ abstract class AbstractProvider implements IConnectionProvider
     }
 
     /**
-     * @param string $execUrl
-     * @param int    $reqType
+     * @param string          $execUrl
+     * @param RequestTypeEnum $reqType
      *
      * @return array<mixed,mixed>
      */
-    abstract protected function execInternal(string $execUrl, int $reqType): array;
+    abstract protected function execInternal(string $execUrl, RequestTypeEnum $reqType): array;
 
     /**
      * @param string           $execUrl
      * @param Map<mixed,mixed> $parameters
-     * @param int              $reqType
+     * @param RequestTypeEnum  $reqType
      *
      * @return array<mixed,mixed>
      */
-    abstract protected function execPostInternal(string $execUrl, Map $parameters, int $reqType): array;
+    abstract protected function execPostInternal(string $execUrl, Map $parameters, RequestTypeEnum $reqType): array;
 
     /**
      * @return string

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Traits;
 
 use oglow\tools\Yacorapi\ConstData;
+use oglow\tools\Yacorapi\Data\ItemTypeEnum;
 use oglow\tools\Yacorapi\Response\Response;
 use oglow\tools\Yacorapi\YacorapiTestData;
 use PHPUnit\Framework\EasyGoingTestCase;
@@ -142,7 +143,7 @@ class PrepReadTraitTest extends EasyGoingTestCase
 
     public function testPrepareCountItemsUrl(): void
     {
-        $filterTerm = YacorapiTestData::C_FILTERTERM_01;
+        $filterTerm = ItemTypeEnum::PAGE;
         $spaceKey   = YacorapiTestData::C_SPACE_EXIST_KEY;
 
         $expected1 = $filterTerm;
@@ -150,7 +151,7 @@ class PrepReadTraitTest extends EasyGoingTestCase
 
         $actual = $this->getCasto2t()->prepareCountItemsUrl($filterTerm, $spaceKey);
 
-        self::assertStringContainsString($expected1, $actual);
+        self::assertStringContainsString($expected1->value, $actual);
         self::assertStringContainsString($expected2, $actual);
     }
 

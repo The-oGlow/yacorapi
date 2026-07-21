@@ -11,15 +11,10 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace oglow\tools\Yacorapi\Request;
+namespace oglow\tools\Yacorapi\Data;
 
-class RequestType
+enum SpaceTypeEnum: string
 {
-    public const int REQ_TYP_GET    = 0;
-
-    public const int REQ_TYP_PUT    = 1;
-
-    public const int REQ_TYP_DELETE = 4;
-
-    public const int REQ_TYP_POST   = 2;
+    case SPACE_TYPE_GLOBAL = 'global';
+    case SPACE_TYPE_PERSONAL = 'personal';
 }

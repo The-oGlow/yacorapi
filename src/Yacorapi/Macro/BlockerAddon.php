@@ -20,7 +20,7 @@ use Ds\Vector;
  */
 class BlockerAddon extends AbstractAddon
 {
-    public const AddonTypeEnum addonType = AddonTypeEnum::ADDON_BLOCKER;
+    public const AddonTypeEnum ADDON_TYPE = AddonTypeEnum::ADDON_BLOCKER;
 
     /**
      * @SuppressWarnings("PHPMD.ExcessiveMethodLength")

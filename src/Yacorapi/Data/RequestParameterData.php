@@ -39,13 +39,6 @@ class RequestParameterData extends AbstractSingleton
     public const string RESP_CSV_SPACE_RESULTS = ' .results[]|.key + ";" + .type + ";" + "status" + ";"'
         . ' + "\"" + .name + "\"" + ";" + "\"" + .description.plain.value +';
 
-    // Item Type Consts
-    public const string ITEM_TYPE_PAGE = 'page';
-
-    public const array ITEM_TYPES = [self::ITEM_TYPE_PAGE, 'attachment', 'blogpost'];
-
-    public const array ITEM_TYPES_ALL = [self::ITEM_TYPE_PAGE, 'attachment', 'blogpost', 'comment'];
-
     // Property Consts
     public const string PROP_ANCESTORS = 'ancestors';
 
@@ -88,10 +81,6 @@ class RequestParameterData extends AbstractSingleton
     // Space Consts
     public const int SPACE_LIMIT_DEFAULT = 100;
 
-    public const string SPACE_TYPE_GLOBAL = 'global';
-
-    public const string SPACE_TYPE_PERSONAL = 'personal';
-
     // Page Consts
     public const string PAGE_COUNT = 'count';
 
@@ -110,9 +99,9 @@ class RequestParameterData extends AbstractSingleton
 
     public const int SEARCH_LIMIT_1ENTRY = 1;
 
-    public const int NO_SEARCH_LIMIT = -1;
-
     public const int SEARCH_LIMIT_MAX = 100;
+
+    public const int NO_SEARCH_LIMIT = -1;
 
     public const int NO_PARENT = 0;
 

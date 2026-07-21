@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi;
 
 use Ds\Set;
+use oglow\tools\Yacorapi\Data\ItemTypeEnum;
 use oglow\tools\Yacorapi\Data\RequestParameterData;
+use oglow\tools\Yacorapi\Data\SpaceTypeEnum;
 use oglow\tools\Yacorapi\Macro\AddonTypeEnum;
 use oglow\tools\Yacorapi\Response\ResponseAddonMacroDecorate;
 use oglow\tools\Yacorapi\Statistic\IStatistic;
@@ -39,7 +41,7 @@ interface IRapiClient
 
     public const int REQ_SEARCH_LIMIT_1ENTRY = RequestParameterData::SEARCH_LIMIT_1ENTRY;
 
-    public const string REQ_ITEM_TYPE_PAGE = RequestParameterData::ITEM_TYPE_PAGE;
+    public const ItemTypeEnum REQ_ITEM_TYPE_PAGE = ItemTypeEnum::PAGE;
 
     public const int REQ_NO_PARENT = RequestParameterData::NO_PARENT;
 
@@ -88,11 +90,11 @@ interface IRapiClient
     /**
      * Extend search for confluence pages by a filter term in one space.
      *
-     * @param string $filterTerm    A search term from the confluence search
-     * @param string $spaceKey      Limited to the space
-     * @param int    $searchFromPos Starting from which result position (Default: 0)
-     * @param int    $searchLimit   The number of items which will be returned (Default: maximum)
-     * @param string $itemType      The type of the items (Default: PAGE);
+     * @param string       $filterTerm    A search term from the confluence search
+     * @param string       $spaceKey      Limited to the space
+     * @param int          $searchFromPos Starting from which result position (Default: 0)
+     * @param int          $searchLimit   The number of items which will be returned (Default: maximum)
+     * @param ItemTypeEnum $itemType      The type of the items (Default: PAGE);
      *
      * @return IResponse The found pages or empty
      *
@@ -102,20 +104,20 @@ interface IRapiClient
     public function searchPagesWithFilter(
         string $filterTerm,
         string $spaceKey,
-        int $searchFromPos = self::REQ_SEARCH_FROM_POS,
-        int $searchLimit = self::REQ_SEARCH_LIMIT,
-        string $itemType = self::REQ_ITEM_TYPE_PAGE
+        int $searchFromPos = IRapiClient::REQ_SEARCH_FROM_POS,
+        int $searchLimit = IRapiClient::REQ_SEARCH_LIMIT,
+        ItemTypeEnum $itemType = IRapiClient::REQ_ITEM_TYPE_PAGE
     ): IResponse;
 
     /**
      * Scans a space and count the items in the space.
      *
-     * @param string $spaceKey Limited to the space
-     * @param string $itemType The type of the items (Default: PAGE);
+     * @param string       $spaceKey Limited to the space
+     * @param ItemTypeEnum $itemType The type of the items (Default: PAGE);
      *
      * @return IStatistic The found and counted items
      */
-    public function countItemsinSpace(string $spaceKey, string $itemType = self::REQ_ITEM_TYPE_PAGE): IStatistic;
+    public function countItemsinSpace(string $spaceKey, ItemTypeEnum $itemType = IRapiClient::REQ_ITEM_TYPE_PAGE): IStatistic;
 
     /**
      * Load the restrictions for this confluence page.
@@ -141,15 +143,14 @@ interface IRapiClient
     /**
      * REFACTOR: Listing only 100 spaces, loop is missing.
      *
-     * @param string $spaceType The type of spaces (Default: global spaces)
-     * @param int    $limit     The number of items which will be returned (Default: 100)
+     * @param SpaceTypeEnum $spaceType The type of spaces (Default: global spaces)
+     * @param int           $limit     The number of items which will be returned (Default: 100)
      *
      * @return IResponse All accessible Spaces or empty
      *
-     * @see RequestParameterData::SPACE_TYPE_GLOBAL
      * @see RequestParameterData::SPACE_LIMIT_DEFAULT
      */
-    public function listSpaces(string $spaceType = RequestParameterData::SPACE_TYPE_GLOBAL, int $limit = RequestParameterData::SPACE_LIMIT_DEFAULT): IResponse;
+    public function listSpaces(SpaceTypeEnum $spaceType = SpaceTypeEnum::SPACE_TYPE_GLOBAL, int $limit = RequestParameterData::SPACE_LIMIT_DEFAULT): IResponse;
 
     /**
      * Scans a space and count the macros in the space.
@@ -177,11 +178,11 @@ interface IRapiClient
     /**
      * Creates a new confluence page in a space.
      *
-     * @param string $spaceKey  The space for the new page
-     * @param string $pageTitle The page title of the new page
-     * @param string $pageBody  The page body of the new page
-     * @param int    $parentId  The target parent page for the new page
-     * @param string $itemType  The type of the new page (Default: PAGE);
+     * @param string       $spaceKey  The space for the new page
+     * @param string       $pageTitle The page title of the new page
+     * @param string       $pageBody  The page body of the new page
+     * @param int          $parentId  The target parent page for the new page
+     * @param ItemTypeEnum $itemType  The type of the new page (Default: PAGE);
      *
      * @return IResponse The new created page or empty
      */
@@ -189,18 +190,18 @@ interface IRapiClient
         string $spaceKey,
         string $pageTitle,
         string $pageBody,
-        int $parentId = self::REQ_NO_PARENT,
-        string $itemType = self::REQ_ITEM_TYPE_PAGE
+        int $parentId = IRapiClient::REQ_NO_PARENT,
+        ItemTypeEnum $itemType = IRapiClient::REQ_ITEM_TYPE_PAGE
     ): IResponse;
 
     /**
      * Change the content of a confluence page.
      *
-     * @param int    $pageId    The id of the confluence page
-     * @param string $pageBody  The changed body for the page
-     * @param string $pageTitle The changed page title for the page
-     * @param string $comment   Describe the change (Default: '')
-     * @param string $itemType  The type of the page (Default: PAGE);
+     * @param int          $pageId    The id of the confluence page
+     * @param string       $pageBody  The changed body for the page
+     * @param string       $pageTitle The changed page title for the page
+     * @param string       $comment   Describe the change (Default: '')
+     * @param ItemTypeEnum $itemType  The type of the page (Default: PAGE);
      *
      * @return IResponse The changed page or empty
      *
@@ -211,7 +212,7 @@ interface IRapiClient
         string $pageBody,
         string $pageTitle = '',
         string $comment = '',
-        string $itemType = self::REQ_ITEM_TYPE_PAGE
+        ItemTypeEnum $itemType = IRapiClient::REQ_ITEM_TYPE_PAGE
     ): IResponse;
 
     /**

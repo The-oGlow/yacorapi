@@ -17,7 +17,7 @@ use Ds\Vector;
 
 class SingleAddon extends AbstractAddon
 {
-    public const AddonTypeEnum addonType = AddonTypeEnum::ADDON_SINGLE;
+    public const AddonTypeEnum ADDON_TYPE = AddonTypeEnum::ADDON_SINGLE;
 
     protected function init(): void
     {

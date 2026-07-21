@@ -24,7 +24,7 @@ use oglow\tools\Yacorapi\IConnectionProvider;
 use oglow\tools\Yacorapi\IRapiClient;
 use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Provider\CurlProvider;
-use oglow\tools\Yacorapi\Request\RequestType;
+use oglow\tools\Yacorapi\Request\RequestTypeEnum;
 use oglow\tools\Yacorapi\Traits\ExtensionTrait;
 use ollily\Tools\Reflection\MagicPublicFunctionTrait;
 use Psr\Log\LoggerInterface;
@@ -51,17 +51,17 @@ abstract class AbstractRapiClient implements IRapiClient
      * @param null|int                 $modeExtension
      * @param null|IConnectionProvider $connectionProvider
      * @param null|IContainer          $addons
-     * @param int|LogLevel|string      $level              (Default: {@link self::LEVEL_DEFAULT})
+     * @param int|LogLevel|string      $level              (Default: {@link IRapiClient::LEVEL_DEFAULT})
      *
      * @return IRapiClient
      *
-     * @see self::LEVEL_DEFAULT
+     * @see IRapiClient::LEVEL_DEFAULT
      */
     abstract public static function newClient(
         ?int $modeExtension = null,
         ?IConnectionProvider $connectionProvider = null,
         ?IContainer $addons = null,
-        mixed $level = self::LEVEL_DEFAULT
+        mixed $level = IRapiClient::LEVEL_DEFAULT
     ): IRapiClient;
 
     /**
@@ -80,15 +80,15 @@ abstract class AbstractRapiClient implements IRapiClient
      * @param null|IConnectionProvider        $connectionProvider
      * @param null|IContainer                 $addons
      * @param int|\Psr\Log\LogLevel::*|string $level              The minimum logging level at which this handler will be triggered
-     *                                                            (Default: {@link self::LEVEL_DEFAULT})
+     *                                                            (Default: {@link IRapiClient::LEVEL_DEFAULT})
      *
-     * @see self::LEVEL_DEFAULT
+     * @see IRapiClient::LEVEL_DEFAULT
      */
     protected function __construct(
         ?int $modeExtension = null,
         ?IConnectionProvider $connectionProvider = null,
         ?IContainer $addons = null,
-        mixed $level = self::LEVEL_DEFAULT
+        mixed $level = IRapiClient::LEVEL_DEFAULT
     ) {
         // Init Logger
         /** @psalm-suppress ArgumentTypeCoercion
@@ -121,12 +121,12 @@ abstract class AbstractRapiClient implements IRapiClient
     }
 
     /**
-     * @param string $prepareUrl
-     * @param int    $reqType
+     * @param string          $prepareUrl
+     * @param RequestTypeEnum $reqType
      *
      * @return IResponse
      */
-    protected function exec(string $prepareUrl, int $reqType = RequestType::REQ_TYP_GET): IResponse
+    protected function exec(string $prepareUrl, RequestTypeEnum $reqType = RequestTypeEnum::GET): IResponse
     {
         self::$logger->debug('START', [$prepareUrl, $reqType]);
 
@@ -140,11 +140,11 @@ abstract class AbstractRapiClient implements IRapiClient
     /**
      * @param string           $prepareUrl
      * @param Map<mixed,mixed> $parameters
-     * @param int              $reqType
+     * @param RequestTypeEnum  $reqType
      *
      * @return IResponse
      */
-    protected function execPost(string $prepareUrl, Map $parameters, int $reqType): IResponse
+    protected function execPost(string $prepareUrl, Map $parameters, RequestTypeEnum $reqType): IResponse
     {
         self::$logger->debug('START - prepareUrl,parameters,reqType', [$prepareUrl, $parameters, $reqType]);
 

@@ -14,13 +14,15 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Traits;
 
 use oglow\tools\Yacorapi\ConstData;
+use oglow\tools\Yacorapi\Data\ItemTypeEnum;
 use oglow\tools\Yacorapi\Data\RequestParameterData;
+use oglow\tools\Yacorapi\Data\SpaceTypeEnum;
 
 trait PrepSpaceTrait
 {
     public function prepareSpacePagesUrl(
         string $space,
-        string $pageType = RequestParameterData::ITEM_TYPE_PAGE,
+        ItemTypeEnum $pageType = ItemTypeEnum::PAGE,
         int $start = ConstData::PAGE_START,
         int $limit = ConstData::PAGE_LIMIT
     ): string {
@@ -28,7 +30,7 @@ trait PrepSpaceTrait
             '%s/%s/content/%s?start=%s&limit=%s&%s',
             $this->constData->c(ConstData::KEY_CONF_SPACE_URL),
             $space,
-            $pageType,
+            $pageType->value,
             $start,
             $limit,
             RequestParameterData::REQP_FULL
@@ -36,14 +38,14 @@ trait PrepSpaceTrait
     }
 
     public function prepareSpaceListUrl(
-        string $spaceType = RequestParameterData::SPACE_TYPE_GLOBAL,
+        SpaceTypeEnum $spaceType = SpaceTypeEnum::SPACE_TYPE_GLOBAL,
         int $limit = ConstData::PAGE_LIMIT
     ): string {
         return sprintf(
             '%s?%s&type=%s&limit=%s',
             $this->constData->c(ConstData::KEY_CONF_SPACE_URL),
             RequestParameterData::REQP_SPACE_LIST,
-            $spaceType,
+            $spaceType->value,
             $limit
         );
     }

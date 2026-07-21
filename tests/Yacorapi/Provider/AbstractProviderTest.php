@@ -15,7 +15,7 @@ namespace oglow\tools\Yacorapi\Provider;
 
 use Ds\Map;
 use oglow\tools\Yacorapi\IResponse;
-use oglow\tools\Yacorapi\Request\RequestType;
+use oglow\tools\Yacorapi\Request\RequestTypeEnum;
 use oglow\tools\Yacorapi\YacorapiTestData;
 use PHPUnit\Framework\EasyGoingTestCase;
 
@@ -81,7 +81,7 @@ class AbstractProviderTest extends EasyGoingTestCase
     {
         $expected = YacorapiTestData::ARRAY_EMPTY;
 
-        $actual = $this->getCasto2t()->publicExecInternal(YacorapiTestData::DATA_EMPTY, RequestType::REQ_TYP_GET);
+        $actual = $this->getCasto2t()->publicExecInternal(YacorapiTestData::DATA_EMPTY, RequestTypeEnum::GET);
 
         self::assertEquals($expected, $actual);
     }
@@ -90,7 +90,7 @@ class AbstractProviderTest extends EasyGoingTestCase
     {
         $expected = YacorapiTestData::ARRAY_EMPTY;
 
-        $actual = $this->getCasto2t()->publicExecPostInternal(YacorapiTestData::DATA_EMPTY, new Map(), RequestType::REQ_TYP_POST);
+        $actual = $this->getCasto2t()->publicExecPostInternal(YacorapiTestData::DATA_EMPTY, new Map(), RequestTypeEnum::POST);
 
         self::assertEquals($expected, $actual);
     }

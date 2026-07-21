@@ -21,7 +21,7 @@ class RequestParameterDataTest extends ConstantCheckTestCase
 
     private const int   EXPECTED_PROPERTY_COUT  = 19;
 
-    protected const int EXPECTED_CONSTANT_COUNT = 47;
+    protected const int EXPECTED_CONSTANT_COUNT = 42;
 
     protected const bool WITH_CONST_CROSSCHECK = true;
 
@@ -63,24 +63,10 @@ class RequestParameterDataTest extends ConstantCheckTestCase
         $this->verifyConstAllExists($const);
     }
 
-    public function testConstantsPage(): void
-    {
-        $const              = [
-            self::CLASS_PREFIX . 'ITEM_TYPES'     => 3,
-            self::CLASS_PREFIX . 'ITEM_TYPES_ALL' => 4,
-        ];
-        static::updateActualConsts(array_keys($const));
-
-        $this->verifyConstArrayAllExists($const);
-    }
-
     public function testConstantsOthers(): void
     {
         $const              = [
             self::CLASS_PREFIX . 'SPACE_LIMIT_DEFAULT',
-            self::CLASS_PREFIX . 'SPACE_TYPE_GLOBAL',
-            self::CLASS_PREFIX . 'SPACE_TYPE_PERSONAL',
-            self::CLASS_PREFIX . 'ITEM_TYPE_PAGE',
             self::CLASS_PREFIX . 'PAGE_COUNT',
             self::CLASS_PREFIX . 'PAGE_TYPE',
             self::CLASS_PREFIX . 'REPRESENTATION_TYPE_STORAGE',

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Traits;
 
 use oglow\tools\Yacorapi\ConstData;
-use oglow\tools\Yacorapi\Data\RequestParameterData;
+use oglow\tools\Yacorapi\Data\SpaceTypeEnum;
 use oglow\tools\Yacorapi\YacorapiTestData;
 use PHPUnit\Framework\EasyGoingTestCase;
 
@@ -51,7 +51,7 @@ class PrepSpaceTraitTest extends EasyGoingTestCase
     public function testPrepareSpaceListUrl(): void
     {
         $expected1 = ConstData::C_RAPI_SPACE;
-        $expected2 = RequestParameterData::SPACE_TYPE_GLOBAL;
+        $expected2 = SpaceTypeEnum::SPACE_TYPE_GLOBAL->value;
         $expected3 = '' . ConstData::PAGE_LIMIT;
 
         $actual    = $this->getCasto2t()->prepareSpaceListUrl();
