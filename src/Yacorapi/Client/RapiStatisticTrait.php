@@ -16,7 +16,6 @@ namespace oglow\tools\Yacorapi\Client;
 use Ds\Map;
 use Ds\Vector;
 use oglow\tools\Yacorapi\Data\ItemTypeEnum;
-use oglow\tools\Yacorapi\Data\RequestParameterData;
 use oglow\tools\Yacorapi\Data\SpaceTypeEnum;
 use oglow\tools\Yacorapi\IRapiClient;
 use oglow\tools\Yacorapi\IResponse;
@@ -36,13 +35,52 @@ trait RapiStatisticTrait
      * @inheritDoc
      */
     #[\Override]
-    public function listSpaces(SpaceTypeEnum $spaceType = SpaceTypeEnum::SPACE_TYPE_GLOBAL, int $limit = RequestParameterData::SPACE_LIMIT_DEFAULT): IResponse
+    public function listSpaces(SpaceTypeEnum $spaceType = SpaceTypeEnum::SPACE_TYPE_GLOBAL, int $limit = IRapiClient::SPACE_LIMIT_DEFAULT): IResponse
     {
         self::$logger->debug('START - spaceType,limit', [$spaceType, $limit]);
 
         $prepareUrl = $this->commonExtension->prepareSpaceListUrl($spaceType, $limit);
 
         return new ResponseSpaceDataDecorate($this->exec($prepareUrl));
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[\Override]
+    public function countItemsinSpace(string $spaceKey, ItemTypeEnum $itemType = IRapiClient::REQ_ITEM_TYPE_PAGE): IStatistic
+    {
+        self::$logger->debug('START - spaceKey, itemType', [$spaceKey, $itemType]);
+
+        $prepareUrl = $this->commonExtension->prepareCountItemsUrl($itemType, $spaceKey);
+        $response = $this->exec($prepareUrl);
+
+        $itemCount = $response->getValue(IResponse::KEY_TOTAL_SIZE, 0);
+        $valueStatistic = new ValueStatistic(ValueStatistic::EMPTY_STRING, null);
+        $valueStatistic->addItem(ValueStatistic::EMPTY_STRING, $itemCount);
+        $singleStatistic = new StatisticStatistic($itemType->value, StatisticTypeEnum::PAGETYPE);
+        $singleStatistic->addItem($itemType->value, $valueStatistic);
+
+        self::$logger->debug('END');
+
+        return $singleStatistic;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[\Override]
+    public function countMacrosInSpace(string $spaceKey, ResponseAddonMacroDecorate $addonSet, IStatistic $outputMatrix): IStatistic
+    {
+        self::$logger->debug('START - spaceKey,addonSet', [$spaceKey, $addonSet]);
+
+        $mapAddons = $addonSet->getResponse();
+
+        $response = $this->loopAddons($spaceKey, $addonSet->getMode(), $mapAddons, $outputMatrix);
+
+        self::$logger->debug('END');
+
+        return $response;
     }
 
     /**
@@ -119,8 +157,8 @@ trait RapiStatisticTrait
             $prepareUrl = $this->commonExtension->prepareSearchUrlExt(
                 $searchTerm,
                 $spaceKey,
-                RequestParameterData::SEARCH_START,
-                RequestParameterData::SEARCH_LIMIT_1ENTRY
+                IRapiClient::REQ_SEARCH_FROM_POS,
+                IRapiClient::REQ_SEARCH_LIMIT_1ENTRY
             );
             $response = $this->exec($prepareUrl);
             $countMacros = $this->commonExtension->analyzeResponse($response);
@@ -174,44 +212,5 @@ trait RapiStatisticTrait
         self::$logger->debug('END');
 
         return $outputMatrix;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[\Override]
-    public function countItemsinSpace(string $spaceKey, ItemTypeEnum $itemType = IRapiClient::REQ_ITEM_TYPE_PAGE): IStatistic
-    {
-        self::$logger->debug('START - spaceKey, itemType', [$spaceKey, $itemType]);
-
-        $prepareUrl = $this->commonExtension->prepareCountItemsUrl($itemType, $spaceKey);
-        $response = $this->exec($prepareUrl);
-
-        $itemCount = $response->getValue(IResponse::KEY_TOTAL_SIZE, 0);
-        $valueStatistic = new ValueStatistic(ValueStatistic::EMPTY_STRING, null);
-        $valueStatistic->addItem(ValueStatistic::EMPTY_STRING, $itemCount);
-        $singleStatistic = new StatisticStatistic($itemType->value, StatisticTypeEnum::PAGETYPE);
-        $singleStatistic->addItem($itemType->value, $valueStatistic);
-
-        self::$logger->debug('END');
-
-        return $singleStatistic;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[\Override]
-    public function countMacrosInSpace(string $spaceKey, ResponseAddonMacroDecorate $addonSet, IStatistic $outputMatrix): IStatistic
-    {
-        self::$logger->debug('START - spaceKey,addonSet', [$spaceKey, $addonSet]);
-
-        $mapAddons = $addonSet->getResponse();
-
-        $response = $this->loopAddons($spaceKey, $addonSet->getMode(), $mapAddons, $outputMatrix);
-
-        self::$logger->debug('END');
-
-        return $response;
     }
 }

@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Client;
 
 use Ds\Map;
-use Ds\Set;
 use Monolog\ConsoleLogger;
 use oglow\tools\common\IContainer;
 use oglow\tools\Yacorapi\ConstData;
@@ -28,50 +27,19 @@ use oglow\tools\Yacorapi\Request\RequestTypeEnum;
 use oglow\tools\Yacorapi\Traits\ExtensionTrait;
 use ollily\Tools\Reflection\MagicPublicFunctionTrait;
 use Psr\Log\LoggerInterface;
-use Psr\Log\LogLevel;
 
-/**
- * @psalm-suppress PropertyNotSetInConstructor
- */
-abstract class AbstractRapiClient implements IRapiClient
+abstract class AbstractRapiClient
 {
-    use ExtensionTrait;
-    use RapiExtensionTrait;
     use MagicPublicFunctionTrait;
+    use ExtensionTrait;
 
     private static LoggerInterface $logger;
 
     protected ConstData $constData;
 
+    protected IContainer $addons;
+
     protected IConnectionProvider $connectionProvider;
-
-    /**
-     * Create new RapiClient.
-     *
-     * @param null|int                 $modeExtension
-     * @param null|IConnectionProvider $connectionProvider
-     * @param null|IContainer          $addons
-     * @param int|LogLevel|string      $level              (Default: {@link IRapiClient::LEVEL_DEFAULT})
-     *
-     * @return IRapiClient
-     *
-     * @see IRapiClient::LEVEL_DEFAULT
-     */
-    abstract public static function newClient(
-        ?int $modeExtension = null,
-        ?IConnectionProvider $connectionProvider = null,
-        ?IContainer $addons = null,
-        mixed $level = IRapiClient::LEVEL_DEFAULT
-    ): IRapiClient;
-
-    /**
-     * @inheritDoc
-     */
-    #[\Override]
-    public static function taskitemMethods(): Set
-    {
-        return self::existingMethodNames();
-    }
 
     /**
      * RapiClient constructor.

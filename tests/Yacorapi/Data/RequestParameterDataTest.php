@@ -21,7 +21,7 @@ class RequestParameterDataTest extends ConstantCheckTestCase
 
     private const int   EXPECTED_PROPERTY_COUT  = 19;
 
-    protected const int EXPECTED_CONSTANT_COUNT = 42;
+    protected const int EXPECTED_CONSTANT_COUNT = 34;
 
     protected const bool WITH_CONST_CROSSCHECK = true;
 
@@ -44,23 +44,6 @@ class RequestParameterDataTest extends ConstantCheckTestCase
     public static function setUpBeforeClass(bool $withConstCrossCheck = self::WITH_CONST_CROSSCHECK, int $expectedConstsCount = self::EXPECTED_CONSTANT_COUNT): void
     {
         parent::setUpBeforeClass($withConstCrossCheck, $expectedConstsCount);
-    }
-
-    public function testConstantsExpand(): void
-    {
-        $const              = [
-            self::CLASS_PREFIX . 'REQP_SPACE_LIST',
-            self::CLASS_PREFIX . 'REQP_FULL',
-            self::CLASS_PREFIX . 'REQP_SEARCH_FULL',
-            self::CLASS_PREFIX . 'REQP_LIGHT',
-            self::CLASS_PREFIX . 'REQP_PERM',
-            self::CLASS_PREFIX . 'REQP_SEARCH_LIGHT',
-            self::CLASS_PREFIX . 'REQP_RESTRICTIONS_FULL',
-            self::CLASS_PREFIX . 'RESP_CSV_SPACE_RESULTS',
-        ];
-        static::updateActualConsts($const);
-
-        $this->verifyConstAllExists($const);
     }
 
     public function testConstantsOthers(): void

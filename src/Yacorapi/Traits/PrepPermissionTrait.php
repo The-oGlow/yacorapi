@@ -15,6 +15,7 @@ namespace oglow\tools\Yacorapi\Traits;
 
 use Ds\Map;
 use oglow\tools\Yacorapi\ConstData;
+use oglow\tools\Yacorapi\Data\QueryExtensionEnum;
 use oglow\tools\Yacorapi\Data\RequestParameterData;
 use oglow\tools\Yacorapi\Request\RequestTypeEnum;
 
@@ -26,7 +27,7 @@ trait PrepPermissionTrait
             '%s/%s' . ConstData::C_RAPI_RESTRICTION_BYOP . '?%s',
             $this->constData->c(ConstData::KEY_CONF_CONTENT_URL),
             $pageId,
-            RequestParameterData::REQP_RESTRICTIONS_FULL
+            QueryExtensionEnum::REQP_RESTRICTIONS_FULL->value
         );
     }
 

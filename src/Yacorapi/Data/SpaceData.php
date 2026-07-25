@@ -23,18 +23,6 @@ use Psr\Log\LoggerInterface;
 
 class SpaceData extends AbstractContainer
 {
-    public const int SPACE_SINGLE = 1;
-
-    public const string SPACE_SINGLE_METHOD = 'getMySpaceListSingle';
-
-    public const int SPACE_SIMPLE = 2;
-
-    public const string SPACE_SIMPLE_METHOD = 'getMySpaceListSimple';
-
-    public const int SPACE_ALL = 99;
-
-    public const string SPACE_ALL_METHOD = 'getMySpaceListAll';
-
     public const string MY_SPACE_NS_SEP = '\\';
 
     public const string MY_SPACES_NS = 'oglow\\tools\\Yacorapi';
@@ -73,7 +61,7 @@ class SpaceData extends AbstractContainer
             self::MY_SPACES_CLAZZ .
             "\n{\n" .
             "public static function " .
-            self::SPACE_ALL_METHOD .
+            SpaceTypeEnum::SPACE_ALL->method() .
             "(): array\n{return [";
 
         foreach ($spaces as $space) {
@@ -118,7 +106,7 @@ class SpaceData extends AbstractContainer
     #[\Override]
     protected function prepareModes(): void
     {
-        $allModes = [self::SPACE_SINGLE, self::SPACE_SIMPLE, self::SPACE_ALL];
+        $allModes = [SpaceTypeEnum::SPACE_SINGLE->value, SpaceTypeEnum::SPACE_SIMPLE->value, SpaceTypeEnum::SPACE_ALL->value];
         $this->setModes($allModes);
     }
 
@@ -128,9 +116,9 @@ class SpaceData extends AbstractContainer
         $this->mySpaceFileDefault = ((string) $this->constData->c(ConstData::KEY_MY_DIR)) . DIRECTORY_SEPARATOR . self::MY_SPACES_FILE;
 
         $allData = [];
-        $allData[self::SPACE_SINGLE] = $this->prepareSpaces(self::SPACE_SINGLE_METHOD, $this->mySpaceFileDefault);
-        $allData[self::SPACE_SIMPLE] = $this->prepareSpaces(self::SPACE_SIMPLE_METHOD, $this->mySpaceFileDefault);
-        $allData[self::SPACE_ALL] = $this->prepareSpaces(self::SPACE_ALL_METHOD, $this->mySpaceFileDefault);
+        $allData[SpaceTypeEnum::SPACE_SINGLE->value] = $this->prepareSpaces(SpaceTypeEnum::SPACE_SINGLE->method(), $this->mySpaceFileDefault);
+        $allData[SpaceTypeEnum::SPACE_SIMPLE->value] = $this->prepareSpaces(SpaceTypeEnum::SPACE_SIMPLE->method(), $this->mySpaceFileDefault);
+        $allData[SpaceTypeEnum::SPACE_ALL->value] = $this->prepareSpaces(SpaceTypeEnum::SPACE_ALL->method(), $this->mySpaceFileDefault);
         $this->setAllData($allData);
     }
 

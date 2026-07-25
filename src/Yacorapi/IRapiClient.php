@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi;
 
 use Ds\Set;
+use oglow\tools\common\IContainer;
 use oglow\tools\Yacorapi\Data\ItemTypeEnum;
 use oglow\tools\Yacorapi\Data\RequestParameterData;
 use oglow\tools\Yacorapi\Data\SpaceTypeEnum;
@@ -45,12 +46,45 @@ interface IRapiClient
 
     public const int REQ_NO_PARENT = RequestParameterData::NO_PARENT;
 
+    public const int SPACE_LIMIT_DEFAULT = RequestParameterData::SPACE_LIMIT_DEFAULT;
+
+    /**
+     * Create new RapiClient.
+     *
+     * @param null|int                 $modeExtension
+     * @param null|IConnectionProvider $connectionProvider
+     * @param null|IContainer          $addons
+     * @param int|LogLevel|string      $level              (Default: {@link IRapiClient::LEVEL_DEFAULT})
+     *
+     * @return IRapiClient
+     *
+     * @see IRapiClient::LEVEL_DEFAULT
+     */
+    public static function newClient(
+        ?int $modeExtension = null,
+        ?IConnectionProvider $connectionProvider = null,
+        ?IContainer $addons = null,
+        mixed $level = IRapiClient::LEVEL_DEFAULT
+    ): IRapiClient;
+
     /**
      * @return Set<string> All available REST-API methods
      *
      * @phpstan-return Set<non-empty-string>
      */
     public static function taskitemMethods(): Set;
+
+    /**
+     * Provide a set of addons, containing macros.
+     *
+     * @param AddonTypeEnum $mode Predefined set of addons (Default: all addons)
+     *
+     * @return ResponseAddonMacroDecorate Set of Addons or empty
+     *
+     * @see AddonTypeEnum::ADDON_ALL
+     * @see IRapiClient::countMacrosInSpace()
+     */
+    public function prepareAddonSet(AddonTypeEnum $mode = AddonTypeEnum::ADDON_ALL): ResponseAddonMacroDecorate;
 
     /**
      * Loads a confluence page by its page id.
@@ -120,39 +154,6 @@ interface IRapiClient
     public function countItemsinSpace(string $spaceKey, ItemTypeEnum $itemType = IRapiClient::REQ_ITEM_TYPE_PAGE): IStatistic;
 
     /**
-     * Load the restrictions for this confluence page.
-     *
-     * @param int $pageId The id of the confluence page
-     *
-     * @return IResponse The page restrictions for the page or empty
-     */
-    public function readRestrictionsByPageId(int $pageId): IResponse;
-
-    /**
-     * Set page restrictions (read/write) for the confluence page.
-     * REFACTOR: API-Function doesn't work or description is wrong.
-     *
-     * @param int                $pageId            The id of the confluence page
-     * @param array<mixed,mixed> $writeRestrictions Write restrictions for the page
-     * @param array<mixed,mixed> $readRestrictions  Read restrictions for the page
-     *
-     * @return bool TRUE=Restrictions are set properly, else FALSE
-     */
-    public function writeRestrictionsByPageId(int $pageId, array $writeRestrictions = [], array $readRestrictions = []): bool;
-
-    /**
-     * REFACTOR: Listing only 100 spaces, loop is missing.
-     *
-     * @param SpaceTypeEnum $spaceType The type of spaces (Default: global spaces)
-     * @param int           $limit     The number of items which will be returned (Default: 100)
-     *
-     * @return IResponse All accessible Spaces or empty
-     *
-     * @see RequestParameterData::SPACE_LIMIT_DEFAULT
-     */
-    public function listSpaces(SpaceTypeEnum $spaceType = SpaceTypeEnum::SPACE_TYPE_GLOBAL, int $limit = RequestParameterData::SPACE_LIMIT_DEFAULT): IResponse;
-
-    /**
      * Scans a space and count the macros in the space.
      *
      * @param string                     $spaceKey     Limited to the space
@@ -166,14 +167,16 @@ interface IRapiClient
     public function countMacrosInSpace(string $spaceKey, ResponseAddonMacroDecorate $addonSet, IStatistic $outputMatrix): IStatistic;
 
     /**
-     * Moves a confluence page from one parent page to another parent page.
+     * REFACTOR: Listing only 100 spaces, loop is missing.
      *
-     * @param int $pageId      The id of the confluence page
-     * @param int $newParentId The target parent page
+     * @param SpaceTypeEnum $spaceType The type of spaces (Default: global spaces)
+     * @param int           $limit     The number of items which will be returned (Default: 100)
      *
-     * @return IResponse The moved page or empty
+     * @return IResponse All accessible Spaces or empty
+     *
+     * @see IRapiClient::SPACE_LIMIT_DEFAULT
      */
-    public function movePage(int $pageId, int $newParentId): IResponse;
+    public function listSpaces(SpaceTypeEnum $spaceType = SpaceTypeEnum::SPACE_TYPE_GLOBAL, int $limit = IRapiClient::SPACE_LIMIT_DEFAULT): IResponse;
 
     /**
      * Creates a new confluence page in a space.
@@ -193,6 +196,16 @@ interface IRapiClient
         int $parentId = IRapiClient::REQ_NO_PARENT,
         ItemTypeEnum $itemType = IRapiClient::REQ_ITEM_TYPE_PAGE
     ): IResponse;
+
+    /**
+     * Moves a confluence page from one parent page to another parent page.
+     *
+     * @param int $pageId      The id of the confluence page
+     * @param int $newParentId The target parent page
+     *
+     * @return IResponse The moved page or empty
+     */
+    public function movePage(int $pageId, int $newParentId): IResponse;
 
     /**
      * Change the content of a confluence page.
@@ -216,14 +229,23 @@ interface IRapiClient
     ): IResponse;
 
     /**
-     * Provide a set of addons, containing macros.
+     * Load the restrictions for this confluence page.
      *
-     * @param AddonTypeEnum $mode Predefined set of addons (Default: all addons)
+     * @param int $pageId The id of the confluence page
      *
-     * @return ResponseAddonMacroDecorate Set of Addons or empty
-     *
-     * @see AddonTypeEnum::ADDON_ALL
-     * @see IRapiClient::countMacrosInSpace()
+     * @return IResponse The page restrictions for the page or empty
      */
-    public function prepareAddonSet(AddonTypeEnum $mode = AddonTypeEnum::ADDON_ALL): ResponseAddonMacroDecorate;
+    public function readRestrictionsByPageId(int $pageId): IResponse;
+
+    /**
+     * Set page restrictions (read/write) for the confluence page.
+     * REFACTOR: API-Function doesn't work or description is wrong.
+     *
+     * @param int                $pageId            The id of the confluence page
+     * @param array<mixed,mixed> $writeRestrictions Write restrictions for the page
+     * @param array<mixed,mixed> $readRestrictions  Read restrictions for the page
+     *
+     * @return bool TRUE=Restrictions are set properly, else FALSE
+     */
+    public function writeRestrictionsByPageId(int $pageId, array $writeRestrictions = [], array $readRestrictions = []): bool;
 }

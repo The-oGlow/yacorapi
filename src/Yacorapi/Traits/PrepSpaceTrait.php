@@ -15,7 +15,7 @@ namespace oglow\tools\Yacorapi\Traits;
 
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\Data\ItemTypeEnum;
-use oglow\tools\Yacorapi\Data\RequestParameterData;
+use oglow\tools\Yacorapi\Data\QueryExtensionEnum;
 use oglow\tools\Yacorapi\Data\SpaceTypeEnum;
 
 trait PrepSpaceTrait
@@ -33,7 +33,7 @@ trait PrepSpaceTrait
             $pageType->value,
             $start,
             $limit,
-            RequestParameterData::REQP_FULL
+            QueryExtensionEnum::REQP_FULL->value
         );
     }
 
@@ -44,7 +44,7 @@ trait PrepSpaceTrait
         return sprintf(
             '%s?%s&type=%s&limit=%s',
             $this->constData->c(ConstData::KEY_CONF_SPACE_URL),
-            RequestParameterData::REQP_SPACE_LIST,
+            QueryExtensionEnum::REQP_SPACE_LIST->value,
             $spaceType->value,
             $limit
         );

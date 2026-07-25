@@ -13,20 +13,50 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Client;
 
+use Ds\Set;
 use Monolog\ConsoleLogger;
 use oglow\tools\common\IContainer;
-use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\Data\ItemTypeEnum;
+use oglow\tools\Yacorapi\Data\SpaceTypeEnum;
 use oglow\tools\Yacorapi\IConnectionProvider;
 use oglow\tools\Yacorapi\IRapiClient;
 use oglow\tools\Yacorapi\IResponse;
+use oglow\tools\Yacorapi\Macro\AddonTypeEnum;
+use oglow\tools\Yacorapi\Response\ResponseAddonMacroDecorate;
+use oglow\tools\Yacorapi\Statistic\IStatistic;
 use Psr\Log\LoggerInterface;
 
-class RapiClient extends AbstractRapiClient // NOSONAR: php:S1448
+/**
+ * RapiClient.
+ *
+ * <i>Read Methods</i>
+ *
+ * @method ResponseAddonMacroDecorate prepareAddonSet(AddonTypeEnum $mode = AddonTypeEnum::ADDON_ALL)
+ * @method IResponse                  readPageByPageId(int $pageId)
+ * @method IResponse                  readPagesWithFilter(string $filterTerm, string $spaceKey = '')
+ * @method IResponse                  scanPagesWithFilter(string $filterTerm, string $spaceKey = '')
+ * @method IResponse                  searchPagesWithFilter(string $filterTerm, string $spaceKey, int $searchFromPos = IRapiClient::REQ_SEARCH_FROM_POS, int $searchLimit = IRapiClient::REQ_SEARCH_LIMIT, ItemTypeEnum $itemType = IRapiClient::REQ_ITEM_TYPE_PAGE)
+ *
+ * <i>Statistic Methods</i>
+ * @method IStatistic countItemsinSpace(string $spaceKey, ItemTypeEnum $itemType = IRapiClient::REQ_ITEM_TYPE_PAGE)
+ * @method IStatistic countMacrosInSpace(string $spaceKey, ResponseAddonMacroDecorate $addonSet, IStatistic $outputMatrix)
+ * @method IResponse  listSpaces(SpaceTypeEnum $spaceType = SpaceTypeEnum::SPACE_TYPE_GLOBAL, int $limit = IRapiClient::SPACE_LIMIT_DEFAULT)
+ *
+ * <i>Write Methods</i>
+ * @method IResponse createPage(string $spaceKey, string $pageTitle, string $pageBody, int $parentId = IRapiClient::REQ_NO_PARENT, ItemTypeEnum $itemType = IRapiClient::REQ_ITEM_TYPE_PAGE)
+ * @method IResponse movePage(int $pageId, int $newParentId)
+ * @method IResponse updatePage(int $pageId, string $pageBody, string $pageTitle = '', string $comment = '', ItemTypeEnum $itemType = IRapiClient::REQ_ITEM_TYPE_PAGE)
+ *
+ * <i>Restriction Methods</i>
+ * @method IResponse readRestrictionsByPageId(int $pageId)
+ * @method bool      writeRestrictionsByPageId(int $pageId, array<mixed,mixed> $writeRestrictions = [], array<mixed,mixed> $readRestrictions = [])
+ */
+class RapiClient extends AbstractRapiClient implements IRapiClient // NOSONAR: php:S1448
 {
-    use RapiStatisticTrait;
-    use RapiRestrictionTrait;
+    use RapiReadTrait;
     use RapiWriteTrait;
+    use RapiRestrictionTrait;
+    use RapiStatisticTrait;
 
     private static LoggerInterface $logger;
 
@@ -43,6 +73,15 @@ class RapiClient extends AbstractRapiClient // NOSONAR: php:S1448
         /** @psalm-suppress PossiblyInvalidArgument
          * @phpstan-ignore argument.type */
         return new RapiClient($modeExtension, $connectionProvider, $addons, $level);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[\Override]
+    public static function taskitemMethods(): Set
+    {
+        return self::existingMethodNames();
     }
 
     /**
@@ -72,68 +111,4 @@ class RapiClient extends AbstractRapiClient // NOSONAR: php:S1448
 
         self::$logger->debug('END');
     }
-
-    // Public methods
-
-    /**
-     * @inheritDoc
-     */
-    #[\Override]
-    public function readPageByPageId(int $pageId): IResponse
-    {
-        self::$logger->debug('START - pageId', [$pageId]);
-
-        $prepareUrl = $this->commonExtension->prepareLoadUrl($pageId);
-
-        return $this->exec($prepareUrl);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[\Override]
-    public function readPagesWithFilter(string $filterTerm, string $spaceKey = ''): IResponse
-    {
-        self::$logger->debug('START - filterTerm,spaceKey', [$filterTerm, $spaceKey]);
-
-        $prepareUrl = $this->commonExtension->prepareBrowseUrl($filterTerm, $spaceKey);
-
-        return $this->exec($prepareUrl);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[\Override]
-    public function scanPagesWithFilter(string $filterTerm, string $spaceKey = ''): IResponse
-    {
-        self::$logger->debug('START - filterTerm,spaceKey', [$filterTerm, $spaceKey]);
-
-        $prepareUrl = $this->commonExtension->prepareScanUrl($filterTerm, $spaceKey);
-
-        return $this->exec($prepareUrl);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[\Override]
-    public function searchPagesWithFilter(
-        string $filterTerm,
-        string $spaceKey,
-        int $searchFromPos = self::REQ_SEARCH_FROM_POS,
-        int $searchLimit = self::REQ_SEARCH_LIMIT,
-        ItemTypeEnum $itemType = IRapiClient::REQ_ITEM_TYPE_PAGE
-    ): IResponse {
-        self::$logger->debug(
-            'START - filterTerm,spaceKey,searchFromPos,searchLimit,itemType',
-            [$filterTerm, $spaceKey, $searchFromPos, $searchLimit, $itemType]
-        );
-        $searchLimit = (int) ($searchLimit < self::REQ_SEARCH_LIMIT_1ENTRY ? $this->constData->c(ConstData::KEY_SEARCH_LIMIT) : $searchLimit);
-        $prepareUrl = $this->commonExtension->prepareSearchUrlExt($filterTerm, $spaceKey, $searchFromPos, $searchLimit, $itemType);
-
-        return $this->exec($prepareUrl);
-    }
-
-    // Private methods
 }

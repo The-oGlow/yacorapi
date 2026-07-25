@@ -40,21 +40,21 @@ class SpaceDataTest extends EasyGoingTestCase
 
     public function testGetSpaceListSingle(): void
     {
-        $result = $this->getCasto2t()->getDataByMode($this->o2t::SPACE_SINGLE);
+        $result = $this->getCasto2t()->getDataByMode(SpaceTypeEnum::SPACE_SINGLE->value);
         self::assertIsArray($result);
         self::assertCount(1, $result);
     }
 
     public function testGetSpaceListSimple(): void
     {
-        $result = $this->getCasto2t()->getDataByMode($this->o2t::SPACE_SIMPLE);
+        $result = $this->getCasto2t()->getDataByMode(SpaceTypeEnum::SPACE_SIMPLE->value);
         self::assertIsArray($result);
         self::assertGreaterThan(1, $result);
     }
 
     public function testGetSpaceListAll(): void
     {
-        $result = $this->getCasto2t()->getDataByMode($this->o2t::SPACE_ALL);
+        $result = $this->getCasto2t()->getDataByMode(SpaceTypeEnum::SPACE_ALL->value);
         self::assertIsArray($result);
         self::assertGreaterThan(1, $result);
     }
@@ -74,7 +74,7 @@ class SpaceDataTest extends EasyGoingTestCase
 
         $expected1 = $this->getCasto2t()::MY_SPACES_CLAZZ;
         $expected2 = $this->getCasto2t()::MY_SPACES_NS;
-        $expected3 = $this->getCasto2t()::SPACE_ALL_METHOD;
+        $expected3 = SpaceTypeEnum::SPACE_ALL->method();
 
         $actual = $this->getCasto2t()::prepareMySpacesContent($spaces);
 

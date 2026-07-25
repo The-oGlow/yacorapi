@@ -17,4 +17,17 @@ enum SpaceTypeEnum: string
 {
     case SPACE_TYPE_GLOBAL = 'global';
     case SPACE_TYPE_PERSONAL = 'personal';
+    case SPACE_SINGLE = 'single';
+    case SPACE_SIMPLE = 'simple';
+    case SPACE_ALL = 'all';
+
+    public function method(): string
+    {
+        return match ($this) {
+            self::SPACE_SINGLE => 'getMySpaceListSingle',
+            self::SPACE_SIMPLE => 'getMySpaceListSimple',
+            self::SPACE_ALL => 'getMySpaceListAll',
+            default => $this->value
+        };
+    }
 }

@@ -18,27 +18,6 @@ use oglow\tools\common\AbstractSingleton;
 
 class RequestParameterData extends AbstractSingleton
 {
-    // Expand Consts
-    public const string REQP_SPACE_LIST = 'expand=homepage,description.plain,metadata.labels';
-
-    public const string REQP_FULL = 'expand=space,history,version,body.storage,restrictions.read.restrictions.user,' .
-        'restrictions.read.restrictions.group,restrictions.read,restrictions.update.restrictions.user,' .
-        'restrictions.update.restrictions.group';
-
-    public const string REQP_SEARCH_FULL = 'expand=content.space,content.history,content.version,content.body.storage';
-
-    public const string REQP_LIGHT = 'expand=space,history,version';
-
-    public const string REQP_PERM = 'expand=restrictions.read.restrictions.user,restrictions.read.restrictions.group,' .
-        'restrictions.read,restrictions.update.restrictions.user,restrictions.update.restrictions.group';
-
-    public const string REQP_SEARCH_LIGHT = 'expand=content.space,content.history,content.version';
-
-    public const string REQP_RESTRICTIONS_FULL = 'expand=read.restrictions.user,read.restrictions.group,update.restrictions.user,update.restrictions.group';
-
-    public const string RESP_CSV_SPACE_RESULTS = ' .results[]|.key + ";" + .type + ";" + "status" + ";"'
-        . ' + "\"" + .name + "\"" + ";" + "\"" + .description.plain.value +';
-
     // Property Consts
     public const string PROP_ANCESTORS = 'ancestors';
 
@@ -91,6 +70,7 @@ class RequestParameterData extends AbstractSingleton
 
     public const string STATUS_TYPE_CURRENT = 'current';
 
+    // Search Consts
     public const int SEARCH_START = 0;
 
     public const int NO_SEARCH_START = -1;

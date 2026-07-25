@@ -20,11 +20,82 @@ use oglow\tools\Addon\Atlassian\Extension\AtlassianExtension;
 use oglow\tools\Addon\Projectdoc\Extension\ProjectdocExtension;
 use oglow\tools\Addon\ThirdParty\Extension\ThirdPartyExtension;
 use oglow\tools\Addon\UserMacro\Extension\UserMacroExtension;
+use oglow\tools\Yacorapi\ExitCodes;
 use oglow\tools\Yacorapi\Extension\IExtension;
 use oglow\tools\Yacorapi\Extension\RapiClientExtension;
+use ollily\Tools\Emergency;
 
 trait ExtensionTrait
 {
+    protected RapiClientExtension $commonExtension;
+
+    protected AdminExtension $adminExtension;
+
+    protected AtlassianExtension $atlassianExtension;
+
+    protected UserMacroExtension $userMacroExtension;
+
+    protected ThirdPartyExtension $thirdPartyExtension;
+
+    protected ProjectdocExtension $projectdocExtension;
+
+    /**
+     * @param Map<mixed,Vector<mixed>> $addons
+     *
+     * @return Vector<mixed>
+     */
+    public function getExtensionAddonMacros(Map $addons): Vector
+    {
+        $macros = new Vector();
+
+        /** @var Vector<string> $vecMacros */
+        foreach ($addons->values() as $vecMacros) {
+            foreach ($vecMacros as $macro) {
+                $macros->push($macro);
+            }
+        }
+
+        return $macros;
+    }
+
+    /**
+     * @param int $modeExtension
+     */
+    protected function loadExtensions(int $modeExtension): void
+    {
+        self::$logger->debug('START', [$modeExtension]);
+
+        $extensions = $this->initExtensions($modeExtension);
+
+        foreach ($extensions as $key => $extension) {
+            self::$logger->debug('Key,Ext', [$key]);
+
+            switch (true) {
+                case IExtension::EXTENSION_RAPI_CLIENT == $key:
+                    $this->commonExtension = $extension;
+                    break;
+                case IExtension::EXTENSION_ATLASSIAN == $key:
+                    $this->atlassianExtension = $extension;
+                    break;
+                case IExtension::EXTENSION_ATLASSIAN_ADMIN == $key:
+                    $this->adminExtension = $extension;
+                    break;
+                case IExtension::EXTENSION_ATLASSIAN_USER_MACRO == $key:
+                    $this->userMacroExtension = $extension;
+                    break;
+                case IExtension::EXTENSION_THIRD_PARTY == $key:
+                    $this->thirdPartyExtension = $extension;
+                    break;
+                case IExtension::EXTENSION_PROJECTDOC_TOOLBOX == $key:
+                    $this->projectdocExtension = $extension;
+                    break;
+                default:
+                    Emergency::breakSystem(ExitCodes::ERR_CODE_EXTENSION_NOT_LOADED, sprintf('Extension not loaded: %s, %s ', $key, print_r($extension, true)));
+            }
+        }
+        self::$logger->debug('END');
+    }
+
     /**
      * Init all extensions.
      *
@@ -97,25 +168,6 @@ trait ExtensionTrait
         self::$logger->debug('END');
 
         return $extensionAddons;
-    }
-
-    /**
-     * @param Map<mixed,Vector<mixed>> $addons
-     *
-     * @return Vector<mixed>
-     */
-    public function getExtensionAddonMacros(Map $addons): Vector
-    {
-        $macros = new Vector();
-
-        /** @var Vector<string> $vecMacros */
-        foreach ($addons->values() as $vecMacros) {
-            foreach ($vecMacros as $macro) {
-                $macros->push($macro);
-            }
-        }
-
-        return $macros;
     }
 
     /**

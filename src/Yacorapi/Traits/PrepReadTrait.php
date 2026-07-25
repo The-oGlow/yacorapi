@@ -15,6 +15,7 @@ namespace oglow\tools\Yacorapi\Traits;
 
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\Data\ItemTypeEnum;
+use oglow\tools\Yacorapi\Data\QueryExtensionEnum;
 use oglow\tools\Yacorapi\Data\RequestParameterData;
 use oglow\tools\Yacorapi\Data\SpaceTypeEnum;
 use oglow\tools\Yacorapi\IResponse;
@@ -63,33 +64,33 @@ trait PrepReadTrait
         if ($searchFromPos >= RequestParameterData::NO_SEARCH_START) {
             $prepareUrl .= sprintf('&start=%s&limit=%s', $searchFromPos, $searchLimit);
         }
-        $prepareUrl .= sprintf('&%s', ($withBody ? RequestParameterData::REQP_SEARCH_FULL : RequestParameterData::REQP_SEARCH_LIGHT));
+        $prepareUrl .= sprintf('&%s', ($withBody ? QueryExtensionEnum::REQP_SEARCH_FULL->value : QueryExtensionEnum::REQP_SEARCH_LIGHT->value));
 
         return $prepareUrl;
     }
 
     public function prepareBrowseUrl(string $filterTerm, string $spaceKey = RequestParameterData::NO_SPACE): string
     {
-        $prepareUrl = sprintf('%s?%s&%s', $this->constData->c(ConstData::KEY_CONF_CONTENT_URL), $filterTerm, RequestParameterData::REQP_LIGHT);
+        $prepareUrl = sprintf('%s?%s&%s', $this->constData->c(ConstData::KEY_CONF_CONTENT_URL), $filterTerm, QueryExtensionEnum::REQP_LIGHT->value);
 
         return $this->addSpaceFilter($spaceKey, $prepareUrl);
     }
 
     public function prepareScanUrl(string $filterTerm, string $spaceKey = RequestParameterData::NO_SPACE): string
     {
-        $prepareUrl = sprintf('%s/scan?%s&%s', $this->constData->c(ConstData::KEY_CONF_CONTENT_URL), $filterTerm, RequestParameterData::REQP_LIGHT);
+        $prepareUrl = sprintf('%s/scan?%s&%s', $this->constData->c(ConstData::KEY_CONF_CONTENT_URL), $filterTerm, QueryExtensionEnum::REQP_LIGHT->value);
 
         return $this->addSpaceFilter($spaceKey, $prepareUrl);
     }
 
     public function prepareApiByPageIdUrl(int $pageId): string
     {
-        return sprintf('%s/%s?%s', $this->constData->c(ConstData::KEY_CONF_CONTENT_URL), $pageId, RequestParameterData::REQP_LIGHT);
+        return sprintf('%s/%s?%s', $this->constData->c(ConstData::KEY_CONF_CONTENT_URL), $pageId, QueryExtensionEnum::REQP_LIGHT->value);
     }
 
     public function prepareLoadUrl(int $pageId): string
     {
-        return sprintf('%s/%s?%s', $this->constData->c(ConstData::KEY_CONF_CONTENT_URL), $pageId, RequestParameterData::REQP_FULL);
+        return sprintf('%s/%s?%s', $this->constData->c(ConstData::KEY_CONF_CONTENT_URL), $pageId, QueryExtensionEnum::REQP_FULL->value);
     }
 
     public function prepareCountItemsUrl(ItemTypeEnum $itemType, string $spaceKey): string

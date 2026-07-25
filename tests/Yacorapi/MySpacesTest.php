@@ -15,9 +15,10 @@ namespace oglow\tools\Yacorapi;
 
 use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\Data\SpaceData;
+use oglow\tools\Yacorapi\Data\SpaceTypeEnum;
 use oglow\tools\Yacorapi\MySpaces as PersonalSpaces;
+use ollily\Tools\Emergency;
 use ollily\Tools\Reflection\UnavailableMethodsTrait;
-use ollily\Tools\StopNow;
 use PHPUnit\Framework\EasyGoingTestCase;
 use Psr\Log\LoggerInterface;
 
@@ -27,25 +28,35 @@ class MySpacesTest extends EasyGoingTestCase
 
     public const string METHOD_PREFIX    = 'getMySpaceList';
 
-    public const array METHOD_IGNORED   = [SpaceData::SPACE_SINGLE_METHOD, SpaceData::SPACE_SIMPLE_METHOD, SpaceData::SPACE_ALL_METHOD];
+    /** @var array<mixed,mixed> $METHOD_IGNORED */
+    final public static array $METHOD_IGNORED;
 
-    public const string METHOD_REFERENCE = SpaceData::SPACE_ALL_METHOD;
+    final public static string $METHOD_REFERENCE;
 
     private static LoggerInterface $logger;
 
     #[\Override]
+    public static function setUpBeforeClass(): void
+    {
+        self::$METHOD_REFERENCE = SpaceTypeEnum::SPACE_ALL->method();
+        self::$METHOD_IGNORED  = [SpaceTypeEnum::SPACE_SINGLE->method(), SpaceTypeEnum::SPACE_SIMPLE->method(), SpaceTypeEnum::SPACE_ALL->method()];
+    }
+
+    #[\Override]
     protected static function prepareO2t(): ?PersonalSpaces
     {
+        $instance = null;
+
         try {
             static::prepareSpaceData();
             $clazzName = SpaceData::MY_SPACES_NS_CLAZZ;
 
-            return new $clazzName();
+            $instance = new $clazzName();
         } catch (\Throwable $ex) {
-            StopNow::stopException($ex);
+            Emergency::exceptionStop($ex);
         }
 
-        return null;
+        return $instance;
     }
 
     #[\Override]
@@ -119,9 +130,9 @@ class MySpacesTest extends EasyGoingTestCase
 
     public function testSpacesIntegrity(): void
     {
-        $expected = $this->callMethodOnO2t(static::METHOD_REFERENCE);
+        $expected = $this->callMethodOnO2t(static::$METHOD_REFERENCE);
 
-        $methodsFiltered = array_diff($this->getMethodsFiltered(static::METHOD_PREFIX), static::METHOD_IGNORED);
+        $methodsFiltered = array_diff($this->getMethodsFiltered(static::METHOD_PREFIX), static::$METHOD_IGNORED);
         $actual          = $this->joinResults($methodsFiltered);
         $spacesMissing = array_values(array_diff($expected, $actual));
         if (!empty($spacesMissing)) {
