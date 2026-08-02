@@ -18,12 +18,14 @@ use Monolog\ConsoleLogger;
 use oglow\tools\common\IContainer;
 use oglow\tools\Yacorapi\Data\ItemTypeEnum;
 use oglow\tools\Yacorapi\Data\SpaceTypeEnum;
+use oglow\tools\Yacorapi\Extension\ExtensionEnum;
 use oglow\tools\Yacorapi\IConnectionProvider;
 use oglow\tools\Yacorapi\IRapiClient;
 use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Macro\AddonTypeEnum;
 use oglow\tools\Yacorapi\Response\ResponseAddonMacroDecorate;
 use oglow\tools\Yacorapi\Statistic\IStatistic;
+use oglow\tools\Yacorapi\Traits\ExtensionTrait;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -53,6 +55,7 @@ use Psr\Log\LoggerInterface;
  */
 class RapiClient extends AbstractRapiClient implements IRapiClient // NOSONAR: php:S1448
 {
+    use ExtensionTrait;
     use RapiReadTrait;
     use RapiWriteTrait;
     use RapiRestrictionTrait;
@@ -65,7 +68,7 @@ class RapiClient extends AbstractRapiClient implements IRapiClient // NOSONAR: p
      */
     #[\Override]
     public static function newClient(
-        ?int $modeExtension = null,
+        ?ExtensionEnum $modeExtension = self::EXTENSION_DEFAULT,
         ?IConnectionProvider $connectionProvider = null,
         ?IContainer $addons = null,
         mixed $level = self::LEVEL_DEFAULT
@@ -87,7 +90,7 @@ class RapiClient extends AbstractRapiClient implements IRapiClient // NOSONAR: p
     /**
      * RapiClient constructor.
      *
-     * @param null|int                        $modeExtension
+     * @param null|ExtensionEnum              $modeExtension      (Default: {@link self::EXTENSION_DEFAULT})
      * @param null|IConnectionProvider        $connectionProvider
      * @param null|IContainer                 $addons
      * @param int|\Psr\Log\LogLevel::*|string $level              The minimum logging level at which this handler will be triggered
@@ -96,7 +99,7 @@ class RapiClient extends AbstractRapiClient implements IRapiClient // NOSONAR: p
      * @see self::LEVEL_DEFAULT
      */
     protected function __construct(
-        ?int $modeExtension = null,
+        ?ExtensionEnum $modeExtension = self::EXTENSION_DEFAULT,
         ?IConnectionProvider $connectionProvider = null,
         ?IContainer $addons = null,
         mixed $level = self::LEVEL_DEFAULT
@@ -107,7 +110,13 @@ class RapiClient extends AbstractRapiClient implements IRapiClient // NOSONAR: p
         self::$logger = new ConsoleLogger(name: RapiClient::class, level: $level);
         self::$logger->debug('START');
 
-        parent::__construct($modeExtension, $connectionProvider, $addons, $level);
+        parent::__construct($connectionProvider, $addons, $level);
+
+        // Init Extensions
+        if (is_null($modeExtension)) {
+            $modeExtension = ExtensionEnum::EXTENSION_ALL;
+        }
+        $this->loadExtensions($modeExtension);
 
         self::$logger->debug('END');
     }

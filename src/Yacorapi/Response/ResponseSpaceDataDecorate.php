@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Response;
 
 use Ds\Map;
-use Ds\Set;
+use Ds\Vector;
 use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\IResponse;
 use Psr\Log\LoggerInterface;
@@ -62,9 +62,9 @@ class ResponseSpaceDataDecorate extends AbstractResponse
      * @inheritDoc
      */
     #[\Override]
-    public function keys(): Set
+    public function keys(): Vector
     {
-        return new Set(array_keys($this->spaces));
+        return new Vector(array_keys($this->spaces));
     }
 
     /**

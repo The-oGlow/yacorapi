@@ -30,26 +30,27 @@ abstract class AbstractExtension implements IExtension
 
     public function __construct()
     {
-        $clazzName = get_class($this);
         self::$logger = new ConsoleLogger(AbstractExtension::class);
         self::$logger->debug('START');
+
+        $clazzName = get_class($this);
         $this->constData = new ConstData($clazzName);
         $this->init();
-        self::$logger->debug('Is initiated', [$clazzName]);
+
         self::$logger->debug('END');
     }
 
-    /**
-     * @inheritDoc
-     */
-    #[\Override]
-    abstract public static function getName(): string;
-
-    /**
-     * @inheritDoc
-     */
-    #[\Override]
-    abstract public static function getId(): int;
+    //    /**
+    //     * @inheritDoc
+    //     */
+    //    #[\Override]
+    //    abstract public static function getName(): string;
+    //
+    //    /**
+    //     * @inheritDoc
+    //     */
+    //    #[\Override]
+    //    abstract public static function getId(): int;
 
     protected function init(): void
     {

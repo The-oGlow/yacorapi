@@ -17,7 +17,6 @@ use Ds\Set;
 use Monolog\ConsoleLogger;
 use oglow\tools\common\MockProvider;
 use oglow\tools\Yacorapi\Client\RapiClient;
-use oglow\tools\Yacorapi\Extension\IExtension;
 use oglow\tools\Yacorapi\Macro\AddonTypeEnum;
 use oglow\tools\Yacorapi\Response\Response;
 use oglow\tools\Yacorapi\Statistic\StatisticStatistic;
@@ -63,7 +62,7 @@ class RapiClientTest extends EasyGoingTestCase
     #[\Override]
     protected static function prepareO2t(): IRapiClient
     {
-        return RapiClient::newClient(IExtension::EXTENSION_ALL, new MockProvider(LogLevel::DEBUG));
+        return RapiClient::newClient(connectionProvider: new MockProvider(LogLevel::DEBUG));
     }
 
     #[\Override]
@@ -109,17 +108,6 @@ class RapiClientTest extends EasyGoingTestCase
         self::assertTrue($response->getResults()->isEmpty());
 
         self::$logger->info('END');
-    }
-
-    /**
-     * @return array<mixed,mixed>
-     */
-    public static function providerReadPageByPageId(): array
-    {
-        return [
-            'exists' => [YacorapiTestData::HTML_PAGE, YacorapiTestData::C_SEARCHPAGEID_01],
-            'notExist' => [YacorapiTestData::DATA_EMPTY, YacorapiTestData::C_PAGEID_NOTEXIST],
-        ];
     }
 
     public function testCreatePage(): void
@@ -342,6 +330,19 @@ class RapiClientTest extends EasyGoingTestCase
         self::assertTrue($response->getResults()->isEmpty());
 
         self::$logger->info('END');
+    }
+
+    // Dataprovider
+
+    /**
+     * @return array<mixed,mixed>
+     */
+    public static function providerReadPageByPageId(): array
+    {
+        return [
+            'exists' => [YacorapiTestData::HTML_PAGE, YacorapiTestData::C_SEARCHPAGEID_01],
+            'notExist' => [YacorapiTestData::DATA_EMPTY, YacorapiTestData::C_PAGEID_NOTEXIST],
+        ];
     }
 
     /**

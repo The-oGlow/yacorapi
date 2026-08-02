@@ -14,14 +14,9 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi;
 
 use Ds\Map;
-use oglow\tools\Addon\Atlassian\Extension\AdminExtension;
 use oglow\tools\Addon\Atlassian\Extension\AtlassianExtension;
-use oglow\tools\Addon\Projectdoc\Extension\ProjectdocExtension;
-use oglow\tools\Addon\ThirdParty\Extension\ThirdPartyExtension;
-use oglow\tools\Addon\UserMacro\Extension\UserMacroExtension;
 use oglow\tools\Yacorapi\Data\RequestParameterData;
 use oglow\tools\Yacorapi\Data\SpaceTypeEnum;
-use oglow\tools\Yacorapi\Extension\IExtension;
 use oglow\tools\Yacorapi\Extension\RapiClientExtension;
 use ollily\Tools\Test\TestData;
 
@@ -37,16 +32,6 @@ class YacorapiTestData extends TestData
       /** All extensions */
 
     public const int EXTENSIONS_COUNT_TOTAL = 6;
-
-    /** Definition of all extensions */
-    public const array EXTENSIONS_NAMES = [
-        IExtension::EXTENSION_RAPI_CLIENT => RapiClientExtension::class,
-        IExtension::EXTENSION_ATLASSIAN => AtlassianExtension::class,
-        IExtension::EXTENSION_ATLASSIAN_ADMIN => AdminExtension::class,
-        IExtension::EXTENSION_ATLASSIAN_USER_MACRO => UserMacroExtension::class,
-        IExtension::EXTENSION_THIRD_PARTY => ThirdPartyExtension::class,
-        IExtension::EXTENSION_PROJECTDOC_TOOLBOX => ProjectdocExtension::class,
-    ];
 
     /** Array of extensions which will be verified */
     public const array EXTENSIONS_VERIFY = [RapiClientExtension::class, AtlassianExtension::class];

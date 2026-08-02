@@ -18,26 +18,6 @@ use Ds\Vector;
 
 interface IExtension
 {
-    public const int EXTENSION_RAPI_CLIENT          = 1;
-
-    public const int EXTENSION_ATLASSIAN            = 2;
-
-    public const int EXTENSION_ATLASSIAN_ADMIN      = 4;
-
-    public const int EXTENSION_ATLASSIAN_USER_MACRO = 8;
-
-    public const int EXTENSION_THIRD_PARTY          = 16;
-
-    public const int EXTENSION_PROJECTDOC_TOOLBOX   = 32;
-
-    public const int EXTENSION_MIN                  = self::EXTENSION_RAPI_CLIENT + self::EXTENSION_ATLASSIAN;
-
-    public const int EXTENSION_ALL                  = self::EXTENSION_MIN +
-    self::EXTENSION_ATLASSIAN_ADMIN +
-    self::EXTENSION_ATLASSIAN_USER_MACRO +
-    self::EXTENSION_THIRD_PARTY +
-    self::EXTENSION_PROJECTDOC_TOOLBOX;
-
     public static function getName(): string;
 
     public static function getId(): int;

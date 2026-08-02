@@ -32,6 +32,6 @@ class RapiClientExtension extends AbstractExtension
     #[\Override]
     public static function getId(): int
     {
-        return 1;
+        return ExtensionEnum::EXTENSION_RAPI_CLIENT->value;
     }
 }

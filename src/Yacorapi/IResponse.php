@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi;
 
 use Ds\Map;
-use Ds\Set;
+use Ds\Vector;
 
 interface IResponse extends \Stringable
 {
@@ -116,9 +116,9 @@ interface IResponse extends \Stringable
     public function keyExists(mixed $key): bool;
 
     /**
-     * @return Set<mixed>
+     * @return Vector<mixed>
      */
-    public function keys(): Set;
+    public function keys(): Vector;
 
     /**
      * @param mixed $key

@@ -84,7 +84,7 @@ class CsvFileAdapterTest extends EasyGoingTestCase
         for ($idx = 0; $idx < random_int(self::RAND_MIN, self::RAND_MAX); $idx++) {
             $dataContent[] = chr(random_int(self::CHAR_MIN, self::CHAR_MAX));
         }
-        $expected = strlen(implode(FileAdapter::C_ITEM_SEP, $dataContent)) + 1;
+        $expected = strlen(implode(FileAdapter::DEFAULT_ITEM_SEP, $dataContent)) + 1;
 
         $this->getCasto2t()->storeData($dataContent);
 

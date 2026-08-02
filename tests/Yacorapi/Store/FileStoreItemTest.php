@@ -104,7 +104,7 @@ class FileStoreItemTest extends EasyGoingTestCase
 
     public function testToString(): void
     {
-        $expected = YacorapiTestData::FILE_FOLDERNAME . FileStoreItem::C_PATH_SEP .
+        $expected = YacorapiTestData::FILE_FOLDERNAME . FileStoreItem::C_DIR_SEP .
         YacorapiTestData::FILE_FILENAME . FileStoreItem::C_FILE_SEP .
         YacorapiTestData::FILE_EXT_NAME;
 

@@ -15,7 +15,7 @@ namespace oglow\tools\Yacorapi\Statistic;
 
 use Ds\Map;
 use Ds\Pair;
-use Ds\Set;
+use Ds\Vector;
 use Monolog\ConsoleLogger;
 use ollily\Tools\String\ToStringTrait;
 use Psr\Log\LoggerInterface;
@@ -77,9 +77,9 @@ abstract class AbstractStatistic implements IStatistic
      * @inheritDoc
      */
     #[\Override]
-    public function keys(): Set
+    public function keys(): Vector
     {
-        return $this->items->keys();
+        return new Vector($this->items->keys());
     }
 
     /**

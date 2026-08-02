@@ -1,16 +1,16 @@
 <?xml version="1.0"?>
 <psalm
-        errorLevel="1"
-        resolveFromConfigFile="true"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns="https://getpsalm.org/schema/config"
-        xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
-        findUnusedBaselineEntry="true"
-        findUnusedCode="false"
-        findUnusedPsalmSuppress="true"
-        reportInfo="false"
-        reportMixedIssues="true"
-        allowStringToStandInForClass="true"
+    errorLevel="1"
+    resolveFromConfigFile="true"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="https://getpsalm.org/schema/config"
+    xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+    findUnusedBaselineEntry="true"
+    findUnusedCode="false"
+    findUnusedPsalmSuppress="true"
+    reportInfo="false"
+    reportMixedIssues="true"
+    allowStringToStandInForClass="true"
 >
     <projectFiles>
         <directory name="src"/>
@@ -29,7 +29,6 @@
         <!-- too strict -->
         <ClassMustBeFinal errorLevel="info"/>
         <InternalMethod errorLevel="info"/>
-        <LessSpecificImplementedReturnType errorLevel="info"/>
         <MixedArgument errorLevel="info"/>
         <MixedReturnStatement errorLevel="info"/>
         <MixedArrayAccess errorLevel="info"/>
@@ -38,7 +37,8 @@
         <MixedPropertyTypeCoercion errorLevel="info"/>
         <PropertyNotSetInConstructor errorLevel="info"/>
         <UndefinedConstant errorLevel="info"/>
-        
+        <LessSpecificImplementedReturnType errorLevel="suppress"/>
+        <MoreSpecificReturnType errorLevel="suppress"/>
         <MissingOverrideAttribute errorLevel="suppress"/>
     </issueHandlers>
     <plugins>

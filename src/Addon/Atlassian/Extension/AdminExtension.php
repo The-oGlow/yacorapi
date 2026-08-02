@@ -15,6 +15,7 @@ namespace oglow\tools\Addon\Atlassian\Extension;
 
 use oglow\tools\Addon\Atlassian\Macro\AdminAddon;
 use oglow\tools\Yacorapi\Extension\AbstractExtension;
+use oglow\tools\Yacorapi\Extension\ExtensionEnum;
 use oglow\tools\Yacorapi\IConnectionProvider;
 use oglow\tools\Yacorapi\Traits\PrepPermissionTrait;
 
@@ -44,6 +45,6 @@ class AdminExtension extends AbstractExtension
     #[\Override]
     public static function getId(): int
     {
-        return 4;
+        return ExtensionEnum::EXTENSION_ATLASSIAN_ADMIN->value;
     }
 }

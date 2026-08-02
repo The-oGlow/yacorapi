@@ -22,16 +22,19 @@ use ollily\Tools\Reflection\UnavailableMethodsTrait;
 use PHPUnit\Framework\EasyGoingTestCase;
 use Psr\Log\LoggerInterface;
 
+/**
+ * @SuppressWarnings("PHPMD.CamelCasePropertyName")
+ */
 class MySpacesTest extends EasyGoingTestCase
 {
     use UnavailableMethodsTrait;
 
     public const string METHOD_PREFIX    = 'getMySpaceList';
 
-    /** @var array<mixed,mixed> $METHOD_IGNORED */
-    final public static array $METHOD_IGNORED;
+    /** @var array<mixed,mixed> */
+    public static array $METHOD_IGNORED;
 
-    final public static string $METHOD_REFERENCE;
+    public static string $METHOD_REFERENCE;
 
     private static LoggerInterface $logger;
 

@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Statistic;
 
-// use Ds\Set;
-
 /**
  * A statistic element which contains a constant and primitive value;.
  */
@@ -38,23 +36,6 @@ class ValueStatistic extends AbstractStatistic
         parent::__construct($statisticName, $exportName, StatisticTypeEnum::VALUE);
         $this->addItem(self::EMPTY_STRING, $value);
     }
-    //    private mixed $value = null;
-
-    //    /**
-    //     * @inheritDoc
-    //     */
-    //    #[\Override]
-    //    public function keys(): Set {
-    //        return new Set([self::EXPORT_NAME]);
-    //    }
-    //
-    //    /**
-    //     * @inheritDoc
-    //     */
-    //    #[\Override]
-    //    public function keyExists(mixed $key): bool {
-    //        return $key === self::EXPORT_NAME;
-    //    }
 
     /**
      * @inheritDoc
@@ -73,20 +54,4 @@ class ValueStatistic extends AbstractStatistic
     {
         return parent::getItem(self::KEY_COUNT);
     }
-
-    //    public function header(): array {
-    //        return [$this->getExportName()];
-    //    }
-
-    //    /**
-    //     * @inheritDoc
-    //     *
-    //     * @SuppressWarnings("PHPMD.CamelCaseMethodName")
-    //     */
-    //    #[\Override]
-    //    protected function __toStringValues(): mixed {
-    //        return [
-    //            $this->getExportName() => $this->getItem(self::KEY_COUNT),
-    //        ];
-    //    }
 }

@@ -21,10 +21,29 @@ class CsvFileAdapter extends FileAdapter
 {
     use ImplodeTrait;
 
+    /** @psalm-suppress InvalidClassConstantType  */
+    public const string DEFAULT_STORE_ITEM_SUFFIX = IStoreItem::C_FILE_EXT_CSV;
+
+    public const string DEFAULT_COLUMN_TEXT_SEP = '"';
+
+    public const string DEFAULT_SQUARE_BRACK_OPEN = '[';
+
+    private const string STOREDATA_SEARCH = self::DEFAULT_ITEM_SEP . self::DEFAULT_SQUARE_BRACK_OPEN;
+
+    private const string STOREDATA_REPL = self::DEFAULT_ITEM_SEP . self::C_FILE_EOL . self::DEFAULT_SQUARE_BRACK_OPEN;
+
     private static LoggerInterface $logger;
 
-    public function __construct(string $outputFileName, string $fileSuffix = '', string $customTargetDir = '')
-    {
+    /**
+     * @param string $outputFileName  The filename, without suffix, of the output file
+     * @param string $fileSuffix      An optional suffix of the output file
+     * @param string $customTargetDir The folder where to store the output file
+     */
+    public function __construct(
+        string $outputFileName,
+        string $fileSuffix = self::DEFAULT_FILE_SUFFIX,
+        string $customTargetDir = self::DEFAULT_CUSTOM_TARGET_DIR
+    ) {
         self::$logger = new ConsoleLogger(CsvFileAdapter::class);
         self::$logger->debug("START");
 
@@ -33,59 +52,46 @@ class CsvFileAdapter extends FileAdapter
         self::$logger->debug('END');
     }
 
-    protected function flattenDataHeader($dataHeader): string
+    /**
+     * @inheritDoc
+     */
+    #[\Override]
+    protected function flattenDataHeader(string|array $dataHeader): string
     {
         self::$logger->debug("START");
 
         if (is_array($dataHeader)) {
             $headerCount = count($dataHeader);
             for ($idx = 0; $idx < $headerCount; $idx++) {
-                $dataHeader[$idx] = '"' . $dataHeader[$idx] . '"';
+                $dataHeader[$idx] = self::DEFAULT_COLUMN_TEXT_SEP . $dataHeader[$idx] . self::DEFAULT_COLUMN_TEXT_SEP;
             }
         }
+
+        self::$logger->debug('END');
 
         return parent::flattenDataHeader($dataHeader);
     }
 
     /**
-     * @param array<mixed,mixed>|string $param
-     *
-     * @return string
+     * @inheritDoc
      */
-    protected function prepareCsvLine(array|string $param): string
-    {
-        self::$logger->debug("START");
-
-        if (!is_array($param)) {
-            $param = [$param];
-        }
-
-        return implode(self::C_ITEM_SEP, $param);
-    }
-
-    /**
-     * @param string $customTargetDir
-     * @param string $outputFileName
-     * @param string $fileExtension
-     * @param string $storeItemClazz
-     * @param string $methodName
-     *
-     * @return IStoreItem
-     */
+    #[\Override]
     protected function invokeStoreItem(
         string $customTargetDir,
         string $outputFileName,
-        string $fileExtension = IStoreItem::EXT_CSV,
-        string $storeItemClazz = FileStoreItem::class,
-        string $methodName = 'prepareTargetFile'
+        string $fileSuffix = self::DEFAULT_STORE_ITEM_SUFFIX,
+        string $storeItemClazz = self::DEFAULT_STORE_ITEM_CLAZZ,
+        string $methodName = self::DEFAULT_STORE_ITEM_METHOD
     ): IStoreItem {
         self::$logger->debug("START");
 
-        if (!str_ends_with($fileExtension, IStoreItem::EXT_CSV)) {
-            $fileExtension = $fileExtension . '.' . IStoreItem::EXT_CSV;
+        if (!str_ends_with($fileSuffix, self::DEFAULT_STORE_ITEM_SUFFIX)) {
+            $fileSuffix = $fileSuffix . self::C_FILE_SEP . self::DEFAULT_STORE_ITEM_SUFFIX;
         }
 
-        return parent::invokeStoreItem($customTargetDir, $outputFileName, $fileExtension, $storeItemClazz, $methodName);
+        self::$logger->debug('END');
+
+        return parent::invokeStoreItem($customTargetDir, $outputFileName, $fileSuffix, $storeItemClazz, $methodName);
     }
 
     /**
@@ -95,11 +101,10 @@ class CsvFileAdapter extends FileAdapter
     public function storeData(mixed $dataContent): void
     {
         self::$logger->debug('START');
-        self::$logger->debug('dataContent', [$dataContent]);
 
         if (!is_null($dataContent)) {
-            $csvLine = self::implode_recursive(self::C_ITEM_SEP, $dataContent, false, false);
-            $csvLine = str_replace(self::C_ITEM_SEP . '[', self::C_ITEM_SEP . "\n[", $csvLine);
+            $csvLine = self::implode_recursive(self::DEFAULT_ITEM_SEP, $dataContent, false, false);
+            $csvLine = str_replace(self::STOREDATA_SEARCH, self::STOREDATA_REPL, $csvLine);
             $this->writeData($this->storeItem, $csvLine);
         }
 
@@ -119,5 +124,19 @@ class CsvFileAdapter extends FileAdapter
         }
 
         self::$logger->debug('END');
+    }
+
+    /**
+     * @param array<mixed,mixed>|string $param
+     *
+     * @return string
+     */
+    protected function prepareCsvLine(array|string $param): string
+    {
+        if (!is_array($param)) {
+            $param = [$param];
+        }
+
+        return implode(self::DEFAULT_ITEM_SEP, $param);
     }
 }

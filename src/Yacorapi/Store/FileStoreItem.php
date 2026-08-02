@@ -18,84 +18,110 @@ use Psr\Log\LoggerInterface;
 
 class FileStoreItem extends AbstractStoreItem
 {
-    public const string DIR  = 'DIR';
+    public const string KEY_DIR  = 'DIR';
 
-    public const string FILE = 'FILE';
+    public const string KEY_FILE = 'FILE';
 
-    public const string EXT  = 'EXT';
+    public const string KEY_EXT  = 'EXT';
 
     private static LoggerInterface $logger;
 
     /**
-     * @param string $dir
-     * @param string $file
-     * @param string $ext
+     * @param string $dir  The folder of this store item
+     * @param string $file The filename of this store item
+     * @param string $ext  The suffix of the filename of this store item
      *
-     * @return IStoreItem
+     * @return IStoreItem A newly created store item
      */
-    public static function prepareTargetFile(string $dir, string $file, string $ext = IStoreItem::EXT_TEXT): IStoreItem
+    public static function prepareTargetFile(string $dir, string $file, string $ext = self::C_FILE_EXT_TEXT): IStoreItem
     {
         return new self($dir, $file, $ext);
     }
 
-    protected function __construct(string $dir, string $file, string $ext = self::EXT_TEXT)
+    /**
+     * @param string $dir  The folder of this store item
+     * @param string $file The filename of this store item
+     * @param string $ext  The suffix of the filename of this store item
+     */
+    protected function __construct(string $dir, string $file, string $ext = self::C_FILE_EXT_TEXT)
     {
         self::$logger = new ConsoleLogger(FileStoreItem::class);
         self::$logger->debug("START");
 
         parent::__construct();
-        $this->storeItems->put(self::DIR, $dir);
-        $this->storeItems->put(self::FILE, $file);
-        $this->storeItems->put(self::EXT, $ext);
+        $this->storeItems->put(self::KEY_DIR, $dir);
+        $this->storeItems->put(self::KEY_FILE, $file);
+        $this->storeItems->put(self::KEY_EXT, $ext);
 
         self::$logger->debug("END");
     }
 
+    /**
+     * @inheritDoc
+     */
     #[\Override]
     public function setDir(string $dir): IStoreItem
     {
-        $this->storeItems->put(self::DIR, $dir);
+        $this->storeItems->put(self::KEY_DIR, $dir);
 
         return $this;
     }
 
+    /**
+     * @inheritDoc
+     */
     #[\Override]
     public function getDir(): string
     {
-        return $this->storeItems->get(self::DIR, '');
+        return $this->storeItems->get(self::KEY_DIR, '');
     }
 
+    /**
+     * @inheritDoc
+     */
     #[\Override]
     public function setFile(string $file): IStoreItem
     {
-        $this->storeItems->put(self::FILE, $file);
+        $this->storeItems->put(self::KEY_FILE, $file);
 
         return $this;
     }
 
+    /**
+     * @inheritDoc
+     */
     #[\Override]
     public function getFile(): string
     {
-        return $this->storeItems->get(self::FILE, '');
+        return $this->storeItems->get(self::KEY_FILE, '');
     }
 
+    /**
+     * @inheritDoc
+     */
     #[\Override]
-    public function setExt(string $ext = self::EXT_TEXT): IStoreItem
+    public function setExt(string $ext = self::C_FILE_EXT_TEXT): IStoreItem
     {
-        $this->storeItems->put(self::EXT, $ext);
+        $this->storeItems->put(self::KEY_EXT, $ext);
 
         return $this;
     }
 
+    /**
+     * @inheritDoc
+     */
     #[\Override]
     public function getExt(): string
     {
-        return $this->storeItems->get(self::EXT, self::EXT_TEXT);
+        return $this->storeItems->get(self::KEY_EXT, self::C_FILE_EXT_TEXT);
     }
 
+    /**
+     * @inheritDoc
+     */
     #[\Override]
     public function __toString(): string
     {
-        return $this->getDir() . self::C_PATH_SEP . $this->getFile() . self::C_FILE_SEP . $this->getExt();
+        return $this->getDir() . self::C_DIR_SEP . $this->getFile() . self::C_FILE_SEP . $this->getExt();
     }
 }

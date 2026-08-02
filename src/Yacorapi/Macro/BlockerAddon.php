@@ -25,6 +25,7 @@ class BlockerAddon extends AbstractAddon
     /**
      * @SuppressWarnings("PHPMD.ExcessiveMethodLength")
      */
+    #[\Override]
     protected function init(): void
     {
         parent::init();

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Response;
 
 use Ds\Map;
-use Ds\Set;
+use Ds\Vector;
 use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\IResponse;
 use ollily\Tools\String\ToStringTrait;
@@ -69,9 +69,9 @@ abstract class AbstractResponse implements IResponse
      * @inheritDoc
      */
     #[\Override]
-    public function keys(): Set
+    public function keys(): Vector
     {
-        return $this->response->keys();
+        return new Vector($this->response->keys());
     }
 
     /**

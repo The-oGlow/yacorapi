@@ -17,6 +17,8 @@ use Ds\Map;
 use Ds\Vector;
 use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\ConstData;
+use oglow\tools\Yacorapi\Extension\ExtensionEnum;
+use oglow\tools\Yacorapi\Extension\IExtension;
 use Psr\Log\LoggerInterface;
 
 class ExtensionTraitTestClazz
@@ -36,17 +38,17 @@ class ExtensionTraitTestClazz
     }
 
     /**
-     * @param int $modeExtension
+     * @param ExtensionEnum $modeExtension
      *
-     * @return Map<mixed,\oglow\tools\Yacorapi\Extension\IExtension>
+     * @return Map<mixed,IExtension>
      */
-    public function publicInitExtensions(int $modeExtension): Map
+    public function publicInitExtensions(ExtensionEnum $modeExtension): Map
     {
         return $this->initExtensions($modeExtension);
     }
 
     /**
-     * @param Map<mixed,\oglow\tools\Yacorapi\Extension\IExtension> $extensions
+     * @param Map<mixed,IExtension> $extensions
      *
      * @return Map<mixed,Vector<mixed>>
      */

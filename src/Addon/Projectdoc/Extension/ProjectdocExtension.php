@@ -16,6 +16,7 @@ namespace oglow\tools\Addon\Projectdoc\Extension;
 use oglow\tools\Addon\Projectdoc\Macro\ProjectdocAddon;
 use oglow\tools\Addon\Projectdoc\Traits\ProjectdocTrait;
 use oglow\tools\Yacorapi\Extension\AbstractExtension;
+use oglow\tools\Yacorapi\Extension\ExtensionEnum;
 
 class ProjectdocExtension extends AbstractExtension
 {
@@ -37,6 +38,6 @@ class ProjectdocExtension extends AbstractExtension
     #[\Override]
     public static function getId(): int
     {
-        return 32;
+        return ExtensionEnum::EXTENSION_PROJECTDOC_TOOLBOX->value;
     }
 }

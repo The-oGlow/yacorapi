@@ -21,8 +21,16 @@ class FileAdapter extends AbstractStoreAdapter
 {
     private static LoggerInterface $logger;
 
-    public function __construct(string $outputFileName, string $fileSuffix = '', string $customTargetDir = '')
-    {
+    /**
+     * @param string $outputFileName  The filename, without suffix, of the output file
+     * @param string $fileSuffix      An optional suffix of the output file
+     * @param string $customTargetDir The folder where to store the output file
+     */
+    public function __construct(
+        string $outputFileName,
+        string $fileSuffix = self::DEFAULT_FILE_SUFFIX,
+        string $customTargetDir = self::DEFAULT_CUSTOM_TARGET_DIR
+    ) {
         self::$logger    = new ConsoleLogger(FileAdapter::class);
         self::$logger->debug("START", [$outputFileName,$fileSuffix, $customTargetDir]);
 
@@ -32,11 +40,11 @@ class FileAdapter extends AbstractStoreAdapter
     }
 
     /**
-     * @param array<mixed,mixed> $resultsEntry
+     * @param array<mixed,mixed> $resultsEntry Array of results from a query
      */
     public function storeResults(array $resultsEntry): void
     {
-        self::$logger->debug('START');
+        self::$logger->debug('START', [$this->storeItem]);
 
         $pageId      = $resultsEntry[self::KEY_KEY];
         $line        = sprintf(
@@ -46,10 +54,7 @@ class FileAdapter extends AbstractStoreAdapter
             $resultsEntry[self::KEY_LINKS][self::KEY_TINYUI],
             $resultsEntry[self::KEY_TITLE]
         );
-
-        self::$logger->debug('Writing results to ', [$this->storeItem]);
-
-        $this->writeData($this->storeItem, sprintf('%s', $line));
+        $this->writeData($this->storeItem, $line);
 
         self::$logger->debug('END');
     }
@@ -60,8 +65,7 @@ class FileAdapter extends AbstractStoreAdapter
     #[\Override]
     public function storeData(mixed $dataContent): void
     {
-        self::$logger->debug('START');
-        self::$logger->debug('Writing data to ', [$this->storeItem]);
+        self::$logger->debug('START', [$this->storeItem]);
 
         $this->writeData($this->storeItem, $dataContent);
 
@@ -74,10 +78,9 @@ class FileAdapter extends AbstractStoreAdapter
     #[\Override]
     public function storeDataHeader(string|array $dataHeader): void
     {
-        self::$logger->debug('START');
+        self::$logger->debug('START', [$this->storeItem]);
 
         if (!empty($dataHeader)) {
-            self::$logger->debug('Writing header to', [$this->storeItem]);
             $this->writeData($this->storeItem, $this->flattenDataHeader($dataHeader));
         }
 

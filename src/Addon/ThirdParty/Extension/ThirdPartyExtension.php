@@ -15,6 +15,7 @@ namespace oglow\tools\Addon\ThirdParty\Extension;
 
 use oglow\tools\Addon\ThirdParty\Macro\ThirdPartyAddon;
 use oglow\tools\Yacorapi\Extension\AbstractExtension;
+use oglow\tools\Yacorapi\Extension\ExtensionEnum;
 
 class ThirdPartyExtension extends AbstractExtension
 {
@@ -34,6 +35,6 @@ class ThirdPartyExtension extends AbstractExtension
     #[\Override]
     public static function getId(): int
     {
-        return 16;
+        return ExtensionEnum::EXTENSION_THIRD_PARTY->value;
     }
 }

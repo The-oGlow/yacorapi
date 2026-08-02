@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Response;
 
 use Ds\Map;
-use Ds\Set;
+use Ds\Vector;
 use oglow\tools\Yacorapi\IResponse;
 use ollily\Tools\String\ImplodeTrait;
 
@@ -120,11 +120,11 @@ class ResponseDryRun implements IResponse
      * @inheritDoc
      */
     #[\Override]
-    public function keys(): Set
+    public function keys(): Vector
     {
         $map = new Map();
 
-        return $map->keys();
+        return new Vector($map->keys());
     }
 
     /**

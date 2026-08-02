@@ -18,20 +18,17 @@ use Monolog\ConsoleLogger;
 use oglow\tools\common\IContainer;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\Data\AddonMacroData;
-use oglow\tools\Yacorapi\Extension\IExtension;
 use oglow\tools\Yacorapi\IConnectionProvider;
 use oglow\tools\Yacorapi\IRapiClient;
 use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Provider\CurlProvider;
 use oglow\tools\Yacorapi\Request\RequestTypeEnum;
-use oglow\tools\Yacorapi\Traits\ExtensionTrait;
 use ollily\Tools\Reflection\MagicPublicFunctionTrait;
 use Psr\Log\LoggerInterface;
 
 abstract class AbstractRapiClient
 {
     use MagicPublicFunctionTrait;
-    use ExtensionTrait;
 
     private static LoggerInterface $logger;
 
@@ -44,7 +41,6 @@ abstract class AbstractRapiClient
     /**
      * RapiClient constructor.
      *
-     * @param null|int                        $modeExtension
      * @param null|IConnectionProvider        $connectionProvider
      * @param null|IContainer                 $addons
      * @param int|\Psr\Log\LogLevel::*|string $level              The minimum logging level at which this handler will be triggered
@@ -53,7 +49,6 @@ abstract class AbstractRapiClient
      * @see IRapiClient::LEVEL_DEFAULT
      */
     protected function __construct(
-        ?int $modeExtension = null,
         ?IConnectionProvider $connectionProvider = null,
         ?IContainer $addons = null,
         mixed $level = IRapiClient::LEVEL_DEFAULT
@@ -67,9 +62,6 @@ abstract class AbstractRapiClient
         // Init Dynamic Consts
         $this->constData = new ConstData(get_class($this));
         // Init Modules
-        if (is_null($modeExtension)) {
-            $modeExtension = IExtension::EXTENSION_ALL;
-        }
         if (empty($addons)) {
             $this->addons = new AddonMacroData();
         } else {
@@ -82,8 +74,6 @@ abstract class AbstractRapiClient
         } else {
             $this->connectionProvider = $connectionProvider;
         }
-        // Init Extensions
-        $this->loadExtensions($modeExtension);
 
         self::$logger->debug('END');
     }

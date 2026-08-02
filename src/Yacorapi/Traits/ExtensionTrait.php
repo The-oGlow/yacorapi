@@ -21,12 +21,21 @@ use oglow\tools\Addon\Projectdoc\Extension\ProjectdocExtension;
 use oglow\tools\Addon\ThirdParty\Extension\ThirdPartyExtension;
 use oglow\tools\Addon\UserMacro\Extension\UserMacroExtension;
 use oglow\tools\Yacorapi\ExitCodes;
+use oglow\tools\Yacorapi\Extension\ExtensionEnum;
 use oglow\tools\Yacorapi\Extension\IExtension;
 use oglow\tools\Yacorapi\Extension\RapiClientExtension;
 use ollily\Tools\Emergency;
 
 trait ExtensionTrait
 {
+    protected const EXTENSION_AVAIL = [ExtensionEnum::EXTENSION_RAPI_CLIENT,
+        ExtensionEnum::EXTENSION_ATLASSIAN,
+        ExtensionEnum::EXTENSION_ATLASSIAN_ADMIN,
+        ExtensionEnum::EXTENSION_ATLASSIAN_USER_MACRO,
+        ExtensionEnum::EXTENSION_THIRD_PARTY,
+        ExtensionEnum::EXTENSION_PROJECTDOC_TOOLBOX,
+    ];
+
     protected RapiClientExtension $commonExtension;
 
     protected AdminExtension $adminExtension;
@@ -59,9 +68,11 @@ trait ExtensionTrait
     }
 
     /**
-     * @param int $modeExtension
+     * Load extensions and set them to an field variable.
+     *
+     * @param ExtensionEnum $modeExtension
      */
-    protected function loadExtensions(int $modeExtension): void
+    protected function loadExtensions(ExtensionEnum $modeExtension): void
     {
         self::$logger->debug('START', [$modeExtension]);
 
@@ -69,25 +80,24 @@ trait ExtensionTrait
 
         foreach ($extensions as $key => $extension) {
             self::$logger->debug('Key,Ext', [$key]);
-
-            switch (true) {
-                case IExtension::EXTENSION_RAPI_CLIENT == $key:
-                    $this->commonExtension = $extension;
+            switch ($key) {
+                case ExtensionEnum::EXTENSION_RAPI_CLIENT->value:
+                    $this->commonExtension = $extension; // @phpstan-ignore assign.propertyType
                     break;
-                case IExtension::EXTENSION_ATLASSIAN == $key:
-                    $this->atlassianExtension = $extension;
+                case ExtensionEnum::EXTENSION_ATLASSIAN->value:
+                    $this->atlassianExtension = $extension; // @phpstan-ignore assign.propertyType
                     break;
-                case IExtension::EXTENSION_ATLASSIAN_ADMIN == $key:
-                    $this->adminExtension = $extension;
+                case ExtensionEnum::EXTENSION_ATLASSIAN_ADMIN->value:
+                    $this->adminExtension = $extension; // @phpstan-ignore assign.propertyType
                     break;
-                case IExtension::EXTENSION_ATLASSIAN_USER_MACRO == $key:
-                    $this->userMacroExtension = $extension;
+                case ExtensionEnum::EXTENSION_ATLASSIAN_USER_MACRO->value:
+                    $this->userMacroExtension = $extension; // @phpstan-ignore assign.propertyType
                     break;
-                case IExtension::EXTENSION_THIRD_PARTY == $key:
-                    $this->thirdPartyExtension = $extension;
+                case ExtensionEnum::EXTENSION_THIRD_PARTY->value:
+                    $this->thirdPartyExtension = $extension; // @phpstan-ignore assign.propertyType
                     break;
-                case IExtension::EXTENSION_PROJECTDOC_TOOLBOX == $key:
-                    $this->projectdocExtension = $extension;
+                case ExtensionEnum::EXTENSION_PROJECTDOC_TOOLBOX->value:
+                    $this->projectdocExtension = $extension; // @phpstan-ignore assign.propertyType
                     break;
                 default:
                     Emergency::breakSystem(ExitCodes::ERR_CODE_EXTENSION_NOT_LOADED, sprintf('Extension not loaded: %s, %s ', $key, print_r($extension, true)));
@@ -97,47 +107,30 @@ trait ExtensionTrait
     }
 
     /**
-     * Init all extensions.
+     * Init extensions into a map.
      *
-     * @param int $modeExtension
+     * @param ExtensionEnum $modeExtension
      *
-     * @return Map<mixed,IExtension|mixed>
+     * @return Map<mixed,IExtension>
      */
-    protected function initExtensions(int $modeExtension): Map
+    protected function initExtensions(ExtensionEnum $modeExtension): Map
     {
         self::$logger->debug('START', [$modeExtension]);
 
+        /** @var Map<mixed,IExtension> $extensions */
         $extensions = new Map();
-        if ((IExtension::EXTENSION_RAPI_CLIENT & $modeExtension) == IExtension::EXTENSION_RAPI_CLIENT) {
-            $extensions->put(RapiClientExtension::getId(), new RapiClientExtension());
-        } else {
-            self::$logger->notice('RapiClientExtension not loaded');
+
+        foreach (self::EXTENSION_AVAIL as $extensionEnum) {
+            if ($extensionEnum->isIn($modeExtension)) {
+                $newInstance = $extensionEnum->objectValue();
+                if (!empty($newInstance)) {
+                    $extensions->put($newInstance->getId(), $newInstance); // @phpstan-ignore staticMethod.dynamicCall
+                }
+            } else {
+                self::$logger->notice('Extension not loaded', [$extensionEnum->name]);
+            }
         }
-        if ((IExtension::EXTENSION_ATLASSIAN & $modeExtension) == IExtension::EXTENSION_ATLASSIAN) {
-            $extensions->put(AtlassianExtension::getId(), new AtlassianExtension());
-        } else {
-            self::$logger->notice('AtlassianExtension not loaded');
-        }
-        if ((IExtension::EXTENSION_ATLASSIAN_ADMIN & $modeExtension) == IExtension::EXTENSION_ATLASSIAN_ADMIN) {
-            $extensions->put(AdminExtension::getId(), new AdminExtension());
-        } else {
-            self::$logger->notice('AdminExtension not loaded');
-        }
-        if ((IExtension::EXTENSION_ATLASSIAN_USER_MACRO & $modeExtension) == IExtension::EXTENSION_ATLASSIAN_USER_MACRO) {
-            $extensions->put(UserMacroExtension::getId(), new UserMacroExtension());
-        } else {
-            self::$logger->notice('UserMacroExtension not loaded');
-        }
-        if ((IExtension::EXTENSION_THIRD_PARTY & $modeExtension) == IExtension::EXTENSION_THIRD_PARTY) {
-            $extensions->put(ThirdPartyExtension::getId(), new ThirdPartyExtension());
-        } else {
-            self::$logger->notice('ThirdPartyMacro not loaded');
-        }
-        if ((IExtension::EXTENSION_PROJECTDOC_TOOLBOX & $modeExtension) == IExtension::EXTENSION_PROJECTDOC_TOOLBOX) {
-            $extensions->put(ProjectdocExtension::getId(), new ProjectdocExtension());
-        } else {
-            self::$logger->notice('ProjectdocExtension not loaded');
-        }
+
         self::$logger->debug('END');
 
         return $extensions;

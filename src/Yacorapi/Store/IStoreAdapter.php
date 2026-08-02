@@ -27,12 +27,17 @@ interface IStoreAdapter
     public const string KEY_TITLE  = 'title';
 
     /**
-     * @param mixed $dataContent
+     * @param mixed $dataContent The content which will be stored
      */
     public function storeData(mixed $dataContent): void;
 
     /**
-     * @param string|string[] $dataHeader
+     * @param string|string[] $dataHeader A header which will be stored
      */
     public function storeDataHeader(string|array $dataHeader): void;
+
+    /**
+     * @return string The item which is stored
+     */
+    public function getStoreItem(): string;
 }

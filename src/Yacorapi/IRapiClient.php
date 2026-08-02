@@ -18,6 +18,7 @@ use oglow\tools\common\IContainer;
 use oglow\tools\Yacorapi\Data\ItemTypeEnum;
 use oglow\tools\Yacorapi\Data\RequestParameterData;
 use oglow\tools\Yacorapi\Data\SpaceTypeEnum;
+use oglow\tools\Yacorapi\Extension\ExtensionEnum;
 use oglow\tools\Yacorapi\Macro\AddonTypeEnum;
 use oglow\tools\Yacorapi\Response\ResponseAddonMacroDecorate;
 use oglow\tools\Yacorapi\Statistic\IStatistic;
@@ -27,6 +28,8 @@ interface IRapiClient
 {
     /** Default output level (INFO) */
     public const string LEVEL_DEFAULT = LogLevel::INFO;
+
+    public const ExtensionEnum EXTENSION_DEFAULT = ExtensionEnum::EXTENSION_ALL;
 
     public const string MSG_PARENT_ID_MUST_BE_NUMERIC = 'parentId must be numeric!';
 
@@ -51,7 +54,7 @@ interface IRapiClient
     /**
      * Create new RapiClient.
      *
-     * @param null|int                 $modeExtension
+     * @param null|ExtensionEnum       $modeExtension      (Default: {@link IRapiClient::EXTENSION_DEFAULT})
      * @param null|IConnectionProvider $connectionProvider
      * @param null|IContainer          $addons
      * @param int|LogLevel|string      $level              (Default: {@link IRapiClient::LEVEL_DEFAULT})
@@ -59,9 +62,10 @@ interface IRapiClient
      * @return IRapiClient
      *
      * @see IRapiClient::LEVEL_DEFAULT
+     * @see IRapiClient::EXTENSION_DEFAULT
      */
     public static function newClient(
-        ?int $modeExtension = null,
+        ?ExtensionEnum $modeExtension = IRapiClient::EXTENSION_DEFAULT,
         ?IConnectionProvider $connectionProvider = null,
         ?IContainer $addons = null,
         mixed $level = IRapiClient::LEVEL_DEFAULT

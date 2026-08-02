@@ -19,11 +19,13 @@ use oglow\tools\Yacorapi\YacorapiTestData;
 
 class ExtensionTestDummyClazz implements IExtension
 {
+    #[\Override]
     public static function getName(): string
     {
         return ExtensionTestDummyClazz::class;
     }
 
+    #[\Override]
     public static function getId(): int
     {
         return YacorapiTestData::NOTEXIST_ID;
@@ -34,6 +36,7 @@ class ExtensionTestDummyClazz implements IExtension
      *
      * @return Map<mixed,Vector<mixed>>
      */
+    #[\Override]
     public function getAddons(): Map
     {
         return new Map();
@@ -42,6 +45,7 @@ class ExtensionTestDummyClazz implements IExtension
     /**
      * @return Vector<mixed>
      */
+    #[\Override]
     public function getMacros(): Vector
     {
         return new Vector();

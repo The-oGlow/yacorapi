@@ -19,6 +19,7 @@ class SingleAddon extends AbstractAddon
 {
     public const AddonTypeEnum ADDON_TYPE = AddonTypeEnum::ADDON_SINGLE;
 
+    #[\Override]
     protected function init(): void
     {
         parent::init();

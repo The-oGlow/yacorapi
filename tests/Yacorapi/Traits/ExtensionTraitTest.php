@@ -16,6 +16,7 @@ namespace oglow\tools\Yacorapi\Traits;
 use Ds\Map;
 use Ds\Vector;
 use Monolog\ConsoleLogger;
+use oglow\tools\Yacorapi\Extension\ExtensionEnum;
 use oglow\tools\Yacorapi\Extension\IExtension;
 use oglow\tools\Yacorapi\YacorapiTestData;
 use PHPUnit\Framework\EasyGoingTestCase;
@@ -51,23 +52,23 @@ class ExtensionTraitTest extends EasyGoingTestCase
      */
     protected function getPublicInitExtensions(): Map
     {
-        $modeExtension = IExtension::EXTENSION_ALL;
+        $modeExtension = ExtensionEnum::EXTENSION_ALL;
 
         return $this->getCasto2t()->publicInitExtensions($modeExtension);
     }
 
     public function testInitExtensions(): void
     {
+        $expectedExtensions = ExtensionEnum::casesExtensions();
         $expectedSize = YacorapiTestData::EXTENSIONS_COUNT_TOTAL;
-        /** @var Map<mixed,mixed> $expectedExtensions */
-        $expectedExtensions = new Map(YacorapiTestData::EXTENSIONS_NAMES);
 
         $actual = $this->getPublicInitExtensions();
 
         self::assertCount($expectedSize, $actual);
-        self::assertEquals($expectedExtensions->keys(), $actual->keys());
-        foreach ($expectedExtensions as $key => $value) {
-            self::assertInstanceOf($value, $actual->get($key));
+        foreach ($expectedExtensions as $extensionEnum) {
+            /** @var class-string */
+            $clazzName = $extensionEnum->text();
+            self::assertInstanceOf($clazzName, $actual->get($extensionEnum->value));
         }
     }
 
