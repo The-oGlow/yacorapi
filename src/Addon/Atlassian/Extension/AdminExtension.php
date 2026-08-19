@@ -16,7 +16,6 @@ namespace oglow\tools\Addon\Atlassian\Extension;
 use oglow\tools\Addon\Atlassian\Macro\AdminAddon;
 use oglow\tools\Yacorapi\Extension\AbstractExtension;
 use oglow\tools\Yacorapi\Extension\ExtensionEnum;
-use oglow\tools\Yacorapi\Extension\PrepPermissionTrait;
 use oglow\tools\Yacorapi\IConnectionProvider;
 
 /**
@@ -24,8 +23,6 @@ use oglow\tools\Yacorapi\IConnectionProvider;
  */
 class AdminExtension extends AbstractExtension
 {
-    use PrepPermissionTrait;
-
     /** @psalm-suppress PropertyNotSetInConstructor     */
     protected IConnectionProvider $connectionProvider;
 

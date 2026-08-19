@@ -30,7 +30,7 @@ trait ClientPermissionTrait
     {
         self::$logger->debug('START - pageId', [$pageId]);
 
-        $prepareUrl = $this->adminExtension->prepareRestrictByOpUrl($pageId);
+        $prepareUrl = $this->prepareRestrictByOpUrl($pageId);
 
         return $this->exec($prepareUrl);
     }
