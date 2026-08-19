@@ -17,12 +17,12 @@ use Ds\Map;
 use Ds\Vector;
 use oglow\tools\Yacorapi\YacorapiTestData;
 
-class ExtensionTestDummyClazz implements IExtension
+class IExtensionTestDummyClazz implements IExtension
 {
     #[\Override]
     public static function getName(): string
     {
-        return ExtensionTestDummyClazz::class;
+        return IExtensionTestDummyClazz::class;
     }
 
     #[\Override]

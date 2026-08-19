@@ -11,7 +11,7 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace oglow\tools\Yacorapi\Traits;
+namespace oglow\tools\Yacorapi\Extension;
 
 use Ds\Map;
 use Ds\Vector;
@@ -21,9 +21,6 @@ use oglow\tools\Addon\Projectdoc\Extension\ProjectdocExtension;
 use oglow\tools\Addon\ThirdParty\Extension\ThirdPartyExtension;
 use oglow\tools\Addon\UserMacro\Extension\UserMacroExtension;
 use oglow\tools\Yacorapi\ExitCodes;
-use oglow\tools\Yacorapi\Extension\ExtensionEnum;
-use oglow\tools\Yacorapi\Extension\IExtension;
-use oglow\tools\Yacorapi\Extension\RapiClientExtension;
 use ollily\Tools\Emergency;
 
 trait ExtensionTrait
@@ -36,7 +33,7 @@ trait ExtensionTrait
         ExtensionEnum::EXTENSION_PROJECTDOC_TOOLBOX,
     ];
 
-    protected RapiClientExtension $commonExtension;
+    //    protected RapiClientExtension $commonExtension;
 
     protected AdminExtension $adminExtension;
 
@@ -82,7 +79,7 @@ trait ExtensionTrait
             self::$logger->debug('Key,Ext', [$key]);
             switch ($key) {
                 case ExtensionEnum::EXTENSION_RAPI_CLIENT->value:
-                    $this->commonExtension = $extension; // @phpstan-ignore assign.propertyType
+                    //                    $this->commonExtension = $extension; // @phpstan-ignore assign.propertyType
                     break;
                 case ExtensionEnum::EXTENSION_ATLASSIAN->value:
                     $this->atlassianExtension = $extension; // @phpstan-ignore assign.propertyType

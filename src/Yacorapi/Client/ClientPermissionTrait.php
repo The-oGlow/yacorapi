@@ -11,17 +11,31 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace oglow\tools\Yacorapi\Traits;
+namespace oglow\tools\Yacorapi\Client;
 
 use Ds\Map;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\Data\QueryExtensionEnum;
 use oglow\tools\Yacorapi\Data\RequestParameterData;
+use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Request\RequestTypeEnum;
 
-trait PrepPermissionTrait
+trait ClientPermissionTrait
 {
-    public function prepareRestrictByOpUrl(int $pageId): string
+    /**
+     * @inheritDoc
+     */
+    #[\Override]
+    public function readRestrictionsByPageId(int $pageId): IResponse
+    {
+        self::$logger->debug('START - pageId', [$pageId]);
+
+        $prepareUrl = $this->adminExtension->prepareRestrictByOpUrl($pageId);
+
+        return $this->exec($prepareUrl);
+    }
+
+    protected function prepareRestrictByOpUrl(int $pageId): string
     {
         return sprintf(
             '%s/%s' . ConstData::C_RAPI_RESTRICTION_BYOP . '?%s',
@@ -31,7 +45,7 @@ trait PrepPermissionTrait
         );
     }
 
-    public function prepareRestrictUpdateUrl(int $pageId): string
+    protected function prepareRestrictUpdateUrl(int $pageId): string
     {
         return sprintf(
             '%s/%s' . ConstData::C_RAPI_RESTRICTION,
@@ -51,23 +65,24 @@ trait PrepPermissionTrait
      *
      * @SuppressWarnings("PHPMD.UnusedFormalParameter")
      */
+    #[\Override]
     public function writeRestrictionsByPageId(int $pageId, array $writeRestrictions = [], array $readRestrictions = []): bool // NOSONAR: php:S1172
     {
-        $success    = false;
+        $success = false;
         $prepareUrl = $this->prepareRestrictUpdateUrl($pageId);
 
-        $prepareParameters             =  new Map();
+        $prepareParameters = new Map();
         $prepareParametersRestrictions = ['restrictions' => []];
-        $prefix                        = [
+        $prefix = [
             'content' => [
-                'expanded'     => true,
+                'expanded' => true,
                 'idProperties' => new \stdClass(),
             ],
         ];
 
         if (!empty($writeRestrictions)) {
             $prepareParametersWrite = [
-                'operation'    => 'update',
+                'operation' => 'update',
                 'restrictions' => $this->addRestrictionForUser($writeRestrictions),
             ];
             // 'lastModificationDate' => date('Y-m-d\TH:i:s\Z')
@@ -78,7 +93,7 @@ trait PrepPermissionTrait
 
         if (!empty($readRestrictions)) {
             $prepareParametersRead = [
-                'operation'    => 'read',
+                'operation' => 'read',
                 'restrictions' => $this->addRestrictionForUser($readRestrictions),
             ];
             self::$logger->info('', [$prepareParametersRead]);
@@ -109,15 +124,14 @@ trait PrepPermissionTrait
      *
      * REFACTOR: Switch array to Map
      */
-    public function addRestrictionForUser(array $readRestrictions): array
+    protected function addRestrictionForUser(array $readRestrictions): array
     {
         self::$logger->debug('START - readRestrictions', [$readRestrictions]);
 
         $readUser = [];
         if (array_key_exists(RequestParameterData::PROP_USER, $readRestrictions)) {
             foreach ($readRestrictions[RequestParameterData::PROP_USER] as $readRestriction) {
-                $readUser[] =
-                [RequestParameterData::PROP_TYPE => RequestParameterData::USER_TYPE_KNOWN, RequestParameterData::PROP_USERNAME => $readRestriction];
+                $readUser[] = [RequestParameterData::PROP_TYPE => RequestParameterData::USER_TYPE_KNOWN, RequestParameterData::PROP_USERNAME => $readRestriction];
             }
         }
 
@@ -132,15 +146,14 @@ trait PrepPermissionTrait
      *
      * REFACTOR: Switch array to Map
      */
-    public function addRestrictionForGroup(array $readRestrictions): array
+    protected function addRestrictionForGroup(array $readRestrictions): array
     {
         self::$logger->debug('START - readRestrictions', [$readRestrictions]);
 
         $readGroup = [];
         if (array_key_exists(RequestParameterData::PROP_GROUP, $readRestrictions)) {
             foreach ($readRestrictions[RequestParameterData::PROP_GROUP] as $readRestriction) {
-                $readGroup[] =
-                [RequestParameterData::PROP_TYPE => RequestParameterData::USER_TYPE_KNOWN, RequestParameterData::PROP_USERNAME => $readRestriction];
+                $readGroup[] = [RequestParameterData::PROP_TYPE => RequestParameterData::USER_TYPE_KNOWN, RequestParameterData::PROP_USERNAME => $readRestriction];
             }
         }
 

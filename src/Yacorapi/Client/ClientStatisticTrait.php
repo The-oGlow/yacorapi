@@ -15,7 +15,9 @@ namespace oglow\tools\Yacorapi\Client;
 
 use Ds\Map;
 use Ds\Vector;
+use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\Data\ItemTypeEnum;
+use oglow\tools\Yacorapi\Data\QueryExtensionEnum;
 use oglow\tools\Yacorapi\Data\SpaceTypeEnum;
 use oglow\tools\Yacorapi\IRapiClient;
 use oglow\tools\Yacorapi\IResponse;
@@ -27,7 +29,7 @@ use oglow\tools\Yacorapi\Statistic\StatisticStatistic;
 use oglow\tools\Yacorapi\Statistic\StatisticTypeEnum;
 use oglow\tools\Yacorapi\Statistic\ValueStatistic;
 
-trait RapiStatisticTrait
+trait ClientStatisticTrait
 {
     /**
      * REFACTOR: Listing only 100 spaces, loop is missing.
@@ -39,7 +41,7 @@ trait RapiStatisticTrait
     {
         self::$logger->debug('START - spaceType,limit', [$spaceType, $limit]);
 
-        $prepareUrl = $this->commonExtension->prepareSpaceListUrl($spaceType, $limit);
+        $prepareUrl = $this->prepareSpaceListUrl($spaceType, $limit);
 
         return new ResponseSpaceDataDecorate($this->exec($prepareUrl));
     }
@@ -52,7 +54,7 @@ trait RapiStatisticTrait
     {
         self::$logger->debug('START - spaceKey, itemType', [$spaceKey, $itemType]);
 
-        $prepareUrl = $this->commonExtension->prepareCountItemsUrl($itemType, $spaceKey);
+        $prepareUrl = $this->prepareCountItemsUrl($itemType, $spaceKey);
         $response = $this->exec($prepareUrl);
 
         $itemCount = $response->getValue(IResponse::KEY_TOTAL_SIZE, 0);
@@ -154,14 +156,14 @@ trait RapiStatisticTrait
             self::$logger->debug('Checking Space with Macro - START', [++$cntIdx, $cntMacros, $spaceKey, $addOn, $macroName]);
 
             $searchTerm = "macroName:$macroName";
-            $prepareUrl = $this->commonExtension->prepareSearchUrlExt(
+            $prepareUrl = $this->prepareSearchUrlExt(
                 $searchTerm,
                 $spaceKey,
                 IRapiClient::REQ_SEARCH_FROM_POS,
                 IRapiClient::REQ_SEARCH_LIMIT_1ENTRY
             );
             $response = $this->exec($prepareUrl);
-            $countMacros = $this->commonExtension->analyzeResponse($response);
+            $countMacros = $this->analyzeResponse($response);
 
             $outputMatrix = $this->prepareMatrix($outputMatrix, $spaceKey, $addOn, $macroName, $countMacros);
             self::$logger->info('Found', [$cntIdx, $cntMacros, $spaceKey, $addOn, $macroName, $countMacros]);
@@ -213,4 +215,123 @@ trait RapiStatisticTrait
 
         return $outputMatrix;
     }
+
+    protected function prepareSpacePagesUrl(
+        string $space,
+        ItemTypeEnum $pageType = ItemTypeEnum::PAGE,
+        int $start = ConstData::PAGE_START,
+        int $limit = ConstData::PAGE_LIMIT
+    ): string {
+        return sprintf(
+            '%s/%s/content/%s?start=%s&limit=%s&%s',
+            $this->constData->c(ConstData::KEY_CONF_SPACE_URL),
+            $space,
+            $pageType->value,
+            $start,
+            $limit,
+            QueryExtensionEnum::REQP_FULL->value
+        );
+    }
+
+    protected function prepareSpaceListUrl(
+        SpaceTypeEnum $spaceType = SpaceTypeEnum::SPACE_TYPE_GLOBAL,
+        int $limit = ConstData::PAGE_LIMIT
+    ): string {
+        return sprintf(
+            '%s?%s&type=%s&limit=%s',
+            $this->constData->c(ConstData::KEY_CONF_SPACE_URL),
+            QueryExtensionEnum::REQP_SPACE_LIST->value,
+            $spaceType->value,
+            $limit
+        );
+    }
+
+    protected function prepareCountItemsUrl(ItemTypeEnum $itemType, string $spaceKey): string
+    {
+        return ((string) $this->constData->c(ConstData::KEY_CONF_SEARCH_URL)) . "?cql=type+in+(" . $itemType->value . ")+AND+space=$spaceKey";
+    }
+
+    //    public function prepareSpaceArray(?array $results, bool $noArchived = true, bool $asCsv = true): array
+    //    {
+    //        $spaces = [];
+    //
+    //        if (is_array($results))
+    //        {
+    //            if ($asCsv)
+    //            {
+    //                $idx = 0;
+    //                foreach ($results as $result)
+    //                {
+    //                    $line = '';
+    //                    if (is_array($result))
+    //                    {
+    //                        $addResult = true;
+    //                        if ($noArchived)
+    //                        {
+    //                            $descr = $result['description']['plain']['value'];
+    //                            if (false !== stripos($descr, SpaceResponseAdapter::SPACE_ARCH_FLAG1) || (false !== stripos(
+    //                                        $descr,
+    //                                        SpaceResponseAdapter::SPACE_ARCH_FLAG2
+    //                                    ))
+    //                            )
+    //                            {
+    //                                $addResult = false;
+    //                            }
+    //                        }
+    //                        if ($addResult)
+    //                        {
+    //                            $spaces[] = $result['key'];
+    //
+    //                            $line .= sprintf(
+    //                                '%s;%s;%s;%s',
+    //                                $idx++,
+    //                                $result['key'],
+    //                                $result['type'],
+    //                                'status'
+    //                            );
+    //                            $line .= sprintf(
+    //                                ";\"%s\";\"%s\"",
+    //                                $result['name'],
+    //                                htmlentities(
+    //                                    implode(
+    //                                        explode(
+    //                                            PHP_EOL,
+    //                                            $result['description']['plain']['value']
+    //                                        )
+    //                                    )
+    //                                )
+    //                            );
+    //                        } else
+    //                        {
+    //                            self::$logger->info('  ++ Space already archived', [$result['key']]);
+    //                        }
+    //                    }
+    //                    self::$logger->debug($line);
+    //                }
+    //            } else
+    //            {
+    //                foreach ($results as $result)
+    //                {
+    //                    if (is_array($result))
+    //                    {
+    //                        $spaces[] = $result['key'];
+    //                    }
+    //                }
+    //            }
+    //            natcasesort($spaces);
+    //        }
+    //
+    //        return $spaces;
+    //    }
+    //    public function prepareMySpaceFile(array $spaces): string
+    //    {
+    //        $line = "<?php\ndeclare(strict_types=1);\nfunction _getSpaceListAll(): array {\nreturn [\n";
+    //        foreach ($spaces as $space)
+    //        {
+    //            $line .= sprintf("' % s',\n", $space[SpaceResponseAdapter::SPACE_KEY]);
+    //        }
+    //        $line .= "\n];}\n";
+    //
+    //        return $line;
+    //    }
 }

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Client;
 
 use Ds\Map;
+use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\Data\ItemTypeEnum;
 use oglow\tools\Yacorapi\Data\RequestParameterData;
 use oglow\tools\Yacorapi\IRapiClient;
@@ -21,7 +22,7 @@ use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Request\RequestTypeEnum;
 use oglow\tools\Yacorapi\Response\Response;
 
-trait RapiWriteTrait
+trait ClientWriteTrait
 {
     /**
      * @inheritDoc
@@ -60,7 +61,7 @@ trait RapiWriteTrait
         } else {
             throw new \InvalidArgumentException(IRapiClient::MSG_PARENT_ID_MUST_BE_NUMERIC);
         }
-        $prepareUrl = $this->commonExtension->prepareCreatePage();
+        $prepareUrl = $this->prepareCreatePage();
         $response = $this->execPost($prepareUrl, $parameters, RequestTypeEnum::POST);
 
         self::$logger->debug('END');
@@ -91,7 +92,7 @@ trait RapiWriteTrait
             if (empty($comment)) {
                 $comment = IRapiClient::MSG_UPDATE_PAGE_WITHOUT_CHANGES;
             }
-            $prepareURL = $this->commonExtension->prepareUpdateURL($pageId);
+            $prepareURL = $this->prepareUpdateURL($pageId);
             $parameters = new Map(
                 [
                 RequestParameterData::PROP_ID => $pageId,
@@ -147,11 +148,21 @@ trait RapiWriteTrait
             ]
         );
 
-        $prepareUrl = $this->commonExtension->prepareUpdateURL($pageId);
+        $prepareUrl = $this->prepareUpdateURL($pageId);
         $response = $this->execPost($prepareUrl, $parameters, RequestTypeEnum::PUT);
 
         self::$logger->debug('END');
 
         return $response;
+    }
+
+    protected function prepareUpdateURL(int $pageId): string
+    {
+        return sprintf('%s/%s', $this->constData->c(ConstData::KEY_CONF_CONTENT_URL), $pageId);
+    }
+
+    protected function prepareCreatePage(): string
+    {
+        return sprintf('%s/', $this->constData->c(ConstData::KEY_CONF_CONTENT_URL));
     }
 }

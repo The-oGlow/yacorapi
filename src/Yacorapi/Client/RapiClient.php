@@ -19,13 +19,13 @@ use oglow\tools\common\IContainer;
 use oglow\tools\Yacorapi\Data\ItemTypeEnum;
 use oglow\tools\Yacorapi\Data\SpaceTypeEnum;
 use oglow\tools\Yacorapi\Extension\ExtensionEnum;
+use oglow\tools\Yacorapi\Extension\ExtensionTrait;
 use oglow\tools\Yacorapi\IConnectionProvider;
 use oglow\tools\Yacorapi\IRapiClient;
 use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Macro\AddonTypeEnum;
 use oglow\tools\Yacorapi\Response\ResponseAddonMacroDecorate;
 use oglow\tools\Yacorapi\Statistic\IStatistic;
-use oglow\tools\Yacorapi\Traits\ExtensionTrait;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -56,10 +56,10 @@ use Psr\Log\LoggerInterface;
 class RapiClient extends AbstractRapiClient implements IRapiClient // NOSONAR: php:S1448
 {
     use ExtensionTrait;
-    use RapiReadTrait;
-    use RapiWriteTrait;
-    use RapiRestrictionTrait;
-    use RapiStatisticTrait;
+    use ClientReadTrait;
+    use ClientWriteTrait;
+    use ClientPermissionTrait;
+    use ClientStatisticTrait;
 
     private static LoggerInterface $logger;
 

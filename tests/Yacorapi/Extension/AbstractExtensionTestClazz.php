@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Extension;
 
+use oglow\tools\Yacorapi\Macro\AbstractExtensionTestAddon;
 use oglow\tools\Yacorapi\YacorapiTestData;
 
 class AbstractExtensionTestClazz extends AbstractExtension
 {
+    #[\Override]
     protected function init(): void
     {
         parent::init();
@@ -26,6 +28,7 @@ class AbstractExtensionTestClazz extends AbstractExtension
     /**
      * @inheritDoc
      */
+    #[\Override]
     public static function getName(): string
     {
         return YacorapiTestData::NOTEXIST_NAME;
@@ -34,6 +37,7 @@ class AbstractExtensionTestClazz extends AbstractExtension
     /**
      * @inheritDoc
      */
+    #[\Override]
     public static function getId(): int
     {
         return YacorapiTestData::NOTEXIST_ID;

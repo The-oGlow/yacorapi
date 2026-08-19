@@ -16,22 +16,22 @@ namespace oglow\tools\Yacorapi\Extension;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\EasyGoingTestCase;
 
-class ExtensionTest extends EasyGoingTestCase
+class IExtensionTest extends EasyGoingTestCase
 {
     /**
-     * @return ExtensionTestDummyClazz
+     * @return IExtensionTestDummyClazz
      */
     #[\Override]
-    protected static function prepareO2t(): ExtensionTestDummyClazz
+    protected static function prepareO2t(): IExtensionTestDummyClazz
     {
-        return new ExtensionTestDummyClazz();
+        return new IExtensionTestDummyClazz();
     }
 
     /**
-     * @return ExtensionTestDummyClazz
+     * @return IExtensionTestDummyClazz
      */
     #[\Override]
-    protected function getCasto2t(): ExtensionTestDummyClazz
+    protected function getCasto2t(): IExtensionTestDummyClazz
     {
         return $this->o2t;
     }

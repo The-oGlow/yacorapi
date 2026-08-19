@@ -11,25 +11,25 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace oglow\tools\Yacorapi\Traits;
+namespace oglow\tools\Yacorapi\Client;
 
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\YacorapiTestData;
 use PHPUnit\Framework\EasyGoingTestCase;
 
-class PrepWriteTraitTest extends EasyGoingTestCase
+class ClientWriteTraitTest extends EasyGoingTestCase
 {
     #[\Override]
-    protected static function prepareO2t(): PrepWriteTraitTestClazz
+    protected static function prepareO2t(): ClientWriteTraitTestClazz
     {
-        return new PrepWriteTraitTestClazz();
+        return new ClientWriteTraitTestClazz();
     }
 
     /**
      * @inheritDoc
      */
     #[\Override]
-    protected function getCasto2t(): PrepWriteTraitTestClazz
+    protected function getCasto2t(): ClientWriteTraitTestClazz
     {
         return $this->o2t;
     }
@@ -41,7 +41,7 @@ class PrepWriteTraitTest extends EasyGoingTestCase
         $expected1 = ConstData::C_RAPI_CONTENT;
         $expected2 = "$pageId";
 
-        $actual = $this->getCasto2t()->prepareUpdateURL($pageId);
+        $actual = $this->getCasto2t()->publicPrepareUpdateURL($pageId);
 
         self::assertStringContainsString($expected1, $actual);
         self::assertStringContainsString($expected2, $actual);
@@ -51,7 +51,7 @@ class PrepWriteTraitTest extends EasyGoingTestCase
     {
         $expected1 = ConstData::C_RAPI_CONTENT;
 
-        $actual = $this->getCasto2t()->prepareCreatePage();
+        $actual = $this->getCasto2t()->publicPrepareCreatePage();
 
         self::assertStringContainsString($expected1, $actual);
     }

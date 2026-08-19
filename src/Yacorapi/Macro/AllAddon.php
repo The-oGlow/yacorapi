@@ -15,7 +15,7 @@ namespace oglow\tools\Yacorapi\Macro;
 
 use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\Extension\ExtensionEnum;
-use oglow\tools\Yacorapi\Traits\ExtensionTrait;
+use oglow\tools\Yacorapi\Extension\ExtensionTrait;
 use Psr\Log\LoggerInterface;
 
 class AllAddon extends AbstractAddon

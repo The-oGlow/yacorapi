@@ -19,11 +19,11 @@
     <testsuites>
         <testsuite name="main">
             <directory>./tests</directory>
-            <exclude>./tests/Yacorapi/RapiClientTest.php</exclude>
+            <exclude>./tests/Yacorapi/Client/RapiClientTest.php</exclude>
             <exclude>./tests/Addon/Projectdoc/**/*</exclude>
         </testsuite>
         <testsuite name="rapi">
-            <file>./tests/Yacorapi/RapiClientTest.php</file>
+            <file>./tests/Yacorapi/Client/RapiClientTest.php</file>
         </testsuite>
         <testsuite name="pdt">
             <directory>./tests/Addon/Projectdoc</directory>

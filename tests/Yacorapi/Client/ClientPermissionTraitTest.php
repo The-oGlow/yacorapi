@@ -11,26 +11,26 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace oglow\tools\Yacorapi\Traits;
+namespace oglow\tools\Yacorapi\Client;
 
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\Data\RequestParameterData;
 use oglow\tools\Yacorapi\YacorapiTestData;
 use PHPUnit\Framework\EasyGoingTestCase;
 
-class PrepPermissionTraitTest extends EasyGoingTestCase
+class ClientPermissionTraitTest extends EasyGoingTestCase
 {
     #[\Override]
-    protected static function prepareO2t(): PrepPermissionTraitTestClazz
+    protected static function prepareO2t(): ClientPermissionTraitTestClazz
     {
-        return new PrepPermissionTraitTestClazz();
+        return new ClientPermissionTraitTestClazz();
     }
 
     /**
      * @inheritDoc
      */
     #[\Override]
-    protected function getCasto2t(): PrepPermissionTraitTestClazz
+    protected function getCasto2t(): ClientPermissionTraitTestClazz
     {
         return $this->o2t;
     }
@@ -42,7 +42,7 @@ class PrepPermissionTraitTest extends EasyGoingTestCase
         $expected1 = ConstData::C_RAPI_RESTRICTION_BYOP;
         $expected2 = "$pageId";
 
-        $actual = $this->getCasto2t()->prepareRestrictByOpUrl($pageId);
+        $actual = $this->getCasto2t()->publicPrepareRestrictByOpUrl($pageId);
 
         self::assertStringContainsString($expected1, $actual);
         self::assertStringContainsString($expected2, $actual);
@@ -55,7 +55,7 @@ class PrepPermissionTraitTest extends EasyGoingTestCase
         $expected1 = ConstData::C_RAPI_RESTRICTION;
         $expected2 = "$pageId";
 
-        $actual = $this->getCasto2t()->prepareRestrictUpdateUrl($pageId);
+        $actual = $this->getCasto2t()->publicPrepareRestrictUpdateUrl($pageId);
 
         self::assertStringContainsString($expected1, $actual);
         self::assertStringContainsString($expected2, $actual);
@@ -67,7 +67,7 @@ class PrepPermissionTraitTest extends EasyGoingTestCase
 
         $expected1 = true;
 
-        $actual = $this->getCasto2t()->writeRestrictionsByPageId($pageId);
+        $actual = $this->getCasto2t()->publicWriteRestrictionsByPageId($pageId);
 
         self::assertEquals($expected1, $actual);
     }
@@ -78,7 +78,7 @@ class PrepPermissionTraitTest extends EasyGoingTestCase
 
         $expected1 = [RequestParameterData::PROP_GROUP => []];
 
-        $actual       = $this->getCasto2t()->addRestrictionForGroup($restrictions);
+        $actual       = $this->getCasto2t()->publicAddRestrictionForGroup($restrictions);
 
         self::assertEquals($expected1, $actual);
     }
@@ -89,7 +89,7 @@ class PrepPermissionTraitTest extends EasyGoingTestCase
 
         $expected1 = [RequestParameterData::PROP_USER => []];
 
-        $actual       = $this->getCasto2t()->addRestrictionForUser($restrictions);
+        $actual       = $this->getCasto2t()->publicAddRestrictionForUser($restrictions);
 
         self::assertEquals($expected1, $actual);
     }

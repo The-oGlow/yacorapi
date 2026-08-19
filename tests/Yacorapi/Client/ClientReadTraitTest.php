@@ -11,29 +11,28 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace oglow\tools\Yacorapi\Traits;
+namespace oglow\tools\Yacorapi\Client;
 
 use oglow\tools\Yacorapi\ConstData;
-use oglow\tools\Yacorapi\Data\ItemTypeEnum;
 use oglow\tools\Yacorapi\Response\Response;
 use oglow\tools\Yacorapi\YacorapiTestData;
 use PHPUnit\Framework\EasyGoingTestCase;
 
-class PrepReadTraitTest extends EasyGoingTestCase
+class ClientReadTraitTest extends EasyGoingTestCase
 {
     private const string C_FILTER_SPACEKEY = '&spaceKey=';
 
     #[\Override]
-    protected static function prepareO2t(): PrepReadTraitTestClazz
+    protected static function prepareO2t(): ClientReadTraitTestClazz
     {
-        return new PrepReadTraitTestClazz();
+        return new ClientReadTraitTestClazz();
     }
 
     /**
      * @inheritDoc
      */
     #[\Override]
-    protected function getCasto2t(): PrepReadTraitTestClazz
+    protected function getCasto2t(): ClientReadTraitTestClazz
     {
         return $this->o2t;
     }
@@ -43,7 +42,7 @@ class PrepReadTraitTest extends EasyGoingTestCase
         $response = new Response();
 
         $expected = YacorapiTestData::C_RESPONSE_SIZE_EMPTY;
-        $actual   = $this->getCasto2t()->analyzeResponse($response);
+        $actual   = $this->getCasto2t()->publicAnalyzeResponse($response);
 
         self::assertEquals($expected, $actual);
     }
@@ -53,7 +52,7 @@ class PrepReadTraitTest extends EasyGoingTestCase
         $spaceKey   = YacorapiTestData::C_SPACE_EMPTY;
         $prepareUrl = YacorapiTestData::C_SEARCHTERM_EMPTY;
 
-        $actual = $this->getCasto2t()->addSpaceFilter($spaceKey, $prepareUrl);
+        $actual = $this->getCasto2t()->publicAddSpaceFilter($spaceKey, $prepareUrl);
 
         self::assertEmpty($actual);
     }
@@ -65,7 +64,7 @@ class PrepReadTraitTest extends EasyGoingTestCase
 
         $expected = self::C_FILTER_SPACEKEY . $spaceKey;
 
-        $actual = $this->getCasto2t()->addSpaceFilter($spaceKey, $prepareUrl);
+        $actual = $this->getCasto2t()->publicAddSpaceFilter($spaceKey, $prepareUrl);
 
         self::assertEquals($expected, $actual);
     }
@@ -77,7 +76,7 @@ class PrepReadTraitTest extends EasyGoingTestCase
 
         $expected = $prepareUrl . self::C_FILTER_SPACEKEY . $spaceKey;
 
-        $actual = $this->getCasto2t()->addSpaceFilter($spaceKey, $prepareUrl);
+        $actual = $this->getCasto2t()->publicAddSpaceFilter($spaceKey, $prepareUrl);
 
         self::assertEquals($expected, $actual);
     }
@@ -89,7 +88,7 @@ class PrepReadTraitTest extends EasyGoingTestCase
         $expected1 = ConstData::C_RAPI_CONTENT;
         $expected2 = YacorapiTestData::C_SPACE_EMPTY;
 
-        $actual = $this->getCasto2t()->prepareSearchUrl($searchTerm);
+        $actual = $this->getCasto2t()->publicPrepareSearchUrl($searchTerm);
 
         self::assertStringNotContainsString($expected1, $actual);
         self::assertEquals($expected2, $actual);
@@ -104,7 +103,7 @@ class PrepReadTraitTest extends EasyGoingTestCase
         $expected2 = $searchTerm;
         $expected3 = $spaceKey;
 
-        $actual = $this->getCasto2t()->prepareSearchUrlExt($searchTerm, $spaceKey);
+        $actual = $this->getCasto2t()->publicPrepareSearchUrlExt($searchTerm, $spaceKey);
 
         self::assertStringContainsString($expected1, $actual);
         self::assertStringContainsString($expected2, $actual);
@@ -120,7 +119,7 @@ class PrepReadTraitTest extends EasyGoingTestCase
         $expected2 = $filterTerm;
         $expected3 = $spaceKey;
 
-        $actual = $this->getCasto2t()->prepareBrowseUrl($filterTerm, $spaceKey);
+        $actual = $this->getCasto2t()->publicPrepareBrowseUrl($filterTerm, $spaceKey);
 
         self::assertStringContainsString($expected1, $actual);
         self::assertStringContainsString($expected2, $actual);
@@ -135,23 +134,9 @@ class PrepReadTraitTest extends EasyGoingTestCase
         $expected1 = $filterTerm;
         $expected2 = $spaceKey;
 
-        $actual = $this->getCasto2t()->prepareScanUrl($filterTerm, $spaceKey);
+        $actual = $this->getCasto2t()->publicPrepareScanUrl($filterTerm, $spaceKey);
 
         self::assertStringContainsString($expected1, $actual);
-        self::assertStringContainsString($expected2, $actual);
-    }
-
-    public function testPrepareCountItemsUrl(): void
-    {
-        $filterTerm = ItemTypeEnum::PAGE;
-        $spaceKey   = YacorapiTestData::C_SPACE_EXIST_KEY;
-
-        $expected1 = $filterTerm;
-        $expected2 = $spaceKey;
-
-        $actual = $this->getCasto2t()->prepareCountItemsUrl($filterTerm, $spaceKey);
-
-        self::assertStringContainsString($expected1->value, $actual);
         self::assertStringContainsString($expected2, $actual);
     }
 
@@ -162,7 +147,7 @@ class PrepReadTraitTest extends EasyGoingTestCase
         $expected1 = ConstData::C_RAPI_CONTENT;
         $expected2 = "$pageId";
 
-        $actual = $this->getCasto2t()->prepareApiByPageIdUrl($pageId);
+        $actual = $this->getCasto2t()->publicPrepareApiByPageIdUrl($pageId);
 
         self::assertStringContainsString($expected1, $actual);
         self::assertStringContainsString($expected2, $actual);
@@ -175,7 +160,7 @@ class PrepReadTraitTest extends EasyGoingTestCase
         $expected1 = ConstData::C_RAPI_CONTENT;
         $expected2 = "$pageId";
 
-        $actual = $this->getCasto2t()->prepareLoadUrl($pageId);
+        $actual = $this->getCasto2t()->publicPrepareLoadUrl($pageId);
 
         self::assertStringContainsString($expected1, $actual);
         self::assertStringContainsString($expected2, $actual);

@@ -11,14 +11,14 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace oglow\tools\Yacorapi\Extension;
+namespace oglow\tools\Yacorapi\Macro;
 
 use Ds\Vector;
-use oglow\tools\Yacorapi\Macro\AbstractAddon;
 use oglow\tools\Yacorapi\YacorapiTestData;
 
 class AbstractExtensionTestAddon extends AbstractAddon
 {
+    #[\Override]
     protected function init(): void
     {
         parent::init();
