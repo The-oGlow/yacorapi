@@ -40,6 +40,16 @@ class ExtensionTraitTestClazz
      *
      * @return Map<mixed,IExtension>
      */
+    public function publicLoadExtensions(ExtensionEnum $modeExtension): Map
+    {
+        return $this->loadExtensions($modeExtension);
+    }
+
+    /**
+     * @param ExtensionEnum $modeExtension
+     *
+     * @return Map<mixed,IExtension>
+     */
     public function publicInitExtensions(ExtensionEnum $modeExtension): Map
     {
         return $this->initExtensions($modeExtension);
@@ -73,5 +83,10 @@ class ExtensionTraitTestClazz
     public function publicGetExtensionAddonMacrosArray(Map $addons): array
     {
         return $this->getExtensionAddonMacrosArray($addons);
+    }
+
+    public function publiGetExtension(ExtensionEnum $extension): ?IExtension
+    {
+        return $this->getExtension($extension);
     }
 }

@@ -18,12 +18,10 @@ use Monolog\ConsoleLogger;
 use oglow\tools\common\MockProvider;
 use oglow\tools\Yacorapi\IRapiClient;
 use oglow\tools\Yacorapi\IResponse;
-use oglow\tools\Yacorapi\Macro\AddonTypeEnum;
 use oglow\tools\Yacorapi\Response\Response;
 use oglow\tools\Yacorapi\Statistic\StatisticStatistic;
 use oglow\tools\Yacorapi\Statistic\StatisticTypeEnum;
 use oglow\tools\Yacorapi\YacorapiTestData;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\EasyGoingTestCase;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
@@ -73,7 +71,7 @@ class RapiClientTest extends EasyGoingTestCase
         return $this->o2t;
     }
 
-    public function ztestRapiMethods(): void
+    public function testRapiMethods(): void
     {
         $expected = new Set(self::AVAILABLE_METHODS);
 
@@ -89,27 +87,6 @@ class RapiClientTest extends EasyGoingTestCase
             }
         }
         self::assertTrue($expected->isEmpty(), sprintf("Forgotten: '%s'", join('()\',\'', $expected->toArray())));
-    }
-
-    /**
-     * @param string $expected
-     * @param int    $pageId
-     */
-    #[DataProvider('providerReadPageByPageId')]
-    public function testReadPageByPageId(string $expected, int $pageId): void
-    {
-        self::$logger->info('START');
-
-        $response = $this->getCasto2t()->readPageByPageId($pageId);
-
-        self::$logger->info('response', [$response->getResponse()]);
-
-        self::assertNotEmpty($response);
-        $actual = $response->getBody();
-        self::assertStringContainsString($expected, $actual);
-        self::assertTrue($response->getResults()->isEmpty());
-
-        self::$logger->info('END');
     }
 
     public function testCreatePage(): void
@@ -172,66 +149,6 @@ class RapiClientTest extends EasyGoingTestCase
 
         self::$logger->info('response', [$response->getResponse()]);
         self::assertNotEmpty($response);
-
-        self::$logger->info('END');
-    }
-
-    public function testReadPagesWithFilter(): void
-    {
-        self::$logger->info('START');
-
-        $expectedCount = 1;
-
-        $response = $this->getCasto2t()->readPagesWithFilter(YacorapiTestData::C_FILTERTERM_01, YacorapiTestData::C_SPACE_EXIST_KEY);
-
-        $actualCount = $response->getResponse()->get(Response::KEY_TOTAL_SIZE, -1);
-
-        self::$logger->info('response', [$response->getResponse()]);
-        self::$logger->info('results', [$response->getResults()]);
-
-        self::assertNotEmpty($response);
-        self::assertCount($expectedCount, $response->getResults());
-        self::assertCount($actualCount, $response->getResults());
-
-        self::$logger->info('END');
-    }
-
-    public function testScanPagesWithFilter(): void
-    {
-        self::$logger->info('START');
-
-        $expectedCount = 1;
-
-        $response = $this->getCasto2t()->scanPagesWithFilter(YacorapiTestData::C_FILTERTERM_01, YacorapiTestData::C_SPACE_EXIST_KEY);
-
-        $actualCount = $response->getResponse()->get(Response::KEY_TOTAL_SIZE, -1);
-
-        self::$logger->info('response', [$response->getResponse()]);
-        self::$logger->info('results', [$response->getResults()]);
-
-        self::assertNotEmpty($response);
-        self::assertCount($expectedCount, $response->getResults());
-        self::assertCount($actualCount, $response->getResults());
-
-        self::$logger->info('END');
-    }
-
-    public function testSearchPagesWithFilter(): void
-    {
-        self::$logger->info('START');
-
-        $expectedCount = 1;
-
-        $response = $this->getCasto2t()->searchPagesWithFilter(YacorapiTestData::C_FILTERTERM_01, YacorapiTestData::C_SPACE_EXIST_KEY);
-
-        $actualCount = $response->getResponse()->get(Response::KEY_TOTAL_SIZE, -1);
-
-        self::$logger->info('response', [$response->getResponse()]);
-        self::$logger->info('results', [$response->getResults()]);
-
-        self::assertNotEmpty($response);
-        self::assertCount($expectedCount, $response->getResults());
-        self::assertCount($actualCount, $response->getResults());
 
         self::$logger->info('END');
     }
@@ -311,50 +228,5 @@ class RapiClientTest extends EasyGoingTestCase
         self::assertNotEmpty($outputMatrix);
 
         self::$logger->info('END');
-    }
-
-    /**
-     * @param int           $expected
-     * @param AddonTypeEnum $mode
-     */
-    #[DataProvider('providerPrepareAddonSet')]
-    public function testPrepareAddonSet(int $expected, AddonTypeEnum $mode): void
-    {
-        self::$logger->info('START');
-
-        $response = $this->getCasto2t()->prepareAddonSet($mode);
-
-        self::$logger->info('response', [$response->getResponse()]);
-
-        self::assertNotEmpty($response);
-        self::assertCount($expected, $response->getResponse());
-        self::assertTrue($response->getResults()->isEmpty());
-
-        self::$logger->info('END');
-    }
-
-    // Dataprovider
-
-    /**
-     * @return array<mixed,mixed>
-     */
-    public static function providerReadPageByPageId(): array
-    {
-        return [
-            'exists' => [YacorapiTestData::HTML_PAGE, YacorapiTestData::C_SEARCHPAGEID_01],
-            'notExist' => [YacorapiTestData::DATA_EMPTY, YacorapiTestData::C_PAGEID_NOTEXIST],
-        ];
-    }
-
-    /**
-     * @return array<mixed,mixed>
-     */
-    public static function providerPrepareAddonSet(): array
-    {
-        return [
-            'default' => [18, AddonTypeEnum::ADDON_ALL],
-            'blocker' => [11, AddonTypeEnum::ADDON_BLOCKER],
-            'single' => [1, AddonTypeEnum::ADDON_SINGLE],
-        ];
     }
 }

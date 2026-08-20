@@ -17,6 +17,7 @@ use Ds\Map;
 use Ds\Vector;
 use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\YacorapiTestData;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\EasyGoingTestCase;
 use Psr\Log\LoggerInterface;
 
@@ -61,6 +62,22 @@ class ExtensionTraitTest extends EasyGoingTestCase
         $expectedSize = YacorapiTestData::EXTENSIONS_COUNT_TOTAL;
 
         $actual = $this->getPublicInitExtensions();
+
+        self::assertCount($expectedSize, $actual);
+        foreach ($expectedExtensions as $extensionEnum) {
+            /** @var class-string */
+            $clazzName = $extensionEnum->text();
+            self::assertInstanceOf($clazzName, $actual->get($extensionEnum->value));
+        }
+    }
+
+    public function testLoadExtensions(): void
+    {
+        $expectedExtensions = ExtensionEnum::casesExtensions();
+        $expectedSize = YacorapiTestData::EXTENSIONS_COUNT_TOTAL;
+        $modeExtension = ExtensionEnum::EXTENSION_ALL;
+
+        $actual = $this->getCasto2t()->publicLoadExtensions($modeExtension);
 
         self::assertCount($expectedSize, $actual);
         foreach ($expectedExtensions as $extensionEnum) {
@@ -120,5 +137,42 @@ class ExtensionTraitTest extends EasyGoingTestCase
         foreach ($expectedMacros as $expectedMacro) {
             self::assertContains($expectedMacro, $actual);
         }
+    }
+
+    #[DataProvider('providerGetExtension')]
+    public function testGetExtension(bool $expected, ExtensionEnum $extension): void
+    {
+        $modeExtension = ExtensionEnum::EXTENSION_ALL;
+        $this->getCasto2t()->publicLoadExtensions($modeExtension);
+
+        $actual = $this->getCasto2t()->publiGetExtension($extension);
+
+        self::assertEquals($expected, empty($actual));
+        if (!empty($actual)) {
+            /** @var class-string */
+            $clazzName = $extension->text();
+            self::assertInstanceOf($clazzName, $actual);
+        } else {
+            self::assertEquals($expected, in_array($extension, [ExtensionEnum::EXTENSION_MIN, ExtensionEnum::EXTENSION_ALL], true));
+        }
+    }
+
+    // DataProvider
+
+    /**
+     * @return array<mixed,mixed>
+     */
+    public static function providerGetExtension(): array
+    {
+        return [
+            'atlassian' => [false, ExtensionEnum::EXTENSION_ATLASSIAN],
+            'admin' => [false, ExtensionEnum::EXTENSION_ATLASSIAN_ADMIN],
+            'userMacro' => [false, ExtensionEnum::EXTENSION_ATLASSIAN_USER_MACRO],
+            'pdt' => [false, ExtensionEnum::EXTENSION_PROJECTDOC_TOOLBOX],
+            'rapClient' => [false, ExtensionEnum::EXTENSION_RAPI_CLIENT],
+            'thirdParty' => [false, ExtensionEnum::EXTENSION_THIRD_PARTY],
+            'all' => [true, ExtensionEnum::EXTENSION_ALL],
+            'min' => [true, ExtensionEnum::EXTENSION_MIN],
+        ];
     }
 }

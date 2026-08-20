@@ -15,6 +15,7 @@ namespace oglow\tools\Yacorapi;
 
 use Ds\Set;
 use oglow\tools\common\IContainer;
+use oglow\tools\Yacorapi\Client\IRapiClientBase;
 use oglow\tools\Yacorapi\Client\IRapiClientPermission;
 use oglow\tools\Yacorapi\Client\IRapiClientRead;
 use oglow\tools\Yacorapi\Client\IRapiClientStatistic;

@@ -13,18 +13,26 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Client;
 
+use Monolog\ConsoleLogger;
+use oglow\tools\common\MockProvider;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\Data\ItemTypeEnum;
 use oglow\tools\Yacorapi\Data\SpaceTypeEnum;
+use Psr\Log\LoggerInterface;
 
-class ClientStatisticTraitTestClazz implements IRapiClientStatistic
+class ClientStatisticTraitTestClazz extends AbstractRapiClient implements IRapiClientRead, IRapiClientStatistic
 {
+    use ClientReadTrait;
     use ClientStatisticTrait;
+
+    private static LoggerInterface $logger;
 
     protected ConstData $constData;
 
     public function __construct()
     {
+        parent::__construct(new MockProvider());
+        self::$logger = new ConsoleLogger(ClientReadTraitTestClazz::class);
         $this->constData = new ConstData(ClientStatisticTraitTestClazz::class);
     }
 

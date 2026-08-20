@@ -13,16 +13,24 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Client;
 
+use Monolog\ConsoleLogger;
+use oglow\tools\common\MockProvider;
 use oglow\tools\Yacorapi\ConstData;
+use Psr\Log\LoggerInterface;
 
-class ClientWriteTraitTestClazz implements IRapiClientWrite
+class ClientWriteTraitTestClazz extends AbstractRapiClient implements IRapiClientRead, IRapiClientWrite
 {
+    use ClientReadTrait;
     use ClientWriteTrait;
+
+    private static LoggerInterface $logger;
 
     protected ConstData $constData;
 
     public function __construct()
     {
+        parent::__construct(new MockProvider());
+        self::$logger = new ConsoleLogger(ClientReadTraitTestClazz::class);
         $this->constData = new ConstData(ClientWriteTraitTestClazz::class);
     }
 

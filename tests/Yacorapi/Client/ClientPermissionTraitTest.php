@@ -13,13 +13,24 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Client;
 
+use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\Data\RequestParameterData;
 use oglow\tools\Yacorapi\YacorapiTestData;
 use PHPUnit\Framework\EasyGoingTestCase;
+use Psr\Log\LoggerInterface;
 
 class ClientPermissionTraitTest extends EasyGoingTestCase
 {
+    private static LoggerInterface $logger; // @phpstan-ignore property.onlyWritten
+
+    #[\Override]
+    public static function setUpBeforeClass(): void
+    {
+        parent::setUpBeforeClass();
+        self::$logger = new ConsoleLogger(ClientReadTraitTest::class);
+    }
+
     #[\Override]
     protected static function prepareO2t(): ClientPermissionTraitTestClazz
     {

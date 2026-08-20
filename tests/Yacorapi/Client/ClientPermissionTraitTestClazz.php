@@ -19,7 +19,7 @@ use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\IConnectionProvider;
 use Psr\Log\LoggerInterface;
 
-class ClientPermissionTraitTestClazz implements IRapiClientPermission
+class ClientPermissionTraitTestClazz extends AbstractRapiClient implements IRapiClientPermission
 {
     use ClientPermissionTrait;
 
@@ -31,6 +31,7 @@ class ClientPermissionTraitTestClazz implements IRapiClientPermission
 
     public function __construct()
     {
+        parent::__construct(new MockProvider());
         self::$logger    = new ConsoleLogger(ClientPermissionTraitTestClazz::class);
         $this->constData = new ConstData(ClientPermissionTraitTestClazz::class);
         $this->connectionProvider  = new MockProvider();
@@ -46,16 +47,33 @@ class ClientPermissionTraitTestClazz implements IRapiClientPermission
         return $this->prepareRestrictUpdateUrl($pageId);
     }
 
+    /**
+     * @param int                $pageId
+     * @param array<mixed,mixed> $writeRestrictions
+     * @param array<mixed,mixed> $readRestrictions
+     *
+     * @return bool
+     */
     public function publicWriteRestrictionsByPageId(int $pageId, array $writeRestrictions = [], array $readRestrictions = []): bool
     {
         return $this->writeRestrictionsByPageId($pageId, $writeRestrictions, $readRestrictions);
     }
 
+    /**
+     * @param array<mixed,mixed> $readRestrictions
+     *
+     * @return array<mixed,mixed>
+     */
     public function publicAddRestrictionForGroup(array $readRestrictions): array
     {
         return $this->addRestrictionForGroup($readRestrictions);
     }
 
+    /**
+     * @param array<mixed,mixed> $readRestrictions
+     *
+     * @return array<mixed,mixed>
+     */
     public function publicAddRestrictionForUser(array $readRestrictions): array
     {
         return $this->addRestrictionForUser($readRestrictions);
