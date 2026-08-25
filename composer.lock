@@ -4,7 +4,7 @@
     "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
     "This file is @generated automatically"
   ],
-  "content-hash": "13430f0c7bf8e8b3c84672a980983c01",
+  "content-hash": "14500547595857d67b6d96a1ccc91bb1",
   "packages": [
     {
       "name": "composer/ca-bundle",
@@ -863,7 +863,7 @@
     },
     {
       "name": "ollily/ezkoding",
-      "version": "8.4.002",
+      "version": "8.4.003",
       "source": {
         "type": "git",
         "url": "https://github.com/The-oGlow/ezkoding.git",
@@ -922,22 +922,22 @@
       ],
       "support": {
         "issues": "https://github.com/ollily/ezkoding/issues",
-        "source": "https://github.com/The-oGlow/ezkoding/tree/8.4.002"
+        "source": "https://github.com/The-oGlow/ezkoding/tree/8.4.003"
       },
       "time": "2026-06-14T13:10:35+00:00"
     },
     {
       "name": "ollily/ezlogging",
-      "version": "8.4.001",
+      "version": "8.4.002",
       "source": {
         "type": "git",
         "url": "https://github.com/The-oGlow/ezlogging.git",
-        "reference": "8a2b9cbe2c9fec7007f6e46e034e8e2bdd89e5b2"
+        "reference": "b0ab89e62081937109b34c423d3b6b6c4f50a2db"
       },
       "dist": {
         "type": "zip",
-        "url": "https://api.github.com/repos/The-oGlow/ezlogging/zipball/8a2b9cbe2c9fec7007f6e46e034e8e2bdd89e5b2",
-        "reference": "8a2b9cbe2c9fec7007f6e46e034e8e2bdd89e5b2",
+        "url": "https://api.github.com/repos/The-oGlow/ezlogging/zipball/b0ab89e62081937109b34c423d3b6b6c4f50a2db",
+        "reference": "b0ab89e62081937109b34c423d3b6b6c4f50a2db",
         "shasum": ""
       },
       "require": {
@@ -985,9 +985,9 @@
       ],
       "support": {
         "issues": "https://github.com/ollily/ezlogging/issues",
-        "source": "https://github.com/The-oGlow/ezlogging/tree/8.4.001"
+        "source": "https://github.com/The-oGlow/ezlogging/tree/8.4.002"
       },
-      "time": "2026-06-14T13:13:14+00:00"
+      "time": "2026-08-25T11:13:11+00:00"
     },
     {
       "name": "php-ds/php-ds",
@@ -8334,7 +8334,10 @@
   ],
   "aliases": [],
   "minimum-stability": "stable",
-  "stability-flags": {},
+  "stability-flags": {
+    "ollily/ezkoding": 20,
+    "ollily/ezlogging": 20
+  },
   "prefer-stable": true,
   "prefer-lowest": false,
   "platform": {

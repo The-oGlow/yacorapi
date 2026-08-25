@@ -32,8 +32,8 @@
         "ext-curl": "*",
         "ext-json": "*",
         "php-ds/php-ds": "^1.0",
-        "ollily/ezkoding": "^8.4",
-        "ollily/ezlogging": "^8.4"
+        "ollily/ezkoding": "^8.4@dev",
+        "ollily/ezlogging": "^8.4@dev"
     },
     "provide": {
     },
