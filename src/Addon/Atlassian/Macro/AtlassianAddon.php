@@ -27,7 +27,7 @@ class AtlassianAddon extends AbstractAddon
         parent::init();
         $this->addonsMacros->putAll(
             [
-                'Atlassian Confluence Macros Addon' => new Vector(
+                'Atlassian Confluence Macros' => new Vector(
                     [
                         'anchor',
                         'attachments',

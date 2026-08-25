@@ -48,7 +48,7 @@ class ProjectdocAddon extends AbstractAddon
                         'projectdoc-user-type',
                     ]
                 ),
-                'projectdoc Toolbox for Confluence' => new Vector(
+                'projectdoc Toolbox' => new Vector(
                     [
                         'projectdoc-action-button-macro',
                         'projectdoc-aside-panel-macro',

@@ -8,16 +8,16 @@
   "packages": [
     {
       "name": "composer/ca-bundle",
-      "version": "1.5.12",
+      "version": "1.5.13",
       "source": {
         "type": "git",
         "url": "https://github.com/composer/ca-bundle.git",
-        "reference": "00a2f4201641d5c53f7fc0195e6c8d9fcc321a78"
+        "reference": "c008272789979f709f7fcb32c2ecf1d2db5e84e5"
       },
       "dist": {
         "type": "zip",
-        "url": "https://api.github.com/repos/composer/ca-bundle/zipball/00a2f4201641d5c53f7fc0195e6c8d9fcc321a78",
-        "reference": "00a2f4201641d5c53f7fc0195e6c8d9fcc321a78",
+        "url": "https://api.github.com/repos/composer/ca-bundle/zipball/c008272789979f709f7fcb32c2ecf1d2db5e84e5",
+        "reference": "c008272789979f709f7fcb32c2ecf1d2db5e84e5",
         "shasum": ""
       },
       "require": {
@@ -64,7 +64,7 @@
       "support": {
         "irc": "irc://irc.freenode.org/composer",
         "issues": "https://github.com/composer/ca-bundle/issues",
-        "source": "https://github.com/composer/ca-bundle/tree/1.5.12"
+        "source": "https://github.com/composer/ca-bundle/tree/1.5.13"
       },
       "funding": [
         {
@@ -76,7 +76,7 @@
           "type": "github"
         }
       ],
-      "time": "2026-05-19T11:26:22+00:00"
+      "time": "2026-07-18T12:35:13+00:00"
     },
     {
       "name": "composer/class-map-generator",
@@ -3063,16 +3063,16 @@
     },
     {
       "name": "amphp/pipeline",
-      "version": "v1.2.5",
+      "version": "v1.2.6",
       "source": {
         "type": "git",
         "url": "https://github.com/amphp/pipeline.git",
-        "reference": "92f121dde31cd1d89d5d0f9eba64ac40271b236e"
+        "reference": "10941bf38de5c585aa2407b2ec4265d806d4eef2"
       },
       "dist": {
         "type": "zip",
-        "url": "https://api.github.com/repos/amphp/pipeline/zipball/92f121dde31cd1d89d5d0f9eba64ac40271b236e",
-        "reference": "92f121dde31cd1d89d5d0f9eba64ac40271b236e",
+        "url": "https://api.github.com/repos/amphp/pipeline/zipball/10941bf38de5c585aa2407b2ec4265d806d4eef2",
+        "reference": "10941bf38de5c585aa2407b2ec4265d806d4eef2",
         "shasum": ""
       },
       "require": {
@@ -3118,7 +3118,7 @@
       ],
       "support": {
         "issues": "https://github.com/amphp/pipeline/issues",
-        "source": "https://github.com/amphp/pipeline/tree/v1.2.5"
+        "source": "https://github.com/amphp/pipeline/tree/v1.2.6"
       },
       "funding": [
         {
@@ -3126,7 +3126,7 @@
           "type": "github"
         }
       ],
-      "time": "2026-06-27T14:17:20+00:00"
+      "time": "2026-06-27T16:15:40+00:00"
     },
     {
       "name": "amphp/process",
@@ -3902,16 +3902,16 @@
     },
     {
       "name": "friendsofphp/php-cs-fixer",
-      "version": "v3.95.13",
+      "version": "v3.95.15",
       "source": {
         "type": "git",
         "url": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer.git",
-        "reference": "ea941114a002eb5e5876f190223deec1066c482c"
+        "reference": "3e47e5d50046f87e3244acde2fe655d1a3b72555"
       },
       "dist": {
         "type": "zip",
-        "url": "https://api.github.com/repos/PHP-CS-Fixer/PHP-CS-Fixer/zipball/ea941114a002eb5e5876f190223deec1066c482c",
-        "reference": "ea941114a002eb5e5876f190223deec1066c482c",
+        "url": "https://api.github.com/repos/PHP-CS-Fixer/PHP-CS-Fixer/zipball/3e47e5d50046f87e3244acde2fe655d1a3b72555",
+        "reference": "3e47e5d50046f87e3244acde2fe655d1a3b72555",
         "shasum": ""
       },
       "require": {
@@ -3951,7 +3951,7 @@
         "php-coveralls/php-coveralls": "^2.9.1",
         "php-cs-fixer/phpunit-constraint-isidenticalstring": "^1.8",
         "php-cs-fixer/phpunit-constraint-xmlmatchesxsd": "^1.8",
-        "phpunit/phpunit": "^9.6.35 || ^10.5.64 || ^11.5.56",
+        "phpunit/phpunit": "^9.6.35 || ^10.5.64 || ^11.5.56 || ^12.5.31",
         "symfony/polyfill-php85": "^1.38",
         "symfony/var-dumper": "^5.4.48 || ^6.4.36 || ^7.4.8 || ^8.1.0",
         "symfony/yaml": "^5.4.53 || ^6.4.41 || ^7.4.13 || ^8.1.0"
@@ -3995,7 +3995,7 @@
       ],
       "support": {
         "issues": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/issues",
-        "source": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/tree/v3.95.13"
+        "source": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/tree/v3.95.15"
       },
       "funding": [
         {
@@ -4003,7 +4003,7 @@
           "type": "github"
         }
       ],
-      "time": "2026-07-10T09:23:21+00:00"
+      "time": "2026-07-15T09:51:47+00:00"
     },
     {
       "name": "kelunik/certificate",
@@ -4966,27 +4966,28 @@
     },
     {
       "name": "phpstan/phpstan-strict-rules",
-      "version": "2.0.11",
+      "version": "2.0.12",
       "source": {
         "type": "git",
         "url": "https://github.com/phpstan/phpstan-strict-rules.git",
-        "reference": "9b000a578b85b32945b358b172c7b20e91189024"
+        "reference": "2bc5ae19ae965663b62ac907ee6342c3903ec93b"
       },
       "dist": {
         "type": "zip",
-        "url": "https://api.github.com/repos/phpstan/phpstan-strict-rules/zipball/9b000a578b85b32945b358b172c7b20e91189024",
-        "reference": "9b000a578b85b32945b358b172c7b20e91189024",
+        "url": "https://api.github.com/repos/phpstan/phpstan-strict-rules/zipball/2bc5ae19ae965663b62ac907ee6342c3903ec93b",
+        "reference": "2bc5ae19ae965663b62ac907ee6342c3903ec93b",
         "shasum": ""
       },
       "require": {
         "php": "^7.4 || ^8.0",
-        "phpstan/phpstan": "^2.1.39"
+        "phpstan/phpstan": "^2.1.52"
       },
       "require-dev": {
         "php-parallel-lint/php-parallel-lint": "^1.2",
         "phpstan/phpstan-deprecation-rules": "^2.0",
         "phpstan/phpstan-phpunit": "^2.0",
-        "phpunit/phpunit": "^9.6"
+        "phpunit/phpunit": "^9.6",
+        "shipmonk/name-collision-detector": "^2.1"
       },
       "type": "phpstan-extension",
       "extra": {
@@ -5011,9 +5012,9 @@
       ],
       "support": {
         "issues": "https://github.com/phpstan/phpstan-strict-rules/issues",
-        "source": "https://github.com/phpstan/phpstan-strict-rules/tree/2.0.11"
+        "source": "https://github.com/phpstan/phpstan-strict-rules/tree/2.0.12"
       },
-      "time": "2026-05-02T06:54:10+00:00"
+      "time": "2026-07-19T07:24:06+00:00"
     },
     {
       "name": "phpunit/php-code-coverage",
@@ -6618,16 +6619,16 @@
     },
     {
       "name": "sebastian/exporter",
-      "version": "8.1.0",
+      "version": "8.1.1",
       "source": {
         "type": "git",
         "url": "https://github.com/sebastianbergmann/exporter.git",
-        "reference": "c0d29a945f8cf82f300a05e69874508e307ca4c6"
+        "reference": "cfaa77c750dcad6f44c9bac8f62ac486e1c82c26"
       },
       "dist": {
         "type": "zip",
-        "url": "https://api.github.com/repos/sebastianbergmann/exporter/zipball/c0d29a945f8cf82f300a05e69874508e307ca4c6",
-        "reference": "c0d29a945f8cf82f300a05e69874508e307ca4c6",
+        "url": "https://api.github.com/repos/sebastianbergmann/exporter/zipball/cfaa77c750dcad6f44c9bac8f62ac486e1c82c26",
+        "reference": "cfaa77c750dcad6f44c9bac8f62ac486e1c82c26",
         "shasum": ""
       },
       "require": {
@@ -6636,7 +6637,7 @@
         "sebastian/recursion-context": "^8.0"
       },
       "require-dev": {
-        "phpunit/phpunit": "^13.1.10"
+        "phpunit/phpunit": "^13.2.4"
       },
       "type": "library",
       "extra": {
@@ -6684,7 +6685,7 @@
       "support": {
         "issues": "https://github.com/sebastianbergmann/exporter/issues",
         "security": "https://github.com/sebastianbergmann/exporter/security/policy",
-        "source": "https://github.com/sebastianbergmann/exporter/tree/8.1.0"
+        "source": "https://github.com/sebastianbergmann/exporter/tree/8.1.1"
       },
       "funding": [
         {
@@ -6704,7 +6705,7 @@
           "type": "tidelift"
         }
       ],
-      "time": "2026-05-21T11:50:56+00:00"
+      "time": "2026-07-13T11:35:11+00:00"
     },
     {
       "name": "sebastian/git-state",
@@ -8349,5 +8350,5 @@
     "ext-json": "*"
   },
   "platform-dev": {},
-  "plugin-api-version": "2.9.0"
+  "plugin-api-version": "2.6.0"
 }

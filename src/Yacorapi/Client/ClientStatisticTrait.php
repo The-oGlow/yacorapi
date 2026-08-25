@@ -96,7 +96,7 @@ trait ClientStatisticTrait
      */
     protected function prepareMatrix(IStatistic $spaceResult, string $spaceKey, string $addon, string $macroName, int $macroCount): IStatistic
     {
-        self::$logger->info('START - spaceKey,addon,macroName,macroCount', [$spaceKey, $addon, $macroName, $macroCount]);
+        self::$logger->debug('START - spaceKey,addon,macroName,macroCount', [$spaceKey, $addon, $macroName, $macroCount]);
 
         if (empty($spaceResult)) { // @phpstan-ignore empty.variable
             $spaceResult = new StatisticStatistic($spaceKey, StatisticTypeEnum::SPACE);
@@ -118,9 +118,9 @@ trait ClientStatisticTrait
         $valueResult = $macroResult->getItem(ValueStatistic::KEY_COUNT);
         if (empty($valueResult)) {
             $valueResult = new ValueStatistic(ValueStatistic::EMPTY_STRING, null);
+        } else {
+            self::$logger->info(var_export($valueResult->getItem(ValueStatistic::EMPTY_STRING), true));
         }
-
-        self::$logger->info(var_export($valueResult->getItem(ValueStatistic::EMPTY_STRING), true));
 
         $value = $valueResult->getItem(ValueStatistic::EMPTY_STRING);
         if (is_numeric($value)) {
