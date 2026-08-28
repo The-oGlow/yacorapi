@@ -105,6 +105,30 @@ trait ClientReadTrait
         return $addonSet;
     }
 
+    /**
+     * @inheritDoc
+     */
+    #[\Override]
+    public function spaceHomepage(string $spaceKey): int
+    {
+        self::$logger->debug('START - spaceKey', [ $spaceKey]);
+
+        $pageId = IResponse::NO_PAGE_ID;
+        if (!empty($spaceKey)) {
+            $prepareUrl = $this->prepareSpaceUrl($spaceKey);
+            /** @var IResponse $result */
+            $result= $this->exec($prepareUrl);
+            var_dump($result);
+            if ($result->checkStatus()) {
+                $pageId = $result->getValue(IResponse::KEY_HOMEPAGE, IResponse::NO_PAGE_ID);
+                if (is_array($pageId)) {
+                    $pageId = $pageId[IResponse::KEY_ID];
+                }
+            }
+        }
+        return $pageId;
+    }
+
     protected function addSpaceFilter(string $spaceKey, string $prepareUrl): string
     {
         if (!empty($spaceKey)) {
@@ -176,6 +200,11 @@ trait ClientReadTrait
         return sprintf('%s/%s?%s', $this->constData->c(ConstData::KEY_CONF_CONTENT_URL), $pageId, QueryExtensionEnum::REQP_FULL->value);
     }
 
+    protected function prepareSpaceUrl(string $spaceKey) : string
+    {
+         return sprintf('%s/%s?%s', $this->constData->c(ConstData::KEY_CONF_SPACE_URL),$spaceKey, QueryExtensionEnum::REQP_SPACE_LIST->value);
+    }
+    
     /**
      * @param IResponse $response
      *

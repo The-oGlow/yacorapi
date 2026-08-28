@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Client;
 
-use Ds\Set;
 use oglow\tools\Yacorapi\Data\ItemTypeEnum;
 use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Macro\AddonTypeEnum;
@@ -89,4 +88,13 @@ interface IRapiClientRead extends IRapiClientBase
         int $searchLimit = IRapiClientBase::REQ_SEARCH_LIMIT,
         ItemTypeEnum $itemType = IRapiClientBase::REQ_ITEM_TYPE_PAGE
     ): IResponse;
+    
+    /*
+     * 
+     * @param string       $spaceKey      space
+     * @return int PageId of the homepage or -1 if not found
+     * 
+     * @see IRapiClientBase::RESP_NO_PAGE_ID
+     */
+    public function spaceHomepage( string $spaceKey): int;
 }

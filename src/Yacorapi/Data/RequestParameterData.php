@@ -58,7 +58,7 @@ class RequestParameterData extends AbstractSingleton
     public const string PROP_VERSION = 'version';
 
     // Space Consts
-    public const int SPACE_LIMIT_DEFAULT = 100;
+    public const int SPACE_LIMIT_DEFAULT = 500;
 
     // Page Consts
     public const string PAGE_COUNT = 'count';
@@ -87,6 +87,8 @@ class RequestParameterData extends AbstractSingleton
 
     public const string NO_SPACE = '';
 
+    public const int NO_PAGE_ID = -1;
+    
     public const bool NO_BODY = false;
 
     public const string USER_TYPE_KNOWN = 'known';

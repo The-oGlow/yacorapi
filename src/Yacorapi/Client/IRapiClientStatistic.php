@@ -46,8 +46,6 @@ interface IRapiClientStatistic extends IRapiClientBase
     public function countMacrosInSpace(string $spaceKey, ResponseAddonMacroDecorate $addonSet, IStatistic $outputMatrix): IStatistic;
 
     /**
-     * REFACTOR: Listing only 100 spaces, loop is missing.
-     *
      * @param SpaceTypeEnum $spaceType The type of spaces (Default: global spaces)
      * @param int           $limit     The number of items which will be returned (Default: 100)
      *

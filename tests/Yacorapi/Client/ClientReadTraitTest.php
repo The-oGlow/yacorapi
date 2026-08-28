@@ -280,8 +280,28 @@ class ClientReadTraitTest extends EasyGoingTestCase
         self::$logger->info('END');
     }
 
+    /**
+     * @param int $expected
+     * @param string $spaceKey
+     */
+    #[DataProvider('providerSpaceHomepage')]
+    public function testSpaceHomepage(int $expected, string $spaceKey):void 
+    {
+        $actual = $this->getCasto2t()->spaceHomepage($spaceKey);
+        
+        self::assertEquals($expected, $actual);
+    }
+    
     // Dataprovider
 
+    public static function providerSpaceHomepage(): array {
+        return [
+            'empty' => [YacorapiTestData::C_PAGEID_NOTEXIST,YacorapiTestData::C_SPACE_EMPTY ],
+            'notExists' => [YacorapiTestData::C_PAGEID_NOTEXIST, YacorapiTestData::NOTEXIST_SPACE_KEY],
+            'exists' => [YacorapiTestData::C_SPACE_EXIST_ID, YacorapiTestData::C_SPACE_EXIST_KEY]
+        ];
+    }
+    
     /**
      * @return array<mixed,mixed>
      */

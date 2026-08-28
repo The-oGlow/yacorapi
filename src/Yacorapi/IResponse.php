@@ -96,12 +96,16 @@ interface IResponse extends \Stringable
 
     public const string KEY_WEBUI = 'webui';
 
+    public const string KEY_HOMEPAGE = 'homepage';
+    
     // Messages
     public const string MSG_ERROR = 'Error with Status';
 
     public const string VAL_TRUE = 'true';
 
     public const string VAL_FALSE = 'false';
+
+    public const int NO_PAGE_ID = -1;
 
     /**
      * @return Map<mixed,mixed>
