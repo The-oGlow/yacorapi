@@ -87,7 +87,7 @@ class BlockerAddon extends AbstractAddon
                         'undefined-links',
                     ]
                 ),
-                'projectdoc Toolbox for Confluence'                   => new Vector(
+                'projectdoc Toolbox'                   => new Vector(
                     [
                         'projectdoc-aside-panel-macro',
                         'projectdoc-box-caution',

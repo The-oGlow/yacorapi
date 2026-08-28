@@ -40,7 +40,7 @@ class MockProvider extends AbstractProvider
     public function __construct(int|string $level = self::LEVEL_DEFAULT)
     {
         // Init Dynamic Consts
-        self::$logger = new ConsoleLogger(name:MockProvider::class, level: $level);
+        self::$logger = new ConsoleLogger(name: MockProvider::class, level: $level);
         parent::__construct($level);
     }
 
@@ -86,19 +86,22 @@ class MockProvider extends AbstractProvider
 
         switch ($reqType) {
             case RequestTypeEnum::GET:
-                if ($this->evalReadPagesWithFilter($execUrl, $reqType, $response)) {
+                if ($this->evalReadPagesByTitle($execUrl, $reqType, $response)) {
                     break;
                 }
                 if ($this->evalReadPageByPageId($execUrl, $reqType, $response)) {
                     break;
                 }
-                if ($this->evalScanPagesWithFilter($execUrl, $reqType, $response)) {
+                if ($this->evalScanPages($execUrl, $reqType, $response)) {
                     break;
                 }
                 if ($this->evalSearchPagesWithFilter($execUrl, $reqType, $response)) {
                     break;
                 }
                 if ($this->evalListSpaces($execUrl, $reqType, $response)) {
+                    break;
+                }
+                if ($this->evalSpaceHomepage($execUrl, $reqType, $response)) {
                     break;
                 }
                 self::$logger->notice('No mock result found', [$execUrl, $reqType]);
@@ -144,19 +147,19 @@ class MockProvider extends AbstractProvider
      *
      * @return bool
      */
-    protected function evalReadPagesWithFilter(string $execUrl, RequestTypeEnum $reqType, array &$response): bool
+    protected function evalReadPagesByTitle(string $execUrl, RequestTypeEnum $reqType, array &$response): bool
     {
         $done = false;
         $searchUrl = sprintf('%s?', ConstData::C_RAPI_CONTENT);
-        $searchParameter = YacorapiTestData::C_FILTERTERM_01;
+        $searchParameter = YacorapiTestData::C_SEARCHPAGETITLE_01;
 
         if (str_contains($execUrl, $searchUrl) && str_contains($execUrl, $searchParameter)) {
-            self::$logger->notice('A \'readPagesWithFilter\'', [$execUrl, $reqType]);
+            self::$logger->notice('A \'readPagesByTitle\'', [$execUrl, $reqType]);
 
             $response = array_merge($response, YacorapiTestData::RESP_CONTENTFILTER_RESULT());
             $done = true;
         } else {
-            self::$logger->notice('Not a \'readPagesWithFilter\'', [$execUrl, $reqType]);
+            self::$logger->notice('Not a \'readPagesByTitle\'', [$execUrl, $reqType]);
         }
 
         return $done;
@@ -194,19 +197,19 @@ class MockProvider extends AbstractProvider
      *
      * @return bool
      */
-    protected function evalScanPagesWithFilter(string $execUrl, RequestTypeEnum $reqType, array &$response): bool
+    protected function evalScanPages(string $execUrl, RequestTypeEnum $reqType, array &$response): bool
     {
         $done = false;
         $searchUrl = sprintf('%s?', ConstData::C_RAPI_SCAN);
         $searchParameter = sprintf('%s=%s', RequestParameterData::PROP_SPACE_KEY, YacorapiTestData::C_SPACE_EXIST_KEY);
 
         if (str_contains($execUrl, $searchUrl) && str_contains($execUrl, $searchParameter)) {
-            self::$logger->notice('A \'scanPagesWithFilter\'', [$execUrl, $reqType]);
+            self::$logger->notice('A \'scanPages\'', [$execUrl, $reqType]);
 
             $response = array_merge($response, YacorapiTestData::RESP_SCAN_RESULT());
             $done = true;
         } else {
-            self::$logger->notice('Not a \'scanPagesWithFilter\'', [$execUrl, $reqType]);
+            self::$logger->notice('Not a \'scanPages\'', [$execUrl, $reqType]);
         }
 
         return $done;
@@ -231,17 +234,17 @@ class MockProvider extends AbstractProvider
             $response = array_merge(
                 $response,
                 [IResponse::KEY_RESULTS => [
-                    [
-                        IResponse::KEY_ID => YacorapiTestData::C_SPACE_EXIST_ID,
-                        IResponse::KEY_KEY => YacorapiTestData::C_SPACE_EXIST_KEY,
-                        IResponse::KEY_NAME => YacorapiTestData::C_SPACE_EXIST_NAME,
-                        IResponse::KEY_DESCRIPTION => [
-                            IResponse::KEY_PLAIN => [
-                                IResponse::KEY_VALUE => YacorapiTestData::C_SPACE_EXIST_DESCRIPTION]],
-                        IResponse::KEY_STATUS => YacorapiTestData::C_SPACE_EXIST_STATUS,
-                        IResponse::KEY_TYPE => 0,
-                    ],
-                ]]
+                            [
+                                IResponse::KEY_ID => YacorapiTestData::C_SPACE_EXIST_ID,
+                                IResponse::KEY_KEY => YacorapiTestData::C_SPACE_EXIST_KEY,
+                                IResponse::KEY_NAME => YacorapiTestData::C_SPACE_EXIST_NAME,
+                                IResponse::KEY_DESCRIPTION => [
+                                    IResponse::KEY_PLAIN => [
+                                        IResponse::KEY_VALUE => YacorapiTestData::C_SPACE_EXIST_DESCRIPTION]],
+                                IResponse::KEY_STATUS => YacorapiTestData::C_SPACE_EXIST_STATUS,
+                                IResponse::KEY_TYPE => 0,
+                            ],
+                        ]]
             );
             $done = true;
         } else {
@@ -305,7 +308,7 @@ class MockProvider extends AbstractProvider
             self::$logger->notice('A \'createPage\'', [$execUrl, $reqType, $parameters]);
 
             $response = array_merge($response, YacorapiTestData::RESP_HEAD_SEARCHPAGEID_01());
-            $response = array_merge($response, [                IResponse::KEY_TITLE => $parameters->get(RequestParameterData::PROP_TITLE)]);
+            $response = array_merge($response, [IResponse::KEY_TITLE => $parameters->get(RequestParameterData::PROP_TITLE)]);
             $response = array_merge($response, YacorapiTestData::prepareResponseBody('', $parameters));
             $response = array_merge($response, YacorapiTestData::prepareResponseSpace('', $parameters));
             $response = array_merge($response, YacorapiTestData::prepareResponseAncestor('', $parameters));
@@ -331,18 +334,40 @@ class MockProvider extends AbstractProvider
         $done = false;
         $searchUrl = sprintf('%s/', ConstData::C_RAPI_CONTENT);
         $expectedKeys = [RequestParameterData::PROP_TYPE, RequestParameterData::PROP_TITLE,
-             RequestParameterData::PROP_BODY, RequestParameterData::PROP_ID,
+            RequestParameterData::PROP_BODY, RequestParameterData::PROP_ID,
         ];
 
         if (str_contains($execUrl, $searchUrl) && $this->verifyKeys($parameters, $expectedKeys)) {
             self::$logger->notice('A \'updatePage\'', [$execUrl, $reqType, $parameters]);
 
             $response = array_merge($response, YacorapiTestData::RESP_HEAD_SEARCHPAGEID_01());
-            $response = array_merge($response, [                IResponse::KEY_TITLE => $parameters->get(RequestParameterData::PROP_TITLE)]);
+            $response = array_merge($response, [IResponse::KEY_TITLE => $parameters->get(RequestParameterData::PROP_TITLE)]);
             $response = array_merge($response, YacorapiTestData::prepareResponseBody('', $parameters));
             $done = true;
         } else {
             self::$logger->notice('Not a \'updatePage\'', [$execUrl, $reqType, $parameters]);
+        }
+
+        return $done;
+    }
+
+    /**
+     * @param string             $execUrl
+     * @param RequestTypeEnum    $reqType
+     * @param array<mixed,mixed> $response
+     *
+     * @return bool
+     */
+    public function evalSpaceHomepage(string $execUrl, RequestTypeEnum $reqType, array &$response): bool
+    {
+        $done = false;
+
+        $searchUrl = sprintf('%s/', ConstData::C_RAPI_SPACE);
+        $searchParameter = YacorapiTestData::C_SPACE_EXIST_KEY;
+
+        if (str_contains($execUrl, $searchUrl) && str_contains($execUrl, $searchParameter)) {
+            self::$logger->notice('A \'spaceHomepage\'', [$execUrl, $reqType, $parameters]);
+            $response = array_merge($response, [IResponse::KEY_HOMEPAGE => [IResponse::KEY_ID => YacorapiTestData::C_SPACE_EXIST_ID]]);
         }
 
         return $done;

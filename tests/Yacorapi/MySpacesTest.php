@@ -29,7 +29,7 @@ class MySpacesTest extends EasyGoingTestCase
 {
     use UnavailableMethodsTrait;
 
-    public const string METHOD_PREFIX    = 'getMySpaceList';
+    public const string METHOD_PREFIX = 'getMySpaceList';
 
     /** @var array<mixed,mixed> */
     public static array $METHOD_IGNORED;
@@ -41,8 +41,9 @@ class MySpacesTest extends EasyGoingTestCase
     #[\Override]
     public static function setUpBeforeClass(): void
     {
+        parent::setUpBeforeClass();
         self::$METHOD_REFERENCE = SpaceTypeEnum::SPACE_ALL->method();
-        self::$METHOD_IGNORED  = [SpaceTypeEnum::SPACE_SINGLE->method(), SpaceTypeEnum::SPACE_SIMPLE->method(), SpaceTypeEnum::SPACE_ALL->method()];
+        self::$METHOD_IGNORED = [SpaceTypeEnum::SPACE_SINGLE->method(), SpaceTypeEnum::SPACE_SIMPLE->method(), SpaceTypeEnum::SPACE_ALL->method()];
     }
 
     #[\Override]
@@ -95,7 +96,7 @@ class MySpacesTest extends EasyGoingTestCase
     {
         $methodsFiltered = [];
 
-        $ref        = new \ReflectionClass($this->o2t);
+        $ref = new \ReflectionClass($this->o2t);
         $allMethods = $ref->getMethods();
 
         if (is_array($allMethods)) {
@@ -136,7 +137,9 @@ class MySpacesTest extends EasyGoingTestCase
         $expected = $this->callMethodOnO2t(static::$METHOD_REFERENCE);
 
         $methodsFiltered = array_diff($this->getMethodsFiltered(static::METHOD_PREFIX), static::$METHOD_IGNORED);
-        $actual          = $this->joinResults($methodsFiltered);
+
+        $actual = $this->joinResults($methodsFiltered);
+
         $spacesMissing = array_values(array_diff($expected, $actual));
         if (!empty($spacesMissing)) {
             self::$logger->notice('spaceData not found:', [$spacesMissing]);

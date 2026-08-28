@@ -42,11 +42,11 @@ trait ClientReadTrait
      * @inheritDoc
      */
     #[\Override]
-    public function readPagesWithFilter(string $filterTerm, string $spaceKey = ''): IResponse
+    public function readPagesByTitle(string $pageTitle, string $spaceKey = RequestParameterData::NO_SPACE): IResponse
     {
-        self::$logger->debug('START - filterTerm,spaceKey', [$filterTerm, $spaceKey]);
+        self::$logger->debug('START - pageTitle,spaceKey', [$pageTitle, $spaceKey]);
 
-        $prepareUrl = $this->prepareBrowseUrl($filterTerm, $spaceKey);
+        $prepareUrl = $this->prepareBrowseUrl($pageTitle, $spaceKey);
 
         return $this->exec($prepareUrl);
     }
@@ -55,11 +55,11 @@ trait ClientReadTrait
      * @inheritDoc
      */
     #[\Override]
-    public function scanPagesWithFilter(string $filterTerm, string $spaceKey = ''): IResponse
+    public function scanPages(string $spaceKey = RequestParameterData::NO_SPACE): IResponse
     {
-        self::$logger->debug('START - filterTerm,spaceKey', [$filterTerm, $spaceKey]);
+        self::$logger->debug('START - spaceKey', [$spaceKey]);
 
-        $prepareUrl = $this->prepareScanUrl($filterTerm, $spaceKey);
+        $prepareUrl = $this->prepareScanUrl($spaceKey);
 
         return $this->exec($prepareUrl);
     }
@@ -117,8 +117,7 @@ trait ClientReadTrait
         if (!empty($spaceKey)) {
             $prepareUrl = $this->prepareSpaceUrl($spaceKey);
             /** @var IResponse $result */
-            $result= $this->exec($prepareUrl);
-            var_dump($result);
+            $result = $this->exec($prepareUrl);
             if ($result->checkStatus()) {
                 $pageId = $result->getValue(IResponse::KEY_HOMEPAGE, IResponse::NO_PAGE_ID);
                 if (is_array($pageId)) {
@@ -126,7 +125,8 @@ trait ClientReadTrait
                 }
             }
         }
-        return $pageId;
+
+        return (int) $pageId;
     }
 
     protected function addSpaceFilter(string $spaceKey, string $prepareUrl): string
@@ -176,16 +176,16 @@ trait ClientReadTrait
         return $prepareUrl;
     }
 
-    protected function prepareBrowseUrl(string $filterTerm, string $spaceKey = RequestParameterData::NO_SPACE): string
+    protected function prepareBrowseUrl(string $pageTitle, string $spaceKey = RequestParameterData::NO_SPACE): string
     {
-        $prepareUrl = sprintf('%s?%s&%s', $this->constData->c(ConstData::KEY_CONF_CONTENT_URL), $filterTerm, QueryExtensionEnum::REQP_LIGHT->value);
+        $prepareUrl = sprintf('%s?title=%s&%s', $this->constData->c(ConstData::KEY_CONF_CONTENT_URL), $pageTitle, QueryExtensionEnum::REQP_LIGHT->value);
 
         return $this->addSpaceFilter($spaceKey, $prepareUrl);
     }
 
-    protected function prepareScanUrl(string $filterTerm, string $spaceKey = RequestParameterData::NO_SPACE): string
+    protected function prepareScanUrl(string $spaceKey = RequestParameterData::NO_SPACE): string
     {
-        $prepareUrl = sprintf('%s/scan?%s&%s', $this->constData->c(ConstData::KEY_CONF_CONTENT_URL), $filterTerm, QueryExtensionEnum::REQP_LIGHT->value);
+        $prepareUrl = sprintf('%s/scan?%s', $this->constData->c(ConstData::KEY_CONF_CONTENT_URL), QueryExtensionEnum::REQP_LIGHT->value);
 
         return $this->addSpaceFilter($spaceKey, $prepareUrl);
     }
@@ -200,11 +200,11 @@ trait ClientReadTrait
         return sprintf('%s/%s?%s', $this->constData->c(ConstData::KEY_CONF_CONTENT_URL), $pageId, QueryExtensionEnum::REQP_FULL->value);
     }
 
-    protected function prepareSpaceUrl(string $spaceKey) : string
+    protected function prepareSpaceUrl(string $spaceKey): string
     {
-         return sprintf('%s/%s?%s', $this->constData->c(ConstData::KEY_CONF_SPACE_URL),$spaceKey, QueryExtensionEnum::REQP_SPACE_LIST->value);
+        return sprintf('%s/%s?%s', $this->constData->c(ConstData::KEY_CONF_SPACE_URL), $spaceKey, QueryExtensionEnum::REQP_SPACE_LIST->value);
     }
-    
+
     /**
      * @param IResponse $response
      *

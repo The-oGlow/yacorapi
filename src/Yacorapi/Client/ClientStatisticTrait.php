@@ -88,24 +88,24 @@ trait ClientStatisticTrait
     /**
      * @param IStatistic $spaceResult
      * @param string     $spaceKey
-     * @param string     $addon
+     * @param string     $addonName
      * @param string     $macroName
      * @param int        $macroCount
      *
      * @return IStatistic
      */
-    protected function prepareMatrix(IStatistic $spaceResult, string $spaceKey, string $addon, string $macroName, int $macroCount): IStatistic
+    protected function prepareMatrix(IStatistic $spaceResult, string $spaceKey, string $addonName, string $macroName, int $macroCount): IStatistic
     {
-        self::$logger->debug('START - spaceKey,addon,macroName,macroCount', [$spaceKey, $addon, $macroName, $macroCount]);
+        self::$logger->debug('START - spaceKey,addonName,macroName,macroCount', [$spaceKey, $addonName, $macroName, $macroCount]);
 
         if (empty($spaceResult)) { // @phpstan-ignore empty.variable
             $spaceResult = new StatisticStatistic($spaceKey, StatisticTypeEnum::SPACE);
         }
 
         /** @var null|IStatistic */
-        $addonResult = $spaceResult->getItem($addon);
+        $addonResult = $spaceResult->getItem($addonName);
         if (empty($addonResult)) {
-            $addonResult = new StatisticStatistic($addon, StatisticTypeEnum::ADDON);
+            $addonResult = new StatisticStatistic($addonName, StatisticTypeEnum::ADDON);
         }
 
         /** @var null|IStatistic */
@@ -131,7 +131,7 @@ trait ClientStatisticTrait
 
         $macroResult->addItem(ValueStatistic::KEY_COUNT, $valueResult);
         $addonResult->addItem($macroName, $macroResult);
-        $spaceResult->addItem($addon, $addonResult);
+        $spaceResult->addItem($addonName, $addonResult);
 
         self::$logger->debug('END');
 
@@ -140,20 +140,20 @@ trait ClientStatisticTrait
 
     /**
      * @param string         $spaceKey
-     * @param string         $addOn
+     * @param string         $addOnName
      * @param Vector<string> $macroNames
      * @param IStatistic     $outputMatrix
      *
      * @return IStatistic
      */
-    protected function loopAddonMacros(string $spaceKey, string $addOn, Vector $macroNames, IStatistic $outputMatrix): IStatistic
+    protected function loopAddonMacros(string $spaceKey, string $addOnName, Vector $macroNames, IStatistic $outputMatrix): IStatistic
     {
-        self::$logger->debug('START - spaceKey,addOn,macroNames', [$spaceKey, $addOn, $macroNames]);
+        self::$logger->debug('START - spaceKey,addOnName,macroNames', [$spaceKey, $addOnName, $macroNames]);
 
         $cntMacros = count($macroNames);
         $cntIdx = 0;
         foreach ($macroNames as $macroName) {
-            self::$logger->debug('Checking Space with Macro - START', [++$cntIdx, $cntMacros, $spaceKey, $addOn, $macroName]);
+            self::$logger->debug('Checking Space with Macro - START', [++$cntIdx, $cntMacros, $spaceKey, $addOnName, $macroName]);
 
             $searchTerm = "macroName:$macroName";
             $prepareUrl = $this->prepareSearchUrlExt(
@@ -165,8 +165,12 @@ trait ClientStatisticTrait
             $response = $this->exec($prepareUrl);
             $countMacros = $this->analyzeResponse($response);
 
-            $outputMatrix = $this->prepareMatrix($outputMatrix, $spaceKey, $addOn, $macroName, $countMacros);
-            self::$logger->info('Found', [$cntIdx, $cntMacros, $spaceKey, $addOn, $macroName, $countMacros]);
+            $outputMatrix = $this->prepareMatrix($outputMatrix, $spaceKey, $addOnName, $macroName, $countMacros);
+            if ($countMacros > 0) {
+                self::$logger->info('Found', [$cntIdx, $cntMacros, $spaceKey, $addOnName, $macroName, $countMacros]);
+            } else {
+                self::$logger->debug('Not Found', [$cntIdx, $cntMacros, $spaceKey, $addOnName, $macroName, $countMacros]);
+            }
 
             self::$logger->debug('Checking Space with Macro - END');
         }
@@ -181,22 +185,22 @@ trait ClientStatisticTrait
 
     /**
      * @param string            $spaceKey
-     * @param AddonTypeEnum     $mode
+     * @param AddonTypeEnum     $addonMode
      * @param Map<mixed, mixed> $mapAddons
      * @param IStatistic        $outputMatrix
      *
      * @return IStatistic
      */
-    protected function loopAddons(string $spaceKey, AddonTypeEnum $mode, Map $mapAddons, IStatistic $outputMatrix): IStatistic
+    protected function loopAddons(string $spaceKey, AddonTypeEnum $addonMode, Map $mapAddons, IStatistic $outputMatrix): IStatistic
     {
-        self::$logger->debug('START - spaceKey,mode,addons', [$spaceKey, $mode, $mapAddons]);
+        self::$logger->debug('START - spaceKey,mode,addonMode', [$spaceKey, $addonMode, $mapAddons]);
 
         $cntAddons = count($mapAddons);
         $cntIdx = 0;
         foreach ($mapAddons as $addOnKey => $addonValue) {
             self::$logger->info('Checking Addon - START', [++$cntIdx, $cntAddons, $spaceKey, $addOnKey]);
             if (!is_array($addonValue)) {
-                $macroNames = $this->addons->getMacroNamesByAddon($mode, $addOnKey); // @phpstan-ignore method.notFound
+                $macroNames = $this->addons->getMacroNamesByAddon($addonMode, $addOnKey); // @phpstan-ignore method.notFound
                 $addonName = $addOnKey;
             } else {
                 $macroNames = $addonValue;

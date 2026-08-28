@@ -97,7 +97,7 @@ interface IResponse extends \Stringable
     public const string KEY_WEBUI = 'webui';
 
     public const string KEY_HOMEPAGE = 'homepage';
-    
+
     // Messages
     public const string MSG_ERROR = 'Error with Status';
 

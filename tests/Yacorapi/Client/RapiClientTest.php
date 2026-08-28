@@ -29,7 +29,7 @@ use Psr\Log\LogLevel;
 class RapiClientTest extends EasyGoingTestCase
 {
     public const array AVAILABLE_METHODS = [
-        'newClient', 'readPageByPageId', 'readPagesWithFilter', 'scanPagesWithFilter', 'searchPagesWithFilter', 'countItemsinSpace',
+        'newClient', 'readPageByPageId', 'readPagesByTitle', 'scanPages', 'searchPagesWithFilter', 'countItemsinSpace', 'spaceHomepage',
         'readRestrictionsByPageId', 'writeRestrictionsByPageId', 'listSpaces', 'countMacrosInSpace', 'movePage', 'createPage', 'updatePage',
         'prepareAddonSet', 'taskitemMethods', 'getExtensionAddonMacros',
     ];

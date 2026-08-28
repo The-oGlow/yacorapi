@@ -71,9 +71,9 @@ class ClientReadTraitTestClazz extends AbstractRapiClient implements IRapiClient
         return $this->prepareBrowseUrl($filterTerm, $spaceKey);
     }
 
-    public function publicPrepareScanUrl(string $filterTerm, string $spaceKey = RequestParameterData::NO_SPACE): string
+    public function publicPrepareScanUrl(string $spaceKey = RequestParameterData::NO_SPACE): string
     {
-        return $this->prepareScanUrl($filterTerm, $spaceKey);
+        return $this->prepareScanUrl($spaceKey);
     }
 
     public function publicPrepareApiByPageIdUrl(int $pageId): string

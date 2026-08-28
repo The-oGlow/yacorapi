@@ -35,15 +35,15 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
 
     public const int ERR_NOT_INVOKED = 30;
 
-    protected const         bool C_DIR_RECURSIVE = true;
+    protected const bool C_DIR_RECURSIVE = true;
 
     protected const int C_DIR_MASK = 0o777;
 
-    protected const         string C_FILE_UTF8 = 'UTF-8';
+    protected const string C_FILE_UTF8 = 'UTF-8';
 
-    protected const         int C_FILE_LINE_LEN = 1000;
+    protected const int C_FILE_LINE_LEN = 1000;
 
-    protected const         string C_FILE_READ = 'r';
+    protected const string C_FILE_READ = 'r';
 
     protected const string C_FILE_SEP = '.';
 
@@ -71,7 +71,7 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
         self::$logger->debug("START", [$outputFileName, $fileSuffix, $customTargetDir]);
 
         // Init Dynamic Consts
-        $this->constData        = new ConstData(AbstractStoreAdapter::class);
+        $this->constData = new ConstData(AbstractStoreAdapter::class);
         $this->sessionTargetDir = $this->prepareTargetFolder(
             $outputFileName,
             $this->constData->c(ConstData::KEY_TARGET_ROOTDIR),

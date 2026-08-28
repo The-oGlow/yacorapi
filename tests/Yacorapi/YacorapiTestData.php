@@ -62,7 +62,7 @@ class YacorapiTestData extends TestData
 
     /** Names of one addon from each extension */
     public const array ADDONS_NAMES = [
-        'Atlassian Confluence Macros Addon',
+        'Atlassian Confluence Macros',
         'Confluence HTML Macros',
         'Confluence User Macros',
         'Advanced Roadmaps for Jira in Confluence',
@@ -79,7 +79,7 @@ class YacorapiTestData extends TestData
         'projectdoc Core Doctypes',
         'projectdoc for Agile Planning',
         'projectdoc for Software Development',
-        'projectdoc Toolbox for Confluence',
+        'projectdoc Toolbox',
     ];
 
     public const string CLAZZ_ALL_ADDON = '\oglow\tools\Yacorapi\Macro\AllAddon';
@@ -100,10 +100,10 @@ class YacorapiTestData extends TestData
     public const string ADDONS_NAME_NOTEXIST = 'NOTEXIST-ADDON';
 
     /** Array of specific addons which will be checked */
-    public const array ADDONS_VERIFY = ['Atlassian Confluence Macros Addon', 'Confluence User Macros'];
+    public const array ADDONS_VERIFY = ['Atlassian Confluence Macros', 'Confluence User Macros'];
 
     /** Single addon which will be verified */
-    public const string ADDON_VERIFY = 'Atlassian Confluence Macros Addon';
+    public const string ADDON_VERIFY = 'Atlassian Confluence Macros';
 
     // (Addon-) Mode
     public const string MODE_NOTEXIST = 'NOTEXIST-MODE';
@@ -178,7 +178,7 @@ class YacorapiTestData extends TestData
 
     public const int C_RESPONSE_SIZE_EMPTY = 0;
 
-    public const int C_PAGEID_NOTEXIST = 0;
+    public const int C_PAGEID_NOTEXIST = -1;
 
     public const int C_PAGEID_EXIST = 2;
 

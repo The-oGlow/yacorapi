@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Client;
 
 use oglow\tools\Yacorapi\Data\ItemTypeEnum;
+use oglow\tools\Yacorapi\Data\RequestParameterData;
 use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Macro\AddonTypeEnum;
 use oglow\tools\Yacorapi\Response\ResponseAddonMacroDecorate;
@@ -42,30 +43,29 @@ interface IRapiClientRead extends IRapiClientBase
     public function readPageByPageId(int $pageId): IResponse;
 
     /**
-     * Searchs for confluence pages by a filter term.
+     * Searchs for confluence pages by page title.
      *
-     * @param string $filterTerm A search term from the confluence search
-     * @param string $spaceKey   Limited to the space (Default: '')
+     * @param string $pageTitle Name of the page
+     * @param string $spaceKey  Limited to the space (Default: '')
      *
      * @return IResponse The found pages or empty
      *
      * @see IRapiClientRead::scanPagesWithFilter()
      * @see IRapiClientRead::searchPagesWithFilter()
      */
-    public function readPagesWithFilter(string $filterTerm, string $spaceKey = ''): IResponse;
+    public function readPagesByTitle(string $pageTitle, string $spaceKey = RequestParameterData::NO_SPACE): IResponse;
 
     /**
-     * Scans for confluence pages by a filter term.
+     * Scans for confluence pages by space.
      *
-     * @param string $filterTerm A search term from the confluence search
-     * @param string $spaceKey   Limited to the space (Default: '')
+     * @param string $spaceKey Limited to the space (Default: '')
      *
      * @return IResponse The found pages or empty
      *
      * @see IRapiClientRead::readPageByPageId()
      * @see IRapiClientRead::searchPagesWithFilter()
      */
-    public function scanPagesWithFilter(string $filterTerm, string $spaceKey = ''): IResponse;
+    public function scanPages(string $spaceKey = RequestParameterData::NO_SPACE): IResponse;
 
     /**
      * Extend search for confluence pages by a filter term in one space.
@@ -88,13 +88,13 @@ interface IRapiClientRead extends IRapiClientBase
         int $searchLimit = IRapiClientBase::REQ_SEARCH_LIMIT,
         ItemTypeEnum $itemType = IRapiClientBase::REQ_ITEM_TYPE_PAGE
     ): IResponse;
-    
+
     /*
-     * 
+     *
      * @param string       $spaceKey      space
      * @return int PageId of the homepage or -1 if not found
-     * 
+     *
      * @see IRapiClientBase::RESP_NO_PAGE_ID
      */
-    public function spaceHomepage( string $spaceKey): int;
+    public function spaceHomepage(string $spaceKey): int;
 }

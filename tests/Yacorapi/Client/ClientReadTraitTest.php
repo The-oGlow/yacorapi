@@ -71,13 +71,13 @@ class ClientReadTraitTest extends EasyGoingTestCase
         self::$logger->info('END');
     }
 
-    public function testReadPagesWithFilter(): void
+    public function testReadPagesByTitle(): void
     {
         self::$logger->info('START');
 
         $expectedCount = 1;
 
-        $response = $this->getCasto2t()->readPagesWithFilter(YacorapiTestData::C_FILTERTERM_01, YacorapiTestData::C_SPACE_EXIST_KEY);
+        $response = $this->getCasto2t()->readPagesByTitle(YacorapiTestData::C_SEARCHPAGETITLE_01, YacorapiTestData::C_SPACE_EXIST_KEY);
 
         $actualCount = $response->getResponse()->get(Response::KEY_TOTAL_SIZE, -1);
 
@@ -97,7 +97,7 @@ class ClientReadTraitTest extends EasyGoingTestCase
 
         $expectedCount = 1;
 
-        $response = $this->getCasto2t()->scanPagesWithFilter(YacorapiTestData::C_FILTERTERM_01, YacorapiTestData::C_SPACE_EXIST_KEY);
+        $response = $this->getCasto2t()->scanPages(YacorapiTestData::C_SPACE_EXIST_KEY);
 
         $actualCount = $response->getResponse()->get(Response::KEY_TOTAL_SIZE, -1);
 
@@ -222,16 +222,13 @@ class ClientReadTraitTest extends EasyGoingTestCase
 
     public function testPrepareScanUrl(): void
     {
-        $filterTerm = YacorapiTestData::C_FILTERTERM_01;
         $spaceKey   = YacorapiTestData::C_SPACE_EXIST_KEY;
 
-        $expected1 = $filterTerm;
-        $expected2 = $spaceKey;
+        $expected = $spaceKey;
 
-        $actual = $this->getCasto2t()->publicPrepareScanUrl($filterTerm, $spaceKey);
+        $actual = $this->getCasto2t()->publicPrepareScanUrl($spaceKey);
 
-        self::assertStringContainsString($expected1, $actual);
-        self::assertStringContainsString($expected2, $actual);
+        self::assertStringContainsString($expected, $actual);
     }
 
     public function testPrepareApiByPageIdUrl(): void
@@ -281,27 +278,28 @@ class ClientReadTraitTest extends EasyGoingTestCase
     }
 
     /**
-     * @param int $expected
+     * @param int    $expected
      * @param string $spaceKey
      */
     #[DataProvider('providerSpaceHomepage')]
-    public function testSpaceHomepage(int $expected, string $spaceKey):void 
+    public function testSpaceHomepage(int $expected, string $spaceKey): void
     {
         $actual = $this->getCasto2t()->spaceHomepage($spaceKey);
-        
+
         self::assertEquals($expected, $actual);
     }
-    
+
     // Dataprovider
 
-    public static function providerSpaceHomepage(): array {
+    public static function providerSpaceHomepage(): array
+    {
         return [
             'empty' => [YacorapiTestData::C_PAGEID_NOTEXIST,YacorapiTestData::C_SPACE_EMPTY ],
             'notExists' => [YacorapiTestData::C_PAGEID_NOTEXIST, YacorapiTestData::NOTEXIST_SPACE_KEY],
-            'exists' => [YacorapiTestData::C_SPACE_EXIST_ID, YacorapiTestData::C_SPACE_EXIST_KEY]
+            'exists' => [YacorapiTestData::C_SPACE_EXIST_ID, YacorapiTestData::C_SPACE_EXIST_KEY],
         ];
     }
-    
+
     /**
      * @return array<mixed,mixed>
      */

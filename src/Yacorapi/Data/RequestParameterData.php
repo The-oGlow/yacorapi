@@ -88,7 +88,7 @@ class RequestParameterData extends AbstractSingleton
     public const string NO_SPACE = '';
 
     public const int NO_PAGE_ID = -1;
-    
+
     public const bool NO_BODY = false;
 
     public const string USER_TYPE_KNOWN = 'known';

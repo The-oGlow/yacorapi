@@ -15,8 +15,8 @@ namespace oglow\tools\Yacorapi\Client;
 
 use oglow\tools\Yacorapi\Data\ItemTypeEnum;
 use oglow\tools\Yacorapi\Data\RequestParameterData;
-use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Extension\ExtensionEnum;
+use oglow\tools\Yacorapi\IResponse;
 use Psr\Log\LogLevel;
 
 interface IRapiClientBase
@@ -45,6 +45,6 @@ interface IRapiClientBase
     public const int REQ_NO_PARENT = RequestParameterData::NO_PARENT;
 
     public const int SPACE_LIMIT_DEFAULT = RequestParameterData::SPACE_LIMIT_DEFAULT;
-    
-    public const in RESP_NO_PAGE_ID = IResponse::NO_PAGE_ID;
+
+    public const int RESP_NO_PAGE_ID = IResponse::NO_PAGE_ID;
 }
