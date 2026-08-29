@@ -16,6 +16,7 @@ namespace oglow\tools\Yacorapi;
 use Ds\Set;
 use oglow\tools\common\IContainer;
 use oglow\tools\Yacorapi\Client\IRapiClientBase;
+use oglow\tools\Yacorapi\Client\IRapiClientBatch;
 use oglow\tools\Yacorapi\Client\IRapiClientPermission;
 use oglow\tools\Yacorapi\Client\IRapiClientRead;
 use oglow\tools\Yacorapi\Client\IRapiClientStatistic;
@@ -23,7 +24,7 @@ use oglow\tools\Yacorapi\Client\IRapiClientWrite;
 use oglow\tools\Yacorapi\Extension\ExtensionEnum;
 use Psr\Log\LogLevel;
 
-interface IRapiClient extends IRapiClientRead, IRapiClientWrite, IRapiClientStatistic, IRapiClientPermission
+interface IRapiClient extends IRapiClientRead, IRapiClientWrite, IRapiClientStatistic, IRapiClientPermission, IRapiClientBatch
 {
     /**
      * Create new RapiClient.

@@ -19,6 +19,7 @@ use oglow\tools\Yacorapi\Data\RequestParameterData;
 use oglow\tools\Yacorapi\Data\SpaceTypeEnum;
 use oglow\tools\Yacorapi\Extension\RapiClientExtension;
 use ollily\Tools\Test\TestData;
+use oglow\tools\Yacorapi\Data\ItemTypeEnum;
 
 /**
  * @SuppressWarnings("PHPMD.CamelCaseMethodName")
@@ -180,9 +181,11 @@ class YacorapiTestData extends TestData
 
     public const int C_PAGEID_NOTEXIST = -1;
 
-    public const int C_PAGEID_EXIST = 2;
+    public const int C_PAGEID_EXIST = 123;
 
     public const int C_PAGEID_NEW = 11;
+    
+    public const ItemTypeEnum C_ITEM_TYPE_PAGE = ItemTypeEnum::PAGE;
 
     public const string C_SPACE_EMPTY = '';
 
@@ -304,7 +307,9 @@ class YacorapiTestData extends TestData
         self::$RESP_HEAD_SEARCHPAGEID_01 = [
             IResponse::KEY_ID => self::C_SEARCHPAGEID_01,
             IResponse::KEY_TITLE => self::C_SEARCHPAGETITLE_01,
+            IResponse::KEY_TYPE => self::C_ITEM_TYPE_PAGE->value,
         ];
+        self::$RESP_HEAD_SEARCHPAGEID_01 = array_merge(self::$RESP_HEAD_SEARCHPAGEID_01, self::prepareResponseVersion() );
         self::$RESP_HEAD_SEARCHPAGEID_01 = array_merge(self::$RESP_HEAD_SEARCHPAGEID_01, self::prepareResponseSpace(self::C_SEARCHPAGESPACE_01, new Map()));
         self::$RESP_HEAD_SEARCHPAGEID_01 = array_merge(self::$RESP_HEAD_SEARCHPAGEID_01, self::prepareResponseAncestor(self::C_SEARCHPAGESPARENT_01, new Map()));
 
@@ -405,6 +410,15 @@ class YacorapiTestData extends TestData
             ]];
     }
 
+    /**
+     * @param int $currentVersion
+     * @return array<mixed,mixed>
+     */
+    public static function prepareResponseVersion(int $currentVersion = 1): array
+    {
+        return [IResponse::KEY_VERSION => [IResponse::KEY_NUMBER => $currentVersion]];
+    }
+    
     /**
      * @param mixed            $text
      * @param Map<mixed,mixed> $parameters

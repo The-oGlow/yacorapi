@@ -90,8 +90,10 @@ class RequestParameterData extends AbstractSingleton
     public const int NO_PAGE_ID = -1;
 
     public const bool NO_BODY = false;
-
+    
     public const string USER_TYPE_KNOWN = 'known';
+    
+    public const string EMPTY_BODY = '';
 
     /**
      * @inheritDoc

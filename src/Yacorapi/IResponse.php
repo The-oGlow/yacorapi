@@ -48,6 +48,8 @@ interface IResponse extends \Stringable
 
     public const string KEY_NAME = 'name';
 
+    public const string KEY_NUMBER = 'number';
+    
     public const string KEY_OPERATION = 'operation';
 
     public const string KEY_PLAIN = 'plain';
@@ -94,6 +96,8 @@ interface IResponse extends \Stringable
 
     public const string KEY_VALUE = 'value';
 
+    public const string KEY_VERSION = 'version';
+    
     public const string KEY_WEBUI = 'webui';
 
     public const string KEY_HOMEPAGE = 'homepage';
@@ -106,6 +110,10 @@ interface IResponse extends \Stringable
     public const string VAL_FALSE = 'false';
 
     public const int NO_PAGE_ID = -1;
+    
+    public const int NO_VERSION = -1;
+    
+    public const string EMPTY_TITLE = '';
 
     /**
      * @return Map<mixed,mixed>

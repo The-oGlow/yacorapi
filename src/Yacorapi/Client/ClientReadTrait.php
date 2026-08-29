@@ -113,13 +113,13 @@ trait ClientReadTrait
     {
         self::$logger->debug('START - spaceKey', [ $spaceKey]);
 
-        $pageId = IResponse::NO_PAGE_ID;
+        $pageId= IRapiClientBase::RESP_NO_PAGE_ID;
         if (!empty($spaceKey)) {
             $prepareUrl = $this->prepareSpaceUrl($spaceKey);
             /** @var IResponse $result */
             $result = $this->exec($prepareUrl);
             if ($result->checkStatus()) {
-                $pageId = $result->getValue(IResponse::KEY_HOMEPAGE, IResponse::NO_PAGE_ID);
+                $pageId = $result->getValue(IResponse::KEY_HOMEPAGE, IRapiClientBase::RESP_NO_PAGE_ID);
                 if (is_array($pageId)) {
                     $pageId = $pageId[IResponse::KEY_ID];
                 }

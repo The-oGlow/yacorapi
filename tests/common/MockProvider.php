@@ -125,10 +125,9 @@ class MockProvider extends AbstractProvider
     {
         $done = false;
         $searchUrl = sprintf('%s/%s', ConstData::C_RAPI_CONTENT, YacorapiTestData::C_SEARCHPAGEID_01);
-
+        var_dump($searchUrl); var_dump($execUrl);
         if (str_contains($execUrl, $searchUrl)) {
             self::$logger->notice('A \'readPageByPageId\'', [$execUrl, $reqType]);
-
             $response = array_merge($response, YacorapiTestData::RESP_HEAD_SEARCHPAGEID_01());
             $response = array_merge($response, YacorapiTestData::RESP_BODY());
             $response = array_merge($response, YacorapiTestData::RESP_RESTRICTION);

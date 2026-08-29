@@ -28,7 +28,7 @@ class ContentHelperTest extends ConstantCheckTestCase
 
     public const string MACRO_COLUMN = 'column';
 
-    protected const int EXPECTED_CONSTANT_COUNT = 13;
+    protected const int EXPECTED_CONSTANT_COUNT = 16;
 
     protected const bool WITH_CONST_CROSSCHECK = true;
 
@@ -63,6 +63,7 @@ class ContentHelperTest extends ConstantCheckTestCase
             self::CLASS_PREFIX . 'MACROBODY_RICHTEXT',
             self::CLASS_PREFIX . 'CHOOSE_BODY_RICHTEXT',
             self::CLASS_PREFIX . 'CHOOSE_BODY_PLAIN',
+            self::CLASS_PREFIX . 'CHOOSE_BODY_CUSTOM',
             self::CLASS_PREFIX . 'TAG_PARAM_START',
             self::CLASS_PREFIX . 'TAG_PARAM_END',
             self::CLASS_PREFIX . 'TAG_PLAIN_START',
@@ -72,6 +73,8 @@ class ContentHelperTest extends ConstantCheckTestCase
             self::CLASS_PREFIX . 'TAG_MACRO_START',
             self::CLASS_PREFIX . 'TAG_MACRO_END',
             self::CLASS_PREFIX . 'TAG_MACRO_VERSION',
+            self::CLASS_PREFIX . 'BODY_EMPTY',
+            self::CLASS_PREFIX . 'TAG_EMPTY',
         ];
         static::updateActualConsts($const);
 

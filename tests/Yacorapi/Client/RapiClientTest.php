@@ -31,7 +31,7 @@ class RapiClientTest extends EasyGoingTestCase
     public const array AVAILABLE_METHODS = [
         'newClient', 'readPageByPageId', 'readPagesByTitle', 'scanPages', 'searchPagesWithFilter', 'countItemsinSpace', 'spaceHomepage',
         'readRestrictionsByPageId', 'writeRestrictionsByPageId', 'listSpaces', 'countMacrosInSpace', 'movePage', 'createPage', 'updatePage',
-        'prepareAddonSet', 'taskitemMethods', 'getExtensionAddonMacros',
+        'prepareAddonSet', 'taskitemMethods', 'getExtensionAddonMacros', 'processQueue'
     ];
 
     /** Space on test instance */
@@ -145,7 +145,7 @@ class RapiClientTest extends EasyGoingTestCase
     {
         self::$logger->info('START');
 
-        $response = $this->getCasto2t()->movePage(YacorapiTestData::C_PAGEID_EXIST, YacorapiTestData::C_PAGEID_NEW);
+        $response = $this->getCasto2t()->movePage(YacorapiTestData::C_SEARCHPAGEID_01, YacorapiTestData::C_PAGEID_NEW);
 
         self::$logger->info('response', [$response->getResponse()]);
         self::assertNotEmpty($response);

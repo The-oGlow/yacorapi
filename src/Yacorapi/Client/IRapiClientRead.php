@@ -49,9 +49,6 @@ interface IRapiClientRead extends IRapiClientBase
      * @param string $spaceKey  Limited to the space (Default: '')
      *
      * @return IResponse The found pages or empty
-     *
-     * @see IRapiClientRead::scanPagesWithFilter()
-     * @see IRapiClientRead::searchPagesWithFilter()
      */
     public function readPagesByTitle(string $pageTitle, string $spaceKey = RequestParameterData::NO_SPACE): IResponse;
 
@@ -61,9 +58,6 @@ interface IRapiClientRead extends IRapiClientBase
      * @param string $spaceKey Limited to the space (Default: '')
      *
      * @return IResponse The found pages or empty
-     *
-     * @see IRapiClientRead::readPageByPageId()
-     * @see IRapiClientRead::searchPagesWithFilter()
      */
     public function scanPages(string $spaceKey = RequestParameterData::NO_SPACE): IResponse;
 
@@ -77,9 +71,6 @@ interface IRapiClientRead extends IRapiClientBase
      * @param ItemTypeEnum $itemType      The type of the items (Default: PAGE);
      *
      * @return IResponse The found pages or empty
-     *
-     * @see IRapiClientRead::scanPagesWithFilter()
-     * @see IRapiClientRead::readPageByPageId()
      */
     public function searchPagesWithFilter(
         string $filterTerm,

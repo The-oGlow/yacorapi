@@ -24,6 +24,7 @@ use oglow\tools\Yacorapi\IConnectionProvider;
 use oglow\tools\Yacorapi\IRapiClient;
 use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Macro\AddonTypeEnum;
+use oglow\tools\Yacorapi\Data\RequestParameterData;
 use oglow\tools\Yacorapi\Response\ResponseAddonMacroDecorate;
 use oglow\tools\Yacorapi\Statistic\IStatistic;
 use Psr\Log\LoggerInterface;
@@ -35,23 +36,30 @@ use Psr\Log\LoggerInterface;
  *
  * @method ResponseAddonMacroDecorate prepareAddonSet(AddonTypeEnum $mode = AddonTypeEnum::ADDON_ALL)
  * @method IResponse                  readPageByPageId(int $pageId)
- * @method IResponse                  readPagesWithFilter(string $filterTerm, string $spaceKey = '')
- * @method IResponse                  scanPagesWithFilter(string $filterTerm, string $spaceKey = '')
- * @method IResponse                  searchPagesWithFilter(string $filterTerm, string $spaceKey, int $searchFromPos = IRapiClient::REQ_SEARCH_FROM_POS, int $searchLimit = IRapiClient::REQ_SEARCH_LIMIT, ItemTypeEnum $itemType = IRapiClient::REQ_ITEM_TYPE_PAGE)
- *
+ * @method IResponse                  readPagesByTitle(string $pageTitle, string $spaceKey = RequestParameterData::NO_SPACE)
+ * @method IResponse                  scanPages(string $spaceKey = RequestParameterData::NO_SPACE)
+ * @method IResponse                  searchPagesWithFilter(string $filterTerm, string $spaceKey, int $searchFromPos = IRapiClientBase::REQ_SEARCH_FROM_POS,
+ *  int $searchLimit = IRapiClientBase::REQ_SEARCH_LIMIT, ItemTypeEnum $itemType = IRapiClientBase::REQ_ITEM_TYPE_PAGE)
+ * @method int                        spaceHomepage(string $spaceKey)
+ * 
  * <i>Statistic Methods</i>
  * @method IStatistic countItemsinSpace(string $spaceKey, ItemTypeEnum $itemType = IRapiClient::REQ_ITEM_TYPE_PAGE)
  * @method IStatistic countMacrosInSpace(string $spaceKey, ResponseAddonMacroDecorate $addonSet, IStatistic $outputMatrix)
  * @method IResponse  listSpaces(SpaceTypeEnum $spaceType = SpaceTypeEnum::SPACE_TYPE_GLOBAL, int $limit = IRapiClient::SPACE_LIMIT_DEFAULT)
  *
  * <i>Write Methods</i>
- * @method IResponse createPage(string $spaceKey, string $pageTitle, string $pageBody, int $parentId = IRapiClient::REQ_NO_PARENT, ItemTypeEnum $itemType = IRapiClient::REQ_ITEM_TYPE_PAGE)
+ * @method IResponse createPage(string $spaceKey, string $pageTitle, string $pageBody, int $parentId = IRapiClient::REQ_NO_PARENT,
+ *  ItemTypeEnum $itemType = IRapiClient::REQ_ITEM_TYPE_PAGE)
  * @method IResponse movePage(int $pageId, int $newParentId)
- * @method IResponse updatePage(int $pageId, string $pageBody, string $pageTitle = '', string $comment = '', ItemTypeEnum $itemType = IRapiClient::REQ_ITEM_TYPE_PAGE)
+ * @method IResponse updatePage(int $pageId, string $pageBody, string $pageTitle = '', string $comment = '',
+ *  ItemTypeEnum $itemType = IRapiClient::REQ_ITEM_TYPE_PAGE)
  *
  * <i>Restriction Methods</i>
  * @method IResponse readRestrictionsByPageId(int $pageId)
  * @method bool      writeRestrictionsByPageId(int $pageId, array<mixed,mixed> $writeRestrictions = [], array<mixed,mixed> $readRestrictions = [])
+ *
+ * <i>Batch Methods</i>
+ * @method int processQueue(ITaskList $taskList)
  */
 class RapiClient extends AbstractRapiClient implements IRapiClient // NOSONAR: php:S1448
 {
@@ -60,7 +68,8 @@ class RapiClient extends AbstractRapiClient implements IRapiClient // NOSONAR: p
     use ClientWriteTrait;
     use ClientPermissionTrait;
     use ClientStatisticTrait;
-
+    use ClientBatchTrait;
+    
     private static LoggerInterface $logger;
 
     /**
