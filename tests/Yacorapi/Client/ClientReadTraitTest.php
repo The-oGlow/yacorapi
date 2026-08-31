@@ -206,11 +206,11 @@ class ClientReadTraitTest extends EasyGoingTestCase
 
     public function testPrepareBrowseUrl(): void
     {
-        $filterTerm = YacorapiTestData::C_FILTERTERM_01;
+        $filterTerm = YacorapiTestData::C_SEARCHPAGETITLE_01;
         $spaceKey   = YacorapiTestData::C_SPACE_EXIST_KEY;
 
         $expected1 = ConstData::C_RAPI_CONTENT;
-        $expected2 = $filterTerm;
+        $expected2 = urlencode($filterTerm);
         $expected3 = $spaceKey;
 
         $actual = $this->getCasto2t()->publicPrepareBrowseUrl($filterTerm, $spaceKey);
@@ -291,6 +291,9 @@ class ClientReadTraitTest extends EasyGoingTestCase
 
     // Dataprovider
 
+    /**
+     * @return array<mixed,mixed>
+     */
     public static function providerSpaceHomepage(): array
     {
         return [

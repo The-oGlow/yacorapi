@@ -168,7 +168,7 @@ class CurlProvider extends AbstractProvider
 
                 // Check for errors
                 if (curl_errno($execSession) !== 0) {
-                    self::$logger->error('curl_error', [curl_error($execSession)]);
+                    self::$logger->error('curl_error', [curl_error($execSession), $execUrl]);
                 }
 
                 // Close the cURL session
@@ -208,7 +208,7 @@ class CurlProvider extends AbstractProvider
             if (file_exists($this->constData->c(ConstData::KEY_MY_CERT_CA))) {
                 curl_setopt($execSession, CURLOPT_CAINFO, $this->constData->c(ConstData::KEY_MY_CERT_CA));
             } else {
-                self::$logger->warning('CA certificate not found!', [$this->constData->c(ConstData::KEY_MY_CERT_CA)]);
+                self::$logger->warning('CA certificate not found', [$this->constData->c(ConstData::KEY_MY_CERT_CA)]);
                 curl_setopt($execSession, CURLOPT_SSL_VERIFYPEER, false); // NOSONAR: php:S4830
             }
         }

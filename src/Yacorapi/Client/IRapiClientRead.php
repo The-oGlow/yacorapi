@@ -50,7 +50,21 @@ interface IRapiClientRead extends IRapiClientBase
      *
      * @return IResponse The found pages or empty
      */
-    public function readPagesByTitle(string $pageTitle, string $spaceKey = RequestParameterData::NO_SPACE): IResponse;
+    public function readPagesByTitle(string $pageTitle, string $spaceKey = RequestParameterData::VAL_SPACE_EMPTY): IResponse;
+
+    /**
+     * Verifies if an item with a certain title exists in a space.
+     *
+     * @param string       $spaceKey  The space to look in
+     * @param string       $pageTitle The complete name of the page title
+     * @param ItemTypeEnum $itemType  The type of the item (Default {@link ItemTypeEnum::PAGE}
+     *
+     * @return int The page id of the page or {@link IResponse::VAL_PAGE_ID_NO}
+     *
+     * @see IResponse::VAL_PAGE_ID_NO
+     * @see ItemTypeEnum::PAGE
+     */
+    public function checkPageExists(string $spaceKey, string $pageTitle, ItemTypeEnum $itemType = ItemTypeEnum::PAGE): int;
 
     /**
      * Scans for confluence pages by space.
@@ -59,7 +73,7 @@ interface IRapiClientRead extends IRapiClientBase
      *
      * @return IResponse The found pages or empty
      */
-    public function scanPages(string $spaceKey = RequestParameterData::NO_SPACE): IResponse;
+    public function scanPages(string $spaceKey = RequestParameterData::VAL_SPACE_EMPTY): IResponse;
 
     /**
      * Extend search for confluence pages by a filter term in one space.
@@ -75,8 +89,8 @@ interface IRapiClientRead extends IRapiClientBase
     public function searchPagesWithFilter(
         string $filterTerm,
         string $spaceKey,
-        int $searchFromPos = IRapiClientBase::REQ_SEARCH_FROM_POS,
-        int $searchLimit = IRapiClientBase::REQ_SEARCH_LIMIT,
+        int $searchFromPos = IRapiClientBase::REQ_VAL_SEARCH_START,
+        int $searchLimit = IRapiClientBase::REQ_VAL_SEARCH_LIMIT_MIN,
         ItemTypeEnum $itemType = IRapiClientBase::REQ_ITEM_TYPE_PAGE
     ): IResponse;
 
@@ -85,7 +99,8 @@ interface IRapiClientRead extends IRapiClientBase
      * @param string       $spaceKey      space
      * @return int PageId of the homepage or -1 if not found
      *
-     * @see IRapiClientBase::RESP_NO_PAGE_ID
+     * @see IRapiClientBase::RESP_VAL_PAGE_ID_NO
      */
+
     public function spaceHomepage(string $spaceKey): int;
 }

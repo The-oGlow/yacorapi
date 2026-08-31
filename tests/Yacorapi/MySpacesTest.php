@@ -53,7 +53,7 @@ class MySpacesTest extends EasyGoingTestCase
 
         try {
             static::prepareSpaceData();
-            $clazzName = SpaceData::MY_SPACES_NS_CLAZZ;
+            $clazzName = SpaceData::VAL_SPACES_CLAZZ_FULL;
 
             $instance = new $clazzName();
         } catch (\Throwable $ex) {
@@ -125,7 +125,7 @@ class MySpacesTest extends EasyGoingTestCase
             if (is_array($returnValue)) {
                 $joinedResults = array_merge($joinedResults, $returnValue);
             } else {
-                self::$logger->warning('not an array', [print_r($returnValue, true)]);
+                self::$logger->warning('This is not an array', [print_r($returnValue, true)]);
             }
         }
 
@@ -142,7 +142,7 @@ class MySpacesTest extends EasyGoingTestCase
 
         $spacesMissing = array_values(array_diff($expected, $actual));
         if (!empty($spacesMissing)) {
-            self::$logger->notice('spaceData not found:', [$spacesMissing]);
+            self::$logger->notice('No spaceData found:', [$spacesMissing]);
         }
 
         self::assertIsArray($expected);

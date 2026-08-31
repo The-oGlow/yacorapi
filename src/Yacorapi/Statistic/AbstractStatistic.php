@@ -103,7 +103,7 @@ abstract class AbstractStatistic implements IStatistic
                 $item = $this->items->get($key);
             }
         } else {
-            throw new \InvalidArgumentException('Key must not be null!');
+            throw new \InvalidArgumentException('Key must not be null');
         }
 
         return $item;
@@ -118,7 +118,7 @@ abstract class AbstractStatistic implements IStatistic
         if (!is_null($key)) {
             $this->items->put($key, $item);
         } else {
-            throw new \InvalidArgumentException('Key must not be null!');
+            throw new \InvalidArgumentException('Key must not be null');
         }
     }
 

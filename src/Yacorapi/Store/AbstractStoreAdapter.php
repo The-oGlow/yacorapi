@@ -105,9 +105,9 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
 
         $sessionDir = $this->constData->prepareFinalTarget($sessionDir, $outputFileName);
 
-        self::$logger->debug('create TARGET_ROOT', [$targetRootDir]);
+        self::$logger->debug('Create TARGET_ROOT', [$targetRootDir]);
         $this->mkdir($targetRootDir);
-        self::$logger->debug('create session folder in TARGET_DIR', [$sessionDir]);
+        self::$logger->debug('Create session folder in TARGET_DIR', [$sessionDir]);
         $this->mkdir($sessionDir);
 
         self::$logger->debug('END');
@@ -128,11 +128,11 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
             $targetOrgDir = $this->constData->prepareFinalTarget($sessionDir, $orgDir);
             $targetModDir = $this->constData->prepareFinalTarget($sessionDir, $modDir);
 
-            self::$logger->debug('create TARGET_ORG_DIR & TARGET_MOD_DIR', [$targetOrgDir, $targetModDir]);
+            self::$logger->debug('Create TARGET_ORG_DIR & TARGET_MOD_DIR', [$targetOrgDir, $targetModDir]);
             $this->mkdir($targetOrgDir);
             $this->mkdir($targetModDir);
         } else {
-            self::$logger->warning('session folder does not exists!', [$sessionDir]);
+            self::$logger->warning('Session folder does not exists', [$sessionDir]);
         }
 
         self::$logger->debug('END');

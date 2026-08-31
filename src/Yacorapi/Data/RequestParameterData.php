@@ -58,42 +58,43 @@ class RequestParameterData extends AbstractSingleton
     public const string PROP_VERSION = 'version';
 
     // Space Consts
-    public const int SPACE_LIMIT_DEFAULT = 500;
+    public const int VAL_SPACE_LIMIT_DEFAULT = 500;
 
-    // Page Consts
-    public const string PAGE_COUNT = 'count';
-
-    public const string PAGE_TYPE = 'pagetype';
+    public const string VAL_SPACE_EMPTY = '';
 
     // Property Values Consts
-    public const string REPRESENTATION_TYPE_STORAGE = 'storage';
+    public const string VAL_REPRESENTATION_TYPE_STORAGE = 'storage';
 
-    public const string STATUS_TYPE_CURRENT = 'current';
+    public const string VAL_STATUS_TYPE_CURRENT = 'current';
 
     // Search Consts
-    public const int SEARCH_START = 0;
+    public const int VAL_SEARCH_START = 0;
 
-    public const int NO_SEARCH_START = -1;
+    public const int VAL_SEARCH_START_NO = -1;
 
-    public const int SEARCH_LIMIT_ZERO = 0;
+    public const int VAL_SEARCH_LIMIT_1ENTRY = 1;
 
-    public const int SEARCH_LIMIT_1ENTRY = 1;
+    public const int VAL_SEARCH_LIMIT_MIN = 0;
 
-    public const int SEARCH_LIMIT_MAX = 100;
+    public const int VAL_SEARCH_LIMIT_MAX = 100;
 
-    public const int NO_SEARCH_LIMIT = -1;
+    public const int VAL_SEARCH_LIMIT_NO = -1;
 
-    public const int NO_PARENT = 0;
+    // Page Consts
+    public const int VAL_PARENT_ID_NO = 0;
 
-    public const string NO_SPACE = '';
+    public const int VAL_PAGE_ID_NO = -1;
 
-    public const int NO_PAGE_ID = -1;
+    public const bool VAL_BODY_NO = false;
 
-    public const bool NO_BODY = false;
-    
-    public const string USER_TYPE_KNOWN = 'known';
-    
-    public const string EMPTY_BODY = '';
+    public const string VAL_USER_TYPE_KNOWN = 'known';
+
+    public const string VAL_BODY_EMPTY = '';
+
+    public const int VAL_VERSION_FIRST = 1;
+
+    /** Max length of a comment (without APP_USER) */
+    public const int VAL_COMMENT_MAXLEN = 200;
 
     /**
      * @inheritDoc

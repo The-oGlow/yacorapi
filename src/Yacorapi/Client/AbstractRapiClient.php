@@ -18,6 +18,7 @@ use Monolog\ConsoleLogger;
 use oglow\tools\common\IContainer;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\Data\AddonMacroData;
+use oglow\tools\Yacorapi\Data\RequestParameterData;
 use oglow\tools\Yacorapi\IConnectionProvider;
 use oglow\tools\Yacorapi\IRapiClient;
 use oglow\tools\Yacorapi\IResponse;
@@ -29,6 +30,10 @@ use Psr\Log\LoggerInterface;
 abstract class AbstractRapiClient
 {
     use MagicPublicFunctionTrait;
+
+    protected const string VAL_APP_USER = ConstData::VAL_APP_USER;
+
+    protected const int VAL_COMMENT_MAXLEN = RequestParameterData::VAL_COMMENT_MAXLEN;
 
     private static LoggerInterface $logger;
 
@@ -111,5 +116,26 @@ abstract class AbstractRapiClient
         self::$logger->debug('END');
 
         return $response;
+    }
+
+    /**
+     * @param string $comment
+     * @param string $userId  Additional userId (Default {@link self::APP_USER}
+     *
+     * @return string A cleaned comment
+     *
+     * @see self::APP_USER
+     */
+    protected function validateComment(string $comment, string $userId = self::VAL_APP_USER): string
+    {
+        $cleanComment = '';
+        if (!empty($comment)) {
+            $cleanComment = substr($comment, 0, self::VAL_COMMENT_MAXLEN);
+            if (!str_contains($cleanComment, self::VAL_APP_USER)) {
+                $cleanComment = sprintf('%s (%s)', $cleanComment, $userId);
+            }
+        }
+
+        return $cleanComment;
     }
 }

@@ -15,11 +15,11 @@ namespace oglow\tools\Yacorapi;
 
 use Ds\Map;
 use oglow\tools\Addon\Atlassian\Extension\AtlassianExtension;
+use oglow\tools\Yacorapi\Data\ItemTypeEnum;
 use oglow\tools\Yacorapi\Data\RequestParameterData;
 use oglow\tools\Yacorapi\Data\SpaceTypeEnum;
 use oglow\tools\Yacorapi\Extension\RapiClientExtension;
 use ollily\Tools\Test\TestData;
-use oglow\tools\Yacorapi\Data\ItemTypeEnum;
 
 /**
  * @SuppressWarnings("PHPMD.CamelCaseMethodName")
@@ -184,7 +184,7 @@ class YacorapiTestData extends TestData
     public const int C_PAGEID_EXIST = 123;
 
     public const int C_PAGEID_NEW = 11;
-    
+
     public const ItemTypeEnum C_ITEM_TYPE_PAGE = ItemTypeEnum::PAGE;
 
     public const string C_SPACE_EMPTY = '';
@@ -197,7 +197,7 @@ class YacorapiTestData extends TestData
 
     public const string C_SPACE_EXIST_DESCRIPTION = 'A space which exists.';
 
-    public const string C_SPACE_EXIST_STATUS = RequestParameterData::STATUS_TYPE_CURRENT;
+    public const string C_SPACE_EXIST_STATUS = RequestParameterData::VAL_STATUS_TYPE_CURRENT;
 
     public const SpaceTypeEnum C_SPACE_EXIST_TYPE = SpaceTypeEnum::SPACE_TYPE_GLOBAL;
 
@@ -237,6 +237,8 @@ class YacorapiTestData extends TestData
     public const string MACR_BODY_SIMPLE = '<body></body>';
 
     public const string MACR_BODY_INVALID = 'invalidBody';
+
+    public const string MACR_BODY_CONTENT = 'Content of the macro body';
 
     // Macro Doctype
     public const string MACR_DOCTYPE_NEW = 'newDT';
@@ -309,7 +311,7 @@ class YacorapiTestData extends TestData
             IResponse::KEY_TITLE => self::C_SEARCHPAGETITLE_01,
             IResponse::KEY_TYPE => self::C_ITEM_TYPE_PAGE->value,
         ];
-        self::$RESP_HEAD_SEARCHPAGEID_01 = array_merge(self::$RESP_HEAD_SEARCHPAGEID_01, self::prepareResponseVersion() );
+        self::$RESP_HEAD_SEARCHPAGEID_01 = array_merge(self::$RESP_HEAD_SEARCHPAGEID_01, self::prepareResponseVersion());
         self::$RESP_HEAD_SEARCHPAGEID_01 = array_merge(self::$RESP_HEAD_SEARCHPAGEID_01, self::prepareResponseSpace(self::C_SEARCHPAGESPACE_01, new Map()));
         self::$RESP_HEAD_SEARCHPAGEID_01 = array_merge(self::$RESP_HEAD_SEARCHPAGEID_01, self::prepareResponseAncestor(self::C_SEARCHPAGESPARENT_01, new Map()));
 
@@ -412,13 +414,14 @@ class YacorapiTestData extends TestData
 
     /**
      * @param int $currentVersion
+     *
      * @return array<mixed,mixed>
      */
     public static function prepareResponseVersion(int $currentVersion = 1): array
     {
         return [IResponse::KEY_VERSION => [IResponse::KEY_NUMBER => $currentVersion]];
     }
-    
+
     /**
      * @param mixed            $text
      * @param Map<mixed,mixed> $parameters

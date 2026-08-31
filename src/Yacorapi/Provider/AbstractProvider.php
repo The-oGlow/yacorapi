@@ -129,7 +129,7 @@ abstract class AbstractProvider implements IConnectionProvider
 
         $tokenValue = getenv($this->constData->c(ConstData::KEY_AUTH_TOKEN_NAME));
         if (!is_string($tokenValue) || empty($tokenValue)) {
-            self::$logger->warning('Token is NOT set!', [$this->constData->c(ConstData::KEY_AUTH_TOKEN_NAME)]);
+            self::$logger->warning('Token is NOT set', [$this->constData->c(ConstData::KEY_AUTH_TOKEN_NAME)]);
             $tokenValue = '';
         }
 

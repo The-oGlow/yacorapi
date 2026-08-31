@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Response;
 
+use Ds\Collection;
 use Ds\Map;
 use Ds\Vector;
 use oglow\tools\Yacorapi\IResponse;
@@ -143,6 +144,12 @@ class ResponseDryRun implements IResponse
     public function checkStatus(): bool
     {
         return true;
+    }
+
+    #[\Override]
+    public function getError(): Collection
+    {
+        return new Map();
     }
 
     /**

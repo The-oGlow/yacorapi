@@ -24,11 +24,13 @@ class ContentHelperTest extends ConstantCheckTestCase
 
     public const string MACRO_HTML = 'html';
 
+    public const string MACRO_CODE = 'code';
+
     public const string MACRO_SECTION = 'section';
 
     public const string MACRO_COLUMN = 'column';
 
-    protected const int EXPECTED_CONSTANT_COUNT = 16;
+    protected const int EXPECTED_CONSTANT_COUNT = 8;
 
     protected const bool WITH_CONST_CROSSCHECK = true;
 
@@ -59,22 +61,14 @@ class ContentHelperTest extends ConstantCheckTestCase
     public function testConstsExists(): void
     {
         $const = [
-            self::CLASS_PREFIX . 'MACROBODY_PLAIN',
-            self::CLASS_PREFIX . 'MACROBODY_RICHTEXT',
-            self::CLASS_PREFIX . 'CHOOSE_BODY_RICHTEXT',
-            self::CLASS_PREFIX . 'CHOOSE_BODY_PLAIN',
-            self::CLASS_PREFIX . 'CHOOSE_BODY_CUSTOM',
-            self::CLASS_PREFIX . 'TAG_PARAM_START',
-            self::CLASS_PREFIX . 'TAG_PARAM_END',
-            self::CLASS_PREFIX . 'TAG_PLAIN_START',
-            self::CLASS_PREFIX . 'TAG_PLAIN_END',
-            self::CLASS_PREFIX . 'TAG_RICH_START',
-            self::CLASS_PREFIX . 'TAG_RICH_END',
             self::CLASS_PREFIX . 'TAG_MACRO_START',
             self::CLASS_PREFIX . 'TAG_MACRO_END',
             self::CLASS_PREFIX . 'TAG_MACRO_VERSION',
-            self::CLASS_PREFIX . 'BODY_EMPTY',
-            self::CLASS_PREFIX . 'TAG_EMPTY',
+            self::CLASS_PREFIX . 'TAG_PARAMETER',
+            self::CLASS_PREFIX . 'TAG_BODY_PLAIN',
+            self::CLASS_PREFIX . 'TAG_BODY_RICH',
+            self::CLASS_PREFIX . 'VAL_BODY_EMPTY',
+            self::CLASS_PREFIX . 'VAL_TAG_EMPTY',
         ];
         static::updateActualConsts($const);
 
@@ -83,9 +77,23 @@ class ContentHelperTest extends ConstantCheckTestCase
 
     /**
      * @param string           $expected
+     * @param string           $macroName
+     * @param Map<mixed,mixed> $parameters
+     * @param string           $body
+     */
+    #[DataProvider('providerPrepareMacro')]
+    public function testPrepareMacro(string $expected, string $macroName, Map $parameters, string $body): void
+    {
+        $actual = $this->getCasto2t()::prepareMacro($macroName, $parameters, $body);
+
+        self::assertEquals($expected, $actual);
+    }
+
+    /**
+     * @param string           $expected
      * @param Map<mixed,mixed> $parameters
      */
-    #[DataProvider('providerParameters')]
+    #[DataProvider('providerPrepareMacroParameter')]
     public function testPrepareMacroParameter(string $expected, Map $parameters): void
     {
         $actual = $this->getCasto2t()::prepareMacroParameter($parameters);
@@ -97,7 +105,7 @@ class ContentHelperTest extends ConstantCheckTestCase
      * @param string $expected
      * @param string $body
      */
-    #[DataProvider('providerPlainBody')]
+    #[DataProvider('providerPreparePlainBody')]
     public function testPreparePlainBody(string $expected, string $body): void
     {
         $actual = $this->getCasto2t()::preparePlainBody($body);
@@ -109,10 +117,22 @@ class ContentHelperTest extends ConstantCheckTestCase
      * @param string $expected
      * @param string $body
      */
-    #[DataProvider('providerRichBody')]
+    #[DataProvider('providerPrepareRichBody')]
     public function testPrepareRichTextBody(string $expected, string $body): void
     {
         $actual = $this->getCasto2t()::prepareRichTextBody($body);
+
+        self::assertEquals($expected, $actual);
+    }
+
+    /**
+     * @param HasMacroBodyEnum $expected
+     * @param string           $macroName
+     */
+    #[DataProvider('providerChooseMacroBody')]
+    public function testChooseMacroBody(HasMacroBodyEnum $expected, string $macroName): void
+    {
+        $actual = $this->getCasto2t()::chooseMacroBody($macroName);
 
         self::assertEquals($expected, $actual);
     }
@@ -122,36 +142,10 @@ class ContentHelperTest extends ConstantCheckTestCase
      * @param string $macroName
      * @param string $body
      */
-    #[DataProvider('providerMacroNameBody')]
+    #[DataProvider('providerPrepareMacroBody')]
     public function testPrepareMacroBody(string $expected, string $macroName, string $body): void
     {
         $actual = $this->getCasto2t()::prepareMacroBody($macroName, $body);
-
-        self::assertEquals($expected, $actual);
-    }
-
-    /**
-     * @param string $expected
-     * @param string $macroName
-     */
-    #[DataProvider('providerChooseMacroBody')]
-    public function testChooseMacroBody(string $expected, string $macroName): void
-    {
-        $actual = $this->getCasto2t()::chooseMacroBody($macroName);
-
-        self::assertEquals($expected, $actual);
-    }
-
-    /**
-     * @param string           $expected
-     * @param string           $macroName
-     * @param Map<mixed,mixed> $parameters
-     * @param string           $body
-     */
-    #[DataProvider('providerMacroNameParametersBody')]
-    public function testPrepareMacro(string $expected, string $macroName, Map $parameters, string $body): void
-    {
-        $actual = $this->getCasto2t()::prepareMacro($macroName, $parameters, $body);
 
         self::assertEquals($expected, $actual);
     }
@@ -161,26 +155,22 @@ class ContentHelperTest extends ConstantCheckTestCase
     /**
      * @return array<mixed,mixed>
      */
-    public static function providerPlainBody(): array
+    public static function providerPreparePlainBody(): array
     {
         return [
             'empty' => [TestData::DATA_EMPTY, TestData::DATA_EMPTY],
-            'html' => [ContentHelper::TAG_PLAIN_START . self::MACRO_HTML . ContentHelper::TAG_PLAIN_END, self::MACRO_HTML],
-            'section' => [ContentHelper::TAG_PLAIN_START . self::MACRO_SECTION . ContentHelper::TAG_PLAIN_END, self::MACRO_SECTION],
-            'column' => [ContentHelper::TAG_PLAIN_START . self::MACRO_COLUMN . ContentHelper::TAG_PLAIN_END, self::MACRO_COLUMN],
+            'content' => [self::prepareBodyPlain(TestData::DATA_CONTENT), TestData::DATA_CONTENT],
         ];
     }
 
     /**
      * @return array<mixed,mixed>
      */
-    public static function providerRichBody(): array
+    public static function providerPrepareRichBody(): array
     {
         return [
             'empty' => [TestData::DATA_EMPTY, TestData::DATA_EMPTY],
-            'html' => [ContentHelper::TAG_RICH_START . self::MACRO_HTML . ContentHelper::TAG_RICH_END, self::MACRO_HTML],
-            'section' => [ContentHelper::TAG_RICH_START . self::MACRO_SECTION . ContentHelper::TAG_RICH_END, self::MACRO_SECTION],
-            'column' => [ContentHelper::TAG_RICH_START . self::MACRO_COLUMN . ContentHelper::TAG_RICH_END, self::MACRO_COLUMN],
+            'content' => [self::prepareBodyRich(TestData::DATA_CONTENT), TestData::DATA_CONTENT],
         ];
     }
 
@@ -192,6 +182,7 @@ class ContentHelperTest extends ConstantCheckTestCase
         return [
             'empty' => [false, TestData::DATA_EMPTY],
             'html' => [false, self::MACRO_HTML],
+            'code' => [false, self::MACRO_CODE],
             'section' => [false, self::MACRO_SECTION],
             'column' => [false, self::MACRO_COLUMN],
         ];
@@ -203,73 +194,83 @@ class ContentHelperTest extends ConstantCheckTestCase
     public static function providerChooseMacroBody(): array
     {
         return [
-            'empty' => [ContentHelper::CHOOSE_BODY_PLAIN, TestData::DATA_EMPTY],
-            'html' => [ContentHelper::CHOOSE_BODY_PLAIN, self::MACRO_HTML],
-            'section' => [ContentHelper::CHOOSE_BODY_RICHTEXT, self::MACRO_SECTION],
-            'column' => [ContentHelper::CHOOSE_BODY_RICHTEXT, self::MACRO_COLUMN],
+            'empty' => [HasMacroBodyEnum::NONE, TestData::DATA_EMPTY],
+            'notExist' => [HasMacroBodyEnum::NONE, TestData::DATA_NOTEXIST],
+            'html' => [HasMacroBodyEnum::PLAIN, self::MACRO_HTML],
+            'code' => [HasMacroBodyEnum::PLAIN, self::MACRO_CODE],
+            'section' => [HasMacroBodyEnum::RICH, self::MACRO_SECTION],
+            'column' => [HasMacroBodyEnum::RICH, self::MACRO_COLUMN],
         ];
     }
 
     /**
      * @return array<mixed,mixed>
      */
-    public static function providerParameters(): array
+    public static function providerPrepareMacroParameter(): array
     {
         return [
             'empty' => ['', new Map()],
             'oneParam' => [
-                sprintf(ContentHelper::TAG_PARAM_START . TestData::DATA_ALPHA1 . ContentHelper::TAG_PARAM_END, 0),
-                new Map(TestData::ARRAY_ALPHA1)],
+                self::prepareParameter(TestData::KEY_NUM1, TestData::DATA_NUM1),
+//                sprintf(ContentHelper::TAG_PARAM_START . TestData::DATA_NUM1 . ContentHelper::TAG_PARAM_END, TestData::KEY_NUM1),
+                new Map(TestData::ARRAY_NUM_KEY1)],
             'twoParam' => [
-                sprintf(ContentHelper::TAG_PARAM_START . TestData::DATA_BOOL_T . ContentHelper::TAG_PARAM_END, 0) .
-                sprintf(ContentHelper::TAG_PARAM_START . TestData::DATA_BOOL_F . ContentHelper::TAG_PARAM_END, 1), new Map(TestData::ARRAY_BOOL2)],
+                self::prepareParameter(0, TestData::DATA_BOOL_T) .
+//                sprintf(ContentHelper::TAG_PARAM_START . TestData::DATA_BOOL_T . ContentHelper::TAG_PARAM_END, 0) .
+                self::prepareParameter(1, TestData::DATA_BOOL_F),
+//                sprintf(ContentHelper::TAG_PARAM_START . TestData::DATA_BOOL_F . ContentHelper::TAG_PARAM_END, 1),
+                new Map(TestData::ARRAY_BOOL2)],
             'threeParam' => [
-                sprintf(ContentHelper::TAG_PARAM_START . TestData::DATA_NUM1 . ContentHelper::TAG_PARAM_END, 0) .
-                sprintf(ContentHelper::TAG_PARAM_START . TestData::DATA_NUM2 . ContentHelper::TAG_PARAM_END, 1) .
-                sprintf(ContentHelper::TAG_PARAM_START . TestData::DATA_NUM3 . ContentHelper::TAG_PARAM_END, 2), new Map(TestData::ARRAY_NUM3)],
+                self::prepareParameter(TestData::KEY_NUM1, TestData::DATA_NUM1) .
+//                sprintf(ContentHelper::TAG_PARAM_START . TestData::DATA_NUM1 . ContentHelper::TAG_PARAM_END, TestData::KEY_NUM1) .
+                self::prepareParameter(TestData::KEY_NUM2, TestData::DATA_NUM2) .
+//                sprintf(ContentHelper::TAG_PARAM_START . TestData::DATA_NUM2 . ContentHelper::TAG_PARAM_END, TestData::KEY_NUM2) .
+                self::prepareParameter(TestData::KEY_NUM3, TestData::DATA_NUM3),
+//                sprintf(ContentHelper::TAG_PARAM_START . TestData::DATA_NUM3 . ContentHelper::TAG_PARAM_END, TestData::KEY_NUM3),
+                new Map(TestData::ARRAY_NUM_KEY3)],
         ];
     }
 
     /**
      * @return array<mixed,mixed>
      */
-    public static function providerMacroNameBody(): array
+    public static function providerPrepareMacroBody(): array
     {
         return [
             'emptyAll' => [TestData::DATA_EMPTY, TestData::DATA_EMPTY, TestData::DATA_EMPTY],
             'htmlEmptyBody' => [TestData::DATA_EMPTY, self::MACRO_HTML, TestData::DATA_EMPTY],
+            'codeEmptyBody' => [TestData::DATA_EMPTY, self::MACRO_CODE, TestData::DATA_EMPTY],
             'sectionEmptyBody' => [TestData::DATA_EMPTY, self::MACRO_SECTION, TestData::DATA_EMPTY],
             'columnEmptyBody' => [TestData::DATA_EMPTY, self::MACRO_COLUMN, TestData::DATA_EMPTY],
-            'emptyMacroWithBody' => [
-                ContentHelper::TAG_PLAIN_START . TestData::DATA_ALPHA1 . ContentHelper::TAG_PLAIN_END,
-                TestData::DATA_EMPTY, TestData::DATA_ALPHA1],
+            'emptyMacroWithBody' => [TestData::DATA_EMPTY, TestData::DATA_EMPTY, TestData::DATA_ALPHA1],
             'htmlWithBody' => [
-                ContentHelper::TAG_PLAIN_START . TestData::DATA_ALPHA1 . ContentHelper::TAG_PLAIN_END,
+            self::prepareBodyPlain(TestData::DATA_ALPHA1),
                 self::MACRO_HTML, TestData::DATA_ALPHA1],
+            'codeWithBody' => [
+            self::prepareBodyPlain(TestData::DATA_ALPHA1),
+                self::MACRO_CODE, TestData::DATA_ALPHA1],
             'sectionWithBody' => [
-                ContentHelper::TAG_RICH_START . TestData::DATA_ALPHA1 . ContentHelper::TAG_RICH_END,
+                self::prepareBodyRich(TestData::DATA_ALPHA1),
                 self::MACRO_SECTION, TestData::DATA_ALPHA1],
             'columnWithBody' => [
-                ContentHelper::TAG_RICH_START . TestData::DATA_ALPHA1 . ContentHelper::TAG_RICH_END,
-                self::MACRO_COLUMN, TestData::DATA_ALPHA1],
+            self::prepareBodyRich(TestData::DATA_ALPHA1),
+            self::MACRO_COLUMN, TestData::DATA_ALPHA1],
         ];
     }
 
     /**
      * @return array<mixed,mixed>
      */
-    public static function providerMacroNameParametersBody(): array
+    public static function providerPrepareMacro(): array
     {
         return [
             'emptyParam' => [
-                sprintf(ContentHelper::TAG_MACRO_START . ContentHelper::TAG_MACRO_END, TestData::DATA_EMPTY, ContentHelper::TAG_MACRO_VERSION),
-                TestData::DATA_EMPTY, new Map(), TestData::DATA_EMPTY],
+                self::prepareMacro(TestData::DATA_EMPTY), TestData::DATA_EMPTY, new Map(), TestData::DATA_EMPTY],
             'oneParam' => [
                 sprintf(
                     ContentHelper::TAG_MACRO_START .
-                    sprintf(ContentHelper::TAG_PARAM_START . TestData::DATA_ALPHA1 . ContentHelper::TAG_PARAM_END, 0) .
-                    TestData::DATA_ALPHA3 .
-                    ContentHelper::TAG_MACRO_END,
+                        self::prepareParameter(0, TestData::DATA_ALPHA1) .
+                        ContentHelper::TAG_MACRO_END,
                     TestData::DATA_ALPHA2,
                     ContentHelper::TAG_MACRO_VERSION
                 ),
@@ -277,10 +278,9 @@ class ContentHelperTest extends ConstantCheckTestCase
             'twoParam' => [
                 sprintf(
                     ContentHelper::TAG_MACRO_START .
-                    sprintf(ContentHelper::TAG_PARAM_START . TestData::DATA_BOOL_T . ContentHelper::TAG_PARAM_END, 0) .
-                    sprintf(ContentHelper::TAG_PARAM_START . TestData::DATA_BOOL_F . ContentHelper::TAG_PARAM_END, 1) .
-                    TestData::DATA_ALPHA2 .
-                    ContentHelper::TAG_MACRO_END,
+                        self::prepareParameter(0, TestData::DATA_BOOL_T) .
+                        self::prepareParameter(1, TestData::DATA_BOOL_F) .
+                        ContentHelper::TAG_MACRO_END,
                     TestData::DATA_ALPHA1,
                     ContentHelper::TAG_MACRO_VERSION
                 ),
@@ -288,15 +288,54 @@ class ContentHelperTest extends ConstantCheckTestCase
             'threeParam' => [
                 sprintf(
                     ContentHelper::TAG_MACRO_START .
-                    sprintf(ContentHelper::TAG_PARAM_START . TestData::DATA_NUM1 . ContentHelper::TAG_PARAM_END, 0) .
-                    sprintf(ContentHelper::TAG_PARAM_START . TestData::DATA_NUM2 . ContentHelper::TAG_PARAM_END, 1) .
-                    sprintf(ContentHelper::TAG_PARAM_START . TestData::DATA_NUM3 . ContentHelper::TAG_PARAM_END, 2) .
-                    TestData::DATA_ALPHA2 .
-                    ContentHelper::TAG_MACRO_END,
+                        self::prepareParameter(0, TestData::DATA_NUM1) .
+                        self::prepareParameter(1, TestData::DATA_NUM2) .
+                        self::prepareParameter(2, TestData::DATA_NUM3) .
+                        ContentHelper::TAG_MACRO_END,
                     TestData::DATA_ALPHA5,
                     ContentHelper::TAG_MACRO_VERSION
                 ),
                 TestData::DATA_ALPHA5, new Map(TestData::ARRAY_NUM3), TestData::DATA_ALPHA2],
+            'codePlainBody' => [
+                sprintf(
+                    ContentHelper::TAG_MACRO_START .
+                        self::prepareBodyPlain(TestData::DATA_CONTENT) .
+                        ContentHelper::TAG_MACRO_END,
+                    self::MACRO_CODE,
+                    ContentHelper::TAG_MACRO_VERSION
+                ),
+                self::MACRO_CODE, new Map(), TestData::DATA_CONTENT],
+            'sectionRichBody' => [
+                sprintf(
+                    ContentHelper::TAG_MACRO_START .
+                        self::prepareBodyRich(TestData::DATA_CONTENT) .
+                        ContentHelper::TAG_MACRO_END,
+                    self::MACRO_SECTION,
+                    ContentHelper::TAG_MACRO_VERSION
+                ),
+                self::MACRO_SECTION, new Map(), TestData::DATA_CONTENT],
         ];
+    }
+
+    // Helper
+
+    protected static function prepareMacro(mixed $macroName): string
+    {
+        return sprintf(ContentHelper::TAG_MACRO_START . ContentHelper::TAG_MACRO_END, $macroName, ContentHelper::TAG_MACRO_VERSION);
+    }
+
+    protected static function prepareParameter(mixed $paramName, mixed $paramValue): string
+    {
+        return sprintf(ContentHelper::TAG_PARAMETER, $paramName, $paramValue);
+    }
+
+    protected static function prepareBodyPlain(mixed $bodyContent): string
+    {
+        return sprintf(ContentHelper::TAG_BODY_PLAIN, $bodyContent);
+    }
+
+    protected static function prepareBodyRich(mixed $bodyContent): string
+    {
+        return sprintf(ContentHelper::TAG_BODY_RICH, $bodyContent);
     }
 }

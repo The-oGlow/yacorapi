@@ -55,7 +55,7 @@ class FooClazzTest extends EasyGoingTestCase
         $result = $this->getFieldFromO2t('privateFoo');
         // or
         $result2 = $this->getFieldByReflection(FooClazz::class, 'privateFoo', $this->o2t);
-        self::$logger->info('privateFoo is one of ', [$result,$result2]);
+        self::$logger->info('Field privateFoo is one of ', [$result,$result2]);
 
         self::assertEquals('privateFooValue', $result);
         self::assertEquals($result, $result2);
@@ -66,7 +66,7 @@ class FooClazzTest extends EasyGoingTestCase
         $result = $this->callMethodOnO2t('protectedFoo');
         // or
         $result2 = $this->callMethodByReflection(FooClazz::class, 'protectedFoo', $this->o2t);
-        self::$logger->info('protectedFoo returns ', [$result,$result2]);
+        self::$logger->info('Field protectedFoo returns ', [$result,$result2]);
 
         self::assertEquals('protectedFooMethod', $result);
         self::assertEquals($result, $result2);
@@ -74,13 +74,13 @@ class FooClazzTest extends EasyGoingTestCase
 
     public function testFoo(): void
     {
-        self::$logger->debug('testFoo() - Start');
+        self::$logger->debug('Start');
 
         // test code
         self::assertTrue($this->getCasto2t()->isValid());
         // or
         self::assertTrue($this->getCasto2t()->isValid());
 
-        self::$logger->info('testFoo() - End');
+        self::$logger->info('End');
     }
 }

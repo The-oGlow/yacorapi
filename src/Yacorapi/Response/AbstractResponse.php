@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Response;
 
+use Ds\Collection;
 use Ds\Map;
 use Ds\Vector;
 use Monolog\ConsoleLogger;
@@ -98,16 +99,29 @@ abstract class AbstractResponse implements IResponse
 
         $statusOk = false;
         if ($this->keyExists(self::KEY_STATUS_CODE)) {
-            self::$logger->error(
-                self::MSG_ERROR,
-                [$this->getValue(self::KEY_STATUS_CODE), $this->getValue(self::KEY_REASON), $this->getValue(self::KEY_MESSAGE)]
-            );
+            self::$logger->debug(self::ERR_MSG_COMMON, $this->getError()->toArray());
         } else {
             $statusOk = true;
         }
         self::$logger->debug('END', [$statusOk]);
 
         return $statusOk;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[\Override]
+    public function getError(): Collection
+    {
+        $error = new Map();
+        if ($this->keyExists(self::KEY_STATUS_CODE)) {
+            $error->put(self::KEY_STATUS_CODE, $this->getValue(self::KEY_STATUS_CODE));
+            $error->put(self::KEY_REASON, $this->getValue(self::KEY_REASON));
+            $error->put(self::KEY_MESSAGE, $this->getValue(self::KEY_MESSAGE));
+        }
+
+        return $error;
     }
 
     /**
@@ -122,14 +136,14 @@ abstract class AbstractResponse implements IResponse
             $hasData = $this->checkStatus();
             if ($hasData) {
                 if (!$this->keyExists(IResponse::KEY_RESULTS) || $this->getValue(IResponse::KEY_SIZE) <= 0) {
-                    self::$logger->info('Response has no results!');
+                    self::$logger->debug('Response has no results');
                     $hasData = false;
                 } else {
-                    self::$logger->info('Response has results with size', [$this->keyExists(IResponse::KEY_RESULTS), $this->getValue(IResponse::KEY_SIZE)]);
+                    self::$logger->debug('Response has results with size', [$this->keyExists(IResponse::KEY_RESULTS), $this->getValue(IResponse::KEY_SIZE)]);
                 }
             }
         } else {
-            self::$logger->info('Results are not available!');
+            self::$logger->info('Response has no results');
             $hasData = false;
         }
 
@@ -150,7 +164,7 @@ abstract class AbstractResponse implements IResponse
             $hasData = $this->checkStatus();
             if ($hasData) {
                 if (!$this->keyExists(IResponse::KEY_KEY) || $this->getValue(IResponse::KEY_KEY) <= 0) {
-                    self::$logger->info('No pageId found or is 0!');
+                    self::$logger->info('No pageId found or is 0');
                     $hasData = false;
                 } else {
                     $pageId = $this->getValue(IResponse::KEY_KEY);
@@ -159,7 +173,7 @@ abstract class AbstractResponse implements IResponse
                 }
             }
         } else {
-            self::$logger->info('Results are not available!');
+            self::$logger->info('Results are not available');
             $hasData = false;
         }
 

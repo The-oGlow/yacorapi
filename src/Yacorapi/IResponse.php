@@ -13,11 +13,14 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi;
 
+use Ds\Collection;
 use Ds\Map;
 use Ds\Vector;
 
 interface IResponse extends \Stringable
 {
+    // Access Keys
+
     public const string KEY_ANCESTORS = 'ancestors';
 
     public const string KEY_ARCHIVED = 'archived';
@@ -49,7 +52,7 @@ interface IResponse extends \Stringable
     public const string KEY_NAME = 'name';
 
     public const string KEY_NUMBER = 'number';
-    
+
     public const string KEY_OPERATION = 'operation';
 
     public const string KEY_PLAIN = 'plain';
@@ -97,23 +100,26 @@ interface IResponse extends \Stringable
     public const string KEY_VALUE = 'value';
 
     public const string KEY_VERSION = 'version';
-    
+
     public const string KEY_WEBUI = 'webui';
 
     public const string KEY_HOMEPAGE = 'homepage';
 
     // Messages
-    public const string MSG_ERROR = 'Error with Status';
+    public const string ERR_MSG_COMMON = 'Error with Status';
 
+    // Values
     public const string VAL_TRUE = 'true';
 
     public const string VAL_FALSE = 'false';
 
-    public const int NO_PAGE_ID = -1;
-    
-    public const int NO_VERSION = -1;
-    
-    public const string EMPTY_TITLE = '';
+    public const int VAL_PAGE_ID_NO = -1;
+
+    public const int VAL_VERSION_NO = -1;
+
+    public const string VAL_TITLE_EMPTY = '';
+
+    public const int VAL_RESULT_FIRST = 0;
 
     /**
      * @return Map<mixed,mixed>
@@ -146,6 +152,11 @@ interface IResponse extends \Stringable
      * @return bool TRUE=response has no error, else FALSE
      */
     public function checkStatus(): bool;
+
+    /**
+     * @return Collection<mixed,mixed> Error information
+     */
+    public function getError(): Collection;
 
     /**
      * Response has data.

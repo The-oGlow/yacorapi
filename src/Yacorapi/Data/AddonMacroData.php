@@ -30,7 +30,7 @@ class AddonMacroData extends AbstractContainer
 {
     use ExtensionTrait;
 
-    protected const int SHOW_ITEMS_MAX = 20;
+    protected const int VAL_SHOW_ITEMS_MAX = 20;
 
     private static LoggerInterface $logger;
 
@@ -58,7 +58,7 @@ class AddonMacroData extends AbstractContainer
                 self::$logger->warning('Addons have wrong type', [(empty($addons) ? 'null' : AddonMacroData::class)]);
             }
         }
-        if (count($macros) > self::SHOW_ITEMS_MAX) {
+        if (count($macros) > self::VAL_SHOW_ITEMS_MAX) {
             self::$logger->debug('macros count', [count($macros)]);
         } else {
             self::$logger->debug('macros', [$macros]);
@@ -91,7 +91,7 @@ class AddonMacroData extends AbstractContainer
                 self::$logger->warning('Addons have wrong type', [(empty($addons) ? 'null' : AddonMacroData::class)]);
             }
         }
-        if (count($macroNames) > self::SHOW_ITEMS_MAX) {
+        if (count($macroNames) > self::VAL_SHOW_ITEMS_MAX) {
             self::$logger->debug('macroNames count', [count($macroNames)]);
         } else {
             self::$logger->debug('macroNames', [$macroNames]);
@@ -121,7 +121,7 @@ class AddonMacroData extends AbstractContainer
                 }
             }
         }
-        if (count($macroNames) > self::SHOW_ITEMS_MAX) {
+        if (count($macroNames) > self::VAL_SHOW_ITEMS_MAX) {
             self::$logger->debug('macroNames count', [count($macroNames)]);
         } else {
             self::$logger->debug('macroNames', [$macroNames]);

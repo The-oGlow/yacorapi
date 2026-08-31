@@ -125,7 +125,7 @@ class MockProvider extends AbstractProvider
     {
         $done = false;
         $searchUrl = sprintf('%s/%s', ConstData::C_RAPI_CONTENT, YacorapiTestData::C_SEARCHPAGEID_01);
-        var_dump($searchUrl); var_dump($execUrl);
+
         if (str_contains($execUrl, $searchUrl)) {
             self::$logger->notice('A \'readPageByPageId\'', [$execUrl, $reqType]);
             $response = array_merge($response, YacorapiTestData::RESP_HEAD_SEARCHPAGEID_01());
@@ -133,7 +133,7 @@ class MockProvider extends AbstractProvider
             $response = array_merge($response, YacorapiTestData::RESP_RESTRICTION);
             $done = true;
         } else {
-            self::$logger->notice('Not a \'readPageByPageId\'', [$execUrl, $reqType]);
+            self::$logger->debug('Not a \'readPageByPageId\'', [$execUrl, $reqType]);
         }
 
         return $done;
@@ -158,7 +158,7 @@ class MockProvider extends AbstractProvider
             $response = array_merge($response, YacorapiTestData::RESP_CONTENTFILTER_RESULT());
             $done = true;
         } else {
-            self::$logger->notice('Not a \'readPagesByTitle\'', [$execUrl, $reqType]);
+            self::$logger->debug('Not a \'readPagesByTitle\'', [$execUrl, $reqType]);
         }
 
         return $done;
@@ -183,7 +183,7 @@ class MockProvider extends AbstractProvider
             $response = array_merge($response, YacorapiTestData::RESP_SEARCH_RESULT());
             $done = true;
         } else {
-            self::$logger->notice('Not a \'searchPagesWithFilter\'', [$execUrl, $reqType]);
+            self::$logger->debug('Not a \'searchPagesWithFilter\'', [$execUrl, $reqType]);
         }
 
         return $done;
@@ -208,7 +208,7 @@ class MockProvider extends AbstractProvider
             $response = array_merge($response, YacorapiTestData::RESP_SCAN_RESULT());
             $done = true;
         } else {
-            self::$logger->notice('Not a \'scanPages\'', [$execUrl, $reqType]);
+            self::$logger->debug('Not a \'scanPages\'', [$execUrl, $reqType]);
         }
 
         return $done;
@@ -247,7 +247,7 @@ class MockProvider extends AbstractProvider
             );
             $done = true;
         } else {
-            self::$logger->notice('Not a \'listSpaces\'', [$execUrl, $reqType]);
+            self::$logger->debug('Not a \'listSpaces\'', [$execUrl, $reqType]);
         }
 
         return $done;
@@ -314,7 +314,7 @@ class MockProvider extends AbstractProvider
 
             $done = true;
         } else {
-            self::$logger->notice('Not a \'createPage\'', [$execUrl, $reqType, $parameters]);
+            self::$logger->debug('Not a \'createPage\'', [$execUrl, $reqType, $parameters]);
         }
 
         return $done;
@@ -344,7 +344,7 @@ class MockProvider extends AbstractProvider
             $response = array_merge($response, YacorapiTestData::prepareResponseBody('', $parameters));
             $done = true;
         } else {
-            self::$logger->notice('Not a \'updatePage\'', [$execUrl, $reqType, $parameters]);
+            self::$logger->debug('Not a \'updatePage\'', [$execUrl, $reqType, $parameters]);
         }
 
         return $done;
@@ -365,8 +365,10 @@ class MockProvider extends AbstractProvider
         $searchParameter = YacorapiTestData::C_SPACE_EXIST_KEY;
 
         if (str_contains($execUrl, $searchUrl) && str_contains($execUrl, $searchParameter)) {
-            self::$logger->notice('A \'spaceHomepage\'', [$execUrl, $reqType, $parameters]);
+            self::$logger->notice('A \'spaceHomepage\'', [$execUrl, $reqType, $searchParameter]);
             $response = array_merge($response, [IResponse::KEY_HOMEPAGE => [IResponse::KEY_ID => YacorapiTestData::C_SPACE_EXIST_ID]]);
+        } else {
+            self::$logger->debug('Not a \'spaceHomepage\'', [$execUrl, $reqType, $searchParameter]);
         }
 
         return $done;

@@ -131,7 +131,7 @@ trait ClientPermissionTrait
         $readUser = [];
         if (array_key_exists(RequestParameterData::PROP_USER, $readRestrictions)) {
             foreach ($readRestrictions[RequestParameterData::PROP_USER] as $readRestriction) {
-                $readUser[] = [RequestParameterData::PROP_TYPE => RequestParameterData::USER_TYPE_KNOWN, RequestParameterData::PROP_USERNAME => $readRestriction];
+                $readUser[] = [RequestParameterData::PROP_TYPE => RequestParameterData::VAL_USER_TYPE_KNOWN, RequestParameterData::PROP_USERNAME => $readRestriction];
             }
         }
 
@@ -153,7 +153,7 @@ trait ClientPermissionTrait
         $readGroup = [];
         if (array_key_exists(RequestParameterData::PROP_GROUP, $readRestrictions)) {
             foreach ($readRestrictions[RequestParameterData::PROP_GROUP] as $readRestriction) {
-                $readGroup[] = [RequestParameterData::PROP_TYPE => RequestParameterData::USER_TYPE_KNOWN, RequestParameterData::PROP_USERNAME => $readRestriction];
+                $readGroup[] = [RequestParameterData::PROP_TYPE => RequestParameterData::VAL_USER_TYPE_KNOWN, RequestParameterData::PROP_USERNAME => $readRestriction];
             }
         }
 

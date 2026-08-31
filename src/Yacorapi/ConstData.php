@@ -34,6 +34,10 @@ final class ConstData extends AbstractSingleton
 
     //
     // Public Consts
+
+    /** Name of this application */
+    public const string VAL_APP_USER = 'yacorapi';
+
     // Page Consts
     /** First line on a page */
     public const int PAGE_START = 0;
@@ -442,7 +446,7 @@ final class ConstData extends AbstractSingleton
             Emergency::breakSystem(ExitCodes::ERR_CODE_NO_URL_SET, 'No URL for confluence is set');
         }
         if (!$this->isDefined(self::KEY_SEARCH_LIMIT)) {
-            $this->putConst(self::KEY_SEARCH_LIMIT, ((string) RequestParameterData::SEARCH_LIMIT_MAX));
+            $this->putConst(self::KEY_SEARCH_LIMIT, ((string) RequestParameterData::VAL_SEARCH_LIMIT_MAX));
         }
 
         self::$logger->debug('END - Is valid', [$validated]);

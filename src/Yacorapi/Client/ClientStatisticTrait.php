@@ -32,12 +32,10 @@ use oglow\tools\Yacorapi\Statistic\ValueStatistic;
 trait ClientStatisticTrait
 {
     /**
-     * REFACTOR: Listing only 100 spaces, loop is missing.
-     *
      * @inheritDoc
      */
     #[\Override]
-    public function listSpaces(SpaceTypeEnum $spaceType = SpaceTypeEnum::SPACE_TYPE_GLOBAL, int $limit = IRapiClient::SPACE_LIMIT_DEFAULT): IResponse
+    public function listSpaces(SpaceTypeEnum $spaceType = SpaceTypeEnum::SPACE_TYPE_GLOBAL, int $limit = IRapiClient::REQ_VAL_SPACE_LIMIT_DEFAULT): IResponse
     {
         self::$logger->debug('START - spaceType,limit', [$spaceType, $limit]);
 
@@ -159,8 +157,8 @@ trait ClientStatisticTrait
             $prepareUrl = $this->prepareSearchUrlExt(
                 $searchTerm,
                 $spaceKey,
-                IRapiClient::REQ_SEARCH_FROM_POS,
-                IRapiClient::REQ_SEARCH_LIMIT_1ENTRY
+                IRapiClient::REQ_VAL_SEARCH_START,
+                IRapiClient::REQ_VAL_SEARCH_LIMIT_1ENTRY
             );
             $response = $this->exec($prepareUrl);
             $countMacros = $this->analyzeResponse($response);

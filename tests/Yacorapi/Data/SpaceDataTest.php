@@ -61,7 +61,7 @@ class SpaceDataTest extends EasyGoingTestCase
 
     public function testPrepareMySpacesFileName(): void
     {
-        $expected = $this->getCasto2t()::MY_SPACES_FILE;
+        $expected = $this->getCasto2t()::VAL_SPACES_FILE;
 
         $actual = $this->getCasto2t()::prepareMySpacesFileName();
 
@@ -72,8 +72,8 @@ class SpaceDataTest extends EasyGoingTestCase
     {
         $spaces = [];
 
-        $expected1 = $this->getCasto2t()::MY_SPACES_CLAZZ;
-        $expected2 = $this->getCasto2t()::MY_SPACES_NS;
+        $expected1 = $this->getCasto2t()::VAL_SPACES_CLAZZ;
+        $expected2 = $this->getCasto2t()::VAL_SPACES_NS;
         $expected3 = SpaceTypeEnum::SPACE_ALL->method();
 
         $actual = $this->getCasto2t()::prepareMySpacesContent($spaces);

@@ -53,5 +53,5 @@ interface IRapiClientStatistic extends IRapiClientBase
      *
      * @see IRapiClientBase::SPACE_LIMIT_DEFAULT
      */
-    public function listSpaces(SpaceTypeEnum $spaceType = SpaceTypeEnum::SPACE_TYPE_GLOBAL, int $limit = IRapiClientBase::SPACE_LIMIT_DEFAULT): IResponse;
+    public function listSpaces(SpaceTypeEnum $spaceType = SpaceTypeEnum::SPACE_TYPE_GLOBAL, int $limit = IRapiClientBase::REQ_VAL_SPACE_LIMIT_DEFAULT): IResponse;
 }

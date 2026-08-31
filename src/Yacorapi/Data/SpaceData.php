@@ -23,15 +23,15 @@ use Psr\Log\LoggerInterface;
 
 class SpaceData extends AbstractContainer
 {
-    public const string MY_SPACE_NS_SEP = '\\';
+    public const string VAL_SPACE_NS_SEP = '\\';
 
-    public const string MY_SPACES_NS = 'oglow\\tools\\Yacorapi';
+    public const string VAL_SPACES_NS = 'oglow\\tools\\Yacorapi';
 
-    public const string MY_SPACES_CLAZZ = 'MySpaces';
+    public const string VAL_SPACES_CLAZZ = 'MySpaces';
 
-    public const string MY_SPACES_NS_CLAZZ = self::MY_SPACE_NS_SEP . self::MY_SPACES_NS . self::MY_SPACE_NS_SEP . self::MY_SPACES_CLAZZ;
+    public const string VAL_SPACES_CLAZZ_FULL = self::VAL_SPACE_NS_SEP . self::VAL_SPACES_NS . self::VAL_SPACE_NS_SEP . self::VAL_SPACES_CLAZZ;
 
-    public const string MY_SPACES_FILE = self::MY_SPACES_CLAZZ . '.php';
+    public const string VAL_SPACES_FILE = self::VAL_SPACES_CLAZZ . '.php';
 
     private static LoggerInterface $logger;
 
@@ -55,10 +55,10 @@ class SpaceData extends AbstractContainer
     {
         $line = "<?php\ndeclare(strict_types=1);\n" .
             "namespace " .
-            self::MY_SPACES_NS .
+            self::VAL_SPACES_NS .
             ";\n" .
             "class " .
-            self::MY_SPACES_CLAZZ .
+            self::VAL_SPACES_CLAZZ .
             "\n{\n" .
             "public static function " .
             SpaceTypeEnum::SPACE_ALL->method() .
@@ -75,7 +75,7 @@ class SpaceData extends AbstractContainer
 
     public static function prepareMySpacesFileName(): string
     {
-        return self::MY_SPACES_FILE;
+        return self::VAL_SPACES_FILE;
     }
 
     public function getMySpaceFileDefault(): string
@@ -97,7 +97,7 @@ class SpaceData extends AbstractContainer
 
             include_once $mySpacesFile; // NOSONAR: php:S4832
         } else {
-            Emergency::breakSystem(ExitCodes::ERR_CODE_MYSPACES_FILE_NOT_EXISTS, sprintf('MySpaces file \'%s\' not exists!', $mySpacesFile), $unitTest);
+            Emergency::breakSystem(ExitCodes::ERR_CODE_MYSPACES_FILE_NOT_EXISTS, sprintf("MySpaces file '%s' does not exist", $mySpacesFile), $unitTest);
         }
 
         return $loaded;
@@ -113,7 +113,7 @@ class SpaceData extends AbstractContainer
     #[\Override]
     protected function prepareData(): void
     {
-        $this->mySpaceFileDefault = ((string) $this->constData->c(ConstData::KEY_MY_DIR)) . DIRECTORY_SEPARATOR . self::MY_SPACES_FILE;
+        $this->mySpaceFileDefault = ((string) $this->constData->c(ConstData::KEY_MY_DIR)) . DIRECTORY_SEPARATOR . self::VAL_SPACES_FILE;
 
         $allData = [];
         $allData[SpaceTypeEnum::SPACE_SINGLE->value] = $this->prepareSpaces(SpaceTypeEnum::SPACE_SINGLE->method(), $this->mySpaceFileDefault);
@@ -136,12 +136,12 @@ class SpaceData extends AbstractContainer
          * @psalm-suppress ArgumentTypeCoercion
          * @phpstan-ignore function.impossibleType
          */
-        if (method_exists(self::MY_SPACES_NS_CLAZZ, $mySpacesFunc)) {
-            $refInstance = new \ReflectionClass(self::MY_SPACES_NS_CLAZZ); // @phpstan-ignore argument.type
-            $refObject = new \ReflectionMethod(self::MY_SPACES_NS_CLAZZ, $mySpacesFunc);
+        if (method_exists(self::VAL_SPACES_CLAZZ_FULL, $mySpacesFunc)) {
+            $refInstance = new \ReflectionClass(self::VAL_SPACES_CLAZZ_FULL); // @phpstan-ignore argument.type
+            $refObject = new \ReflectionMethod(self::VAL_SPACES_CLAZZ_FULL, $mySpacesFunc);
             $mySpaces = $refObject->invoke($refInstance);
         } else {
-            self::$logger->warning('MySpaces not loaded!', [$mySpacesFunc]);
+            self::$logger->warning("MySpaces not loaded", [$mySpacesFunc]);
         }
 
         return $mySpaces;

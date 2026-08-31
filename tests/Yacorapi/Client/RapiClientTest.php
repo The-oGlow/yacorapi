@@ -29,9 +29,9 @@ use Psr\Log\LogLevel;
 class RapiClientTest extends EasyGoingTestCase
 {
     public const array AVAILABLE_METHODS = [
-        'newClient', 'readPageByPageId', 'readPagesByTitle', 'scanPages', 'searchPagesWithFilter', 'countItemsinSpace', 'spaceHomepage',
-        'readRestrictionsByPageId', 'writeRestrictionsByPageId', 'listSpaces', 'countMacrosInSpace', 'movePage', 'createPage', 'updatePage',
-        'prepareAddonSet', 'taskitemMethods', 'getExtensionAddonMacros', 'processQueue'
+        'newClient', 'readPageByPageId', 'readPagesByTitle', 'checkPageExists', 'scanPages', 'searchPagesWithFilter', 'countItemsinSpace', 'spaceHomepage',
+        'readRestrictionsByPageId', 'writeRestrictionsByPageId', 'listSpaces', 'countMacrosInSpace', 'createPage', 'updatePage', 'createOrUpdatePage',
+             'movePage', 'prepareAddonSet', 'taskitemMethods', 'getExtensionAddonMacros', 'processQueue',
     ];
 
     /** Space on test instance */
