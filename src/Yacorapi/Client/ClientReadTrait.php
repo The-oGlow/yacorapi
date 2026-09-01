@@ -16,15 +16,32 @@ namespace oglow\tools\Yacorapi\Client;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\Data\ItemTypeEnum;
 use oglow\tools\Yacorapi\Data\QueryExtensionEnum;
-use oglow\tools\Yacorapi\Data\RequestParameterData;
 use oglow\tools\Yacorapi\Data\SpaceTypeEnum;
-use oglow\tools\Yacorapi\IRapiClient;
 use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Macro\AddonTypeEnum;
 use oglow\tools\Yacorapi\Response\ResponseAddonMacroDecorate;
-
+use oglow\tools\Yacorapi\Client\IRapiClientBase;
 trait ClientReadTrait
 {
+    /**
+     * @inheritDoc
+     */
+    #[\Override]
+    public function prepareAddonSet(AddonTypeEnum $addonMode = IRapiClientBase::ADDON_DEFAULT): ResponseAddonMacroDecorate {
+        self::$logger->debug('START - mode', [$addonMode]);
+
+        $data = $this->addons->getDataByMode($addonMode->value); // @phpstan-ignore method.notFound
+        if (!empty($data)) {
+            /** @psalm-suppress MixedMethodCall */
+            $addonSet = new ResponseAddonMacroDecorate($addonMode, $data->toArray());
+        } else {
+            $addonSet = new ResponseAddonMacroDecorate($addonMode);
+        }
+        self::$logger->debug('END');
+
+        return $addonSet;
+    }
+
     /**
      * @inheritDoc
      */
@@ -42,7 +59,7 @@ trait ClientReadTrait
      * @inheritDoc
      */
     #[\Override]
-    public function readPagesByTitle(string $pageTitle, string $spaceKey = RequestParameterData::VAL_SPACE_EMPTY): IResponse
+    public function readPagesByTitle(string $pageTitle, string $spaceKey = IRapiClientBase::REQ_VAL_SPACE_EMPTY): IResponse
     {
         self::$logger->debug('START - pageTitle,spaceKey', [$pageTitle, $spaceKey]);
 
@@ -55,18 +72,17 @@ trait ClientReadTrait
      * @inheritDoc
      */
     #[\Override]
-    public function checkPageExists(string $spaceKey, string $pageTitle, ItemTypeEnum $itemType = ItemTypeEnum::PAGE): int
+    public function checkPageExists(string $spaceKey, string $pageTitle, ItemTypeEnum $itemType = IRapiClientBase::REQ_ITEM_TYPE_PAGE): int
     {
-        $spacer = 100;
-        $pageId = IResponse::VAL_PAGE_ID_NO;
+        $pageId = IRapiClientBase::REQ_VAL_PAGE_ID_NO;
         $result = $this->readPagesByTitle($pageTitle, $spaceKey);
 
         if ($result->checkStatus() && $result->isResultsAvailable()) {
-            $firstResult = $result->getResult(IResponse::VAL_RESULT_FIRST);
+            $firstResult = $result->getResult(IRapiClientBase::RESP_VAL_RESULT_FIRST);
             $pageId = (int) $firstResult[IResponse::KEY_ID];
-            self::$logger->info(str_repeat(' ', $spacer) . 'Found item', [$spaceKey, $itemType->value, $pageTitle, $pageId]);
+            self::$logger->info(str_repeat(' ', IRapiClientBase::VAL_LOG_SPACE) . 'Found item', [$spaceKey, $itemType->value, $pageTitle, $pageId]);
         } else {
-            self::$logger->info(str_repeat(' ', $spacer) . 'Not found item', [$spaceKey, $itemType->value, $pageTitle]);
+            self::$logger->info(str_repeat(' ', IRapiClientBase::VAL_LOG_SPACE) . 'Not found item', [$spaceKey, $itemType->value, $pageTitle]);
         }
 
         return $pageId;
@@ -76,7 +92,7 @@ trait ClientReadTrait
      * @inheritDoc
      */
     #[\Override]
-    public function scanPages(string $spaceKey = RequestParameterData::VAL_SPACE_EMPTY): IResponse
+    public function scanPages(string $spaceKey = IRapiClientBase::REQ_VAL_SPACE_EMPTY): IResponse
     {
         self::$logger->debug('START - spaceKey', [$spaceKey]);
 
@@ -90,40 +106,21 @@ trait ClientReadTrait
      */
     #[\Override]
     public function searchPagesWithFilter(
-        string $filterTerm,
-        string $spaceKey,
-        int $searchFromPos = IRapiClient::REQ_VAL_SEARCH_START,
-        int $searchLimit = IRapiClient::REQ_VAL_SEARCH_LIMIT_MIN,
-        ItemTypeEnum $itemType = IRapiClient::REQ_ITEM_TYPE_PAGE
-    ): IResponse {
+    string $filterTerm,
+    string $spaceKey,
+    int $searchFromPos = IRapiClientBase::REQ_VAL_SEARCH_START,
+    int $searchLimit = IRapiClientBase::REQ_VAL_SEARCH_LIMIT_MIN,
+    ItemTypeEnum $itemType = IRapiClientBase::REQ_ITEM_TYPE_PAGE
+    ): IResponse
+    {
         self::$logger->debug(
             'START - filterTerm,spaceKey,searchFromPos,searchLimit,itemType',
             [$filterTerm, $spaceKey, $searchFromPos, $searchLimit, $itemType]
         );
-        $searchLimit = (int) ($searchLimit < IRapiClient::REQ_VAL_SEARCH_LIMIT_1ENTRY ? $this->constData->c(ConstData::KEY_SEARCH_LIMIT) : $searchLimit);
+        $searchLimit = (int) ($searchLimit < IRapiClientBase::REQ_VAL_SEARCH_LIMIT_1ENTRY ? $this->constData->c(ConstData::KEY_SEARCH_LIMIT) : $searchLimit);
         $prepareUrl = $this->prepareSearchUrlExt($filterTerm, $spaceKey, $searchFromPos, $searchLimit, $itemType);
 
         return $this->exec($prepareUrl);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[\Override]
-    public function prepareAddonSet(AddonTypeEnum $mode = AddonTypeEnum::ADDON_ALL): ResponseAddonMacroDecorate
-    {
-        self::$logger->debug('START - mode', [$mode]);
-
-        $data = $this->addons->getDataByMode($mode->value); // @phpstan-ignore method.notFound
-        if (!empty($data)) {
-            /** @psalm-suppress MixedMethodCall */
-            $addonSet = new ResponseAddonMacroDecorate($mode, $data->toArray());
-        } else {
-            $addonSet = new ResponseAddonMacroDecorate($mode);
-        }
-        self::$logger->debug('END');
-
-        return $addonSet;
     }
 
     /**
@@ -161,9 +158,9 @@ trait ClientReadTrait
 
     protected function prepareSearchUrl(
         string $searchTerm,
-        string $spaceKey = RequestParameterData::VAL_SPACE_EMPTY,
-        ItemTypeEnum $pageType = ItemTypeEnum::PAGE,
-        bool $withBody = RequestParameterData::VAL_BODY_NO
+        string $spaceKey = IRapiClientBase::REQ_VAL_SPACE_EMPTY,
+        ItemTypeEnum $pageType = IRapiClientBase::REQ_ITEM_TYPE_PAGE,
+        bool $withBody = IRapiClientBase::REQ_VAL_BODY_NO
     ): string {
         $result = '';
         if (function_exists('_prepareSearchUrl')) {
@@ -176,12 +173,12 @@ trait ClientReadTrait
     protected function prepareSearchUrlExt(
         string $searchTerm,
         string $spaceKey,
-        int $searchFromPos = RequestParameterData::VAL_SEARCH_START_NO,
-        int $searchLimit = RequestParameterData::VAL_SEARCH_LIMIT_NO,
-        ItemTypeEnum $pageType = ItemTypeEnum::PAGE,
-        bool $withBody = RequestParameterData::VAL_BODY_NO
+        int $searchFromPos = IRapiClientBase::REQ_VAL_SEARCH_START_NO,
+        int $searchLimit = IRapiClientBase::REQ_VAL_SEARCH_LIMIT_NO,
+        ItemTypeEnum $pageType = IRapiClientBase::REQ_ITEM_TYPE_PAGE,
+        bool $withBody = IRapiClientBase::REQ_VAL_BODY_NO
     ): string {
-        $searchLimit = $searchLimit < RequestParameterData::VAL_SEARCH_LIMIT_MIN ? $this->constData->c(ConstData::KEY_SEARCH_LIMIT) : $searchLimit;
+        $searchLimit = $searchLimit < IRapiClientBase::REQ_VAL_SEARCH_LIMIT_MIN ? $this->constData->c(ConstData::KEY_SEARCH_LIMIT) : $searchLimit;
         $prepareUrl = sprintf('%s?cql=', $this->constData->c(ConstData::KEY_CONF_SEARCH_URL));
         $prepareUrl .= sprintf('siteSearch~%s', urlencode("\"{$searchTerm}\""));
         $prepareUrl .= sprintf('+AND+space.type=%s', urlencode(SpaceTypeEnum::SPACE_TYPE_GLOBAL->value));
@@ -189,7 +186,7 @@ trait ClientReadTrait
         if (!empty($spaceKey)) {
             $prepareUrl .= sprintf('+AND+space=%s', urlencode("\"{$spaceKey}\""));
         }
-        if ($searchFromPos >= RequestParameterData::VAL_SEARCH_START_NO) {
+        if ($searchFromPos >= IRapiClientBase::REQ_VAL_SEARCH_START_NO) {
             $prepareUrl .= sprintf('&start=%s&limit=%s', $searchFromPos, $searchLimit);
         }
         $prepareUrl .= sprintf('&%s', ($withBody ? QueryExtensionEnum::REQP_SEARCH_FULL->value : QueryExtensionEnum::REQP_SEARCH_LIGHT->value));
@@ -197,14 +194,14 @@ trait ClientReadTrait
         return $prepareUrl;
     }
 
-    protected function prepareBrowseUrl(string $pageTitle, string $spaceKey = RequestParameterData::VAL_SPACE_EMPTY): string
+    protected function prepareBrowseUrl(string $pageTitle, string $spaceKey = IRapiClientBase::REQ_VAL_SPACE_EMPTY): string
     {
         $prepareUrl = sprintf('%s?title=%s&%s', $this->constData->c(ConstData::KEY_CONF_CONTENT_URL), urlencode($pageTitle), QueryExtensionEnum::REQP_LIGHT->value);
 
         return $this->addSpaceFilter($spaceKey, $prepareUrl);
     }
 
-    protected function prepareScanUrl(string $spaceKey = RequestParameterData::VAL_SPACE_EMPTY): string
+    protected function prepareScanUrl(string $spaceKey = IRapiClientBase::REQ_VAL_SPACE_EMPTY): string
     {
         $prepareUrl = sprintf('%s/scan?%s', $this->constData->c(ConstData::KEY_CONF_CONTENT_URL), QueryExtensionEnum::REQP_LIGHT->value);
 

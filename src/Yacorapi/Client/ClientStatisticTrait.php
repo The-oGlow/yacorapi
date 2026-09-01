@@ -15,11 +15,11 @@ namespace oglow\tools\Yacorapi\Client;
 
 use Ds\Map;
 use Ds\Vector;
+use Ds\Collection;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\Data\ItemTypeEnum;
 use oglow\tools\Yacorapi\Data\QueryExtensionEnum;
 use oglow\tools\Yacorapi\Data\SpaceTypeEnum;
-use oglow\tools\Yacorapi\IRapiClient;
 use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Macro\AddonTypeEnum;
 use oglow\tools\Yacorapi\Response\ResponseAddonMacroDecorate;
@@ -35,20 +35,7 @@ trait ClientStatisticTrait
      * @inheritDoc
      */
     #[\Override]
-    public function listSpaces(SpaceTypeEnum $spaceType = SpaceTypeEnum::SPACE_TYPE_GLOBAL, int $limit = IRapiClient::REQ_VAL_SPACE_LIMIT_DEFAULT): IResponse
-    {
-        self::$logger->debug('START - spaceType,limit', [$spaceType, $limit]);
-
-        $prepareUrl = $this->prepareSpaceListUrl($spaceType, $limit);
-
-        return new ResponseSpaceDataDecorate($this->exec($prepareUrl));
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[\Override]
-    public function countItemsinSpace(string $spaceKey, ItemTypeEnum $itemType = IRapiClient::REQ_ITEM_TYPE_PAGE): IStatistic
+    public function countItemsinSpace(string $spaceKey, ItemTypeEnum $itemType = IRapiClientBase::REQ_ITEM_TYPE_PAGE): IStatistic 
     {
         self::$logger->debug('START - spaceKey, itemType', [$spaceKey, $itemType]);
 
@@ -70,7 +57,7 @@ trait ClientStatisticTrait
      * @inheritDoc
      */
     #[\Override]
-    public function countMacrosInSpace(string $spaceKey, ResponseAddonMacroDecorate $addonSet, IStatistic $outputMatrix): IStatistic
+    public function countMacrosInSpace(string $spaceKey, ResponseAddonMacroDecorate $addonSet, IStatistic $outputMatrix): IStatistic 
     {
         self::$logger->debug('START - spaceKey,addonSet', [$spaceKey, $addonSet]);
 
@@ -81,6 +68,19 @@ trait ClientStatisticTrait
         self::$logger->debug('END');
 
         return $response;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[\Override]
+    public function listSpaces(SpaceTypeEnum $spaceType = SpaceTypeEnum::SPACE_TYPE_GLOBAL, int $limit = IRapiClientBase::REQ_VAL_SPACE_LIMIT_DEFAULT): IResponse
+    {
+        self::$logger->debug('START - spaceType,limit', [$spaceType, $limit]);
+
+        $prepareUrl = $this->prepareSpaceListUrl($spaceType, $limit);
+
+        return new ResponseSpaceDataDecorate($this->exec($prepareUrl));
     }
 
     /**
@@ -139,12 +139,12 @@ trait ClientStatisticTrait
     /**
      * @param string         $spaceKey
      * @param string         $addOnName
-     * @param Vector<string> $macroNames
+     * @param Collection<mixed,mixed> $macroNames
      * @param IStatistic     $outputMatrix
      *
      * @return IStatistic
      */
-    protected function loopAddonMacros(string $spaceKey, string $addOnName, Vector $macroNames, IStatistic $outputMatrix): IStatistic
+    protected function loopAddonMacros(string $spaceKey, string $addOnName, Collection $macroNames, IStatistic $outputMatrix): IStatistic
     {
         self::$logger->debug('START - spaceKey,addOnName,macroNames', [$spaceKey, $addOnName, $macroNames]);
 
@@ -157,8 +157,8 @@ trait ClientStatisticTrait
             $prepareUrl = $this->prepareSearchUrlExt(
                 $searchTerm,
                 $spaceKey,
-                IRapiClient::REQ_VAL_SEARCH_START,
-                IRapiClient::REQ_VAL_SEARCH_LIMIT_1ENTRY
+                IRapiClientBase::REQ_VAL_SEARCH_START,
+                IRapiClientBase::REQ_VAL_SEARCH_LIMIT_1ENTRY
             );
             $response = $this->exec($prepareUrl);
             $countMacros = $this->analyzeResponse($response);
@@ -184,16 +184,16 @@ trait ClientStatisticTrait
     /**
      * @param string            $spaceKey
      * @param AddonTypeEnum     $addonMode
-     * @param Map<mixed, mixed> $mapAddons
+     * @param Collection<mixed, mixed> $mapAddons
      * @param IStatistic        $outputMatrix
      *
      * @return IStatistic
      */
-    protected function loopAddons(string $spaceKey, AddonTypeEnum $addonMode, Map $mapAddons, IStatistic $outputMatrix): IStatistic
+    protected function loopAddons(string $spaceKey, AddonTypeEnum $addonMode, Collection $mapAddons, IStatistic $outputMatrix): IStatistic
     {
         self::$logger->debug('START - spaceKey,mode,addonMode', [$spaceKey, $addonMode, $mapAddons]);
 
-        $cntAddons = count($mapAddons);
+        $cntAddons = $mapAddons->count();
         $cntIdx = 0;
         foreach ($mapAddons as $addOnKey => $addonValue) {
             self::$logger->info('Checking Addon - START', [++$cntIdx, $cntAddons, $spaceKey, $addOnKey]);
@@ -220,7 +220,7 @@ trait ClientStatisticTrait
 
     protected function prepareSpacePagesUrl(
         string $space,
-        ItemTypeEnum $pageType = ItemTypeEnum::PAGE,
+        ItemTypeEnum $pageType = IRapiClientBase::REQ_ITEM_TYPE_PAGE,
         int $start = ConstData::PAGE_START,
         int $limit = ConstData::PAGE_LIMIT
     ): string {
@@ -252,88 +252,5 @@ trait ClientStatisticTrait
     {
         return ((string) $this->constData->c(ConstData::KEY_CONF_SEARCH_URL)) . "?cql=type+in+(" . $itemType->value . ")+AND+space=$spaceKey";
     }
-
-    //    public function prepareSpaceArray(?array $results, bool $noArchived = true, bool $asCsv = true): array
-    //    {
-    //        $spaces = [];
-    //
-    //        if (is_array($results))
-    //        {
-    //            if ($asCsv)
-    //            {
-    //                $idx = 0;
-    //                foreach ($results as $result)
-    //                {
-    //                    $line = '';
-    //                    if (is_array($result))
-    //                    {
-    //                        $addResult = true;
-    //                        if ($noArchived)
-    //                        {
-    //                            $descr = $result['description']['plain']['value'];
-    //                            if (false !== stripos($descr, SpaceResponseAdapter::SPACE_ARCH_FLAG1) || (false !== stripos(
-    //                                        $descr,
-    //                                        SpaceResponseAdapter::SPACE_ARCH_FLAG2
-    //                                    ))
-    //                            )
-    //                            {
-    //                                $addResult = false;
-    //                            }
-    //                        }
-    //                        if ($addResult)
-    //                        {
-    //                            $spaces[] = $result['key'];
-    //
-    //                            $line .= sprintf(
-    //                                '%s;%s;%s;%s',
-    //                                $idx++,
-    //                                $result['key'],
-    //                                $result['type'],
-    //                                'status'
-    //                            );
-    //                            $line .= sprintf(
-    //                                ";\"%s\";\"%s\"",
-    //                                $result['name'],
-    //                                htmlentities(
-    //                                    implode(
-    //                                        explode(
-    //                                            PHP_EOL,
-    //                                            $result['description']['plain']['value']
-    //                                        )
-    //                                    )
-    //                                )
-    //                            );
-    //                        } else
-    //                        {
-    //                            self::$logger->info('  ++ Space already archived', [$result['key']]);
-    //                        }
-    //                    }
-    //                    self::$logger->debug($line);
-    //                }
-    //            } else
-    //            {
-    //                foreach ($results as $result)
-    //                {
-    //                    if (is_array($result))
-    //                    {
-    //                        $spaces[] = $result['key'];
-    //                    }
-    //                }
-    //            }
-    //            natcasesort($spaces);
-    //        }
-    //
-    //        return $spaces;
-    //    }
-    //    public function prepareMySpaceFile(array $spaces): string
-    //    {
-    //        $line = "<?php\ndeclare(strict_types=1);\nfunction _getSpaceListAll(): array {\nreturn [\n";
-    //        foreach ($spaces as $space)
-    //        {
-    //            $line .= sprintf("' % s',\n", $space[SpaceResponseAdapter::SPACE_KEY]);
-    //        }
-    //        $line .= "\n];}\n";
-    //
-    //        return $line;
-    //    }
 }
+

@@ -27,7 +27,7 @@ interface IRapiClientWrite extends IRapiClientBase
      * @param int          $parentId  The target parent page for the new page (Default: {@link IRapiClientBase::REQ_VAL_PARENT_ID_NO})
      * @param ItemTypeEnum $itemType  The type of the new page (Default: {@link IRapiClientBase::REQ_ITEM_TYPE_PAGE})
      *
-     * @return IResponse The new created page or empty
+     * @return IResponse The new created page or empty response
      */
     public function createPage(
         string $spaceKey,
@@ -46,7 +46,7 @@ interface IRapiClientWrite extends IRapiClientBase
      * @param string       $comment   Describe the change (Default: '')
      * @param ItemTypeEnum $itemType  The type of the page (Default: {@link IRapiClientBase::REQ_ITEM_TYPE_PAGE})
      *
-     * @return IResponse The changed page or empty
+     * @return IResponse The changed page or empty response
      */
     public function updatePage(
         int $pageId,
@@ -65,7 +65,7 @@ interface IRapiClientWrite extends IRapiClientBase
      * @param int          $parentId  The target parent page for the new page (Default: {@link IRapiClientBase::REQ_VAL_PARENT_ID_NO})
      * @param ItemTypeEnum $itemType  The type of the page (Default: {@link IRapiClientBase::REQ_ITEM_TYPE_PAGE})
      *
-     * @return IResponse The new created or updated page or empty
+     * @return IResponse The new created or updated page or empty response
      *
      * @see IRapiClientWrite::createPage($spaceKey, $pageTitle, $pageBody, $parentId, $itemType)
      * @see IRapiClientWrite::updatePage($pageId, $pageBody, $pageTitle, $comment, $itemType)
@@ -84,7 +84,7 @@ interface IRapiClientWrite extends IRapiClientBase
      * @param int $pageId      The id of the confluence page
      * @param int $newParentId The target parent page
      *
-     * @return IResponse The moved page or empty
+     * @return IResponse The moved page or empty response
      */
     public function movePage(int $pageId, int $newParentId): IResponse;
 }

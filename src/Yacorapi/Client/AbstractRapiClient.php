@@ -18,9 +18,7 @@ use Monolog\ConsoleLogger;
 use oglow\tools\common\IContainer;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\Data\AddonMacroData;
-use oglow\tools\Yacorapi\Data\RequestParameterData;
 use oglow\tools\Yacorapi\IConnectionProvider;
-use oglow\tools\Yacorapi\IRapiClient;
 use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Provider\CurlProvider;
 use oglow\tools\Yacorapi\Request\RequestTypeEnum;
@@ -30,10 +28,6 @@ use Psr\Log\LoggerInterface;
 abstract class AbstractRapiClient
 {
     use MagicPublicFunctionTrait;
-
-    protected const string VAL_APP_USER = ConstData::VAL_APP_USER;
-
-    protected const int VAL_COMMENT_MAXLEN = RequestParameterData::VAL_COMMENT_MAXLEN;
 
     private static LoggerInterface $logger;
 
@@ -49,14 +43,13 @@ abstract class AbstractRapiClient
      * @param null|IConnectionProvider        $connectionProvider
      * @param null|IContainer                 $addons
      * @param int|\Psr\Log\LogLevel::*|string $level              The minimum logging level at which this handler will be triggered
-     *                                                            (Default: {@link IRapiClient::LEVEL_DEFAULT})
+     *                                                            (Default: {@link IRapiClientBase::LEVEL_DEFAULT})
      *
-     * @see IRapiClient::LEVEL_DEFAULT
      */
     protected function __construct(
         ?IConnectionProvider $connectionProvider = null,
         ?IContainer $addons = null,
-        mixed $level = IRapiClient::LEVEL_DEFAULT
+        mixed $level = IRapiClientBase::LEVEL_DEFAULT
     ) {
         // Init Logger
         /** @psalm-suppress ArgumentTypeCoercion
@@ -126,12 +119,12 @@ abstract class AbstractRapiClient
      *
      * @see self::APP_USER
      */
-    protected function validateComment(string $comment, string $userId = self::VAL_APP_USER): string
+    protected function validateComment(string $comment, string $userId = ConstData::VAL_APP_USER): string
     {
         $cleanComment = '';
         if (!empty($comment)) {
-            $cleanComment = substr($comment, 0, self::VAL_COMMENT_MAXLEN);
-            if (!str_contains($cleanComment, self::VAL_APP_USER)) {
+            $cleanComment = substr($comment, 0, IRapiClientBase::VAL_COMMENT_MAXLEN);
+            if (!str_contains($cleanComment, ConstData::VAL_APP_USER)) {
                 $cleanComment = sprintf('%s (%s)', $cleanComment, $userId);
             }
         }

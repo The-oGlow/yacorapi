@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Client;
 
 use oglow\tools\Yacorapi\Data\ItemTypeEnum;
-use oglow\tools\Yacorapi\Data\RequestParameterData;
 use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Macro\AddonTypeEnum;
 use oglow\tools\Yacorapi\Response\ResponseAddonMacroDecorate;
@@ -24,21 +23,20 @@ interface IRapiClientRead extends IRapiClientBase
     /**
      * Provide a set of addons, containing macros.
      *
-     * @param AddonTypeEnum $mode Predefined set of addons (Default: all addons)
+     * @param AddonTypeEnum $addonMode Predefined set of addons (Default: {@link AddonTypeEnum::ADDON_ALL})
      *
      * @return ResponseAddonMacroDecorate Set of Addons or empty
      *
-     * @see AddonTypeEnum::ADDON_ALL
      * @see IRapiClient::countMacrosInSpace()
      */
-    public function prepareAddonSet(AddonTypeEnum $mode = AddonTypeEnum::ADDON_ALL): ResponseAddonMacroDecorate;
+    public function prepareAddonSet(AddonTypeEnum $addonMode = IRapiClientBase::ADDON_DEFAULT): ResponseAddonMacroDecorate;
 
     /**
      * Loads a confluence page by its page id.
      *
      * @param int $pageId The id of the confluence page
      *
-     * @return IResponse The found page or empty
+     * @return IResponse The found page or empty response
      */
     public function readPageByPageId(int $pageId): IResponse;
 
@@ -46,45 +44,42 @@ interface IRapiClientRead extends IRapiClientBase
      * Searchs for confluence pages by page title.
      *
      * @param string $pageTitle Name of the page
-     * @param string $spaceKey  Limited to the space (Default: '')
+     * @param string $spaceKey  Limited to the space (Default: {@link IRapiClientBase::REQ_VAL_SPACE_EMPTY})
      *
-     * @return IResponse The found pages or empty
+     * @return IResponse The found pages or empty response
      */
-    public function readPagesByTitle(string $pageTitle, string $spaceKey = RequestParameterData::VAL_SPACE_EMPTY): IResponse;
+    public function readPagesByTitle(string $pageTitle, string $spaceKey = IRapiClientBase::REQ_VAL_SPACE_EMPTY): IResponse;
 
     /**
      * Verifies if an item with a certain title exists in a space.
      *
      * @param string       $spaceKey  The space to look in
      * @param string       $pageTitle The complete name of the page title
-     * @param ItemTypeEnum $itemType  The type of the item (Default {@link ItemTypeEnum::PAGE}
+     * @param ItemTypeEnum $itemType  The type of the item (Default {@link IRapiClientBase::REQ_ITEM_TYPE_PAGE}
      *
-     * @return int The page id of the page or {@link IResponse::VAL_PAGE_ID_NO}
-     *
-     * @see IResponse::VAL_PAGE_ID_NO
-     * @see ItemTypeEnum::PAGE
+     * @return int The page id of the page or {@link IRapiClientBase::RESP_VAL_PAGE_ID_NO}
      */
-    public function checkPageExists(string $spaceKey, string $pageTitle, ItemTypeEnum $itemType = ItemTypeEnum::PAGE): int;
+    public function checkPageExists(string $spaceKey, string $pageTitle, ItemTypeEnum $itemType = IRapiClientBase::REQ_ITEM_TYPE_PAGE): int;
 
     /**
      * Scans for confluence pages by space.
      *
-     * @param string $spaceKey Limited to the space (Default: '')
+     * @param string $spaceKey Limited to the space (Default: {@link IRapiClientBase::REQ_VAL_SPACE_EMPTY})
      *
-     * @return IResponse The found pages or empty
+     * @return IResponse The found pages or empty response
      */
-    public function scanPages(string $spaceKey = RequestParameterData::VAL_SPACE_EMPTY): IResponse;
+    public function scanPages(string $spaceKey = IRapiClientBase::REQ_VAL_SPACE_EMPTY): IResponse;
 
     /**
      * Extend search for confluence pages by a filter term in one space.
      *
-     * @param string       $filterTerm    A search term from the confluence search
+     * @param string       $filterTerm    A search term like the confluence search
      * @param string       $spaceKey      Limited to the space
-     * @param int          $searchFromPos Starting from which result position (Default: 0)
-     * @param int          $searchLimit   The number of items which will be returned (Default: maximum)
-     * @param ItemTypeEnum $itemType      The type of the items (Default: PAGE);
+     * @param int          $searchFromPos Starting from which result position (Default: {@link IRapiClientBase::REQ_VAL_SEARCH_START})
+     * @param int          $searchLimit   The number of items which will be returned (Default: {@link IRapiClientBase::REQ_VAL_SEARCH_LIMIT_MIN})
+     * @param ItemTypeEnum $itemType      The type of the item (Default {@link IRapiClientBase::REQ_ITEM_TYPE_PAGE}
      *
-     * @return IResponse The found pages or empty
+     * @return IResponse The found pages or empty response
      */
     public function searchPagesWithFilter(
         string $filterTerm,
@@ -96,10 +91,9 @@ interface IRapiClientRead extends IRapiClientBase
 
     /*
      *
-     * @param string       $spaceKey      space
-     * @return int PageId of the homepage or -1 if not found
-     *
-     * @see IRapiClientBase::RESP_VAL_PAGE_ID_NO
+     * @param string $spaceKey      Limited to the space
+     * 
+     * @return int PageId of the homepage or {@link IRapiClientBase::RESP_VAL_PAGE_ID_NO}
      */
 
     public function spaceHomepage(string $spaceKey): int;

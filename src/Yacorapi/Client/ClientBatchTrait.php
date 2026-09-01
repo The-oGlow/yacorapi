@@ -17,27 +17,41 @@ use ollily\Tools\Batch\ITaskItem;
 use ollily\Tools\Batch\ITaskList;
 use ollily\Tools\Batch\ProcessResultEnum;
 
-trait ClientBatchTrait
-{
-    public function processQueue(ITaskList $taskList): ProcessResultEnum
-    {
-        $result = ProcessResultEnum::FAIL;
+/**
+ * @SuppressWarnings("PHPMD")
+ */
+
+trait ClientBatchTrait {
+
+    public function processQueue(ITaskList $taskList): ProcessResultEnum {
+        $processResult = ProcessResultEnum::FAIL;
 
         if ($taskList->isEmpty()) {
-            $result = ProcessResultEnum::EMPTY;
+            $processResult = ProcessResultEnum::EMPTY;
         } else {
             $listConfig = $taskList->getListConfig();
             $listId = $taskList->getListId();
-            while (!$taskList->isEmpty()) {
+            while (!$taskList->isEmpty()) { // @phpstan-ignore booleanNot.alwaysTrue
+                $taskResult = ProcessResultEnum::FAIL;
                 /** @var ITaskItem $task */
                 $task = $taskList->nextTask();
-                if (!$task->empty());
-                $data = $task->getData();
+                if (!$task->empty()) {
+                    $data = $task->getData();
+                    $taskResult = $this->doSomething($task, $data, $listConfig);
+                    if (ProcessResultEnum::SUCCESS != $taskResult) {
+                        break;
+                    }
+                }
+                if (ProcessResultEnum::SUCCESS == $taskResult) {
+                    $processResult = ProcessResultEnum::SUCCESS;
+                }
             }
 
-            $result = ProcessResultEnum::SUCCESS;
         }
+            return $processResult;
+    }
 
-        return $result;
+    protected function doSomething(ITaskItem $task, mixed $data, mixed $listConfig): ProcessResultEnum {
+        return ProcessResultEnum::SUCCESS;
     }
 }

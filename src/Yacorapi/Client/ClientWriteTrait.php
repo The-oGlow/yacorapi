@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Client;
 
 use Ds\Map;
+use Ds\Collection;
 use InvalidArgumentException;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\Data\ItemTypeEnum;
@@ -78,6 +79,8 @@ trait ClientWriteTrait
 
     /**
      * @inheritDoc
+     * 
+     * @SuppressWarnings("PHPMD.UnusedLocalVariable")
      */
     #[\Override]
     public function updatePage(
@@ -134,7 +137,7 @@ trait ClientWriteTrait
         $response = new Response();
 
         $itemPageId = $this->checkPageExists($spaceKey, $pageTitle);
-        if ($itemPageId == IResponse::VAL_PAGE_ID_NO) {
+        if ($itemPageId == IRapiClientBase::REQ_VAL_PAGE_ID_NO) {
             // Create page
             $response = $this->createPage($spaceKey, $pageTitle, $pageBody, $parentId);
         } else {
@@ -147,6 +150,8 @@ trait ClientWriteTrait
 
     /**
      * @inheritDoc
+     * 
+     * @SuppressWarnings("PHPMD.UnusedLocalVariable")
      */
     #[\Override]
     public function movePage(int $pageId, int $newParentId): IResponse
@@ -230,6 +235,9 @@ trait ClientWriteTrait
      * @return Map<mixed,mixed>
      *
      * @throws InvalidArgumentException
+     * 
+     * @SuppressWarnings("PHPMD.ExcessiveMethodLength")
+     * @SuppressWarnings("PHPMD.ExcessiveParameterList")
      */
     protected function prepareRequestParameter(
         int $mode,
@@ -242,7 +250,7 @@ trait ClientWriteTrait
         int $newParentId = IRapiClientBase::REQ_VAL_PARENT_ID_NO,
         int $nextVersion = IRapiClientBase::RESP_VAL_VERSION_NO,
         string $comment = ''
-    ): Map {
+    ): Collection {
         switch ($mode) {
             case self::MODE_REQ_PARAM_CREATE:
                 if (empty($comment)) {
@@ -307,6 +315,7 @@ trait ClientWriteTrait
                     $comment = self::MSG_MOVED_TO_NEW_PARENT . $newParentId;
                 }
 
+                /** @var Map<mixed,mixed> $parameters */
                 $parameters = new Map(
                     [
                     RequestParameterData::PROP_TITLE, $pageTitle,
@@ -325,6 +334,7 @@ trait ClientWriteTrait
                 );
                 break;
             default:
+                /** @var Map<mixed,mixed> $parameters */
                 $parameters = new Map();
                 break;
         }

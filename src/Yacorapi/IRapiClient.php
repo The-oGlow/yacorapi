@@ -35,9 +35,6 @@ interface IRapiClient extends IRapiClientRead, IRapiClientWrite, IRapiClientStat
      * @param int|LogLevel|string      $level              (Default: {@link IRapiClientBase::LEVEL_DEFAULT})
      *
      * @return IRapiClient
-     *
-     * @see IRapiClient::LEVEL_DEFAULT
-     * @see IRapiClient::EXTENSION_DEFAULT
      */
     public static function newClient(
         ?ExtensionEnum $modeExtension = IRapiClientBase::EXTENSION_DEFAULT,
