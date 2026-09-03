@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Client;
 
-use Ds\Map;
+use Ds\Collection;
 use Monolog\ConsoleLogger;
 use oglow\tools\common\IContainer;
 use oglow\tools\Yacorapi\ConstData;
@@ -44,7 +44,6 @@ abstract class AbstractRapiClient
      * @param null|IContainer                 $addons
      * @param int|\Psr\Log\LogLevel::*|string $level              The minimum logging level at which this handler will be triggered
      *                                                            (Default: {@link IRapiClientBase::LEVEL_DEFAULT})
-     *
      */
     protected function __construct(
         ?IConnectionProvider $connectionProvider = null,
@@ -94,13 +93,13 @@ abstract class AbstractRapiClient
     }
 
     /**
-     * @param string           $prepareUrl
-     * @param Map<mixed,mixed> $parameters
-     * @param RequestTypeEnum  $reqType
+     * @param string                  $prepareUrl
+     * @param Collection<mixed,mixed> $parameters
+     * @param RequestTypeEnum         $reqType
      *
      * @return IResponse
      */
-    protected function execPost(string $prepareUrl, Map $parameters, RequestTypeEnum $reqType): IResponse
+    protected function execPost(string $prepareUrl, Collection $parameters, RequestTypeEnum $reqType): IResponse
     {
         self::$logger->debug('START - prepareUrl,parameters,reqType', [$prepareUrl, $parameters, $reqType]);
 

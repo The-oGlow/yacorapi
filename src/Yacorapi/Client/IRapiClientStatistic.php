@@ -29,7 +29,7 @@ interface IRapiClientStatistic extends IRapiClientBase
      *
      * @return IStatistic The found and counted items
      */
-    public function countItemsinSpace(string $spaceKey, ItemTypeEnum $itemType = IRapiClientBase::REQ_ITEM_TYPE_PAGE): IStatistic;
+    public function countItemsinSpace(string $spaceKey, ItemTypeEnum $itemType = IRapiClientBase::REQ_VAL_ITEM_TYPE_PAGE): IStatistic;
 
     /**
      * Scans a space and count the macros in the space.

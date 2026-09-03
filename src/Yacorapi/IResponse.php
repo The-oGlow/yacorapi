@@ -113,6 +113,8 @@ interface IResponse extends \Stringable
 
     public const string VAL_FALSE = 'false';
 
+    public const string VAL_BODY_EMPTY = '';
+
     public const int VAL_PAGE_ID_NO = -1;
 
     public const int VAL_VERSION_NO = -1;

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace oglow\tools\common;
 
+use Ds\Collection;
 use Ds\Map;
 use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\ConstData;
@@ -63,7 +64,7 @@ class MockProvider extends AbstractProvider
      * @inheritDoc
      */
     #[\Override]
-    protected function execPostInternal(string $execUrl, Map $parameters, RequestTypeEnum $reqType): array
+    protected function execPostInternal(string $execUrl, Collection $parameters, RequestTypeEnum $reqType): array
     {
         self::$logger->debug('START - execUrl,parameters,reqType', [$execUrl, $parameters, $reqType]);
 
@@ -254,13 +255,13 @@ class MockProvider extends AbstractProvider
     }
 
     /**
-     * @param string           $execUrl
-     * @param Map<mixed,mixed> $parameters
-     * @param RequestTypeEnum  $reqType
+     * @param string                  $execUrl
+     * @param Collection<mixed,mixed> $parameters
+     * @param RequestTypeEnum         $reqType
      *
      * @return array<mixed,mixed>
      */
-    protected function evaluateParameterRequest(string $execUrl, Map $parameters, RequestTypeEnum $reqType): array
+    protected function evaluateParameterRequest(string $execUrl, Collection $parameters, RequestTypeEnum $reqType): array
     {
         $response = [];
 
@@ -286,31 +287,33 @@ class MockProvider extends AbstractProvider
     }
 
     /**
-     * @param string             $execUrl
-     * @param Map<mixed,mixed>   $parameters
-     * @param RequestTypeEnum    $reqType
-     * @param array<mixed,mixed> $response
+     * @param string                  $execUrl
+     * @param Collection<mixed,mixed> $parameters
+     * @param RequestTypeEnum         $reqType
+     * @param array<mixed,mixed>      $response
      *
      * @return bool
      */
-    protected function evalCreatePage(string $execUrl, Map $parameters, RequestTypeEnum $reqType, array &$response): bool
+    protected function evalCreatePage(string $execUrl, Collection $parameters, RequestTypeEnum $reqType, array &$response): bool
     {
         $done = false;
-        $searchUrl = sprintf('%s/', ConstData::C_RAPI_CONTENT);
+        /** @var Map<mixed,mixed> */
+        $mapParameters = $parameters;
 
+        $searchUrl = sprintf('%s/', ConstData::C_RAPI_CONTENT);
         $expectedKeys = [RequestParameterData::PROP_TYPE, RequestParameterData::PROP_TITLE,
             RequestParameterData::PROP_STATUS, RequestParameterData::PROP_BODY, RequestParameterData::PROP_SPACE,
         ];
         $notExpectedKeys = [RequestParameterData::PROP_ID];
 
-        if (str_contains($execUrl, $searchUrl) && $this->verifyKeys($parameters, $expectedKeys) && $this->notVerifyKeys($parameters, $notExpectedKeys)) {
-            self::$logger->notice('A \'createPage\'', [$execUrl, $reqType, $parameters]);
+        if (str_contains($execUrl, $searchUrl) && $this->verifyKeys($mapParameters, $expectedKeys) && $this->notVerifyKeys($mapParameters, $notExpectedKeys)) {
+            self::$logger->notice('A \'createPage\'', [$execUrl, $reqType, $mapParameters]);
 
             $response = array_merge($response, YacorapiTestData::RESP_HEAD_SEARCHPAGEID_01());
-            $response = array_merge($response, [IResponse::KEY_TITLE => $parameters->get(RequestParameterData::PROP_TITLE)]);
-            $response = array_merge($response, YacorapiTestData::prepareResponseBody('', $parameters));
-            $response = array_merge($response, YacorapiTestData::prepareResponseSpace('', $parameters));
-            $response = array_merge($response, YacorapiTestData::prepareResponseAncestor('', $parameters));
+            $response = array_merge($response, [IResponse::KEY_TITLE => $mapParameters->get(RequestParameterData::PROP_TITLE)]);
+            $response = array_merge($response, YacorapiTestData::prepareResponseBody('', $mapParameters));
+            $response = array_merge($response, YacorapiTestData::prepareResponseSpace('', $mapParameters));
+            $response = array_merge($response, YacorapiTestData::prepareResponseAncestor('', $mapParameters));
 
             $done = true;
         } else {
@@ -321,30 +324,33 @@ class MockProvider extends AbstractProvider
     }
 
     /**
-     * @param string             $execUrl
-     * @param Map<mixed,mixed>   $parameters
-     * @param RequestTypeEnum    $reqType
-     * @param array<mixed,mixed> $response
+     * @param string                  $execUrl
+     * @param Collection<mixed,mixed> $parameters
+     * @param RequestTypeEnum         $reqType
+     * @param array<mixed,mixed>      $response
      *
      * @return bool
      */
-    protected function evalUpdatePage(string $execUrl, Map $parameters, RequestTypeEnum $reqType, array &$response): bool
+    protected function evalUpdatePage(string $execUrl, Collection $parameters, RequestTypeEnum $reqType, array &$response): bool
     {
         $done = false;
+        /** @var Map<mixed,mixed> */
+        $mapParameters = $parameters;
+
         $searchUrl = sprintf('%s/', ConstData::C_RAPI_CONTENT);
         $expectedKeys = [RequestParameterData::PROP_TYPE, RequestParameterData::PROP_TITLE,
             RequestParameterData::PROP_BODY, RequestParameterData::PROP_ID,
         ];
 
-        if (str_contains($execUrl, $searchUrl) && $this->verifyKeys($parameters, $expectedKeys)) {
-            self::$logger->notice('A \'updatePage\'', [$execUrl, $reqType, $parameters]);
+        if (str_contains($execUrl, $searchUrl) && $this->verifyKeys($mapParameters, $expectedKeys)) {
+            self::$logger->notice('A \'updatePage\'', [$execUrl, $reqType, $mapParameters]);
 
             $response = array_merge($response, YacorapiTestData::RESP_HEAD_SEARCHPAGEID_01());
-            $response = array_merge($response, [IResponse::KEY_TITLE => $parameters->get(RequestParameterData::PROP_TITLE)]);
-            $response = array_merge($response, YacorapiTestData::prepareResponseBody('', $parameters));
+            $response = array_merge($response, [IResponse::KEY_TITLE => $mapParameters->get(RequestParameterData::PROP_TITLE)]);
+            $response = array_merge($response, YacorapiTestData::prepareResponseBody('', $mapParameters));
             $done = true;
         } else {
-            self::$logger->debug('Not a \'updatePage\'', [$execUrl, $reqType, $parameters]);
+            self::$logger->debug('Not a \'updatePage\'', [$execUrl, $reqType, $mapParameters]);
         }
 
         return $done;
@@ -375,18 +381,21 @@ class MockProvider extends AbstractProvider
     }
 
     /**
-     * @param Map<mixed,mixed>   $parameters
-     * @param array<mixed,mixed> $expectedKeys
+     * @param Collection<mixed,mixed> $parameters
+     * @param array<mixed,mixed>      $expectedKeys
      *
      * @return bool
      */
-    public function verifyKeys(Map $parameters, array $expectedKeys): bool
+    public function verifyKeys(Collection $parameters, array $expectedKeys): bool
     {
         $verify = false;
 
-        if (!$parameters->isEmpty()) {
+        /** @var Map<mixed,mixed> */
+        $mapParameters = $parameters;
+
+        if (!$mapParameters->isEmpty()) {
             foreach ($expectedKeys as $expectedKey) {
-                $verify = $parameters->hasKey($expectedKey);
+                $verify = $mapParameters->hasKey($expectedKey);
                 if (!$verify) {
                     self::$logger->notice('Key missing', [$expectedKey]);
                     break;
@@ -400,18 +409,21 @@ class MockProvider extends AbstractProvider
     }
 
     /**
-     * @param Map<mixed,mixed>   $parameters
-     * @param array<mixed,mixed> $notExpectedKeys
+     * @param Collection<mixed,mixed> $parameters
+     * @param array<mixed,mixed>      $notExpectedKeys
      *
      * @return bool
      */
-    public function notVerifyKeys(Map $parameters, array $notExpectedKeys): bool
+    public function notVerifyKeys(Collection $parameters, array $notExpectedKeys): bool
     {
         $verify = true;
 
-        if (!$parameters->isEmpty()) {
+        /** @var Map<mixed,mixed> */
+        $mapParameters = $parameters;
+
+        if (!$mapParameters->isEmpty()) {
             foreach ($notExpectedKeys as $notExpectedKeysxpectedKey) {
-                $verify = !$parameters->hasKey($notExpectedKeysxpectedKey);
+                $verify = !$mapParameters->hasKey($notExpectedKeysxpectedKey);
                 if (!$verify) {
                     self::$logger->notice('Key exists', [$notExpectedKeysxpectedKey]);
                     break;

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Client;
 
-use Ds\Map;
 use Ds\Collection;
+use Ds\Map;
 use InvalidArgumentException;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\Data\ItemTypeEnum;
@@ -23,25 +23,25 @@ use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Request\RequestTypeEnum;
 use oglow\tools\Yacorapi\Response\Response;
 
+/**
+ * @phpstan-type PageInfoParam 'body'|'current'|'next'|'title'|'type'
+ * @phpstan-type PageInfo array<PageInfoParam,mixed>
+ */
 trait ClientWriteTrait
 {
-    public const string MSG_MOVED_TO_NEW_PARENT = 'Page moved to new parent';
+    public const string MSG_MOVED_TO_NEW_PARENT = 'Page moved to new parent pageId';
 
     public const string MSG_PAGE_CREATED = 'Page created';
 
     public const string MSG_UPDATE_PAGE_WITH_CHANGES = 'Page content or title updated';
 
-    private const string ERR_MSG_SPACE_IS_EMPTY = 'SpaceKey is empty';
+    private const string ERR_MSG_SPACE_IS_EMPTY = 'SpaceKey must not be empty';
 
     private const string ERR_MSG_PARENT_ID_MUST_BE_NUMERIC = 'ParentId must be numeric';
 
     private const string ERR_MSG_PAGE_ID_INVALID = 'No correct pageId';
 
-    private const int MODE_REQ_PARAM_CREATE = 1;
-
-    private const int MODE_REQ_PARAM_UPDATE = 2;
-
-    private const int MODE_REQ_PARAM_MOVE = 4;
+    private const string ERR_MSG_PAGE_TITLE_EMPTY = 'Page title must no be empty';
 
     /**
      * @inheritDoc
@@ -52,26 +52,24 @@ trait ClientWriteTrait
         string $pageTitle,
         string $pageBody,
         int $parentId = IRapiClientBase::REQ_VAL_PARENT_ID_NO,
-        ItemTypeEnum $itemType = IRapiClientBase::REQ_ITEM_TYPE_PAGE
+        string $comment = IRapiClientBase::REQ_VAL_COMMENT_EMPTY,
+        ItemTypeEnum $itemType = IRapiClientBase::REQ_VAL_ITEM_TYPE_PAGE
     ): IResponse {
-        self::$logger->debug('START - spaceKey,pageTitle,parentId,pageType,pageBody', [$spaceKey, $pageTitle, $parentId, $itemType, empty($pageBody)]);
+        self::$logger->debug('START - spaceKey,pageTitle,parentId,itemType,len(pageBody),len(comment)');
+        self::$logger->debug('', [$spaceKey, $pageTitle, $parentId, $itemType, strlen($pageBody), strlen($comment)]);
 
-        $parameters = $this->prepareRequestParameter(
-            mode: self::MODE_REQ_PARAM_CREATE,
+        $parameters = $this->prepareParameterCreateRequest(
             spaceKey: $spaceKey,
             pageTitle: $pageTitle,
             itemType: $itemType,
             parentId: $parentId,
             pageBody: $pageBody,
-            nextVersion: IRapiClientBase::REQ_VAL_VERSION_FIRST
+            nextVersion: IRapiClientBase::REQ_VAL_VERSION_FIRST,
+            comment:  $comment
         );
-        $prepareUrl = $this->prepareCreatePage();
+        $response = $this->execPost($this->prepareCreatePage(), $parameters, RequestTypeEnum::POST);
 
-        $response = $this->execPost($prepareUrl, $parameters, RequestTypeEnum::POST);
-
-        $success = $response->checkStatus();
-        self::$logger->debug('Created page with title', [$pageTitle, ($success ? 'successful' : 'failed')]);
-
+        self::$logger->debug('Created page with title', [$pageTitle, $response->checkStatus()]);
         self::$logger->debug('END');
 
         return $response;
@@ -79,44 +77,42 @@ trait ClientWriteTrait
 
     /**
      * @inheritDoc
-     * 
-     * @SuppressWarnings("PHPMD.UnusedLocalVariable")
      */
     #[\Override]
     public function updatePage(
         int $pageId,
-        string $pageBody,
-        string $pageTitle = '',
-        string $comment = '',
-        ItemTypeEnum $itemType = IRapiClientBase::REQ_ITEM_TYPE_PAGE
+        string $pageBody = IRapiClientBase::REQ_VAL_BODY_EMPTY,
+        string $pageTitle = IRapiClientBase::REQ_VAL_PAGE_TITLE_EMPTY,
+        string $comment = IRapiClientBase::REQ_VAL_COMMENT_EMPTY,
+        ItemTypeEnum $itemType = IRapiClientBase::REQ_VAL_ITEM_TYPE_PAGE
     ): IResponse {
-        self::$logger->debug('START - pageId,pageTitle,pageType,bodySize,comment', [$pageId, $pageTitle, $itemType, strlen($pageBody), $comment]);
+        self::$logger->debug('START - pageId,pageTitle,itemType,len(pageBody),len(comment)');
+        self::$logger->debug('', [$pageId, $pageTitle, $itemType, strlen($pageBody), strlen($comment)]);
 
         $response = new Response();
 
         if (empty($pageId) || IRapiClientBase::REQ_VAL_PAGE_ID_NO == $pageId) {
             self::$logger->error(self::ERR_MSG_PAGE_ID_INVALID, [$pageId]);
         } else {
-            [$currentVersion, $nextVersion, $currentPageTitle] = $this->nextVersionOfPage($pageId);
+            $pageInfo = $this->loadItemInfo($pageId);
             if (empty($pageTitle)) {
-                $pageTitle = $currentPageTitle;
+                $pageTitle = $pageInfo['title'];
+            }
+            if (empty($pageBody)) {
+                $pageBody = $pageInfo['body'];
             }
 
-            $parameters = $this->prepareRequestParameter(
-                mode: self::MODE_REQ_PARAM_UPDATE,
+            $parameters = $this->prepareParameterUpdateRequest(
                 pageTitle: $pageTitle,
                 itemType: $itemType,
                 pageBody: $pageBody,
                 pageId: $pageId,
-                nextVersion: $nextVersion,
+                nextVersion: $pageInfo['next'],
                 comment: $comment
             );
-            $prepareURL = $this->prepareUpdateURL($pageId);
+            $response = $this->execPost($this->prepareUpdateURL($pageId), $parameters, RequestTypeEnum::PUT);
 
-            $response = $this->execPost($prepareURL, $parameters, RequestTypeEnum::PUT);
-
-            $success = $response->checkStatus();
-            self::$logger->debug('Update page with title/pageId', [$pageTitle, $pageId, ($success ? 'successful' : 'failed')]);
+            self::$logger->debug('Updated page with title/pageId', [$pageTitle, $pageId, $response->checkStatus()]);
         }
         self::$logger->debug('END');
 
@@ -132,50 +128,50 @@ trait ClientWriteTrait
         string $pageTitle,
         string $pageBody,
         int $parentId = IRapiClientBase::REQ_VAL_PARENT_ID_NO,
-        ItemTypeEnum $itemType = IRapiClientBase::REQ_ITEM_TYPE_PAGE
+        string $comment = IRapiClientBase::REQ_VAL_COMMENT_EMPTY,
+        ItemTypeEnum $itemType = IRapiClientBase::REQ_VAL_ITEM_TYPE_PAGE
     ): IResponse {
+        self::$logger->debug('START - spaceKey,pageTitle,itemType,parentId,len(pageBody),len(comment)');
+        self::$logger->debug('', [$spaceKey, $pageTitle, $itemType, $parentId, strlen($pageBody), strlen($comment)]);
+
         $response = new Response();
 
         $itemPageId = $this->checkPageExists($spaceKey, $pageTitle);
         if ($itemPageId == IRapiClientBase::REQ_VAL_PAGE_ID_NO) {
             // Create page
-            $response = $this->createPage($spaceKey, $pageTitle, $pageBody, $parentId);
+            $response = $this->createPage($spaceKey, $pageTitle, $pageBody, $parentId, $comment);
         } else {
             // Update page
-            $response = $this->updatePage($itemPageId, $pageBody, $pageTitle);
+            $response = $this->updatePage($itemPageId, $pageBody, $pageTitle, $comment);
         }
+
+        self::$logger->debug('Created/Updated page with title', [$pageTitle, $response->checkStatus()]);
+        self::$logger->debug('END');
 
         return $response;
     }
 
     /**
      * @inheritDoc
-     * 
-     * @SuppressWarnings("PHPMD.UnusedLocalVariable")
      */
     #[\Override]
-    public function movePage(int $pageId, int $newParentId): IResponse
+    public function movePage(int $pageId, int $newParentId, string $comment = IRapiClientBase::REQ_VAL_COMMENT_EMPTY): IResponse
     {
-        self::$logger->debug('START - pageId,newParentId', [$pageId, $newParentId]);
+        self::$logger->debug('START - pageId,newParentId,len(comment)');
+        self::$logger->debug('', [$pageId, $newParentId, strlen($comment)]);
 
-        $page = $this->readPageByPageId($pageId);
+        $pageInfo = $this->loadItemInfo($pageId);
 
-        [$currentVersion, $nextVersion, $pageTitle, $itemType] = $this->nextVersionOfPage($pageId);
-
-        $parameters = $this->prepareRequestParameter(
-            mode: self::MODE_REQ_PARAM_MOVE,
-            pageTitle: $pageTitle,
-            itemType: $itemType,
+        $parameters = $this->prepareParameterMoveRequest(
+            pageTitle: $pageInfo['title'],
+            itemType: $pageInfo['type'],
             newParentId: $newParentId,
-            nextVersion: $nextVersion
+            nextVersion: $pageInfo['next'],
+            comment: $comment
         );
-        $prepareUrl = $this->prepareUpdateURL($pageId);
+        $response = $this->execPost($this->prepareUpdateURL($pageId), $parameters, RequestTypeEnum::PUT);
 
-        $response = $this->execPost($prepareUrl, $parameters, RequestTypeEnum::PUT);
-
-        $success = $response->checkStatus();
-        self::$logger->debug('Moved page with title/pageId to', [$pageTitle, $pageId, $newParentId, ($success ? 'successful' : 'failed')]);
-
+        self::$logger->debug('Moved page with title/pageId to', [$pageInfo['title'], $pageId, $newParentId, $response->checkStatus()]);
         self::$logger->debug('END');
 
         return $response;
@@ -197,19 +193,22 @@ trait ClientWriteTrait
      * @param int $pageId Id of the page
      *
      * @return array<mixed,mixed> Returns [currentVersion,nextVersion,pageTitle,itemType]
+     *
+     * @phpstan-return PageInfo
      */
-    protected function nextVersionOfPage(int $pageId): array
+    protected function loadItemInfo(int $pageId): array
     {
         $currentVersion = IRapiClientBase::RESP_VAL_VERSION_NO;
         $nextVersion = IRapiClientBase::RESP_VAL_VERSION_NO;
         $pageTitle = IRapiClientBase::RESP_VAL_TITLE_EMPTY;
-        $itemType = IRapiClientBase::REQ_ITEM_TYPE_PAGE;
+        $pageBody = IRapiClientBase::RESP_VAL_BODY_EMPTY;
+        $itemType = IRapiClientBase::REQ_VAL_ITEM_TYPE_PAGE;
 
         $currentPage = $this->readPageByPageId($pageId);
         if ($currentPage->checkStatus()) {
             $pageTitle = $currentPage->getValue(IResponse::KEY_TITLE);
-            $itemType = $currentPage->getValue(IResponse::KEY_TYPE);
-            $itemType = ItemTypeEnum::tryFrom($itemType);
+            $pageBody =  $currentPage->getValue(IResponse::KEY_BODY)[IResponse::KEY_STORAGE][IResponse::KEY_VALUE];
+            $itemType = ItemTypeEnum::tryFrom($currentPage->getValue(IResponse::KEY_TYPE));
             $versionData = $currentPage->getValue(IResponse::KEY_VERSION, []);
             $currentVersion = array_key_exists(IResponse::KEY_NUMBER, $versionData) ? $versionData[IResponse::KEY_NUMBER] : IRapiClientBase::RESP_VAL_VERSION_NO;
             $nextVersion = $currentVersion + 1;
@@ -217,127 +216,170 @@ trait ClientWriteTrait
             self::$logger->warning('Cannot find page', [$pageId]);
         }
 
-        return [$currentVersion, $nextVersion, $pageTitle, $itemType];
+        return ['current' => $currentVersion, 'next' => $nextVersion, 'title' => $pageTitle, 'type' => $itemType, 'body' => $pageBody];
     }
 
     /**
-     * @param int          $mode
      * @param string       $pageTitle
      * @param ItemTypeEnum $itemType
      * @param string       $pageBody
      * @param int          $parentId
      * @param string       $spaceKey
+     * @param int          $nextVersion
+     * @param string       $comment
+     *
+     * @return Collection<mixed,mixed>
+     *
+     * @throws InvalidArgumentException
+     */
+    protected function prepareParameterCreateRequest(
+        string $pageTitle,
+        ItemTypeEnum $itemType = IRapiClientBase::REQ_VAL_ITEM_TYPE_PAGE,
+        string $pageBody = IRapiClientBase::REQ_VAL_BODY_EMPTY,
+        int $parentId = IRapiClientBase::REQ_VAL_PARENT_ID_NO,
+        string $spaceKey = IRapiClientBase::REQ_VAL_SPACE_EMPTY,
+        int $nextVersion = IRapiClientBase::RESP_VAL_VERSION_NO,
+        string $comment = IRapiClientBase::REQ_VAL_COMMENT_EMPTY
+    ): Collection {
+        if (empty($comment)) {
+            $comment = self::MSG_PAGE_CREATED;
+        }
+
+        if (empty($pageTitle)) {
+            throw new InvalidArgumentException(self::ERR_MSG_PAGE_TITLE_EMPTY);
+        }
+
+        if (empty($spaceKey)) {
+            throw new InvalidArgumentException(self::ERR_MSG_SPACE_IS_EMPTY);
+        }
+
+        /** @var Map<mixed,mixed> */
+        $parameters = new Map(
+            [
+            RequestParameterData::PROP_TYPE => $itemType,
+            RequestParameterData::PROP_TITLE => $pageTitle,
+            RequestParameterData::PROP_STATUS => RequestParameterData::VAL_STATUS_TYPE_CURRENT,
+            RequestParameterData::PROP_BODY => [
+                RequestParameterData::PROP_STORAGE => [
+                    RequestParameterData::PROP_VALUE => $pageBody,
+                    RequestParameterData::PROP_REPRESENTATION => RequestParameterData::VAL_REPRESENTATION_TYPE_STORAGE,
+                ],
+            ],
+            RequestParameterData::PROP_SPACE => [RequestParameterData::PROP_KEY => $spaceKey],
+            RequestParameterData::PROP_VERSION => [
+                RequestParameterData::PROP_NUMBER => $nextVersion,
+                RequestParameterData::PROP_MESSAGE => $this->validateComment($comment),
+            ],
+                ]
+        );
+        if ($parentId > IRapiClientBase::REQ_VAL_PARENT_ID_NO) {
+            $parameters->put(RequestParameterData::PROP_ANCESTORS, [[RequestParameterData::PROP_ID => $parentId]]);
+        } else {
+            throw new InvalidArgumentException(self::ERR_MSG_PARENT_ID_MUST_BE_NUMERIC);
+        }
+
+        self::$logger->debug('parameters', [$parameters]);
+
+        return $parameters;
+    }
+
+    /**
+     * @param string       $pageTitle
+     * @param ItemTypeEnum $itemType
+     * @param string       $pageBody
      * @param int          $pageId
+     * @param int          $nextVersion
+     * @param string       $comment
+     *
+     * @return Collection<mixed,mixed>
+     *
+     * @throws InvalidArgumentException
+     */
+    protected function prepareParameterUpdateRequest(
+        string $pageTitle,
+        ItemTypeEnum $itemType = IRapiClientBase::REQ_VAL_ITEM_TYPE_PAGE,
+        string $pageBody = IRapiClientBase::REQ_VAL_BODY_EMPTY,
+        int $pageId = IRapiClientBase::REQ_VAL_PAGE_ID_NO,
+        int $nextVersion = IRapiClientBase::RESP_VAL_VERSION_NO,
+        string $comment = IRapiClientBase::REQ_VAL_COMMENT_EMPTY
+    ): Collection {
+        if (empty($comment)) {
+            $comment = self::MSG_UPDATE_PAGE_WITH_CHANGES;
+        }
+
+        if (IRapiClientBase::REQ_VAL_PAGE_ID_NO == $pageId) {
+            throw new InvalidArgumentException(self::ERR_MSG_PAGE_ID_INVALID);
+        }
+
+        if (empty($pageTitle)) {
+            throw new InvalidArgumentException(self::ERR_MSG_PAGE_TITLE_EMPTY);
+        }
+
+        $parameters = new Map(
+            [
+            RequestParameterData::PROP_ID => $pageId,
+            RequestParameterData::PROP_TYPE => $itemType,
+            RequestParameterData::PROP_TITLE => $pageTitle,
+            RequestParameterData::PROP_BODY => [
+                RequestParameterData::PROP_STORAGE => [
+                    RequestParameterData::PROP_VALUE => $pageBody,
+                    RequestParameterData::PROP_REPRESENTATION => RequestParameterData::VAL_REPRESENTATION_TYPE_STORAGE,
+                ],
+            ],
+            RequestParameterData::PROP_VERSION => [
+                RequestParameterData::PROP_NUMBER => $nextVersion,
+                RequestParameterData::PROP_MESSAGE => $this->validateComment($comment),
+            ],
+                ]
+        );
+        self::$logger->debug('parameters', [$parameters]);
+
+        return $parameters;
+    }
+
+    /**
+     * @param string       $pageTitle
+     * @param ItemTypeEnum $itemType
      * @param int          $newParentId
      * @param int          $nextVersion
      * @param string       $comment
      *
-     * @return Map<mixed,mixed>
+     * @return Collection<mixed,mixed>
      *
      * @throws InvalidArgumentException
-     * 
-     * @SuppressWarnings("PHPMD.ExcessiveMethodLength")
-     * @SuppressWarnings("PHPMD.ExcessiveParameterList")
      */
-    protected function prepareRequestParameter(
-        int $mode,
+    protected function prepareParameterMoveRequest(
         string $pageTitle,
-        ItemTypeEnum $itemType = IRapiClientBase::REQ_ITEM_TYPE_PAGE,
-        string $pageBody = IRapiClientBase::REQ_VAL_BODY_EMPTY,
-        int $parentId = IRapiClientBase::REQ_VAL_PARENT_ID_NO,
-        string $spaceKey = IRapiClientBase::REQ_VAL_SPACE_EMPTY,
-        int $pageId = IRapiClientBase::REQ_VAL_PAGE_ID_NO,
+        ItemTypeEnum $itemType = IRapiClientBase::REQ_VAL_ITEM_TYPE_PAGE,
         int $newParentId = IRapiClientBase::REQ_VAL_PARENT_ID_NO,
         int $nextVersion = IRapiClientBase::RESP_VAL_VERSION_NO,
-        string $comment = ''
+        string $comment = IRapiClientBase::REQ_VAL_COMMENT_EMPTY
     ): Collection {
-        switch ($mode) {
-            case self::MODE_REQ_PARAM_CREATE:
-                if (empty($comment)) {
-                    $comment = self::MSG_PAGE_CREATED;
-                }
-
-                /** @var Map<mixed,mixed> $parameters */
-                $parameters = new Map(
-                    [
-                    RequestParameterData::PROP_TYPE => $itemType,
-                    RequestParameterData::PROP_TITLE => $pageTitle,
-                    RequestParameterData::PROP_STATUS => RequestParameterData::VAL_STATUS_TYPE_CURRENT,
-                    RequestParameterData::PROP_BODY => [
-                        RequestParameterData::PROP_STORAGE => [
-                            RequestParameterData::PROP_VALUE => $pageBody,
-                            RequestParameterData::PROP_REPRESENTATION => RequestParameterData::VAL_REPRESENTATION_TYPE_STORAGE,
-                        ],
-                    ],
-                    RequestParameterData::PROP_VERSION => [
-                        RequestParameterData::PROP_NUMBER => $nextVersion,
-                        RequestParameterData::PROP_MESSAGE => $this->validateComment($comment),
-                    ],
-                        ]
-                );
-                if (empty($spaceKey)) {
-                    throw new InvalidArgumentException(self::ERR_MSG_SPACE_IS_EMPTY);
-                } else {
-                    $parameters->put(RequestParameterData::PROP_SPACE, [RequestParameterData::PROP_KEY => $spaceKey]);
-                }
-                if ($parentId > IRapiClientBase::REQ_VAL_PARENT_ID_NO) {
-                    $parameters->put(RequestParameterData::PROP_ANCESTORS, [[RequestParameterData::PROP_ID => $parentId]]);
-                } else {
-                    throw new InvalidArgumentException(self::ERR_MSG_PARENT_ID_MUST_BE_NUMERIC);
-                }
-                break;
-            case self::MODE_REQ_PARAM_UPDATE:
-                if (empty($comment)) {
-                    $comment = self::MSG_UPDATE_PAGE_WITH_CHANGES;
-                }
-
-                /** @var Map<mixed,mixed> $parameters */
-                $parameters = new Map(
-                    [
-                    RequestParameterData::PROP_ID => $pageId,
-                    RequestParameterData::PROP_TYPE => $itemType,
-                    RequestParameterData::PROP_TITLE => $pageTitle,
-                    RequestParameterData::PROP_BODY => [
-                        RequestParameterData::PROP_STORAGE => [
-                            RequestParameterData::PROP_VALUE => $pageBody,
-                            RequestParameterData::PROP_REPRESENTATION => RequestParameterData::VAL_REPRESENTATION_TYPE_STORAGE,
-                        ],
-                    ],
-                    RequestParameterData::PROP_VERSION => [
-                        RequestParameterData::PROP_NUMBER => $nextVersion,
-                        RequestParameterData::PROP_MESSAGE => $this->validateComment($comment),
-                    ],
-                        ]
-                );
-                break;
-            case self::MODE_REQ_PARAM_MOVE:
-                if (empty($comment)) {
-                    $comment = self::MSG_MOVED_TO_NEW_PARENT . $newParentId;
-                }
-
-                /** @var Map<mixed,mixed> $parameters */
-                $parameters = new Map(
-                    [
-                    RequestParameterData::PROP_TITLE, $pageTitle,
-                    RequestParameterData::PROP_TYPE, $itemType,
-                    RequestParameterData::PROP_ANCESTORS, [
-                        [
-                            RequestParameterData::PROP_ID => $newParentId,
-                        ],
-                    ],
-                    RequestParameterData::PROP_VERSION,
-                    [
-                        RequestParameterData::PROP_NUMBER => $nextVersion,
-                        RequestParameterData::PROP_MESSAGE => $this->validateComment($comment),
-                    ],
-                        ]
-                );
-                break;
-            default:
-                /** @var Map<mixed,mixed> $parameters */
-                $parameters = new Map();
-                break;
+        if (empty($comment)) {
+            $comment = sprintf('%s %s', self::MSG_MOVED_TO_NEW_PARENT, $newParentId);
         }
+
+        if (IRapiClientBase::REQ_VAL_PARENT_ID_NO == $newParentId) {
+            throw new InvalidArgumentException(self::ERR_MSG_PARENT_ID_MUST_BE_NUMERIC);
+        }
+
+        if (empty($pageTitle)) {
+            throw new InvalidArgumentException(self::ERR_MSG_PAGE_TITLE_EMPTY);
+        }
+
+        $parameters = new Map(
+            [
+            RequestParameterData::PROP_TYPE => $itemType,
+            RequestParameterData::PROP_TITLE => $pageTitle,
+            RequestParameterData::PROP_ANCESTORS => [[RequestParameterData::PROP_ID => $newParentId]],
+            RequestParameterData::PROP_VERSION =>
+            [
+                RequestParameterData::PROP_NUMBER => $nextVersion,
+                RequestParameterData::PROP_MESSAGE => $this->validateComment($comment),
+            ],
+                ]
+        );
+        self::$logger->debug('parameters', [$parameters]);
 
         return $parameters;
     }

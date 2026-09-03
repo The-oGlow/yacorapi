@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Provider;
 
-use Ds\Map;
+use Ds\Collection;
 use oglow\tools\Yacorapi\Request\RequestTypeEnum;
 
 /**
@@ -34,14 +34,14 @@ class AbstractProviderTestDummyClazz extends AbstractProvider
     }
 
     /**
-     * @param string           $execUrl
-     * @param Map<mixed,mixed> $parameters
-     * @param RequestTypeEnum  $reqType
+     * @param string                  $execUrl
+     * @param Collection<mixed,mixed> $parameters
+     * @param RequestTypeEnum         $reqType
      *
      * @return array<mixed,mixed>
      */
     #[\Override]
-    protected function execPostInternal(string $execUrl, Map $parameters, RequestTypeEnum $reqType): array
+    protected function execPostInternal(string $execUrl, Collection $parameters, RequestTypeEnum $reqType): array
     {
         return [];
     }
@@ -60,13 +60,13 @@ class AbstractProviderTestDummyClazz extends AbstractProvider
     }
 
     /**
-     * @param string           $execUrl
-     * @param Map<mixed,mixed> $parameters
-     * @param RequestTypeEnum  $reqType
+     * @param string                  $execUrl
+     * @param Collection<mixed,mixed> $parameters
+     * @param RequestTypeEnum         $reqType
      *
      * @return array<mixed,mixed>
      */
-    public function publicExecPostInternal(string $execUrl, Map $parameters, RequestTypeEnum $reqType): array
+    public function publicExecPostInternal(string $execUrl, Collection $parameters, RequestTypeEnum $reqType): array
     {
         return $this->execPostInternal($execUrl, $parameters, $reqType);
     }

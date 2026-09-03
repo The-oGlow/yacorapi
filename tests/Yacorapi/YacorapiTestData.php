@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi;
 
+use Ds\Collection;
 use Ds\Map;
 use oglow\tools\Addon\Atlassian\Extension\AtlassianExtension;
 use oglow\tools\Yacorapi\Data\ItemTypeEnum;
@@ -392,15 +393,18 @@ class YacorapiTestData extends TestData
     }
 
     /**
-     * @param string           $text
-     * @param Map<mixed,mixed> $parameters
+     * @param string                  $text
+     * @param Collection<mixed,mixed> $parameters
      *
      * @return array<mixed,mixed>
      */
-    public static function prepareResponseSpace(string $text, Map $parameters): array
+    public static function prepareResponseSpace(string $text, Collection $parameters): array
     {
-        if (!$parameters->isEmpty()) {
-            $value = $parameters->get(RequestParameterData::PROP_SPACE);
+        /** @var Map<mixed,mixed> */
+        $mapParameters = $parameters;
+
+        if (!$mapParameters->isEmpty()) {
+            $value = $mapParameters->get(RequestParameterData::PROP_SPACE);
             if (is_array($value) && count($value) > 0) {
                 $text = $value[RequestParameterData::PROP_KEY];
             }
@@ -423,15 +427,18 @@ class YacorapiTestData extends TestData
     }
 
     /**
-     * @param mixed            $text
-     * @param Map<mixed,mixed> $parameters
+     * @param mixed                   $text
+     * @param Collection<mixed,mixed> $parameters
      *
      * @return array<mixed,mixed>
      */
-    public static function prepareResponseAncestor(mixed $text, Map $parameters): array
+    public static function prepareResponseAncestor(mixed $text, Collection $parameters): array
     {
-        if (!$parameters->isEmpty()) {
-            $value = $parameters->get(RequestParameterData::PROP_ANCESTORS);
+        /** @var Map<mixed,mixed> */
+        $mapParameters = $parameters;
+
+        if (!$mapParameters->isEmpty()) {
+            $value = $mapParameters->get(RequestParameterData::PROP_ANCESTORS);
             if (is_array($value) && count($value) > 0) {
                 $text = $value[0][RequestParameterData::PROP_ID];
             }
@@ -444,15 +451,18 @@ class YacorapiTestData extends TestData
     }
 
     /**
-     * @param string           $text
-     * @param Map<mixed,mixed> $parameters
+     * @param string                  $text
+     * @param Collection<mixed,mixed> $parameters
      *
      * @return array<mixed,mixed>
      */
-    public static function prepareResponseBody(string $text, Map $parameters): array
+    public static function prepareResponseBody(string $text, Collection $parameters): array
     {
-        if (!$parameters->isEmpty()) {
-            $value = $parameters->get(RequestParameterData::PROP_BODY);
+        /** @var Map<mixed,mixed> */
+        $mapParameters = $parameters;
+
+        if (!$mapParameters->isEmpty()) {
+            $value = $mapParameters->get(RequestParameterData::PROP_BODY);
             if (is_array($value) && count($value) > 0) {
                 $text = $value[RequestParameterData::PROP_STORAGE][RequestParameterData::PROP_VALUE];
             }

@@ -20,7 +20,6 @@ use oglow\tools\Yacorapi\Extension\ExtensionEnum;
 use oglow\tools\Yacorapi\Extension\ExtensionTrait;
 use oglow\tools\Yacorapi\IConnectionProvider;
 use oglow\tools\Yacorapi\IRapiClient;
-use oglow\tools\Yacorapi\Client\IRapiClientBase;
 use Psr\Log\LoggerInterface;
 
 class RapiClient extends AbstractRapiClient implements IRapiClient // NOSONAR: php:S1448

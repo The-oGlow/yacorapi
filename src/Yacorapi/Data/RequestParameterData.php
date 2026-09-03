@@ -89,9 +89,13 @@ class RequestParameterData extends AbstractSingleton
 
     public const string VAL_USER_TYPE_KNOWN = 'known';
 
+    public const string VAL_PAGE_TITLE_EMPTY = '';
+
     public const string VAL_BODY_EMPTY = '';
 
     public const int VAL_VERSION_FIRST = 1;
+
+    public const string VAL_COMMENT_EMPTY = '';
 
     /** Max length of a comment (without APP_USER) */
     public const int VAL_COMMENT_MAXLEN = 200;

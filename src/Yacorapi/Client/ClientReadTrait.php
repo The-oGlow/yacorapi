@@ -20,14 +20,15 @@ use oglow\tools\Yacorapi\Data\SpaceTypeEnum;
 use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Macro\AddonTypeEnum;
 use oglow\tools\Yacorapi\Response\ResponseAddonMacroDecorate;
-use oglow\tools\Yacorapi\Client\IRapiClientBase;
+
 trait ClientReadTrait
 {
     /**
      * @inheritDoc
      */
     #[\Override]
-    public function prepareAddonSet(AddonTypeEnum $addonMode = IRapiClientBase::ADDON_DEFAULT): ResponseAddonMacroDecorate {
+    public function prepareAddonSet(AddonTypeEnum $addonMode = IRapiClientBase::ADDON_DEFAULT): ResponseAddonMacroDecorate
+    {
         self::$logger->debug('START - mode', [$addonMode]);
 
         $data = $this->addons->getDataByMode($addonMode->value); // @phpstan-ignore method.notFound
@@ -72,7 +73,7 @@ trait ClientReadTrait
      * @inheritDoc
      */
     #[\Override]
-    public function checkPageExists(string $spaceKey, string $pageTitle, ItemTypeEnum $itemType = IRapiClientBase::REQ_ITEM_TYPE_PAGE): int
+    public function checkPageExists(string $spaceKey, string $pageTitle, ItemTypeEnum $itemType = IRapiClientBase::REQ_VAL_ITEM_TYPE_PAGE): int
     {
         $pageId = IRapiClientBase::REQ_VAL_PAGE_ID_NO;
         $result = $this->readPagesByTitle($pageTitle, $spaceKey);
@@ -106,13 +107,12 @@ trait ClientReadTrait
      */
     #[\Override]
     public function searchPagesWithFilter(
-    string $filterTerm,
-    string $spaceKey,
-    int $searchFromPos = IRapiClientBase::REQ_VAL_SEARCH_START,
-    int $searchLimit = IRapiClientBase::REQ_VAL_SEARCH_LIMIT_MIN,
-    ItemTypeEnum $itemType = IRapiClientBase::REQ_ITEM_TYPE_PAGE
-    ): IResponse
-    {
+        string $filterTerm,
+        string $spaceKey,
+        int $searchFromPos = IRapiClientBase::REQ_VAL_SEARCH_START,
+        int $searchLimit = IRapiClientBase::REQ_VAL_SEARCH_LIMIT_MIN,
+        ItemTypeEnum $itemType = IRapiClientBase::REQ_VAL_ITEM_TYPE_PAGE
+    ): IResponse {
         self::$logger->debug(
             'START - filterTerm,spaceKey,searchFromPos,searchLimit,itemType',
             [$filterTerm, $spaceKey, $searchFromPos, $searchLimit, $itemType]
@@ -159,7 +159,7 @@ trait ClientReadTrait
     protected function prepareSearchUrl(
         string $searchTerm,
         string $spaceKey = IRapiClientBase::REQ_VAL_SPACE_EMPTY,
-        ItemTypeEnum $pageType = IRapiClientBase::REQ_ITEM_TYPE_PAGE,
+        ItemTypeEnum $pageType = IRapiClientBase::REQ_VAL_ITEM_TYPE_PAGE,
         bool $withBody = IRapiClientBase::REQ_VAL_BODY_NO
     ): string {
         $result = '';
@@ -175,7 +175,7 @@ trait ClientReadTrait
         string $spaceKey,
         int $searchFromPos = IRapiClientBase::REQ_VAL_SEARCH_START_NO,
         int $searchLimit = IRapiClientBase::REQ_VAL_SEARCH_LIMIT_NO,
-        ItemTypeEnum $pageType = IRapiClientBase::REQ_ITEM_TYPE_PAGE,
+        ItemTypeEnum $pageType = IRapiClientBase::REQ_VAL_ITEM_TYPE_PAGE,
         bool $withBody = IRapiClientBase::REQ_VAL_BODY_NO
     ): string {
         $searchLimit = $searchLimit < IRapiClientBase::REQ_VAL_SEARCH_LIMIT_MIN ? $this->constData->c(ConstData::KEY_SEARCH_LIMIT) : $searchLimit;

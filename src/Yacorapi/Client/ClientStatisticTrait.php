@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Client;
 
-use Ds\Map;
-use Ds\Vector;
 use Ds\Collection;
+use Ds\Vector;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\Data\ItemTypeEnum;
 use oglow\tools\Yacorapi\Data\QueryExtensionEnum;
@@ -35,7 +34,7 @@ trait ClientStatisticTrait
      * @inheritDoc
      */
     #[\Override]
-    public function countItemsinSpace(string $spaceKey, ItemTypeEnum $itemType = IRapiClientBase::REQ_ITEM_TYPE_PAGE): IStatistic 
+    public function countItemsinSpace(string $spaceKey, ItemTypeEnum $itemType = IRapiClientBase::REQ_VAL_ITEM_TYPE_PAGE): IStatistic
     {
         self::$logger->debug('START - spaceKey, itemType', [$spaceKey, $itemType]);
 
@@ -57,7 +56,7 @@ trait ClientStatisticTrait
      * @inheritDoc
      */
     #[\Override]
-    public function countMacrosInSpace(string $spaceKey, ResponseAddonMacroDecorate $addonSet, IStatistic $outputMatrix): IStatistic 
+    public function countMacrosInSpace(string $spaceKey, ResponseAddonMacroDecorate $addonSet, IStatistic $outputMatrix): IStatistic
     {
         self::$logger->debug('START - spaceKey,addonSet', [$spaceKey, $addonSet]);
 
@@ -137,10 +136,10 @@ trait ClientStatisticTrait
     }
 
     /**
-     * @param string         $spaceKey
-     * @param string         $addOnName
+     * @param string                  $spaceKey
+     * @param string                  $addOnName
      * @param Collection<mixed,mixed> $macroNames
-     * @param IStatistic     $outputMatrix
+     * @param IStatistic              $outputMatrix
      *
      * @return IStatistic
      */
@@ -182,10 +181,10 @@ trait ClientStatisticTrait
     }
 
     /**
-     * @param string            $spaceKey
-     * @param AddonTypeEnum     $addonMode
+     * @param string                   $spaceKey
+     * @param AddonTypeEnum            $addonMode
      * @param Collection<mixed, mixed> $mapAddons
-     * @param IStatistic        $outputMatrix
+     * @param IStatistic               $outputMatrix
      *
      * @return IStatistic
      */
@@ -220,7 +219,7 @@ trait ClientStatisticTrait
 
     protected function prepareSpacePagesUrl(
         string $space,
-        ItemTypeEnum $pageType = IRapiClientBase::REQ_ITEM_TYPE_PAGE,
+        ItemTypeEnum $pageType = IRapiClientBase::REQ_VAL_ITEM_TYPE_PAGE,
         int $start = ConstData::PAGE_START,
         int $limit = ConstData::PAGE_LIMIT
     ): string {
@@ -253,4 +252,3 @@ trait ClientStatisticTrait
         return ((string) $this->constData->c(ConstData::KEY_CONF_SEARCH_URL)) . "?cql=type+in+(" . $itemType->value . ")+AND+space=$spaceKey";
     }
 }
-

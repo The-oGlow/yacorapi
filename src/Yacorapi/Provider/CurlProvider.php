@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Provider;
 
 use CurlHandle;
-use Ds\Map;
+use Ds\Collection;
 use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\ExitCodes;
@@ -77,7 +77,7 @@ class CurlProvider extends AbstractProvider
      * @inheritDoc
      */
     #[\Override]
-    protected function execPostInternal(string $execUrl, Map $parameters, RequestTypeEnum $reqType = RequestTypeEnum::PUT): array
+    protected function execPostInternal(string $execUrl, Collection $parameters, RequestTypeEnum $reqType = RequestTypeEnum::PUT): array
     {
         self::$logger->debug('START - execUrl,parameters,reqType', [$execUrl, $parameters, $reqType]);
 
@@ -117,12 +117,12 @@ class CurlProvider extends AbstractProvider
     }
 
     /**
-     * @param Map<mixed, mixed> $parameters
-     * @param RequestTypeEnum   $reqType
+     * @param Collection<mixed, mixed> $parameters
+     * @param RequestTypeEnum          $reqType
      *
      * @return CurlHandle|false
      */
-    private function prepareCurlWrite(Map $parameters, RequestTypeEnum $reqType)
+    private function prepareCurlWrite(Collection $parameters, RequestTypeEnum $reqType)
     {
         self::$logger->debug('START - parameters,reqType', [$parameters, $reqType]);
 
@@ -247,10 +247,10 @@ class CurlProvider extends AbstractProvider
     }
 
     /**
-     * @param CurlHandle|false  $execSession
-     * @param Map<mixed, mixed> $parameters
+     * @param CurlHandle|false         $execSession
+     * @param Collection<mixed, mixed> $parameters
      */
-    private function preparePutParameter(&$execSession, Map $parameters): void
+    private function preparePutParameter(&$execSession, Collection $parameters): void
     {
         self::$logger->debug('START - parameters', [$parameters]);
 
@@ -266,10 +266,10 @@ class CurlProvider extends AbstractProvider
     }
 
     /**
-     * @param CurlHandle|false  $execSession
-     * @param Map<mixed, mixed> $parameters
+     * @param CurlHandle|false         $execSession
+     * @param Collection<mixed, mixed> $parameters
      */
-    private function preparePostParameter(&$execSession, Map $parameters): void
+    private function preparePostParameter(&$execSession, Collection $parameters): void
     {
         self::$logger->debug('START - parameters', [$parameters]);
 

@@ -20,10 +20,10 @@ use ollily\Tools\Batch\ProcessResultEnum;
 /**
  * @SuppressWarnings("PHPMD")
  */
-
-trait ClientBatchTrait {
-
-    public function processQueue(ITaskList $taskList): ProcessResultEnum {
+trait ClientBatchTrait
+{
+    public function processQueue(ITaskList $taskList): ProcessResultEnum
+    {
         $processResult = ProcessResultEnum::FAIL;
 
         if ($taskList->isEmpty()) {
@@ -46,12 +46,13 @@ trait ClientBatchTrait {
                     $processResult = ProcessResultEnum::SUCCESS;
                 }
             }
-
         }
-            return $processResult;
+
+        return $processResult;
     }
 
-    protected function doSomething(ITaskItem $task, mixed $data, mixed $listConfig): ProcessResultEnum {
+    protected function doSomething(ITaskItem $task, mixed $data, mixed $listConfig): ProcessResultEnum
+    {
         return ProcessResultEnum::SUCCESS;
     }
 }
