@@ -18,7 +18,7 @@ use Ds\Map;
 use InvalidArgumentException;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\Data\ItemTypeEnum;
-use oglow\tools\Yacorapi\Data\RequestParameterData;
+use oglow\tools\Yacorapi\Request\RequestParameterData;
 use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Request\RequestTypeEnum;
 use oglow\tools\Yacorapi\Response\Response;

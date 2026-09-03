@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Client;
 
 use oglow\tools\Yacorapi\Data\ItemTypeEnum;
-use oglow\tools\Yacorapi\Data\RequestParameterData;
+use oglow\tools\Yacorapi\Request\RequestParameterData;
 use oglow\tools\Yacorapi\Extension\ExtensionEnum;
 use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Macro\AddonTypeEnum;

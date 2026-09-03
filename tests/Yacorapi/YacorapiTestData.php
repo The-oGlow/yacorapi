@@ -17,15 +17,11 @@ use Ds\Collection;
 use Ds\Map;
 use oglow\tools\Addon\Atlassian\Extension\AtlassianExtension;
 use oglow\tools\Yacorapi\Data\ItemTypeEnum;
-use oglow\tools\Yacorapi\Data\RequestParameterData;
-use oglow\tools\Yacorapi\Data\SpaceTypeEnum;
+use oglow\tools\Yacorapi\Request\RequestParameterData;
+use oglow\tools\Yacorapi\Space\SpaceTypeEnum;
 use oglow\tools\Yacorapi\Extension\RapiClientExtension;
 use ollily\Tools\Test\TestData;
 
-/**
- * @SuppressWarnings("PHPMD.CamelCaseMethodName")
- * @SuppressWarnings("PHPMD.CamelCasePropertyName")
- */
 // @phpcs:ignoreFile PSR1.Methods.CamelCapsMethodName.NotCamelCaps
 class YacorapiTestData extends TestData
 {

@@ -17,7 +17,7 @@ use Ds\Collection;
 use Monolog\ConsoleLogger;
 use oglow\tools\common\IContainer;
 use oglow\tools\Yacorapi\ConstData;
-use oglow\tools\Yacorapi\Data\AddonMacroData;
+use oglow\tools\Yacorapi\Macro\AddonMacroData;
 use oglow\tools\Yacorapi\IConnectionProvider;
 use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Provider\CurlProvider;

@@ -11,7 +11,7 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace oglow\tools\Yacorapi\Helper;
+namespace oglow\tools\Yacorapi\Macro;
 
 use oglow\tools\common\ISingleton;
 

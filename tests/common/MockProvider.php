@@ -17,7 +17,7 @@ use Ds\Collection;
 use Ds\Map;
 use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\ConstData;
-use oglow\tools\Yacorapi\Data\RequestParameterData;
+use oglow\tools\Yacorapi\Request\RequestParameterData;
 use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Provider\AbstractProvider;
 use oglow\tools\Yacorapi\Request\RequestTypeEnum;

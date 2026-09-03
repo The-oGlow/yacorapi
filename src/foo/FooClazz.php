@@ -14,7 +14,8 @@ declare(strict_types=1);
 namespace foo;
 
 /**
- * Class FooClazz.
+ * Class FooClazz. 
+ * All code checks are deactivated.
  *
  * @SuppressWarnings("PHPMD")
  */

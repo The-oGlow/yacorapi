@@ -16,9 +16,6 @@ namespace oglow\tools\Yacorapi\Provider;
 use Ds\Collection;
 use oglow\tools\Yacorapi\Request\RequestTypeEnum;
 
-/**
- * @SuppressWarnings("PHPMD.UnusedFormalParameter")
- */
 class AbstractProviderTestDummyClazz extends AbstractProvider
 {
     /**

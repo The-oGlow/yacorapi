@@ -17,7 +17,7 @@ use Monolog\ConsoleLogger;
 use oglow\tools\common\MockProvider;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\Data\ItemTypeEnum;
-use oglow\tools\Yacorapi\Data\SpaceTypeEnum;
+use oglow\tools\Yacorapi\Space\SpaceTypeEnum;
 use Psr\Log\LoggerInterface;
 
 class ClientStatisticTraitTestClazz extends AbstractRapiClient implements IRapiClientRead, IRapiClientStatistic

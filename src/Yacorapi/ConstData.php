@@ -17,7 +17,7 @@ use Ds\Map;
 use Monolog\ConsoleLogger;
 use Monolog\DoNothingLogger;
 use oglow\tools\common\AbstractSingleton;
-use oglow\tools\Yacorapi\Data\RequestParameterData;
+use oglow\tools\Yacorapi\Request\RequestParameterData;
 use ollily\Tools\Emergency;
 use ollily\Tools\EnvironmentVariableTrait;
 use Psr\Log\LoggerInterface;
@@ -25,7 +25,7 @@ use Psr\Log\LoggerInterface;
 /**
  * Class ConstData.
  *
- * @SuppressWarnings("PHPMD.CamelCaseMethodName")
+ * 
  */
 // @phpcs:ignoreFile PSR1.Methods.CamelCapsMethodName.NotCamelCaps
 final class ConstData extends AbstractSingleton

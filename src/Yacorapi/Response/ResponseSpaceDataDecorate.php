@@ -211,7 +211,7 @@ class ResponseSpaceDataDecorate extends AbstractResponse
     /**
      * @inheritDoc
      *
-     * @SuppressWarnings("PHPMD.CamelCaseMethodName")
+     * 
      */
     #[\Override]
     protected function __toStringValues(): mixed

@@ -249,8 +249,6 @@ abstract class AbstractResponse implements IResponse
 
     /**
      * @return mixed
-     *
-     * @SuppressWarnings("PHPMD.CamelCaseMethodName")
      */
     #[\Override]
     protected function __toStringValues(): mixed

@@ -11,20 +11,17 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace oglow\tools\Yacorapi;
+namespace oglow\tools\Yacorapi\Space;
 
 use Monolog\ConsoleLogger;
-use oglow\tools\Yacorapi\Data\SpaceData;
-use oglow\tools\Yacorapi\Data\SpaceTypeEnum;
+use oglow\tools\Yacorapi\Space\SpaceData;
+use oglow\tools\Yacorapi\Space\SpaceTypeEnum;
 use oglow\tools\Yacorapi\MySpaces as PersonalSpaces;
 use ollily\Tools\Emergency;
 use ollily\Tools\Reflection\UnavailableMethodsTrait;
 use PHPUnit\Framework\EasyGoingTestCase;
 use Psr\Log\LoggerInterface;
 
-/**
- * @SuppressWarnings("PHPMD.CamelCasePropertyName")
- */
 class MySpacesTest extends EasyGoingTestCase
 {
     use UnavailableMethodsTrait;
@@ -32,9 +29,9 @@ class MySpacesTest extends EasyGoingTestCase
     public const string METHOD_PREFIX = 'getMySpaceList';
 
     /** @var array<mixed,mixed> */
-    public static array $METHOD_IGNORED;
+    public static array $methodIgnored;
 
-    public static string $METHOD_REFERENCE;
+    public static string $methodReferenced;
 
     private static LoggerInterface $logger;
 
@@ -42,8 +39,8 @@ class MySpacesTest extends EasyGoingTestCase
     public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
-        self::$METHOD_REFERENCE = SpaceTypeEnum::SPACE_ALL->method();
-        self::$METHOD_IGNORED = [SpaceTypeEnum::SPACE_SINGLE->method(), SpaceTypeEnum::SPACE_SIMPLE->method(), SpaceTypeEnum::SPACE_ALL->method()];
+        self::$methodReferenced = SpaceTypeEnum::SPACE_ALL->method();
+        self::$methodIgnored = [SpaceTypeEnum::SPACE_SINGLE->method(), SpaceTypeEnum::SPACE_SIMPLE->method(), SpaceTypeEnum::SPACE_ALL->method()];
     }
 
     #[\Override]
@@ -134,9 +131,9 @@ class MySpacesTest extends EasyGoingTestCase
 
     public function testSpacesIntegrity(): void
     {
-        $expected = $this->callMethodOnO2t(static::$METHOD_REFERENCE);
+        $expected = $this->callMethodOnO2t(static::$methodReferenced);
 
-        $methodsFiltered = array_diff($this->getMethodsFiltered(static::METHOD_PREFIX), static::$METHOD_IGNORED);
+        $methodsFiltered = array_diff($this->getMethodsFiltered(static::METHOD_PREFIX), static::$methodIgnored);
 
         $actual = $this->joinResults($methodsFiltered);
 

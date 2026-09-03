@@ -17,7 +17,7 @@ use Ds\Map;
 use Monolog\ConsoleLogger;
 use Monolog\DoNothingLogger;
 use oglow\tools\Yacorapi\ConstData;
-use oglow\tools\Yacorapi\Helper\AbstractHelper;
+use oglow\tools\Yacorapi\Macro\AbstractHelper;
 use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Store\FileAdapter;
 use oglow\tools\Yacorapi\Store\IStoreAdapter;

@@ -15,7 +15,7 @@ namespace oglow\tools\Yacorapi\Client;
 
 use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\ConstData;
-use oglow\tools\Yacorapi\Data\RequestParameterData;
+use oglow\tools\Yacorapi\Request\RequestParameterData;
 use oglow\tools\Yacorapi\YacorapiTestData;
 use PHPUnit\Framework\EasyGoingTestCase;
 use Psr\Log\LoggerInterface;

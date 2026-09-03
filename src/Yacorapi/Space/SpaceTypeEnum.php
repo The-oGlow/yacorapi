@@ -11,7 +11,7 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace oglow\tools\Yacorapi\Data;
+namespace oglow\tools\Yacorapi\Space;
 
 enum SpaceTypeEnum: string
 {

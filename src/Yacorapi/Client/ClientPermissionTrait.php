@@ -16,7 +16,7 @@ namespace oglow\tools\Yacorapi\Client;
 use Ds\Map;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\Data\QueryExtensionEnum;
-use oglow\tools\Yacorapi\Data\RequestParameterData;
+use oglow\tools\Yacorapi\Request\RequestParameterData;
 use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Request\RequestTypeEnum;
 
@@ -62,8 +62,6 @@ trait ClientPermissionTrait
      * @param array<mixed,mixed> $readRestrictions
      *
      * @return bool
-     *
-     * @SuppressWarnings("PHPMD.UnusedFormalParameter")
      */
     #[\Override]
     public function writeRestrictionsByPageId(int $pageId, array $writeRestrictions = [], array $readRestrictions = []): bool // NOSONAR: php:S1172

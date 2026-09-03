@@ -202,7 +202,7 @@ abstract class AbstractStatistic implements IStatistic
     /**
      * @inheritDoc
      *
-     * @SuppressWarnings("PHPMD.CamelCaseMethodName")
+     * 
      */
     #[\Override]
     protected function __toStringValues(): mixed

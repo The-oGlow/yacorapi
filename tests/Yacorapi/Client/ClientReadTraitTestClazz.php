@@ -17,7 +17,7 @@ use Monolog\ConsoleLogger;
 use oglow\tools\common\MockProvider;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\Data\ItemTypeEnum;
-use oglow\tools\Yacorapi\Data\RequestParameterData;
+use oglow\tools\Yacorapi\Request\RequestParameterData;
 use oglow\tools\Yacorapi\IResponse;
 use Psr\Log\LoggerInterface;
 

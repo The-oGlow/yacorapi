@@ -23,6 +23,7 @@
     <rule ref="rulesets/controversial.xml">
         <!-- too strict -->
         <exclude name="CamelCaseMethodName"/>
+        <exclude name="CamelCasePropertyName"/>
     </rule>
     <rule ref="rulesets/design.xml">
         <exclude name="CouplingBetweenObjects"/>

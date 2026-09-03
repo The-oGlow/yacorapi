@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Client;
 
 use oglow\tools\Yacorapi\Data\ItemTypeEnum;
-use oglow\tools\Yacorapi\Data\SpaceTypeEnum;
+use oglow\tools\Yacorapi\Space\SpaceTypeEnum;
 use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Response\ResponseAddonMacroDecorate;
 use oglow\tools\Yacorapi\Statistic\IStatistic;

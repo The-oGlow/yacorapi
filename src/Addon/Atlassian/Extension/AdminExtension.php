@@ -18,13 +18,8 @@ use oglow\tools\Yacorapi\Extension\AbstractExtension;
 use oglow\tools\Yacorapi\Extension\ExtensionEnum;
 use oglow\tools\Yacorapi\IConnectionProvider;
 
-/**
- * @SuppressWarnings("PHPMD.UnusedPrivateField")
- */
 class AdminExtension extends AbstractExtension
 {
-    /** @psalm-suppress PropertyNotSetInConstructor     */
-    protected IConnectionProvider $connectionProvider;
 
     #[\Override]
     protected function init(): void
