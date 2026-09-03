@@ -17,13 +17,14 @@ use Ds\Collection;
 use Monolog\ConsoleLogger;
 use oglow\tools\common\IContainer;
 use oglow\tools\Yacorapi\ConstData;
-use oglow\tools\Yacorapi\Macro\AddonMacroData;
 use oglow\tools\Yacorapi\IConnectionProvider;
 use oglow\tools\Yacorapi\IResponse;
+use oglow\tools\Yacorapi\Macro\AddonMacroData;
 use oglow\tools\Yacorapi\Provider\CurlProvider;
 use oglow\tools\Yacorapi\Request\RequestTypeEnum;
 use ollily\Tools\Reflection\MagicPublicFunctionTrait;
 use Psr\Log\LoggerInterface;
+
 abstract class AbstractRapiClient
 {
     use MagicPublicFunctionTrait;
@@ -50,7 +51,7 @@ abstract class AbstractRapiClient
         mixed $level = IRapiClientBase::LEVEL_DEFAULT
     ) {
         // Init Logger
-        /** @psalm-suppress ArgumentTypeCoercion 
+        /** @psalm-suppress ArgumentTypeCoercion
          * @phpstan-ignore argument.type */
         self::$logger = new ConsoleLogger(name:AbstractRapiClient::class, level:$level);
         self::$logger->debug('START');
@@ -64,7 +65,7 @@ abstract class AbstractRapiClient
             $this->addons = $addons;
         }
         if (empty($connectionProvider)) {
-        /** @psalm-suppress ArgumentTypeCoercion 
+            /** @psalm-suppress ArgumentTypeCoercion
              * @phpstan-ignore argument.type */
             $this->connectionProvider = new CurlProvider($level);
         } else {

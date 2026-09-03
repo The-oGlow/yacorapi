@@ -107,9 +107,6 @@ abstract class AbstractContainer implements IContainer
         return $value;
     }
 
-    /**
-     * 
-     */
     #[\Override]
     protected function __toStringValues(): mixed
     {

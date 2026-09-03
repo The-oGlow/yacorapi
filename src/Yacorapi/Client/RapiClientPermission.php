@@ -14,17 +14,16 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Client;
 
 use Ds\Map;
+use Monolog\ConsoleLogger;
+use oglow\tools\common\IContainer;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\Data\QueryExtensionEnum;
-use oglow\tools\Yacorapi\Request\RequestParameterData;
-use oglow\tools\Yacorapi\IResponse;
-use oglow\tools\Yacorapi\Request\RequestTypeEnum;
-use Psr\Log\LoggerInterface;
 use oglow\tools\Yacorapi\Extension\ExtensionEnum;
 use oglow\tools\Yacorapi\IConnectionProvider;
-use oglow\tools\common\IContainer;
-use Monolog\ConsoleLogger;
-use oglow\tools\Yacorapi\Client\IRapiClientBase;
+use oglow\tools\Yacorapi\IResponse;
+use oglow\tools\Yacorapi\Request\RequestParameterData;
+use oglow\tools\Yacorapi\Request\RequestTypeEnum;
+use Psr\Log\LoggerInterface;
 
 class RapiClientPermission extends RapiClientWrite implements IRapiClientPermission
 {
@@ -40,13 +39,13 @@ class RapiClientPermission extends RapiClientWrite implements IRapiClientPermiss
      *                                                            (Default: {@link IRapiClientBase::LEVEL_DEFAULT})
      */
     protected function __construct(
-            ?ExtensionEnum $modeExtension = IRapiClientBase::EXTENSION_DEFAULT,
-            ?IConnectionProvider $connectionProvider = null,
-            ?IContainer $addons = null,
-            mixed $level = IRapiClientBase::LEVEL_DEFAULT
+        ?ExtensionEnum $modeExtension = IRapiClientBase::EXTENSION_DEFAULT,
+        ?IConnectionProvider $connectionProvider = null,
+        ?IContainer $addons = null,
+        mixed $level = IRapiClientBase::LEVEL_DEFAULT
     ) {
         /** @psalm-suppress ArgumentTypeCoercion
-             * @phpstan-ignore argument.type */
+         * @phpstan-ignore argument.type */
         self::$logger = new ConsoleLogger(name: RapiClientPermission::class, level: $level);
         self::$logger->debug('START');
 

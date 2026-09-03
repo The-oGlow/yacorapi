@@ -15,24 +15,23 @@ namespace oglow\tools\Yacorapi\Client;
 
 use Ds\Collection;
 use Ds\Vector;
+use Monolog\ConsoleLogger;
+use oglow\tools\common\IContainer;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\Data\ItemTypeEnum;
 use oglow\tools\Yacorapi\Data\QueryExtensionEnum;
-use oglow\tools\Yacorapi\Space\SpaceTypeEnum;
+use oglow\tools\Yacorapi\Extension\ExtensionEnum;
+use oglow\tools\Yacorapi\IConnectionProvider;
 use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Macro\AddonTypeEnum;
 use oglow\tools\Yacorapi\Response\ResponseAddonMacroDecorate;
 use oglow\tools\Yacorapi\Response\ResponseSpaceDataDecorate;
+use oglow\tools\Yacorapi\Space\SpaceTypeEnum;
 use oglow\tools\Yacorapi\Statistic\IStatistic;
 use oglow\tools\Yacorapi\Statistic\StatisticStatistic;
 use oglow\tools\Yacorapi\Statistic\StatisticTypeEnum;
 use oglow\tools\Yacorapi\Statistic\ValueStatistic;
 use Psr\Log\LoggerInterface;
-use oglow\tools\Yacorapi\Extension\ExtensionEnum;
-use oglow\tools\Yacorapi\IConnectionProvider;
-use oglow\tools\common\IContainer;
-use Monolog\ConsoleLogger;
-use oglow\tools\Yacorapi\Client\IRapiClientBase;
 
 class RapiClientStatistic extends RapiClientPermission implements IRapiClientStatistic
 {
@@ -48,13 +47,13 @@ class RapiClientStatistic extends RapiClientPermission implements IRapiClientSta
      *                                                            (Default: {@link IRapiClientBase::LEVEL_DEFAULT})
      */
     protected function __construct(
-            ?ExtensionEnum $modeExtension = IRapiClientBase::EXTENSION_DEFAULT,
-            ?IConnectionProvider $connectionProvider = null,
-            ?IContainer $addons = null,
-            mixed $level = IRapiClientBase::LEVEL_DEFAULT
+        ?ExtensionEnum $modeExtension = IRapiClientBase::EXTENSION_DEFAULT,
+        ?IConnectionProvider $connectionProvider = null,
+        ?IContainer $addons = null,
+        mixed $level = IRapiClientBase::LEVEL_DEFAULT
     ) {
         /** @psalm-suppress ArgumentTypeCoercion
-             * @phpstan-ignore argument.type */
+         * @phpstan-ignore argument.type */
         self::$logger = new ConsoleLogger(name: RapiClientStatistic::class, level: $level);
         self::$logger->debug('START');
 

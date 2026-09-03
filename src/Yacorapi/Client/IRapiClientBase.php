@@ -13,16 +13,16 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Client;
 
-use oglow\tools\Yacorapi\Data\ItemTypeEnum;
-use oglow\tools\Yacorapi\Request\RequestParameterData;
-use oglow\tools\Yacorapi\Extension\ExtensionEnum;
-use oglow\tools\Yacorapi\IResponse;
-use oglow\tools\Yacorapi\Macro\AddonTypeEnum;
-use Psr\Log\LogLevel;
 use Ds\Set;
 use oglow\tools\common\IContainer;
+use oglow\tools\Yacorapi\Data\ItemTypeEnum;
+use oglow\tools\Yacorapi\Extension\ExtensionEnum;
 use oglow\tools\Yacorapi\IConnectionProvider;
 use oglow\tools\Yacorapi\IRapiClient;
+use oglow\tools\Yacorapi\IResponse;
+use oglow\tools\Yacorapi\Macro\AddonTypeEnum;
+use oglow\tools\Yacorapi\Request\RequestParameterData;
+use Psr\Log\LogLevel;
 
 interface IRapiClientBase
 {
@@ -79,8 +79,8 @@ interface IRapiClientBase
     public const string RESP_VAL_TITLE_EMPTY = IResponse::VAL_TITLE_EMPTY;
 
     public const int RESP_VAL_VERSION_NO = IResponse::VAL_VERSION_NO;
-    
-        /**
+
+    /**
      * Create new RapiClient.
      *
      * @param null|ExtensionEnum       $modeExtension      (Default: {@link IRapiClientBase::EXTENSION_DEFAULT})
@@ -91,10 +91,10 @@ interface IRapiClientBase
      * @return IRapiClient
      */
     public static function newClient(
-            ?ExtensionEnum $modeExtension = IRapiClientBase::EXTENSION_DEFAULT,
-            ?IConnectionProvider $connectionProvider = null,
-            ?IContainer $addons = null,
-            mixed $level = IRapiClientBase::LEVEL_DEFAULT
+        ?ExtensionEnum $modeExtension = IRapiClientBase::EXTENSION_DEFAULT,
+        ?IConnectionProvider $connectionProvider = null,
+        ?IContainer $addons = null,
+        mixed $level = IRapiClientBase::LEVEL_DEFAULT
     ): IRapiClient;
 
     /**

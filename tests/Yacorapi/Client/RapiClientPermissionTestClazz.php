@@ -21,7 +21,6 @@ use Psr\Log\LoggerInterface;
 
 class RapiClientPermissionTestClazz extends RapiClientPermission implements IRapiClientPermission
 {
-
     protected ConstData $constData;
 
     private static LoggerInterface $logger;

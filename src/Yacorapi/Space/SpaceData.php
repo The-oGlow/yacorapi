@@ -54,15 +54,15 @@ class SpaceData extends AbstractContainer
     public static function prepareMySpacesContent(array $spaces): string
     {
         $line = "<?php\ndeclare(strict_types=1);\n" .
-            "namespace " .
-            self::VAL_SPACES_NS .
-            ";\n" .
-            "class " .
-            self::VAL_SPACES_CLAZZ .
-            "\n{\n" .
-            "public static function " .
-            SpaceTypeEnum::SPACE_ALL->method() .
-            "(): array\n{return [";
+        "namespace " .
+        self::VAL_SPACES_NS .
+        ";\n" .
+        "class " .
+        self::VAL_SPACES_CLAZZ .
+        "\n{\n" .
+        "public static function " .
+        SpaceTypeEnum::SPACE_ALL->method() .
+        "(): array\n{return [";
 
         foreach ($spaces as $space) {
             $line .= sprintf("'%s',\n", $space[IResponse::KEY_KEY]);

@@ -16,19 +16,17 @@ namespace oglow\tools\Yacorapi\Client;
 use Ds\Collection;
 use Ds\Map;
 use InvalidArgumentException;
+use Monolog\ConsoleLogger;
+use oglow\tools\common\IContainer;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\Data\ItemTypeEnum;
-use oglow\tools\Yacorapi\Request\RequestParameterData;
+use oglow\tools\Yacorapi\Extension\ExtensionEnum;
+use oglow\tools\Yacorapi\IConnectionProvider;
 use oglow\tools\Yacorapi\IResponse;
+use oglow\tools\Yacorapi\Request\RequestParameterData;
 use oglow\tools\Yacorapi\Request\RequestTypeEnum;
 use oglow\tools\Yacorapi\Response\Response;
 use Psr\Log\LoggerInterface;
-use oglow\tools\Yacorapi\Extension\ExtensionEnum;
-use oglow\tools\Yacorapi\IConnectionProvider;
-use oglow\tools\common\IContainer;
-use Monolog\ConsoleLogger;
-use oglow\tools\Yacorapi\Client\IRapiClientBase;
-use Monolog\AbstractEasyGoingLogger;
 
 /**
  * @phpstan-type PageInfoParam 'body'|'current'|'next'|'title'|'type'
@@ -62,13 +60,13 @@ class RapiClientWrite extends RapiClientRead implements IRapiClientWrite
      *                                                            (Default: {@link IRapiClientBase::LEVEL_DEFAULT})
      */
     protected function __construct(
-            ?ExtensionEnum $modeExtension = IRapiClientBase::EXTENSION_DEFAULT,
-            ?IConnectionProvider $connectionProvider = null,
-            ?IContainer $addons = null,
-            mixed $level = IRapiClientBase::LEVEL_DEFAULT
+        ?ExtensionEnum $modeExtension = IRapiClientBase::EXTENSION_DEFAULT,
+        ?IConnectionProvider $connectionProvider = null,
+        ?IContainer $addons = null,
+        mixed $level = IRapiClientBase::LEVEL_DEFAULT
     ) {
         /** @psalm-suppress ArgumentTypeCoercion
-             * @phpstan-ignore argument.type */
+         * @phpstan-ignore argument.type */
         self::$logger = new ConsoleLogger(name: RapiClientWrite::class, level: $level);
         self::$logger->debug('START');
 

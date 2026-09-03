@@ -210,8 +210,6 @@ class ResponseSpaceDataDecorate extends AbstractResponse
 
     /**
      * @inheritDoc
-     *
-     * 
      */
     #[\Override]
     protected function __toStringValues(): mixed

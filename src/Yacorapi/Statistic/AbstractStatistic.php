@@ -201,8 +201,6 @@ abstract class AbstractStatistic implements IStatistic
 
     /**
      * @inheritDoc
-     *
-     * 
      */
     #[\Override]
     protected function __toStringValues(): mixed

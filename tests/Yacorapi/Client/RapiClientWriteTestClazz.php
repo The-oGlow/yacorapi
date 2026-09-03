@@ -18,9 +18,8 @@ use oglow\tools\common\MockProvider;
 use oglow\tools\Yacorapi\ConstData;
 use Psr\Log\LoggerInterface;
 
-class RapiClientWriteTestClazz extends RapiClientWrite implements  IRapiClientWrite
+class RapiClientWriteTestClazz extends RapiClientWrite implements IRapiClientWrite
 {
-
     private static LoggerInterface $logger;
 
     protected ConstData $constData;

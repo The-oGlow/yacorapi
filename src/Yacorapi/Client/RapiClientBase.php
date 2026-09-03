@@ -1,5 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of ezlogging
+ *
+ * (c) 2024 Oliver Glowa, coding.glowa.com
+ *
+ * This source file is subject to the Apache-2.0 license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace oglow\tools\Yacorapi\Client;
 
@@ -15,7 +25,7 @@ use Psr\Log\LoggerInterface;
 class RapiClientBase extends AbstractRapiClient implements IRapiClientBase
 {
     use ExtensionTrait;
-    
+
     private static LoggerInterface $logger;
 
     /**
@@ -23,10 +33,10 @@ class RapiClientBase extends AbstractRapiClient implements IRapiClientBase
      */
     #[\Override]
     public static function newClient(
-            ?ExtensionEnum $modeExtension = IRapiClientBase::EXTENSION_DEFAULT,
-            ?IConnectionProvider $connectionProvider = null,
-            ?IContainer $addons = null,
-            mixed $level = IRapiClientBase::LEVEL_DEFAULT
+        ?ExtensionEnum $modeExtension = IRapiClientBase::EXTENSION_DEFAULT,
+        ?IConnectionProvider $connectionProvider = null,
+        ?IContainer $addons = null,
+        mixed $level = IRapiClientBase::LEVEL_DEFAULT
     ): IRapiClient {
         /** @psalm-suppress PossiblyInvalidArgument
          * @phpstan-ignore argument.type */
@@ -37,7 +47,8 @@ class RapiClientBase extends AbstractRapiClient implements IRapiClientBase
      * @inheritDoc
      */
     #[\Override]
-    public static function taskitemMethods(): Set {
+    public static function taskitemMethods(): Set
+    {
         return self::existingMethodNames();
     }
 
@@ -51,14 +62,14 @@ class RapiClientBase extends AbstractRapiClient implements IRapiClientBase
      *                                                            (Default: {@link IRapiClientBase::LEVEL_DEFAULT})
      */
     protected function __construct(
-            ?ExtensionEnum $modeExtension = IRapiClientBase::EXTENSION_DEFAULT,
-            ?IConnectionProvider $connectionProvider = null,
-            ?IContainer $addons = null,
-            mixed $level = IRapiClientBase::LEVEL_DEFAULT
+        ?ExtensionEnum $modeExtension = IRapiClientBase::EXTENSION_DEFAULT,
+        ?IConnectionProvider $connectionProvider = null,
+        ?IContainer $addons = null,
+        mixed $level = IRapiClientBase::LEVEL_DEFAULT
     ) {
         // Init Logger
         /** @psalm-suppress ArgumentTypeCoercion
-             * @phpstan-ignore argument.type */
+         * @phpstan-ignore argument.type */
         self::$logger = new ConsoleLogger(name: RapiClientBase::class, level: $level);
         self::$logger->debug('START');
 

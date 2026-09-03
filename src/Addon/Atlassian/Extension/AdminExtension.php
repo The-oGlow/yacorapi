@@ -16,11 +16,9 @@ namespace oglow\tools\Addon\Atlassian\Extension;
 use oglow\tools\Addon\Atlassian\Macro\AdminAddon;
 use oglow\tools\Yacorapi\Extension\AbstractExtension;
 use oglow\tools\Yacorapi\Extension\ExtensionEnum;
-use oglow\tools\Yacorapi\IConnectionProvider;
 
 class AdminExtension extends AbstractExtension
 {
-
     #[\Override]
     protected function init(): void
     {

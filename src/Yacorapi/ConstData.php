@@ -24,8 +24,6 @@ use Psr\Log\LoggerInterface;
 
 /**
  * Class ConstData.
- *
- * 
  */
 // @phpcs:ignoreFile PSR1.Methods.CamelCapsMethodName.NotCamelCaps
 final class ConstData extends AbstractSingleton

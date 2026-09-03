@@ -13,15 +13,14 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Client;
 
+use Monolog\ConsoleLogger;
+use oglow\tools\common\IContainer;
+use oglow\tools\Yacorapi\Extension\ExtensionEnum;
+use oglow\tools\Yacorapi\IConnectionProvider;
 use ollily\Tools\Batch\ITaskItem;
 use ollily\Tools\Batch\ITaskList;
 use ollily\Tools\Batch\ProcessResultEnum;
 use Psr\Log\LoggerInterface;
-use oglow\tools\Yacorapi\Extension\ExtensionEnum;
-use oglow\tools\Yacorapi\IConnectionProvider;
-use oglow\tools\common\IContainer;
-use Monolog\ConsoleLogger;
-use oglow\tools\Yacorapi\Client\IRapiClientBase;
 
 /**
  * @SuppressWarnings("PHPMD")
@@ -40,13 +39,13 @@ class RapiClientBatch extends RapiClientStatistic implements IRapiClientStatisti
      *                                                            (Default: {@link IRapiClientBase::LEVEL_DEFAULT})
      */
     protected function __construct(
-            ?ExtensionEnum $modeExtension = IRapiClientBase::EXTENSION_DEFAULT,
-            ?IConnectionProvider $connectionProvider = null,
-            ?IContainer $addons = null,
-            mixed $level = IRapiClientBase::LEVEL_DEFAULT
+        ?ExtensionEnum $modeExtension = IRapiClientBase::EXTENSION_DEFAULT,
+        ?IConnectionProvider $connectionProvider = null,
+        ?IContainer $addons = null,
+        mixed $level = IRapiClientBase::LEVEL_DEFAULT
     ) {
         /** @psalm-suppress ArgumentTypeCoercion
-             * @phpstan-ignore argument.type */
+         * @phpstan-ignore argument.type */
         self::$logger = new ConsoleLogger(name: RapiClientBatch::class, level: $level);
         self::$logger->debug('START');
 

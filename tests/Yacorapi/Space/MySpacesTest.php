@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Space;
 
 use Monolog\ConsoleLogger;
-use oglow\tools\Yacorapi\Space\SpaceData;
-use oglow\tools\Yacorapi\Space\SpaceTypeEnum;
 use oglow\tools\Yacorapi\MySpaces as PersonalSpaces;
 use ollily\Tools\Emergency;
 use ollily\Tools\Reflection\UnavailableMethodsTrait;

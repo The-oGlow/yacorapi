@@ -13,20 +13,18 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Client;
 
-use oglow\tools\Yacorapi\IRapiClient;
+use Monolog\ConsoleLogger;
+use oglow\tools\common\IContainer;
+use oglow\tools\Yacorapi\Extension\ExtensionEnum;
 use oglow\tools\Yacorapi\Extension\ExtensionTrait;
 use oglow\tools\Yacorapi\IConnectionProvider;
-use oglow\tools\Yacorapi\Extension\ExtensionEnum;
-use Psr\Log\LogLevel;
-use oglow\tools\common\IContainer;
-use oglow\tools\Yacorapi\Client\IRapiClientBase;
+use oglow\tools\Yacorapi\IRapiClient;
 use Psr\Log\LoggerInterface;
-use Monolog\ConsoleLogger;
 
 class RapiClient extends RapiClientBatch implements IRapiClient // NOSONAR: php:S1448
 {
     use ExtensionTrait;
-    
+
     private static LoggerInterface $logger;
 
     /**
@@ -39,13 +37,13 @@ class RapiClient extends RapiClientBatch implements IRapiClient // NOSONAR: php:
      *                                                            (Default: {@link IRapiClientBase::LEVEL_DEFAULT})
      */
     protected function __construct(
-            ?ExtensionEnum $modeExtension = IRapiClientBase::EXTENSION_DEFAULT,
-            ?IConnectionProvider $connectionProvider = null,
-            ?IContainer $addons = null,
-            mixed $level = IRapiClientBase::LEVEL_DEFAULT
+        ?ExtensionEnum $modeExtension = IRapiClientBase::EXTENSION_DEFAULT,
+        ?IConnectionProvider $connectionProvider = null,
+        ?IContainer $addons = null,
+        mixed $level = IRapiClientBase::LEVEL_DEFAULT
     ) {
-        /** @psalm-suppress ArgumentTypeCoercion 
-             * @phpstan-ignore argument.type */
+        /** @psalm-suppress ArgumentTypeCoercion
+         * @phpstan-ignore argument.type */
         self::$logger = new ConsoleLogger(name: RapiClient::class, level: $level);
         self::$logger->debug('START');
 

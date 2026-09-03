@@ -13,22 +13,21 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Client;
 
+use Monolog\ConsoleLogger;
+use oglow\tools\common\IContainer;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\Data\ItemTypeEnum;
 use oglow\tools\Yacorapi\Data\QueryExtensionEnum;
-use oglow\tools\Yacorapi\Space\SpaceTypeEnum;
+use oglow\tools\Yacorapi\Extension\ExtensionEnum;
+use oglow\tools\Yacorapi\IConnectionProvider;
 use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Macro\AddonTypeEnum;
 use oglow\tools\Yacorapi\Response\ResponseAddonMacroDecorate;
+use oglow\tools\Yacorapi\Space\SpaceTypeEnum;
 use Psr\Log\LoggerInterface;
-use oglow\tools\Yacorapi\Extension\ExtensionEnum;
-use oglow\tools\Yacorapi\IConnectionProvider;
-use oglow\tools\common\IContainer;
-use Monolog\ConsoleLogger;
-use oglow\tools\Yacorapi\Client\IRapiClientBase;
 
-class RapiClientRead extends RapiClientBase implements IRapiClientRead {
-
+class RapiClientRead extends RapiClientBase implements IRapiClientRead
+{
     private static LoggerInterface $logger;
 
     /**
@@ -41,13 +40,13 @@ class RapiClientRead extends RapiClientBase implements IRapiClientRead {
      *                                                            (Default: {@link IRapiClientBase::LEVEL_DEFAULT})
      */
     protected function __construct(
-            ?ExtensionEnum $modeExtension = IRapiClientBase::EXTENSION_DEFAULT,
-            ?IConnectionProvider $connectionProvider = null,
-            ?IContainer $addons = null,
-            mixed $level = IRapiClientBase::LEVEL_DEFAULT
+        ?ExtensionEnum $modeExtension = IRapiClientBase::EXTENSION_DEFAULT,
+        ?IConnectionProvider $connectionProvider = null,
+        ?IContainer $addons = null,
+        mixed $level = IRapiClientBase::LEVEL_DEFAULT
     ) {
         /** @psalm-suppress ArgumentTypeCoercion
-             * @phpstan-ignore argument.type */
+         * @phpstan-ignore argument.type */
         self::$logger = new ConsoleLogger(name: RapiClientRead::class, level: $level);
         self::$logger->debug('START');
 
@@ -60,7 +59,8 @@ class RapiClientRead extends RapiClientBase implements IRapiClientRead {
      * @inheritDoc
      */
     #[\Override]
-    public function prepareAddonSet(AddonTypeEnum $addonMode = IRapiClientBase::ADDON_DEFAULT): ResponseAddonMacroDecorate {
+    public function prepareAddonSet(AddonTypeEnum $addonMode = IRapiClientBase::ADDON_DEFAULT): ResponseAddonMacroDecorate
+    {
         self::$logger->debug('START - mode', [$addonMode]);
 
         $data = $this->addons->getDataByMode($addonMode->value);
@@ -79,7 +79,8 @@ class RapiClientRead extends RapiClientBase implements IRapiClientRead {
      * @inheritDoc
      */
     #[\Override]
-    public function readPageByPageId(int $pageId): IResponse {
+    public function readPageByPageId(int $pageId): IResponse
+    {
         self::$logger->debug('START - pageId', [$pageId]);
 
         $prepareUrl = $this->prepareLoadUrl($pageId);
@@ -91,7 +92,8 @@ class RapiClientRead extends RapiClientBase implements IRapiClientRead {
      * @inheritDoc
      */
     #[\Override]
-    public function readPagesByTitle(string $pageTitle, string $spaceKey = IRapiClientBase::REQ_VAL_SPACE_EMPTY): IResponse {
+    public function readPagesByTitle(string $pageTitle, string $spaceKey = IRapiClientBase::REQ_VAL_SPACE_EMPTY): IResponse
+    {
         self::$logger->debug('START - pageTitle,spaceKey', [$pageTitle, $spaceKey]);
 
         $prepareUrl = $this->prepareBrowseUrl($pageTitle, $spaceKey);
@@ -103,7 +105,8 @@ class RapiClientRead extends RapiClientBase implements IRapiClientRead {
      * @inheritDoc
      */
     #[\Override]
-    public function checkPageExists(string $spaceKey, string $pageTitle, ItemTypeEnum $itemType = IRapiClientBase::REQ_VAL_ITEM_TYPE_PAGE): int {
+    public function checkPageExists(string $spaceKey, string $pageTitle, ItemTypeEnum $itemType = IRapiClientBase::REQ_VAL_ITEM_TYPE_PAGE): int
+    {
         $pageId = IRapiClientBase::REQ_VAL_PAGE_ID_NO;
         $result = $this->readPagesByTitle($pageTitle, $spaceKey);
 
@@ -122,7 +125,8 @@ class RapiClientRead extends RapiClientBase implements IRapiClientRead {
      * @inheritDoc
      */
     #[\Override]
-    public function scanPages(string $spaceKey = IRapiClientBase::REQ_VAL_SPACE_EMPTY): IResponse {
+    public function scanPages(string $spaceKey = IRapiClientBase::REQ_VAL_SPACE_EMPTY): IResponse
+    {
         self::$logger->debug('START - spaceKey', [$spaceKey]);
 
         $prepareUrl = $this->prepareScanUrl($spaceKey);
@@ -135,15 +139,15 @@ class RapiClientRead extends RapiClientBase implements IRapiClientRead {
      */
     #[\Override]
     public function searchPagesWithFilter(
-            string $filterTerm,
-            string $spaceKey,
-            int $searchFromPos = IRapiClientBase::REQ_VAL_SEARCH_START,
-            int $searchLimit = IRapiClientBase::REQ_VAL_SEARCH_LIMIT_MIN,
-            ItemTypeEnum $itemType = IRapiClientBase::REQ_VAL_ITEM_TYPE_PAGE
+        string $filterTerm,
+        string $spaceKey,
+        int $searchFromPos = IRapiClientBase::REQ_VAL_SEARCH_START,
+        int $searchLimit = IRapiClientBase::REQ_VAL_SEARCH_LIMIT_MIN,
+        ItemTypeEnum $itemType = IRapiClientBase::REQ_VAL_ITEM_TYPE_PAGE
     ): IResponse {
         self::$logger->debug(
-                'START - filterTerm,spaceKey,searchFromPos,searchLimit,itemType',
-                [$filterTerm, $spaceKey, $searchFromPos, $searchLimit, $itemType]
+            'START - filterTerm,spaceKey,searchFromPos,searchLimit,itemType',
+            [$filterTerm, $spaceKey, $searchFromPos, $searchLimit, $itemType]
         );
         $searchLimit = intval($searchLimit < IRapiClientBase::REQ_VAL_SEARCH_LIMIT_1ENTRY ? $this->constData->c(ConstData::KEY_SEARCH_LIMIT) : $searchLimit);
         $prepareUrl = $this->prepareSearchUrlExt($filterTerm, $spaceKey, $searchFromPos, $searchLimit, $itemType);
@@ -155,7 +159,8 @@ class RapiClientRead extends RapiClientBase implements IRapiClientRead {
      * @inheritDoc
      */
     #[\Override]
-    public function spaceHomepage(string $spaceKey): int {
+    public function spaceHomepage(string $spaceKey): int
+    {
         self::$logger->debug('START - spaceKey', [$spaceKey]);
 
         $pageId = IRapiClientBase::RESP_VAL_PAGE_ID_NO;
@@ -174,7 +179,8 @@ class RapiClientRead extends RapiClientBase implements IRapiClientRead {
         return intval($pageId);
     }
 
-    protected function addSpaceFilter(string $spaceKey, string $prepareUrl): string {
+    protected function addSpaceFilter(string $spaceKey, string $prepareUrl): string
+    {
         if (!empty($spaceKey)) {
             $prepareUrl .= sprintf('&spaceKey=%s', $spaceKey);
         }
@@ -183,10 +189,10 @@ class RapiClientRead extends RapiClientBase implements IRapiClientRead {
     }
 
     protected function prepareSearchUrl(
-            string $searchTerm,
-            string $spaceKey = IRapiClientBase::REQ_VAL_SPACE_EMPTY,
-            ItemTypeEnum $pageType = IRapiClientBase::REQ_VAL_ITEM_TYPE_PAGE,
-            bool $withBody = IRapiClientBase::REQ_VAL_BODY_NO
+        string $searchTerm,
+        string $spaceKey = IRapiClientBase::REQ_VAL_SPACE_EMPTY,
+        ItemTypeEnum $pageType = IRapiClientBase::REQ_VAL_ITEM_TYPE_PAGE,
+        bool $withBody = IRapiClientBase::REQ_VAL_BODY_NO
     ): string {
         $result = '';
         if (function_exists('_prepareSearchUrl')) {
@@ -197,12 +203,12 @@ class RapiClientRead extends RapiClientBase implements IRapiClientRead {
     }
 
     protected function prepareSearchUrlExt(
-            string $searchTerm,
-            string $spaceKey,
-            int $searchFromPos = IRapiClientBase::REQ_VAL_SEARCH_START_NO,
-            int $searchLimit = IRapiClientBase::REQ_VAL_SEARCH_LIMIT_NO,
-            ItemTypeEnum $pageType = IRapiClientBase::REQ_VAL_ITEM_TYPE_PAGE,
-            bool $withBody = IRapiClientBase::REQ_VAL_BODY_NO
+        string $searchTerm,
+        string $spaceKey,
+        int $searchFromPos = IRapiClientBase::REQ_VAL_SEARCH_START_NO,
+        int $searchLimit = IRapiClientBase::REQ_VAL_SEARCH_LIMIT_NO,
+        ItemTypeEnum $pageType = IRapiClientBase::REQ_VAL_ITEM_TYPE_PAGE,
+        bool $withBody = IRapiClientBase::REQ_VAL_BODY_NO
     ): string {
         $searchLimit = $searchLimit < IRapiClientBase::REQ_VAL_SEARCH_LIMIT_MIN ? $this->constData->c(ConstData::KEY_SEARCH_LIMIT) : $searchLimit;
         $prepareUrl = sprintf('%s?cql=', $this->constData->c(ConstData::KEY_CONF_SEARCH_URL));
@@ -220,27 +226,32 @@ class RapiClientRead extends RapiClientBase implements IRapiClientRead {
         return $prepareUrl;
     }
 
-    protected function prepareBrowseUrl(string $pageTitle, string $spaceKey = IRapiClientBase::REQ_VAL_SPACE_EMPTY): string {
+    protected function prepareBrowseUrl(string $pageTitle, string $spaceKey = IRapiClientBase::REQ_VAL_SPACE_EMPTY): string
+    {
         $prepareUrl = sprintf('%s?title=%s&%s', $this->constData->c(ConstData::KEY_CONF_CONTENT_URL), urlencode($pageTitle), QueryExtensionEnum::REQP_LIGHT->value);
 
         return $this->addSpaceFilter($spaceKey, $prepareUrl);
     }
 
-    protected function prepareScanUrl(string $spaceKey = IRapiClientBase::REQ_VAL_SPACE_EMPTY): string {
+    protected function prepareScanUrl(string $spaceKey = IRapiClientBase::REQ_VAL_SPACE_EMPTY): string
+    {
         $prepareUrl = sprintf('%s/scan?%s', $this->constData->c(ConstData::KEY_CONF_CONTENT_URL), QueryExtensionEnum::REQP_LIGHT->value);
 
         return $this->addSpaceFilter($spaceKey, $prepareUrl);
     }
 
-    protected function prepareApiByPageIdUrl(int $pageId): string {
+    protected function prepareApiByPageIdUrl(int $pageId): string
+    {
         return sprintf('%s/%s?%s', $this->constData->c(ConstData::KEY_CONF_CONTENT_URL), $pageId, QueryExtensionEnum::REQP_LIGHT->value);
     }
 
-    protected function prepareLoadUrl(int $pageId): string {
+    protected function prepareLoadUrl(int $pageId): string
+    {
         return sprintf('%s/%s?%s', $this->constData->c(ConstData::KEY_CONF_CONTENT_URL), $pageId, QueryExtensionEnum::REQP_FULL->value);
     }
 
-    protected function prepareSpaceUrl(string $spaceKey): string {
+    protected function prepareSpaceUrl(string $spaceKey): string
+    {
         return sprintf('%s/%s?%s', $this->constData->c(ConstData::KEY_CONF_SPACE_URL), $spaceKey, QueryExtensionEnum::REQP_SPACE_LIST->value);
     }
 
@@ -249,7 +260,8 @@ class RapiClientRead extends RapiClientBase implements IRapiClientRead {
      *
      * @return int
      */
-    protected function analyzeResponse(IResponse $response): int {
+    protected function analyzeResponse(IResponse $response): int
+    {
         return intval($response->getValue(IResponse::KEY_TOTAL_SIZE, 0));
     }
 }

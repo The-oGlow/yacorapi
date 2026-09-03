@@ -51,7 +51,8 @@ class RapiClientTest extends EasyGoingTestCase
     private static LoggerInterface $logger;
 
     #[\Override]
-    public static function setUpBeforeClass(): void {
+    public static function setUpBeforeClass(): void
+    {
         parent::setUpBeforeClass();
         self::$logger = new ConsoleLogger(RapiClientTest::class);
     }

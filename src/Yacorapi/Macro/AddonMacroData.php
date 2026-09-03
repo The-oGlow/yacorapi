@@ -19,10 +19,6 @@ use Monolog\ConsoleLogger;
 use oglow\tools\common\AbstractContainer;
 use oglow\tools\Yacorapi\ExitCodes;
 use oglow\tools\Yacorapi\Extension\ExtensionTrait;
-use oglow\tools\Yacorapi\Macro\AddonTypeEnum;
-use oglow\tools\Yacorapi\Macro\AllAddon;
-use oglow\tools\Yacorapi\Macro\BlockerAddon;
-use oglow\tools\Yacorapi\Macro\SingleAddon;
 use ollily\Tools\Emergency;
 use Psr\Log\LoggerInterface;
 
