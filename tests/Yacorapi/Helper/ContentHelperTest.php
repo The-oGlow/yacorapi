@@ -11,12 +11,13 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace oglow\tools\Yacorapi\Macro;
+namespace oglow\tools\Yacorapi\Helper;
 
 use Ds\Map;
 use ollily\Tools\Test\TestData;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\ConstantCheckTestCase;
+use oglow\tools\Yacorapi\Macro\HasMacroBodyEnum;
 
 class ContentHelperTest extends ConstantCheckTestCase
 {

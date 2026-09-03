@@ -21,7 +21,7 @@ use oglow\tools\Yacorapi\YacorapiTestData;
 use PHPUnit\Framework\EasyGoingTestCase;
 use Psr\Log\LoggerInterface;
 
-class ClientStatisticTraitTest extends EasyGoingTestCase
+class RapiClientStatisticTest extends EasyGoingTestCase
 {
     private static LoggerInterface $logger; // @phpstan-ignore property.onlyWritten
 
@@ -29,20 +29,20 @@ class ClientStatisticTraitTest extends EasyGoingTestCase
     public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
-        self::$logger = new ConsoleLogger(ClientReadTraitTest::class);
+        self::$logger = new ConsoleLogger(RapiClientReadTest::class);
     }
 
     #[\Override]
-    protected static function prepareO2t(): ClientStatisticTraitTestClazz
+    protected static function prepareO2t(): RapiClientStatisticTestClazz
     {
-        return new ClientStatisticTraitTestClazz();
+        return new RapiClientStatisticTestClazz();
     }
 
     /**
      * @inheritDoc
      */
     #[\Override]
-    protected function getCasto2t(): ClientStatisticTraitTestClazz
+    protected function getCasto2t(): RapiClientStatisticTestClazz
     {
         return $this->o2t;
     }

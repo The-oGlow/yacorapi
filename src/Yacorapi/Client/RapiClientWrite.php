@@ -22,12 +22,19 @@ use oglow\tools\Yacorapi\Request\RequestParameterData;
 use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Request\RequestTypeEnum;
 use oglow\tools\Yacorapi\Response\Response;
+use Psr\Log\LoggerInterface;
+use oglow\tools\Yacorapi\Extension\ExtensionEnum;
+use oglow\tools\Yacorapi\IConnectionProvider;
+use oglow\tools\common\IContainer;
+use Monolog\ConsoleLogger;
+use oglow\tools\Yacorapi\Client\IRapiClientBase;
+use Monolog\AbstractEasyGoingLogger;
 
 /**
  * @phpstan-type PageInfoParam 'body'|'current'|'next'|'title'|'type'
  * @phpstan-type PageInfo array<PageInfoParam,mixed>
  */
-trait ClientWriteTrait
+class RapiClientWrite extends RapiClientRead implements IRapiClientWrite
 {
     public const string MSG_MOVED_TO_NEW_PARENT = 'Page moved to new parent pageId';
 
@@ -42,6 +49,33 @@ trait ClientWriteTrait
     private const string ERR_MSG_PAGE_ID_INVALID = 'No correct pageId';
 
     private const string ERR_MSG_PAGE_TITLE_EMPTY = 'Page title must no be empty';
+
+    private static LoggerInterface $logger;
+
+    /**
+     * Constructor.
+     *
+     * @param null|ExtensionEnum              $modeExtension      (Default: {@link IRapiClientBase::EXTENSION_DEFAULT})
+     * @param null|IConnectionProvider        $connectionProvider
+     * @param null|IContainer                 $addons
+     * @param int|\Psr\Log\LogLevel::*|string $level              The minimum logging level at which this handler will be triggered
+     *                                                            (Default: {@link IRapiClientBase::LEVEL_DEFAULT})
+     */
+    protected function __construct(
+            ?ExtensionEnum $modeExtension = IRapiClientBase::EXTENSION_DEFAULT,
+            ?IConnectionProvider $connectionProvider = null,
+            ?IContainer $addons = null,
+            mixed $level = IRapiClientBase::LEVEL_DEFAULT
+    ) {
+        /** @psalm-suppress ArgumentTypeCoercion
+             * @phpstan-ignore argument.type */
+        self::$logger = new ConsoleLogger(name: RapiClientWrite::class, level: $level);
+        self::$logger->debug('START');
+
+        parent::__construct($modeExtension, $connectionProvider, $addons, $level);
+
+        self::$logger->debug('END');
+    }
 
     /**
      * @inheritDoc
@@ -210,7 +244,7 @@ trait ClientWriteTrait
             $pageBody =  $currentPage->getValue(IResponse::KEY_BODY)[IResponse::KEY_STORAGE][IResponse::KEY_VALUE];
             $itemType = ItemTypeEnum::tryFrom($currentPage->getValue(IResponse::KEY_TYPE));
             $versionData = $currentPage->getValue(IResponse::KEY_VERSION, []);
-            $currentVersion = array_key_exists(IResponse::KEY_NUMBER, $versionData) ? $versionData[IResponse::KEY_NUMBER] : IRapiClientBase::RESP_VAL_VERSION_NO;
+            $currentVersion = intval(array_key_exists(IResponse::KEY_NUMBER, $versionData) ? $versionData[IResponse::KEY_NUMBER] : IRapiClientBase::RESP_VAL_VERSION_NO);
             $nextVersion = $currentVersion + 1;
         } else {
             self::$logger->warning('Cannot find page', [$pageId]);

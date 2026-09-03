@@ -19,9 +19,8 @@ use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\IConnectionProvider;
 use Psr\Log\LoggerInterface;
 
-class ClientPermissionTraitTestClazz extends AbstractRapiClient implements IRapiClientPermission
+class RapiClientPermissionTestClazz extends RapiClientPermission implements IRapiClientPermission
 {
-    use ClientPermissionTrait;
 
     protected ConstData $constData;
 
@@ -31,10 +30,15 @@ class ClientPermissionTraitTestClazz extends AbstractRapiClient implements IRapi
 
     public function __construct()
     {
-        parent::__construct(new MockProvider());
-        self::$logger    = new ConsoleLogger(ClientPermissionTraitTestClazz::class);
-        $this->constData = new ConstData(ClientPermissionTraitTestClazz::class);
-        $this->connectionProvider  = new MockProvider();
+        self::$logger = new ConsoleLogger(name: RapiClientPermissionTestClazz::class, level: self::LEVEL_DEFAULT);
+        self::$logger->debug('START');
+
+        parent::__construct(connectionProvider: new MockProvider());
+
+        $this->constData = new ConstData(RapiClientPermissionTestClazz::class);
+        $this->connectionProvider = new MockProvider();
+
+        self::$logger->debug('END');
     }
 
     public function publicPrepareRestrictByOpUrl(int $pageId): string

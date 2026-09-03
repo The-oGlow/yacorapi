@@ -21,19 +21,22 @@ use oglow\tools\Yacorapi\Request\RequestParameterData;
 use oglow\tools\Yacorapi\IResponse;
 use Psr\Log\LoggerInterface;
 
-class ClientReadTraitTestClazz extends AbstractRapiClient implements IRapiClientRead
+class RapiClientReadTestClazz extends RapiClientRead implements IRapiClientRead
 {
-    use ClientReadTrait;
-
     private static LoggerInterface $logger;
 
     protected ConstData $constData;
 
     public function __construct()
     {
-        parent::__construct(new MockProvider());
-        self::$logger = new ConsoleLogger(ClientReadTraitTestClazz::class);
-        $this->constData = new ConstData(ClientReadTraitTestClazz::class);
+        self::$logger = new ConsoleLogger(name: RapiClientReadTestClazz::class, level: self::LEVEL_DEFAULT);
+        self::$logger->debug('START');
+
+        parent::__construct(connectionProvider: new MockProvider());
+
+        $this->constData = new ConstData(RapiClientReadTestClazz::class);
+
+        self::$logger->debug('END');
     }
 
     public function publicAnalyzeResponse(IResponse $response): int

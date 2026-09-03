@@ -40,7 +40,13 @@
         <LessSpecificImplementedReturnType errorLevel="suppress"/>
         <MoreSpecificReturnType errorLevel="suppress"/>
         <MissingOverrideAttribute errorLevel="suppress"/>
-    </issueHandlers>
+        <!-- Custom suppression -->
+        <AmbiguousConstantInheritance> 
+            <errorLevel type="suppress">
+                <file name="src/Yacorapi/Client/IRapiClientbase.php" />
+            </errorLevel>
+        </AmbiguousConstantInheritance>
+</issueHandlers>
     <plugins>
         <pluginClass class="Psalm\PhpUnitPlugin\Plugin"/>
     </plugins>

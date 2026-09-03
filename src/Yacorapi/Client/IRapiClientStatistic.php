@@ -19,7 +19,7 @@ use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Response\ResponseAddonMacroDecorate;
 use oglow\tools\Yacorapi\Statistic\IStatistic;
 
-interface IRapiClientStatistic extends IRapiClientBase
+interface IRapiClientStatistic extends IRapiClientPermission
 {
     /**
      * Scans a space and count the items in the space.

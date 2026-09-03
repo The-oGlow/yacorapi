@@ -18,10 +18,8 @@ use oglow\tools\common\MockProvider;
 use oglow\tools\Yacorapi\ConstData;
 use Psr\Log\LoggerInterface;
 
-class ClientWriteTraitTestClazz extends AbstractRapiClient implements IRapiClientRead, IRapiClientWrite
+class RapiClientWriteTestClazz extends RapiClientWrite implements  IRapiClientWrite
 {
-    use ClientReadTrait;
-    use ClientWriteTrait;
 
     private static LoggerInterface $logger;
 
@@ -29,9 +27,14 @@ class ClientWriteTraitTestClazz extends AbstractRapiClient implements IRapiClien
 
     public function __construct()
     {
-        parent::__construct(new MockProvider());
-        self::$logger = new ConsoleLogger(ClientReadTraitTestClazz::class);
-        $this->constData = new ConstData(ClientWriteTraitTestClazz::class);
+        self::$logger = new ConsoleLogger(name: RapiClientWriteTestClazz::class, level: self::LEVEL_DEFAULT);
+        self::$logger->debug('START');
+
+        parent::__construct(connectionProvider: new MockProvider());
+
+        $this->constData = new ConstData(RapiClientWriteTestClazz::class);
+
+        self::$logger->debug('END');
     }
 
     public function publicPrepareUpdateURL(int $pageId): string

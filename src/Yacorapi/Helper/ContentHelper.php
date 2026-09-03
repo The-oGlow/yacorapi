@@ -11,11 +11,12 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace oglow\tools\Yacorapi\Macro;
+namespace oglow\tools\Yacorapi\Helper;
 
 use Ds\Map;
 use Monolog\ConsoleLogger;
 use Psr\Log\LoggerInterface;
+use oglow\tools\Yacorapi\Macro\HasMacroBodyEnum;
 
 class ContentHelper extends AbstractHelper
 {

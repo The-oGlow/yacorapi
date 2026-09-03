@@ -13,52 +13,24 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Client;
 
-use Ds\Set;
-use Monolog\ConsoleLogger;
-use oglow\tools\common\IContainer;
-use oglow\tools\Yacorapi\Extension\ExtensionEnum;
+use oglow\tools\Yacorapi\IRapiClient;
 use oglow\tools\Yacorapi\Extension\ExtensionTrait;
 use oglow\tools\Yacorapi\IConnectionProvider;
-use oglow\tools\Yacorapi\IRapiClient;
+use oglow\tools\Yacorapi\Extension\ExtensionEnum;
+use Psr\Log\LogLevel;
+use oglow\tools\common\IContainer;
+use oglow\tools\Yacorapi\Client\IRapiClientBase;
 use Psr\Log\LoggerInterface;
+use Monolog\ConsoleLogger;
 
-class RapiClient extends AbstractRapiClient implements IRapiClient // NOSONAR: php:S1448
+class RapiClient extends RapiClientBatch implements IRapiClient // NOSONAR: php:S1448
 {
     use ExtensionTrait;
-    use ClientReadTrait;
-    use ClientWriteTrait;
-    use ClientPermissionTrait;
-    use ClientStatisticTrait;
-    use ClientBatchTrait;
-
+    
     private static LoggerInterface $logger;
 
     /**
-     * @inheritDoc
-     */
-    #[\Override]
-    public static function newClient(
-        ?ExtensionEnum $modeExtension = IRapiClientBase::EXTENSION_DEFAULT,
-        ?IConnectionProvider $connectionProvider = null,
-        ?IContainer $addons = null,
-        mixed $level = IRapiClientBase::LEVEL_DEFAULT
-    ): IRapiClient {
-        /** @psalm-suppress PossiblyInvalidArgument
-         * @phpstan-ignore argument.type */
-        return new RapiClient($modeExtension, $connectionProvider, $addons, $level);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[\Override]
-    public static function taskitemMethods(): Set
-    {
-        return self::existingMethodNames();
-    }
-
-    /**
-     * RapiClient constructor.
+     * Constructor.
      *
      * @param null|ExtensionEnum              $modeExtension      (Default: {@link IRapiClientBase::EXTENSION_DEFAULT})
      * @param null|IConnectionProvider        $connectionProvider
@@ -67,24 +39,17 @@ class RapiClient extends AbstractRapiClient implements IRapiClient // NOSONAR: p
      *                                                            (Default: {@link IRapiClientBase::LEVEL_DEFAULT})
      */
     protected function __construct(
-        ?ExtensionEnum $modeExtension = IRapiClientBase::EXTENSION_DEFAULT,
-        ?IConnectionProvider $connectionProvider = null,
-        ?IContainer $addons = null,
-        mixed $level = IRapiClientBase::LEVEL_DEFAULT
+            ?ExtensionEnum $modeExtension = IRapiClientBase::EXTENSION_DEFAULT,
+            ?IConnectionProvider $connectionProvider = null,
+            ?IContainer $addons = null,
+            mixed $level = IRapiClientBase::LEVEL_DEFAULT
     ) {
-        // Init Logger
-        /** @psalm-suppress ArgumentTypeCoercion
-         * @phpstan-ignore argument.type */
+        /** @psalm-suppress ArgumentTypeCoercion 
+             * @phpstan-ignore argument.type */
         self::$logger = new ConsoleLogger(name: RapiClient::class, level: $level);
         self::$logger->debug('START');
 
-        parent::__construct($connectionProvider, $addons, $level);
-
-        // Init Extensions
-        if (is_null($modeExtension)) {
-            $modeExtension = ExtensionEnum::EXTENSION_ALL;
-        }
-        $this->loadExtensions($modeExtension);
+        parent::__construct($modeExtension, $connectionProvider, $addons, $level);
 
         self::$logger->debug('END');
     }

@@ -16,7 +16,7 @@ namespace oglow\tools\Yacorapi\Client;
 use Ds\Set;
 use oglow\tools\Yacorapi\IResponse;
 
-interface IRapiClientPermission extends IRapiClientBase
+interface IRapiClientPermission extends IRapiClientWrite
 {
     /**
      * Load the restrictions for this confluence page.

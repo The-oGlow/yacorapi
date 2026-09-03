@@ -22,7 +22,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\EasyGoingTestCase;
 use Psr\Log\LoggerInterface;
 
-class ClientReadTraitTest extends EasyGoingTestCase
+class RapiClientReadTest extends EasyGoingTestCase
 {
     private const string C_FILTER_SPACEKEY = '&spaceKey=';
 
@@ -32,20 +32,20 @@ class ClientReadTraitTest extends EasyGoingTestCase
     public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
-        self::$logger = new ConsoleLogger(ClientReadTraitTest::class);
+        self::$logger = new ConsoleLogger(RapiClientReadTest::class);
     }
 
     #[\Override]
-    protected static function prepareO2t(): ClientReadTraitTestClazz
+    protected static function prepareO2t(): RapiClientReadTestClazz
     {
-        return new ClientReadTraitTestClazz();
+        return new RapiClientReadTestClazz();
     }
 
     /**
      * @inheritDoc
      */
     #[\Override]
-    protected function getCasto2t(): ClientReadTraitTestClazz
+    protected function getCasto2t(): RapiClientReadTestClazz
     {
         return $this->o2t;
     }

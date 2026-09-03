@@ -20,20 +20,22 @@ use oglow\tools\Yacorapi\Data\ItemTypeEnum;
 use oglow\tools\Yacorapi\Space\SpaceTypeEnum;
 use Psr\Log\LoggerInterface;
 
-class ClientStatisticTraitTestClazz extends AbstractRapiClient implements IRapiClientRead, IRapiClientStatistic
+class RapiClientStatisticTestClazz extends RapiClientStatistic implements IRapiClientStatistic
 {
-    use ClientReadTrait;
-    use ClientStatisticTrait;
-
     private static LoggerInterface $logger;
 
     protected ConstData $constData;
 
     public function __construct()
     {
-        parent::__construct(new MockProvider());
-        self::$logger = new ConsoleLogger(ClientReadTraitTestClazz::class);
-        $this->constData = new ConstData(ClientStatisticTraitTestClazz::class);
+        self::$logger = new ConsoleLogger(name: RapiClientReadTestClazz::class, level: self::LEVEL_DEFAULT);
+        self::$logger->debug('START');
+
+        parent::__construct(connectionProvider: new MockProvider());
+
+        $this->constData = new ConstData(RapiClientReadTestClazz::class);
+
+        self::$logger->debug('END');
     }
 
     public function publicPrepareSpacePagesUrl(

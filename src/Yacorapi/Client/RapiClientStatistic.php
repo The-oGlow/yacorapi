@@ -27,9 +27,42 @@ use oglow\tools\Yacorapi\Statistic\IStatistic;
 use oglow\tools\Yacorapi\Statistic\StatisticStatistic;
 use oglow\tools\Yacorapi\Statistic\StatisticTypeEnum;
 use oglow\tools\Yacorapi\Statistic\ValueStatistic;
+use Psr\Log\LoggerInterface;
+use oglow\tools\Yacorapi\Extension\ExtensionEnum;
+use oglow\tools\Yacorapi\IConnectionProvider;
+use oglow\tools\common\IContainer;
+use Monolog\ConsoleLogger;
+use oglow\tools\Yacorapi\Client\IRapiClientBase;
 
-trait ClientStatisticTrait
+class RapiClientStatistic extends RapiClientPermission implements IRapiClientStatistic
 {
+    private static LoggerInterface $logger;
+
+    /**
+     * Constructor.
+     *
+     * @param null|ExtensionEnum              $modeExtension      (Default: {@link IRapiClientBase::EXTENSION_DEFAULT})
+     * @param null|IConnectionProvider        $connectionProvider
+     * @param null|IContainer                 $addons
+     * @param int|\Psr\Log\LogLevel::*|string $level              The minimum logging level at which this handler will be triggered
+     *                                                            (Default: {@link IRapiClientBase::LEVEL_DEFAULT})
+     */
+    protected function __construct(
+            ?ExtensionEnum $modeExtension = IRapiClientBase::EXTENSION_DEFAULT,
+            ?IConnectionProvider $connectionProvider = null,
+            ?IContainer $addons = null,
+            mixed $level = IRapiClientBase::LEVEL_DEFAULT
+    ) {
+        /** @psalm-suppress ArgumentTypeCoercion
+             * @phpstan-ignore argument.type */
+        self::$logger = new ConsoleLogger(name: RapiClientStatistic::class, level: $level);
+        self::$logger->debug('START');
+
+        parent::__construct($modeExtension, $connectionProvider, $addons, $level);
+
+        self::$logger->debug('END');
+    }
+
     /**
      * @inheritDoc
      */
@@ -95,7 +128,9 @@ trait ClientStatisticTrait
     {
         self::$logger->debug('START - spaceKey,addonName,macroName,macroCount', [$spaceKey, $addonName, $macroName, $macroCount]);
 
-        if (empty($spaceResult)) { // @phpstan-ignore empty.variable
+        /** @psalm-suppress TypeDoesNotContainType
+         * @phpstan-ignore empty.variable */
+        if (empty($spaceResult)) {
             $spaceResult = new StatisticStatistic($spaceKey, StatisticTypeEnum::SPACE);
         }
 
@@ -121,7 +156,7 @@ trait ClientStatisticTrait
 
         $value = $valueResult->getItem(ValueStatistic::EMPTY_STRING);
         if (is_numeric($value)) {
-            $valueResult->addItem(ValueStatistic::EMPTY_STRING, $macroCount + (int) $value);
+            $valueResult->addItem(ValueStatistic::EMPTY_STRING, $macroCount + intval($value));
         } else {
             $valueResult->addItem(ValueStatistic::EMPTY_STRING, $macroCount);
         }
@@ -171,7 +206,9 @@ trait ClientStatisticTrait
 
             self::$logger->debug('Checking Space with Macro - END');
         }
-        if (empty($outputMatrix)) { // @phpstan-ignore empty.variable
+        /** @psalm-suppress TypeDoesNotContainType
+         * @phpstan-ignore empty.variable */
+        if (empty($outputMatrix)) {
             $outputMatrix = new StatisticStatistic($spaceKey, StatisticTypeEnum::SPACE);
         }
 
@@ -197,7 +234,9 @@ trait ClientStatisticTrait
         foreach ($mapAddons as $addOnKey => $addonValue) {
             self::$logger->info('Checking Addon - START', [++$cntIdx, $cntAddons, $spaceKey, $addOnKey]);
             if (!is_array($addonValue)) {
-                $macroNames = $this->addons->getMacroNamesByAddon($addonMode, $addOnKey); // @phpstan-ignore method.notFound
+                /** @psalm-suppress UndefinedInterfaceMethod
+                 * @phpstan-ignore method.notFound */
+                $macroNames = $this->addons->getMacroNamesByAddon($addonMode, $addOnKey);
                 $addonName = $addOnKey;
             } else {
                 $macroNames = $addonValue;
@@ -209,7 +248,9 @@ trait ClientStatisticTrait
 
             self::$logger->debug('Checking Addon - END');
         }
-        if (empty($outputMatrix)) { // @phpstan-ignore empty.variable
+        /** @psalm-suppress TypeDoesNotContainType
+         * @phpstan-ignore empty.variable */
+        if (empty($outputMatrix)) {
             $outputMatrix = new StatisticStatistic($spaceKey, StatisticTypeEnum::SPACE);
         }
         self::$logger->debug('END');

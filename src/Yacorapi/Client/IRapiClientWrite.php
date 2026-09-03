@@ -16,7 +16,7 @@ namespace oglow\tools\Yacorapi\Client;
 use oglow\tools\Yacorapi\Data\ItemTypeEnum;
 use oglow\tools\Yacorapi\IResponse;
 
-interface IRapiClientWrite extends IRapiClientBase
+interface IRapiClientWrite extends IRapiClientRead
 {
     /**
      * Creates a new confluence page (confluence item) in a space.

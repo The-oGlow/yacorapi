@@ -16,12 +16,45 @@ namespace oglow\tools\Yacorapi\Client;
 use ollily\Tools\Batch\ITaskItem;
 use ollily\Tools\Batch\ITaskList;
 use ollily\Tools\Batch\ProcessResultEnum;
+use Psr\Log\LoggerInterface;
+use oglow\tools\Yacorapi\Extension\ExtensionEnum;
+use oglow\tools\Yacorapi\IConnectionProvider;
+use oglow\tools\common\IContainer;
+use Monolog\ConsoleLogger;
+use oglow\tools\Yacorapi\Client\IRapiClientBase;
 
 /**
  * @SuppressWarnings("PHPMD")
  */
-trait ClientBatchTrait
+class RapiClientBatch extends RapiClientStatistic implements IRapiClientStatistic
 {
+    private static LoggerInterface $logger;
+
+    /**
+     * Constructor.
+     *
+     * @param null|ExtensionEnum              $modeExtension      (Default: {@link IRapiClientBase::EXTENSION_DEFAULT})
+     * @param null|IConnectionProvider        $connectionProvider
+     * @param null|IContainer                 $addons
+     * @param int|\Psr\Log\LogLevel::*|string $level              The minimum logging level at which this handler will be triggered
+     *                                                            (Default: {@link IRapiClientBase::LEVEL_DEFAULT})
+     */
+    protected function __construct(
+            ?ExtensionEnum $modeExtension = IRapiClientBase::EXTENSION_DEFAULT,
+            ?IConnectionProvider $connectionProvider = null,
+            ?IContainer $addons = null,
+            mixed $level = IRapiClientBase::LEVEL_DEFAULT
+    ) {
+        /** @psalm-suppress ArgumentTypeCoercion
+             * @phpstan-ignore argument.type */
+        self::$logger = new ConsoleLogger(name: RapiClientBatch::class, level: $level);
+        self::$logger->debug('START');
+
+        parent::__construct($modeExtension, $connectionProvider, $addons, $level);
+
+        self::$logger->debug('END');
+    }
+
     public function processQueue(ITaskList $taskList): ProcessResultEnum
     {
         $processResult = ProcessResultEnum::FAIL;

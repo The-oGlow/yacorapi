@@ -20,7 +20,7 @@ use oglow\tools\Yacorapi\YacorapiTestData;
 use PHPUnit\Framework\EasyGoingTestCase;
 use Psr\Log\LoggerInterface;
 
-class ClientPermissionTraitTest extends EasyGoingTestCase
+class RapiClientPermissionTest extends EasyGoingTestCase
 {
     private static LoggerInterface $logger; // @phpstan-ignore property.onlyWritten
 
@@ -28,20 +28,20 @@ class ClientPermissionTraitTest extends EasyGoingTestCase
     public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
-        self::$logger = new ConsoleLogger(ClientReadTraitTest::class);
+        self::$logger = new ConsoleLogger(RapiClientReadTest::class);
     }
 
     #[\Override]
-    protected static function prepareO2t(): ClientPermissionTraitTestClazz
+    protected static function prepareO2t(): RapiClientPermissionTestClazz
     {
-        return new ClientPermissionTraitTestClazz();
+        return new RapiClientPermissionTestClazz();
     }
 
     /**
      * @inheritDoc
      */
     #[\Override]
-    protected function getCasto2t(): ClientPermissionTraitTestClazz
+    protected function getCasto2t(): RapiClientPermissionTestClazz
     {
         return $this->o2t;
     }
