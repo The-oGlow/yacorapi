@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace oglow\tools\common;
 
+use Ds\Collection;
 use Ds\Map;
 use Monolog\ConsoleLogger;
 use Monolog\DoNothingLogger;
@@ -27,27 +28,31 @@ abstract class AbstractSingleton implements ISingleton
     /**
      * Initialize this singleton.
      *
-     * @param Map<mixed, mixed> $overrideParameters
+     * @param Collection<mixed, mixed> $overrideParameters
      */
-    abstract protected function prepareSettings(Map $overrideParameters): void;
+    abstract protected function prepareSettings(Collection $overrideParameters): void;
 
     /**
-     * @param Map<mixed, mixed> $overrideParameters
+     * @param Collection<mixed, mixed> $overrideParameters
      *
      * @return bool
      */
-    abstract protected function validateSettings(Map $overrideParameters): bool;
+    abstract protected function validateSettings(Collection $overrideParameters): bool;
 
     /**
-     * @param Map<mixed, mixed> $overrideParameters
-     * @param string            $keyName
+     * @param Collection<mixed, mixed> $overrideParameters
+     * @param string                   $keyName
      *
      * @return mixed
      */
-    protected static function parseBool(Map $overrideParameters, string $keyName): mixed
+    protected static function parseBool(Collection $overrideParameters, string $keyName): mixed
     {
-        $foundBool = $overrideParameters->get($keyName, '');
-        if (!empty($foundBool)) {
+        /** @var mixed */
+        $foundBool = '';
+        if (array_key_exists($keyName, $overrideParameters->toArray())) {
+            $foundBool = $overrideParameters->toArray()[$keyName];
+        }
+        if ('' !== $foundBool) {
             $foundBool = filter_var($foundBool, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
         }
 
@@ -99,9 +104,9 @@ abstract class AbstractSingleton implements ISingleton
      * @param string             $shortOpts
      * @param array<mixed,mixed> $longOpts
      *
-     * @return Map<mixed, mixed>
+     * @return Collection<mixed, mixed>
      */
-    private function parseArguments(string $shortOpts, array $longOpts): Map
+    private function parseArguments(string $shortOpts, array $longOpts): Collection
     {
         return new Map(getopt($shortOpts, $longOpts));
     }

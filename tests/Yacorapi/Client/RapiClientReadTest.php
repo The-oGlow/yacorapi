@@ -17,6 +17,7 @@ use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\Macro\AddonTypeEnum;
 use oglow\tools\Yacorapi\Response\Response;
+use oglow\tools\Yacorapi\Response\ResponseParameterData;
 use oglow\tools\Yacorapi\YacorapiTestData;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\EasyGoingTestCase;
@@ -61,7 +62,7 @@ class RapiClientReadTest extends EasyGoingTestCase
 
         $response = $this->getCasto2t()->readPageByPageId($pageId);
 
-        self::$logger->info('response', [$response->getResponse()]);
+        self::$logger->info('response', [$response->getRawData()]);
 
         self::assertNotEmpty($response);
         $actual = $response->getBody();
@@ -79,9 +80,9 @@ class RapiClientReadTest extends EasyGoingTestCase
 
         $response = $this->getCasto2t()->readPagesByTitle(YacorapiTestData::C_SEARCHPAGETITLE_01, YacorapiTestData::C_SPACE_EXIST_KEY);
 
-        $actualCount = $response->getResponse()->get(Response::KEY_TOTAL_SIZE, -1);
+        $actualCount = $response->getRawData()->get(ResponseParameterData::KEY_TOTAL_SIZE, -1);
 
-        self::$logger->info('response', [$response->getResponse()]);
+        self::$logger->info('response', [$response->getRawData()]);
         self::$logger->info('results', [$response->getResults()]);
 
         self::assertNotEmpty($response);
@@ -99,9 +100,9 @@ class RapiClientReadTest extends EasyGoingTestCase
 
         $response = $this->getCasto2t()->scanPages(YacorapiTestData::C_SPACE_EXIST_KEY);
 
-        $actualCount = $response->getResponse()->get(Response::KEY_TOTAL_SIZE, -1);
+        $actualCount = $response->getRawData()->get(ResponseParameterData::KEY_TOTAL_SIZE, -1);
 
-        self::$logger->info('response', [$response->getResponse()]);
+        self::$logger->info('response', [$response->getRawData()]);
         self::$logger->info('results', [$response->getResults()]);
 
         self::assertNotEmpty($response);
@@ -119,9 +120,9 @@ class RapiClientReadTest extends EasyGoingTestCase
 
         $response = $this->getCasto2t()->searchPagesWithFilter(YacorapiTestData::C_FILTERTERM_01, YacorapiTestData::C_SPACE_EXIST_KEY);
 
-        $actualCount = $response->getResponse()->get(Response::KEY_TOTAL_SIZE, -1);
+        $actualCount = $response->getRawData()->get(ResponseParameterData::KEY_TOTAL_SIZE, -1);
 
-        self::$logger->info('response', [$response->getResponse()]);
+        self::$logger->info('response', [$response->getRawData()]);
         self::$logger->info('results', [$response->getResults()]);
 
         self::assertNotEmpty($response);
@@ -268,10 +269,10 @@ class RapiClientReadTest extends EasyGoingTestCase
 
         $response = $this->getCasto2t()->prepareAddonSet($mode);
 
-        self::$logger->info('response', [$response->getResponse()]);
+        self::$logger->info('response', [$response->getRawData()]);
 
         self::assertNotEmpty($response);
-        self::assertCount($expected, $response->getResponse());
+        self::assertCount($expected, $response->getRawData());
         self::assertTrue($response->getResults()->isEmpty());
 
         self::$logger->info('END');

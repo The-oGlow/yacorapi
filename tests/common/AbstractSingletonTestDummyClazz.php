@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace oglow\tools\common;
 
-use Ds\Map;
+use Ds\Collection;
 
 class AbstractSingletonTestDummyClazz extends AbstractSingleton
 {
@@ -21,7 +21,7 @@ class AbstractSingletonTestDummyClazz extends AbstractSingleton
      * @inheritDoc
      */
     #[\Override]
-    protected function prepareSettings(Map $overrideParameters): void
+    protected function prepareSettings(Collection $overrideParameters): void
     {
         // Nothing to do
     }
@@ -30,23 +30,24 @@ class AbstractSingletonTestDummyClazz extends AbstractSingleton
      * @inheritDoc
      */
     #[\Override]
-    protected function validateSettings(Map $overrideParameters): bool
+    protected function validateSettings(Collection $overrideParameters): bool
     {
+        $result = false;
         if ($overrideParameters->isEmpty()) {
-            return true;
+            $result = true;
         }
 
-        return false;
+        return $result;
     }
 
     // Change visibility
 
     /**
-     * @param Map<mixed,mixed> $overrideParameters
+     * @param Collection<mixed,mixed> $overrideParameters
      *
      * @return bool
      */
-    public function publicValidateSettings(Map $overrideParameters): bool
+    public function publicValidateSettings(Collection $overrideParameters): bool
     {
         return $this->validateSettings($overrideParameters);
     }
@@ -68,12 +69,12 @@ class AbstractSingletonTestDummyClazz extends AbstractSingleton
     }
 
     /**
-     * @param Map<mixed, mixed> $overrideParameters
-     * @param string            $keyName
+     * @param Collection<mixed, mixed> $overrideParameters
+     * @param string                   $keyName
      *
      * @return mixed
      */
-    public function publicParseBoolMap(Map $overrideParameters, string $keyName): mixed
+    public function publicParseBoolCollection(Collection $overrideParameters, string $keyName): mixed
     {
         return parent::parseBool($overrideParameters, $keyName);
     }

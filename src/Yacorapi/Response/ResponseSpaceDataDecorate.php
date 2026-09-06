@@ -34,8 +34,8 @@ class ResponseSpaceDataDecorate extends AbstractResponse
     {
         self::$logger = new ConsoleLogger(ResponseSpaceDataDecorate::class);
         self::$logger->debug('START');
-        $data                    = $response->getResponse();
-        $data->put(self::KEY_RESULTS, $response->getResults());
+        $data                    = $response->getRawData();
+        $data->put(ResponseParameterData::KEY_RESULTS, $response->getResults());
         parent::__construct($data->toArray());
         $this->spaces = $this->prepareSpaceArray($response->getResults()->toArray());
         self::$logger->debug('END');
@@ -154,23 +154,23 @@ class ResponseSpaceDataDecorate extends AbstractResponse
                     $line = '';
                     if (is_array($space)) {
                         $addResult = true;
-                        $descr     = $space[self::KEY_DESCRIPTION][self::KEY_PLAIN][self::KEY_VALUE];
+                        $descr     = $space[ResponseParameterData::KEY_DESCRIPTION][ResponseParameterData::KEY_PLAIN][ResponseParameterData::KEY_VALUE];
                         if ($noArchived && $this->isArchived($descr)) {
                             $addResult = false;
                         }
                         if ($addResult) {
-                            $resultSpaces[] = $space[self::KEY_KEY];
+                            $resultSpaces[] = $space[ResponseParameterData::KEY_KEY];
 
                             $line .= sprintf(
                                 '%s;%s;%s;%s',
                                 ++$idx, // NOSONAR php:S881
-                                $space[self::KEY_KEY],
-                                $space[self::KEY_TYPE],
-                                $this->isArchived($descr) ? self::VAL_TRUE : self::VAL_FALSE
+                                $space[ResponseParameterData::KEY_KEY],
+                                $space[ResponseParameterData::KEY_TYPE],
+                                $this->isArchived($descr) ? ResponseParameterData::VAL_TRUE : ResponseParameterData::VAL_FALSE
                             );
                             $line .= sprintf(
                                 ';\'%s\';\'%s\'',
-                                $space[self::KEY_NAME],
+                                $space[ResponseParameterData::KEY_NAME],
                                 htmlentities(
                                     implode(
                                         '',
@@ -182,7 +182,7 @@ class ResponseSpaceDataDecorate extends AbstractResponse
                                 )
                             );
                         } else {
-                            self::$logger->notice('  ++ Space already archived', [$space[self::KEY_KEY]]);
+                            self::$logger->notice('  ++ Space already archived', [$space[ResponseParameterData::KEY_KEY]]);
                         }
                     }
                     self::$logger->debug($line);
@@ -190,15 +190,15 @@ class ResponseSpaceDataDecorate extends AbstractResponse
             } else {
                 foreach ($spaces as $space) {
                     if (is_array($space)) {
-                        $descr    = $space[self::KEY_DESCRIPTION][self::KEY_PLAIN][self::KEY_VALUE];
+                        $descr    = $space[ResponseParameterData::KEY_DESCRIPTION][ResponseParameterData::KEY_PLAIN][ResponseParameterData::KEY_VALUE];
                         $newSpace = [
-                            self::KEY_KEY      => $space[self::KEY_KEY],
-                            self::KEY_NAME     => $space[self::KEY_NAME],
-                            self::KEY_TYPE     => $space[self::KEY_TYPE],
-                            self::KEY_ARCHIVED => $this->isArchived($descr) ? self::VAL_TRUE : self::VAL_FALSE,
+                            ResponseParameterData::KEY_KEY      => $space[ResponseParameterData::KEY_KEY],
+                            ResponseParameterData::KEY_NAME     => $space[ResponseParameterData::KEY_NAME],
+                            ResponseParameterData::KEY_TYPE     => $space[ResponseParameterData::KEY_TYPE],
+                            ResponseParameterData::KEY_ARCHIVED => $this->isArchived($descr) ? ResponseParameterData::VAL_TRUE : ResponseParameterData::VAL_FALSE,
                         ];
 
-                        $resultSpaces[(string)$space[self::KEY_KEY]] = $newSpace;
+                        $resultSpaces[(string)$space[ResponseParameterData::KEY_KEY]] = $newSpace;
                     }
                 }
             }
@@ -214,6 +214,6 @@ class ResponseSpaceDataDecorate extends AbstractResponse
     #[\Override]
     protected function __toStringValues(): mixed
     {
-        return [self::KEY_SPACES => $this->spaces];
+        return [ResponseParameterData::KEY_SPACES => $this->spaces];
     }
 }

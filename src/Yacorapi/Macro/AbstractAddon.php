@@ -13,21 +13,22 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Macro;
 
+use Ds\Collection;
 use Ds\Map;
 use Ds\Vector;
+use Exception;
 use Monolog\ConsoleLogger;
-use Psr\Log\LoggerInterface;
 use ollily\Tools\JsonHelper;
 use ollily\Tools\Reflection\ClazzHelper;
-use Exception;
+use Psr\Log\LoggerInterface;
 
 abstract class AbstractAddon implements IAddon
 {
-
     private static LoggerInterface $logger;
 
-    /** @var Map<mixed,Vector<mixed>> */
-    protected Map $addonsMacros;
+    /** @var Collection<mixed,Vector<mixed>>
+     * @phpstan-var Map<mixed,Vector<mixed>>  */
+    protected Collection $addonsMacros;
 
     public function __construct()
     {
@@ -41,7 +42,7 @@ abstract class AbstractAddon implements IAddon
     protected function init(): void
     {
         $this->addonsMacros = new Map();
-        $file = ClazzHelper::getClazzPath(static::class) . DIRECTORY_SEPARATOR . ClazzHelper::getClazzFilename(static::class).  JsonHelper::FILE_EXT_JSON;
+        $file = ClazzHelper::getClazzPath(static::class) . DIRECTORY_SEPARATOR . ClazzHelper::getClazzFilename(static::class) .  JsonHelper::FILE_EXT_JSON;
         if (file_exists($file)) {
             try {
                 $jsonData = JsonHelper::loadJson($file);

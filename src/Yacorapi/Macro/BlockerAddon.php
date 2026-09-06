@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Macro;
 
-
 /**
  * Replace in the method {@link getMacros()} with your addons and macros which blocks your tasks.
  */
@@ -21,4 +20,3 @@ class BlockerAddon extends AbstractAddon
 {
     public const AddonTypeEnum ADDON_TYPE = AddonTypeEnum::ADDON_BLOCKER;
 }
-

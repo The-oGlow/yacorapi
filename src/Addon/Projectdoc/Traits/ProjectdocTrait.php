@@ -15,6 +15,7 @@ namespace oglow\tools\Addon\Projectdoc\Traits;
 
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\IResponse;
+use oglow\tools\Yacorapi\Response\ResponseParameterData;
 use Psr\Log\LoggerInterface;
 
 trait ProjectdocTrait
@@ -155,10 +156,10 @@ trait ProjectdocTrait
      */
     private function showTotalsPdtDocument(IResponse $response): void
     {
-        $total = $response->getValue(IResponse::KEY_MAX_RESULT);
-        $size  = $response->getValue(IResponse::KEY_SIZE);
-        $start = $response->getValue(IResponse::KEY_START_INDEX);
-        $limit = $response->getValue(IResponse::KEY_MAX_RESULT);
+        $total = $response->getValue(ResponseParameterData::KEY_MAX_RESULT);
+        $size  = $response->getValue(ResponseParameterData::KEY_SIZE);
+        $start = $response->getValue(ResponseParameterData::KEY_START_INDEX);
+        $limit = $response->getValue(ResponseParameterData::KEY_MAX_RESULT);
 
         self::$logger->info('Total,Start,Size,Limit', [$total, $start, $size, $limit]);
     }
@@ -171,7 +172,7 @@ trait ProjectdocTrait
     public function checkDataPdtProperty(IResponse $response): bool
     {
         $status = $response->checkStatus();
-        if ($status && !($response->keyExists(IResponse::KEY_NAME) && $response->keyExists(IResponse::KEY_VALUE))) {
+        if ($status && !($response->keyExists(ResponseParameterData::KEY_NAME) && $response->keyExists(ResponseParameterData::KEY_VALUE))) {
             $status = false;
         }
 

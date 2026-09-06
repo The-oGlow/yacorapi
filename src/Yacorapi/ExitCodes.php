@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi;
 
-use Ds\Map;
+use Ds\Collection;
 use oglow\tools\common\AbstractSingleton;
 
 class ExitCodes extends AbstractSingleton
@@ -42,7 +42,7 @@ class ExitCodes extends AbstractSingleton
      * @inheritDoc
      */
     #[\Override]
-    protected function prepareSettings(Map $overrideParameters): void
+    protected function prepareSettings(Collection $overrideParameters): void
     {
         // Nothing2Do
     }
@@ -51,7 +51,7 @@ class ExitCodes extends AbstractSingleton
      * @inheritDoc
      */
     #[\Override]
-    protected function validateSettings(Map $overrideParameters): bool
+    protected function validateSettings(Collection $overrideParameters): bool
     {
         return true;
     }

@@ -53,7 +53,7 @@ class AbstractProviderTest extends EasyGoingTestCase
     {
         self::assertNotEmpty($response);
         self::assertInstanceOf(IResponse::class, $response);
-        self::assertInstanceOf(Map::class, $response->getResponse());
+        self::assertInstanceOf(Map::class, $response->getRawData());
         self::assertInstanceOf(Map::class, $response->getResults());
         self::assertEquals($expectedData, $response->getResults()->toArray());
     }

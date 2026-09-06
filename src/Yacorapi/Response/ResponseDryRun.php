@@ -38,7 +38,7 @@ class ResponseDryRun implements IResponse
      */
     protected static function dummyBody(): array
     {
-        return [IResponse::KEY_STORAGE => [IResponse::KEY_VALUE => self::DUMMY_BODY]];
+        return [ResponseParameterData::KEY_STORAGE => [ResponseParameterData::KEY_VALUE => self::DUMMY_BODY]];
     }
 
     /**
@@ -51,26 +51,26 @@ class ResponseDryRun implements IResponse
     {
         if ($withContent) {
             $entry                         = [];
-            $entry[IResponse::KEY_CONTENT] = [
-                IResponse::KEY_KEY   => self::DUMMY_KEY,
-                IResponse::KEY_TITLE => self::DUMMY_TITLE,
-                IResponse::KEY_TYPE  => self::DUMMY_TYPE,
-                IResponse::KEY_LINKS => [IResponse::KEY_WEBUI => self::DUMMY_WEBUI],
-                IResponse::KEY_SPACE => [IResponse::KEY_KEY => self::DUMMY_KEY],
+            $entry[ResponseParameterData::KEY_CONTENT] = [
+                ResponseParameterData::KEY_KEY   => self::DUMMY_KEY,
+                ResponseParameterData::KEY_TITLE => self::DUMMY_TITLE,
+                ResponseParameterData::KEY_TYPE  => self::DUMMY_TYPE,
+                ResponseParameterData::KEY_LINKS => [ResponseParameterData::KEY_WEBUI => self::DUMMY_WEBUI],
+                ResponseParameterData::KEY_SPACE => [ResponseParameterData::KEY_KEY => self::DUMMY_KEY],
             ];
             if ($withBody) {
-                $entry[self::KEY_CONTENT][IResponse::KEY_BODY] = self::dummyBody();
+                $entry[ResponseParameterData::KEY_CONTENT][ResponseParameterData::KEY_BODY] = self::dummyBody();
             }
         } else {
             $entry = [
-                IResponse::KEY_KEY   => self::DUMMY_KEY,
-                IResponse::KEY_TITLE => self::DUMMY_TITLE,
-                IResponse::KEY_TYPE  => self::DUMMY_TYPE,
-                IResponse::KEY_LINKS => [IResponse::KEY_WEBUI => self::DUMMY_WEBUI],
-                IResponse::KEY_SPACE => [IResponse::KEY_KEY => self::DUMMY_KEY],
+                ResponseParameterData::KEY_KEY   => self::DUMMY_KEY,
+                ResponseParameterData::KEY_TITLE => self::DUMMY_TITLE,
+                ResponseParameterData::KEY_TYPE  => self::DUMMY_TYPE,
+                ResponseParameterData::KEY_LINKS => [ResponseParameterData::KEY_WEBUI => self::DUMMY_WEBUI],
+                ResponseParameterData::KEY_SPACE => [ResponseParameterData::KEY_KEY => self::DUMMY_KEY],
             ];
             if ($withBody) {
-                $entry[IResponse::KEY_BODY] = self::dummyBody();
+                $entry[ResponseParameterData::KEY_BODY] = self::dummyBody();
             }
         }
 
@@ -80,16 +80,18 @@ class ResponseDryRun implements IResponse
     /**
      * @param bool $withBody
      *
-     * @return Map<mixed,mixed>
+     * @return Collection<mixed,mixed>
+     *
+     * @phpstan-return Map<mixed,mixed>
      */
-    public static function prepareResponse(bool $withBody = false): Map
+    public static function prepareResponse(bool $withBody = false): Collection
     {
         $response = new Map();
-        $response->put(self::KEY_RESULTS, [0 => self::dummyResultEntry($withBody)]);
-        $response->put(self::KEY_START, 0);
-        $response->put(self::KEY_SIZE, 1);
-        $response->put(self::KEY_LIMIT, 22);
-        $response->put(self::KEY_TOTAL_SIZE, 1);
+        $response->put(ResponseParameterData::KEY_RESULTS, [0 => self::dummyResultEntry($withBody)]);
+        $response->put(ResponseParameterData::KEY_START, 0);
+        $response->put(ResponseParameterData::KEY_SIZE, 1);
+        $response->put(ResponseParameterData::KEY_LIMIT, 22);
+        $response->put(ResponseParameterData::KEY_TOTAL_SIZE, 1);
 
         return $response;
     }
@@ -98,7 +100,7 @@ class ResponseDryRun implements IResponse
      * @inheritDoc
      */
     #[\Override]
-    public function getResponse(): Map
+    public function getRawData(): Collection
     {
         return self::prepareResponse(true);
     }
@@ -151,11 +153,11 @@ class ResponseDryRun implements IResponse
      * @inheritDoc
      */
     #[\Override]
-    public function getResults(): Map
+    public function getResults(): Collection
     {
         $response = new Map();
         $response->put(
-            self::KEY_RESULTS,
+            ResponseParameterData::KEY_RESULTS,
             [
                 0 => self::dummyResultEntry(true),
                 1 => self::dummyResultEntry(true),
@@ -229,6 +231,6 @@ class ResponseDryRun implements IResponse
     #[\Override]
     public function __toString(): string
     {
-        return self::implode_recursive(';', $this->getResponse()->toArray());
+        return self::implode_recursive(';', $this->getRawData()->toArray());
     }
 }

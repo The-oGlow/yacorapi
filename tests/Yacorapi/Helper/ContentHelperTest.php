@@ -15,9 +15,9 @@ namespace oglow\tools\Yacorapi\Helper;
 
 use Ds\Map;
 use oglow\tools\Yacorapi\Macro\HasMacroBodyEnum;
+use oglow\tools\Yacorapi\YacorapiTestData;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\ConstantCheckTestCase;
-use oglow\tools\Yacorapi\YacorapiTestData;
 
 class ContentHelperTest extends ConstantCheckTestCase
 {

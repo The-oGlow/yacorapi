@@ -17,7 +17,7 @@ use Monolog\ConsoleLogger;
 use oglow\tools\common\AbstractContainer;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\ExitCodes;
-use oglow\tools\Yacorapi\IResponse;
+use oglow\tools\Yacorapi\Response\ResponseParameterData;
 use ollily\Tools\Emergency;
 use Psr\Log\LoggerInterface;
 
@@ -65,7 +65,7 @@ class SpaceData extends AbstractContainer
         "(): array\n{return [";
 
         foreach ($spaces as $space) {
-            $line .= sprintf("'%s',\n", $space[IResponse::KEY_KEY]);
+            $line .= sprintf("'%s',\n", $space[ResponseParameterData::KEY_KEY]);
         }
 
         $line .= "\n];\n}\n}\n";

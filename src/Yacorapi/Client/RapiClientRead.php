@@ -23,6 +23,7 @@ use oglow\tools\Yacorapi\IConnectionProvider;
 use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Macro\AddonTypeEnum;
 use oglow\tools\Yacorapi\Response\ResponseAddonMacroDecorate;
+use oglow\tools\Yacorapi\Response\ResponseParameterData;
 use oglow\tools\Yacorapi\Space\SpaceTypeEnum;
 use Psr\Log\LoggerInterface;
 
@@ -112,7 +113,7 @@ class RapiClientRead extends RapiClientBase implements IRapiClientRead
 
         if ($result->checkStatus() && $result->isResultsAvailable()) {
             $firstResult = $result->getResult(IRapiClientBase::RESP_VAL_RESULT_FIRST);
-            $pageId = intval($firstResult[IResponse::KEY_ID]);
+            $pageId = intval($firstResult[ResponseParameterData::KEY_ID]);
             self::$logger->info(str_repeat(' ', IRapiClientBase::VAL_LOG_SPACE) . 'Found item', [$spaceKey, $itemType->value, $pageTitle, $pageId]);
         } else {
             self::$logger->info(str_repeat(' ', IRapiClientBase::VAL_LOG_SPACE) . 'Not found item', [$spaceKey, $itemType->value, $pageTitle]);
@@ -169,9 +170,9 @@ class RapiClientRead extends RapiClientBase implements IRapiClientRead
             /** @var IResponse $result */
             $result = $this->exec($prepareUrl);
             if ($result->checkStatus()) {
-                $pageId = $result->getValue(IResponse::KEY_HOMEPAGE, IRapiClientBase::RESP_VAL_PAGE_ID_NO);
+                $pageId = $result->getValue(ResponseParameterData::KEY_HOMEPAGE, IRapiClientBase::RESP_VAL_PAGE_ID_NO);
                 if (is_array($pageId)) {
-                    $pageId = $pageId[IResponse::KEY_ID];
+                    $pageId = $pageId[ResponseParameterData::KEY_ID];
                 }
             }
         }
@@ -262,6 +263,6 @@ class RapiClientRead extends RapiClientBase implements IRapiClientRead
      */
     protected function analyzeResponse(IResponse $response): int
     {
-        return intval($response->getValue(IResponse::KEY_TOTAL_SIZE, 0));
+        return intval($response->getValue(ResponseParameterData::KEY_TOTAL_SIZE, 0));
     }
 }

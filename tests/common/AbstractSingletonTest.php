@@ -89,11 +89,11 @@ class AbstractSingletonTest extends EasyGoingTestCase
         self::assertEquals($expected, $actual);
     }
 
-    public function testParseBoolMap(): void
+    public function testParseBoolCollection(): void
     {
         $expected = YacorapiTestData::DATA_EMPTY;
 
-        $actual = $this->getCasto2t()->publicParseBoolMap(new Map(), YacorapiTestData::KEY_ALPHA1);
+        $actual = $this->getCasto2t()->publicParseBoolCollection(new Map(), YacorapiTestData::KEY_ALPHA1);
 
         self::assertEquals($expected, $actual);
     }

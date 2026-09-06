@@ -160,7 +160,7 @@ class CurlProvider extends AbstractProvider
         $rawData = [];
         if ($dryRun) {
             self::$logger->notice('DRYRUN is activated');
-            $rawData = $this->dryRunResponse->getResponse()->toArray();
+            $rawData = $this->dryRunResponse->getRawData()->toArray();
         } else {
             if ($execSession instanceof CurlHandle && !empty($execUrl)) {
                 curl_setopt($execSession, CURLOPT_URL, $execUrl);

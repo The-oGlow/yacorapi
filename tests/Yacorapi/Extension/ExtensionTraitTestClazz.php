@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Extension;
 
+use Ds\Collection;
 use Ds\Map;
 use Ds\Vector;
 use Monolog\ConsoleLogger;
@@ -38,9 +39,11 @@ class ExtensionTraitTestClazz
     /**
      * @param ExtensionEnum $modeExtension
      *
-     * @return Map<mixed,IExtension>
+     * @return Collection<mixed,IExtension>
+     *
+     * @phpstan-return Map<mixed,IExtension>
      */
-    public function publicLoadExtensions(ExtensionEnum $modeExtension): Map
+    public function publicLoadExtensions(ExtensionEnum $modeExtension): Collection
     {
         return $this->loadExtensions($modeExtension);
     }
@@ -48,39 +51,49 @@ class ExtensionTraitTestClazz
     /**
      * @param ExtensionEnum $modeExtension
      *
-     * @return Map<mixed,IExtension>
+     * @return Collection<mixed,IExtension>
+     *
+     * @phpstan-return Map<mixed,IExtension>
      */
-    public function publicInitExtensions(ExtensionEnum $modeExtension): Map
+    public function publicInitExtensions(ExtensionEnum $modeExtension): Collection
     {
         return $this->initExtensions($modeExtension);
     }
 
     /**
-     * @param Map<mixed,IExtension> $extensions
+     * @param Collection<mixed,IExtension> $extensions
      *
-     * @return Map<mixed,Vector<mixed>>
+     * @phpstan-param Map<mixed,IExtension> $extensions
+     *
+     * @return Collection<mixed,Vector<mixed>>
+     *
+     * @phpstan-return Map<mixed,Vector<mixed>>
      */
-    public function publicGetExtensionAddons(Map $extensions): Map
+    public function publicGetExtensionAddons(Collection $extensions): Collection
     {
         return $this->getExtensionAddons($extensions);
     }
 
     /**
-     * @param Map<mixed,Vector<mixed>> $addons
+     * @param Collection<mixed,Vector<mixed>> $addons
+     *
+     * @phpstan-param Map<mixed,Vector<mixed>> $addons
      *
      * @return Vector<string>
      */
-    public function publicGetExtensionAddonMacros(Map $addons): Vector
+    public function publicGetExtensionAddonMacros(Collection $addons): Vector
     {
         return $this->getExtensionAddonMacros($addons);
     }
 
     /**
-     * @param Map<mixed,Vector<mixed>> $addons
+     * @param Collection<mixed,Vector<mixed>> $addons
+     *
+     * @phpstan-param Map<mixed,Vector<mixed>> $addons
      *
      * @return array<mixed,mixed>
      */
-    public function publicGetExtensionAddonMacrosArray(Map $addons): array
+    public function publicGetExtensionAddonMacrosArray(Collection $addons): array
     {
         return $this->getExtensionAddonMacrosArray($addons);
     }

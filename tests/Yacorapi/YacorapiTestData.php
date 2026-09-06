@@ -19,6 +19,7 @@ use oglow\tools\Addon\Atlassian\Extension\AtlassianExtension;
 use oglow\tools\Yacorapi\Data\ItemTypeEnum;
 use oglow\tools\Yacorapi\Extension\RapiClientExtension;
 use oglow\tools\Yacorapi\Request\RequestParameterData;
+use oglow\tools\Yacorapi\Response\ResponseParameterData;
 use oglow\tools\Yacorapi\Space\SpaceTypeEnum;
 use ollily\Tools\Test\TestData;
 
@@ -271,19 +272,19 @@ class YacorapiTestData extends TestData
     private static array $RESP_SCAN_RESULT;
 
     public const array RESP_RESTRICTION = [
-        IResponse::KEY_RESTRICTIONS => [
-            IResponse::KEY_READ => [
-                IResponse::KEY_OPERATION => IResponse::KEY_READ,
-                IResponse::KEY_RESTRICTIONS => [
-                    IResponse::KEY_USER => [],
-                    IResponse::KEY_GROUP => [],
+        ResponseParameterData::KEY_RESTRICTIONS => [
+            ResponseParameterData::KEY_READ => [
+                ResponseParameterData::KEY_OPERATION => ResponseParameterData::KEY_READ,
+                ResponseParameterData::KEY_RESTRICTIONS => [
+                    ResponseParameterData::KEY_USER => [],
+                    ResponseParameterData::KEY_GROUP => [],
                 ],
             ],
-            IResponse::KEY_UPDATE => [
-                IResponse::KEY_OPERATION => IResponse::KEY_UPDATE,
-                IResponse::KEY_RESTRICTIONS => [
-                    IResponse::KEY_USER => [],
-                    IResponse::KEY_GROUP => [],
+            ResponseParameterData::KEY_UPDATE => [
+                ResponseParameterData::KEY_OPERATION => ResponseParameterData::KEY_UPDATE,
+                ResponseParameterData::KEY_RESTRICTIONS => [
+                    ResponseParameterData::KEY_USER => [],
+                    ResponseParameterData::KEY_GROUP => [],
                 ],
             ],
         ],
@@ -304,9 +305,9 @@ class YacorapiTestData extends TestData
     public static function RESP_HEAD_SEARCHPAGEID_01(): array
     {
         self::$RESP_HEAD_SEARCHPAGEID_01 = [
-            IResponse::KEY_ID => self::C_SEARCHPAGEID_01,
-            IResponse::KEY_TITLE => self::C_SEARCHPAGETITLE_01,
-            IResponse::KEY_TYPE => self::C_ITEM_TYPE_PAGE->value,
+            ResponseParameterData::KEY_ID => self::C_SEARCHPAGEID_01,
+            ResponseParameterData::KEY_TITLE => self::C_SEARCHPAGETITLE_01,
+            ResponseParameterData::KEY_TYPE => self::C_ITEM_TYPE_PAGE->value,
         ];
         self::$RESP_HEAD_SEARCHPAGEID_01 = array_merge(self::$RESP_HEAD_SEARCHPAGEID_01, self::prepareResponseVersion());
         self::$RESP_HEAD_SEARCHPAGEID_01 = array_merge(self::$RESP_HEAD_SEARCHPAGEID_01, self::prepareResponseSpace(self::C_SEARCHPAGESPACE_01, new Map()));
@@ -383,8 +384,8 @@ class YacorapiTestData extends TestData
     public static function prepareResponseResults(array $items): array
     {
         return [
-            IResponse::KEY_TOTAL_SIZE => count($items),
-            IResponse::KEY_RESULTS => $items,
+            ResponseParameterData::KEY_TOTAL_SIZE => count($items),
+            ResponseParameterData::KEY_RESULTS => $items,
         ];
     }
 
@@ -407,8 +408,8 @@ class YacorapiTestData extends TestData
         }
 
         return [
-            IResponse::KEY_SPACE => [
-                IResponse::KEY_KEY => $text,
+            ResponseParameterData::KEY_SPACE => [
+                ResponseParameterData::KEY_KEY => $text,
             ]];
     }
 
@@ -419,7 +420,7 @@ class YacorapiTestData extends TestData
      */
     public static function prepareResponseVersion(int $currentVersion = 1): array
     {
-        return [IResponse::KEY_VERSION => [IResponse::KEY_NUMBER => $currentVersion]];
+        return [ResponseParameterData::KEY_VERSION => [ResponseParameterData::KEY_NUMBER => $currentVersion]];
     }
 
     /**
@@ -441,8 +442,8 @@ class YacorapiTestData extends TestData
         }
 
         return [
-            IResponse::KEY_ANCESTORS => [
-                IResponse::KEY_ID => $text,
+            ResponseParameterData::KEY_ANCESTORS => [
+                ResponseParameterData::KEY_ID => $text,
             ]];
     }
 
@@ -465,9 +466,9 @@ class YacorapiTestData extends TestData
         }
 
         return [
-            IResponse::KEY_BODY => [
-                IResponse::KEY_STORAGE => [
-                    IResponse::KEY_VALUE => $text,
+            ResponseParameterData::KEY_BODY => [
+                ResponseParameterData::KEY_STORAGE => [
+                    ResponseParameterData::KEY_VALUE => $text,
                 ]]];
     }
 

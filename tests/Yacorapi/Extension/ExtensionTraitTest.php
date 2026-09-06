@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Extension;
 
+use Ds\Collection;
 use Ds\Map;
 use Ds\Vector;
 use Monolog\ConsoleLogger;
@@ -47,9 +48,11 @@ class ExtensionTraitTest extends EasyGoingTestCase
     }
 
     /**
-     * @return Map<mixed,IExtension>
+     * @return Collection<mixed,IExtension>
+     *
+     * @phpstan-return Map<mixed,IExtension>
      */
-    protected function getPublicInitExtensions(): Map
+    protected function getPublicInitExtensions(): Collection
     {
         $modeExtension = ExtensionEnum::EXTENSION_ALL;
 

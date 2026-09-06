@@ -45,12 +45,12 @@ class ResponseSpaceDataDecorateTest extends EasyGoingTestCase
         self::assertCount($expectedCount, $actual);
     }
 
-    public function testGetResponse(): void
+    public function testGetRawData(): void
     {
         $expected = Map::class;
         $expectedCount = 0;
 
-        $actual = $this->getCasto2t()->getResponse();
+        $actual = $this->getCasto2t()->getRawData();
 
         self::assertInstanceOf($expected, $actual);
         self::assertCount($expectedCount, $actual);

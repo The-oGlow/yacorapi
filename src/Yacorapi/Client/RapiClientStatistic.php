@@ -25,6 +25,7 @@ use oglow\tools\Yacorapi\IConnectionProvider;
 use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Macro\AddonTypeEnum;
 use oglow\tools\Yacorapi\Response\ResponseAddonMacroDecorate;
+use oglow\tools\Yacorapi\Response\ResponseParameterData;
 use oglow\tools\Yacorapi\Response\ResponseSpaceDataDecorate;
 use oglow\tools\Yacorapi\Space\SpaceTypeEnum;
 use oglow\tools\Yacorapi\Statistic\IStatistic;
@@ -73,7 +74,7 @@ class RapiClientStatistic extends RapiClientPermission implements IRapiClientSta
         $prepareUrl = $this->prepareCountItemsUrl($itemType, $spaceKey);
         $response = $this->exec($prepareUrl);
 
-        $itemCount = $response->getValue(IResponse::KEY_TOTAL_SIZE, 0);
+        $itemCount = $response->getValue(ResponseParameterData::KEY_TOTAL_SIZE, 0);
         $valueStatistic = new ValueStatistic(ValueStatistic::EMPTY_STRING, null);
         $valueStatistic->addItem(ValueStatistic::EMPTY_STRING, $itemCount);
         $singleStatistic = new StatisticStatistic($itemType->value, StatisticTypeEnum::PAGETYPE);
@@ -92,7 +93,7 @@ class RapiClientStatistic extends RapiClientPermission implements IRapiClientSta
     {
         self::$logger->debug('START - spaceKey,addonSet', [$spaceKey, $addonSet]);
 
-        $mapAddons = $addonSet->getResponse();
+        $mapAddons = $addonSet->getRawData();
 
         $response = $this->loopAddons($spaceKey, $addonSet->getMode(), $mapAddons, $outputMatrix);
 

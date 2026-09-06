@@ -17,8 +17,7 @@ use Ds\Set;
 use Monolog\ConsoleLogger;
 use oglow\tools\common\MockProvider;
 use oglow\tools\Yacorapi\IRapiClient;
-use oglow\tools\Yacorapi\IResponse;
-use oglow\tools\Yacorapi\Response\Response;
+use oglow\tools\Yacorapi\Response\ResponseParameterData;
 use oglow\tools\Yacorapi\Statistic\StatisticStatistic;
 use oglow\tools\Yacorapi\Statistic\StatisticTypeEnum;
 use oglow\tools\Yacorapi\YacorapiTestData;
@@ -98,15 +97,15 @@ class RapiClientTest extends EasyGoingTestCase
 
         $response = $this->getCasto2t()->createPage($newSpaceKey, $newTitle, $newBody, $newParent);
 
-        self::$logger->info('response', [$response->getResponse()]);
+        self::$logger->info('response', [$response->getRawData()]);
 
         self::assertNotEmpty($response);
-        self::assertNotEmpty($response->getValue(IResponse::KEY_ID));
+        self::assertNotEmpty($response->getValue(ResponseParameterData::KEY_ID));
 
-        self::assertEquals($newTitle, $response->getValue(IResponse::KEY_TITLE));
+        self::assertEquals($newTitle, $response->getValue(ResponseParameterData::KEY_TITLE));
         self::assertEquals($newBody, $response->getBody());
-        self::assertEquals($newSpaceKey, $response->getValue(IResponse::KEY_SPACE)[IResponse::KEY_KEY]);
-        self::assertEquals($newParent, $response->getValue(IResponse::KEY_ANCESTORS)[IResponse::KEY_ID]);
+        self::assertEquals($newSpaceKey, $response->getValue(ResponseParameterData::KEY_SPACE)[ResponseParameterData::KEY_KEY]);
+        self::assertEquals($newParent, $response->getValue(ResponseParameterData::KEY_ANCESTORS)[ResponseParameterData::KEY_ID]);
 
         self::$logger->info('END');
     }
@@ -120,20 +119,20 @@ class RapiClientTest extends EasyGoingTestCase
         $updateBody = self::PAGE_BODY;
 
         $before = $this->getCasto2t()->readPageByPageId($updateId);
-        self::$logger->info('before', [$before->getResponse()]);
+        self::$logger->info('before', [$before->getRawData()]);
 
         self::assertNotEmpty($before);
-        self::assertEquals($updateId, $before->getValue(IResponse::KEY_ID));
+        self::assertEquals($updateId, $before->getValue(ResponseParameterData::KEY_ID));
 
         $after = $this->getCasto2t()->updatePage($updateId, $updateBody, $updateTitle);
-        self::$logger->info('after', [$after->getResponse()]);
+        self::$logger->info('after', [$after->getRawData()]);
 
         self::assertNotEmpty($after);
-        self::assertEquals($updateId, $after->getValue(IResponse::KEY_ID));
-        self::assertEquals($updateTitle, $after->getValue(IResponse::KEY_TITLE));
+        self::assertEquals($updateId, $after->getValue(ResponseParameterData::KEY_ID));
+        self::assertEquals($updateTitle, $after->getValue(ResponseParameterData::KEY_TITLE));
         self::assertEquals($updateBody, $after->getBody());
 
-        self::assertNotEquals($before->getValue(IResponse::KEY_TITLE), $after->getValue(IResponse::KEY_TITLE));
+        self::assertNotEquals($before->getValue(ResponseParameterData::KEY_TITLE), $after->getValue(ResponseParameterData::KEY_TITLE));
         self::assertNotEquals($before->getBody(), $after->getBody());
 
         self::$logger->info('END');
@@ -145,7 +144,7 @@ class RapiClientTest extends EasyGoingTestCase
 
         $response = $this->getCasto2t()->movePage(YacorapiTestData::C_SEARCHPAGEID_01, YacorapiTestData::C_PAGEID_NEW);
 
-        self::$logger->info('response', [$response->getResponse()]);
+        self::$logger->info('response', [$response->getRawData()]);
         self::assertNotEmpty($response);
 
         self::$logger->info('END');
@@ -169,7 +168,7 @@ class RapiClientTest extends EasyGoingTestCase
 
         $response = $this->getCasto2t()->readRestrictionsByPageId(YacorapiTestData::C_SEARCHPAGEID_01);
 
-        self::$logger->info('response', [$response->getResponse()]);
+        self::$logger->info('response', [$response->getRawData()]);
         self::assertNotEmpty($response);
         self::assertNotEmpty($response->getRestrictions());
 
@@ -197,9 +196,9 @@ class RapiClientTest extends EasyGoingTestCase
 
         $response = $this->getCasto2t()->listSpaces();
 
-        $actualCount = $response->getResponse()->get(Response::KEY_TOTAL_SIZE, -1);
+        $actualCount = $response->getRawData()->get(ResponseParameterData::KEY_TOTAL_SIZE, -1);
 
-        self::$logger->info('response', [$response->getResponse()]);
+        self::$logger->info('response', [$response->getRawData()]);
         self::$logger->info('results', [$response->getResults()]);
 
         self::assertNotEmpty($response);

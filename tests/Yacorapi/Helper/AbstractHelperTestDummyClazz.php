@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Helper;
 
-use Ds\Map;
+use Ds\Collection;
 
 class AbstractHelperTestDummyClazz extends AbstractHelper
 {
@@ -21,7 +21,7 @@ class AbstractHelperTestDummyClazz extends AbstractHelper
      * @inheritDoc
      */
     #[\Override]
-    protected function prepareSettings(Map $overrideParameters): void
+    protected function prepareSettings(Collection $overrideParameters): void
     {
         // Nothing to do
     }
@@ -30,23 +30,24 @@ class AbstractHelperTestDummyClazz extends AbstractHelper
      * @inheritDoc
      */
     #[\Override]
-    protected function validateSettings(Map $overrideParameters): bool
+    protected function validateSettings(Collection $overrideParameters): bool
     {
+        $result = false;
         if ($overrideParameters->isEmpty()) {
-            return true;
+            $result = true;
         }
 
-        return false;
+        return $result;
     }
 
     // Change visibility
 
     /**
-     * @param Map<mixed,mixed> $overrideParameters
+     * @param Collection<mixed,mixed> $overrideParameters
      *
      * @return bool
      */
-    public function publicValidateSettings(Map $overrideParameters): bool
+    public function publicValidateSettings(Collection $overrideParameters): bool
     {
         return $this->validateSettings($overrideParameters);
     }

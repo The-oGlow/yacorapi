@@ -13,12 +13,13 @@ declare(strict_types=1);
 
 namespace oglow\tools\Addon\Projectdoc\Helper;
 
-use Ds\Map;
+use Ds\Collection;
 use Monolog\ConsoleLogger;
 use Monolog\DoNothingLogger;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\Helper\AbstractHelper;
 use oglow\tools\Yacorapi\IResponse;
+use oglow\tools\Yacorapi\Response\ResponseParameterData;
 use oglow\tools\Yacorapi\Store\FileAdapter;
 use oglow\tools\Yacorapi\Store\IStoreAdapter;
 use Psr\Log\LoggerInterface;
@@ -91,9 +92,9 @@ class ProjectDocToolboxHelper extends AbstractHelper
             $idx     = 0;
             $results = $response->getResults();
             foreach ($results as $page) {
-                $pageId    = $page[IResponse::KEY_KEY];
-                $pageTitle = $page[IResponse::KEY_TITLE];
-                $pageBody  = $page[IResponse::KEY_BODY][IResponse::KEY_STORAGE][IResponse::KEY_VALUE];
+                $pageId    = $page[ResponseParameterData::KEY_KEY];
+                $pageTitle = $page[ResponseParameterData::KEY_TITLE];
+                $pageBody  = $page[ResponseParameterData::KEY_BODY][ResponseParameterData::KEY_STORAGE][ResponseParameterData::KEY_VALUE];
                 self::$logger->debug(sprintf("%s. %s\t%s", $idx, $pageTitle, $pageId));
                 $fileName     = "$pageId";
                 $storeAdapter = $this->prepareStoreAdapter($fileName);
@@ -117,7 +118,7 @@ class ProjectDocToolboxHelper extends AbstractHelper
      * @inheritDoc
      */
     #[\Override]
-    protected function prepareSettings(Map $overrideParameters): void
+    protected function prepareSettings(Collection $overrideParameters): void
     {
         // NothingToDo
     }
@@ -126,7 +127,7 @@ class ProjectDocToolboxHelper extends AbstractHelper
      * @inheritDoc
      */
     #[\Override]
-    final protected function validateSettings(Map $overrideParameters): bool
+    final protected function validateSettings(Collection $overrideParameters): bool
     {
         return true;
     }

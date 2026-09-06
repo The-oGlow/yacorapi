@@ -26,6 +26,7 @@ use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Request\RequestParameterData;
 use oglow\tools\Yacorapi\Request\RequestTypeEnum;
 use oglow\tools\Yacorapi\Response\Response;
+use oglow\tools\Yacorapi\Response\ResponseParameterData;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -238,11 +239,11 @@ class RapiClientWrite extends RapiClientRead implements IRapiClientWrite
 
         $currentPage = $this->readPageByPageId($pageId);
         if ($currentPage->checkStatus()) {
-            $pageTitle = $currentPage->getValue(IResponse::KEY_TITLE);
-            $pageBody =  $currentPage->getValue(IResponse::KEY_BODY)[IResponse::KEY_STORAGE][IResponse::KEY_VALUE];
-            $itemType = ItemTypeEnum::tryFrom($currentPage->getValue(IResponse::KEY_TYPE));
-            $versionData = $currentPage->getValue(IResponse::KEY_VERSION, []);
-            $currentVersion = intval(array_key_exists(IResponse::KEY_NUMBER, $versionData) ? $versionData[IResponse::KEY_NUMBER] : IRapiClientBase::RESP_VAL_VERSION_NO);
+            $pageTitle = $currentPage->getValue(ResponseParameterData::KEY_TITLE);
+            $pageBody =  $currentPage->getValue(ResponseParameterData::KEY_BODY)[ResponseParameterData::KEY_STORAGE][ResponseParameterData::KEY_VALUE];
+            $itemType = ItemTypeEnum::tryFrom($currentPage->getValue(ResponseParameterData::KEY_TYPE));
+            $versionData = $currentPage->getValue(ResponseParameterData::KEY_VERSION, []);
+            $currentVersion = intval(array_key_exists(ResponseParameterData::KEY_NUMBER, $versionData) ? $versionData[ResponseParameterData::KEY_NUMBER] : IRapiClientBase::RESP_VAL_VERSION_NO);
             $nextVersion = $currentVersion + 1;
         } else {
             self::$logger->warning('Cannot find page', [$pageId]);

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Request;
 
-use Ds\Map;
+use Ds\Collection;
 use oglow\tools\common\AbstractSingleton;
 
 class RequestParameterData extends AbstractSingleton
@@ -104,7 +104,7 @@ class RequestParameterData extends AbstractSingleton
      * @inheritDoc
      */
     #[\Override]
-    protected function prepareSettings(Map $overrideParameters): void
+    protected function prepareSettings(Collection $overrideParameters): void
     {
         // NothingToDo
     }
@@ -113,7 +113,7 @@ class RequestParameterData extends AbstractSingleton
      * @inheritDoc
      */
     #[\Override]
-    final protected function validateSettings(Map $overrideParameters): bool
+    final protected function validateSettings(Collection $overrideParameters): bool
     {
         return true;
     }

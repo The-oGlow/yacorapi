@@ -35,12 +35,12 @@ class ResponseTest extends EasyGoingTestCase
         return $this->o2t;
     }
 
-    public function testGetResponse(): void
+    public function testGetRawData(): void
     {
         $expected = Map::class;
         $expectedCount = 0;
 
-        $actual = $this->getCasto2t()->getResponse();
+        $actual = $this->getCasto2t()->getRawData();
 
         self::assertInstanceOf($expected, $actual);
         self::assertCount($expectedCount, $actual);

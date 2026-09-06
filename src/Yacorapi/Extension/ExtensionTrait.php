@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Extension;
 
-use Ds\Map;
 use Ds\Collection;
+use Ds\Map;
 use Ds\Vector;
 use oglow\tools\Yacorapi\ExitCodes;
 use ollily\Tools\Emergency;
@@ -32,11 +32,14 @@ trait ExtensionTrait
         ExtensionEnum::EXTENSION_PROJECTDOC_TOOLBOX,
     ];
 
-    /** @var Map<mixed,IExtension> */
-    protected Map $loadedExtensions;
+    /** @var Collection<mixed,IExtension>
+     * @phpstan-var Map<mixed,IExtension> */
+    protected Collection $loadedExtensions;
 
     /**
      * @param Collection<mixed,Vector<mixed>> $addons
+     *
+     * @phpstan-param Map<mixed,Vector<mixed>> $addons
      *
      * @return Vector<mixed>
      */
@@ -45,7 +48,7 @@ trait ExtensionTrait
         $macros = new Vector();
 
         /** @var Vector<string> $vecMacros */
-        foreach ($addons->values() as $vecMacros) {
+        foreach (array_values($addons->toArray()) as $vecMacros) {
             foreach ($vecMacros as $macro) {
                 $macros->push($macro);
             }
@@ -78,6 +81,8 @@ trait ExtensionTrait
      * @param ExtensionEnum $modeExtension
      *
      * @return Collection<mixed,IExtension>
+     *
+     * @phpstan-return Map<mixed,IExtension>
      */
     protected function loadExtensions(ExtensionEnum $modeExtension): Collection
     {
@@ -96,6 +101,8 @@ trait ExtensionTrait
      * @param ExtensionEnum $modeExtension
      *
      * @return Collection<mixed,IExtension>
+     *
+     * @phpstan-return Map<mixed,IExtension>
      */
     protected function initExtensions(ExtensionEnum $modeExtension): Collection
     {
@@ -125,9 +132,13 @@ trait ExtensionTrait
      *
      * @param Collection<mixed,IExtension> $extensions
      *
+     * @phpstan-param Map<mixed,IExtension> $extensions
+     *
      * @return Collection<mixed,Vector<mixed>>
+     *
+     * @phpstan-return Map<mixed,Vector<mixed>>
      */
-    protected function getExtensionAddons(Map $extensions): Collection
+    protected function getExtensionAddons(Collection $extensions): Collection
     {
         self::$logger->debug('START');
 
@@ -151,6 +162,8 @@ trait ExtensionTrait
      * Returns an.
      *
      * @param Collection<mixed,Vector<mixed>> $addons
+     *
+     * @phpstan-param Map<mixed,Vector<mixed>> $addons
      *
      * @return array<mixed,mixed>
      */

@@ -14,16 +14,16 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Macro;
 
 use Ds\Collection;
+use Exception;
 use Monolog\ConsoleLogger;
 use oglow\tools\common\AbstractContainer;
 use oglow\tools\Yacorapi\ExitCodes;
 use oglow\tools\Yacorapi\Extension\ExtensionTrait;
 use ollily\Tools\Emergency;
 use Psr\Log\LoggerInterface;
-use Exception;
+
 class AddonMacroData extends AbstractContainer
 {
-
     use ExtensionTrait;
 
     protected const int VAL_SHOW_ITEMS_MAX = 20;
@@ -34,7 +34,9 @@ class AddonMacroData extends AbstractContainer
     {
         self::$logger = new ConsoleLogger(AddonMacroData::class);
         self::$logger->debug('START');
+
         parent::__construct();
+
         self::$logger->debug('END');
     }
 
@@ -50,11 +52,7 @@ class AddonMacroData extends AbstractContainer
         $macros = [];
         if ($this->keyExists($mode->value)) {
             $addons = $this->getDataByMode($mode->value);
-            if ($addons instanceof Collection) {
-                $macros = $this->getExtensionAddonMacrosArray($addons);
-            } else {
-                self::$logger->warning('Addons have wrong datatype', [empty($addons) ? 'null' : gettype($addons)]);
-            }
+            $macros = $this->getExtensionAddonMacrosArray($addons);
         }
         if (count($macros) > self::VAL_SHOW_ITEMS_MAX) {
             self::$logger->debug('macros count', [count($macros)]);
@@ -79,13 +77,10 @@ class AddonMacroData extends AbstractContainer
         $macroNames = [];
         if ($this->keyExists($mode->value)) {
             $addons = $this->getDataByMode($mode->value);
-            if ($addons instanceof Collection) {
-                $macros = $addons->get($addon, []);
-                foreach ($macros as $macro) {
-                    $macroNames[] = $macro;
-                }
-            } else {
-                self::$logger->warning('Addons have wrong datatype', [empty($addons) ? 'null' : gettype($addons)]);
+            /** @psalm-suppress MixedMethodCall */
+            $macros = $addons->get($addon, []);
+            foreach ($macros as $macro) {
+                $macroNames[] = $macro;
             }
         }
         if (count($macroNames) > self::VAL_SHOW_ITEMS_MAX) {
@@ -110,18 +105,14 @@ class AddonMacroData extends AbstractContainer
         $macroNames = [];
         if ($this->keyExists($mode->value)) {
             $addons = $this->getDataByMode($mode->value);
-            if ($addons instanceof Collection) {
-                foreach ($addons as $macros) {
-                    if ($macros instanceof Collection) {
-                        $macroNames = array_merge($macroNames, $macros->toArray());
-                    } elseif (is_array($macros)) {
-                        $macroNames = array_merge($macroNames, $macros);
-                    } else {
-                        self::$logger->warning('Macros have wrong datatype', [empty($macros) ? 'null' : gettype($macros)]);
-                    }
+            foreach ($addons as $macros) {
+                if ($macros instanceof Collection) {
+                    $macroNames = array_merge($macroNames, $macros->toArray());
+                } elseif (is_array($macros)) {
+                    $macroNames = array_merge($macroNames, $macros);
+                } else {
+                    self::$logger->warning('Macros have wrong datatype', [gettype($macros)]);
                 }
-            } else {
-                self::$logger->warning('Addons have wrong datatype', [empty($macros) ? 'null' : gettype($macros)]);
             }
         }
         if (count($macroNames) > self::VAL_SHOW_ITEMS_MAX) {
@@ -155,22 +146,22 @@ class AddonMacroData extends AbstractContainer
         try {
             $singleAddon = new SingleAddon();
             $allData[AddonTypeEnum::ADDON_SINGLE->value] = $singleAddon->getAddons();
-        } catch (Exception $ex) {
-            Emergency::breakSystem(ExitCodes::ERR_CODE_SINGLEADDON_NOT_INIT, sprintf('SingleAddon failed: %s', $ex->getMessage()));
+        } catch (Exception $exception) {
+            Emergency::breakSystem(ExitCodes::ERR_CODE_SINGLEADDON_NOT_INIT, sprintf('SingleAddon failed: %s', $exception->getMessage()));
         }
 
         try {
             $blockerAddon = new BlockerAddon();
             $allData[AddonTypeEnum::ADDON_BLOCKER->value] = $blockerAddon->getAddons();
-        } catch (Exception $ex) {
-            Emergency::breakSystem(ExitCodes::ERR_CODE_BLOCKER_ADDON_NOT_INIT, sprintf('BlockerAddon failed: %s', $ex->getMessage()));
+        } catch (Exception $exception) {
+            Emergency::breakSystem(ExitCodes::ERR_CODE_BLOCKER_ADDON_NOT_INIT, sprintf('BlockerAddon failed: %s', $exception->getMessage()));
         }
 
         try {
             $allAddon = new AllAddon();
             $allData[AddonTypeEnum::ADDON_ALL->value] = $allAddon->getAddons();
-        } catch (Exception $ex) {
-            Emergency::breakSystem(ExitCodes::ERR_CODE_ALLADDON_NOT_INIT, sprintf('AllAddon failed: %s', $ex->getMessage()));
+        } catch (Exception $exception) {
+            Emergency::breakSystem(ExitCodes::ERR_CODE_ALLADDON_NOT_INIT, sprintf('AllAddon failed: %s', $exception->getMessage()));
         }
 
         $this->setAllData($allData);

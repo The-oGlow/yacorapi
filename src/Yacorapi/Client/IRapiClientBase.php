@@ -19,9 +19,9 @@ use oglow\tools\Yacorapi\Data\ItemTypeEnum;
 use oglow\tools\Yacorapi\Extension\ExtensionEnum;
 use oglow\tools\Yacorapi\IConnectionProvider;
 use oglow\tools\Yacorapi\IRapiClient;
-use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Macro\AddonTypeEnum;
 use oglow\tools\Yacorapi\Request\RequestParameterData;
+use oglow\tools\Yacorapi\Response\ResponseParameterData;
 use Psr\Log\LogLevel;
 
 interface IRapiClientBase
@@ -70,15 +70,15 @@ interface IRapiClientBase
     public const int REQ_VAL_VERSION_FIRST = RequestParameterData::VAL_VERSION_FIRST;
 
     // Response Parameter
-    public const string RESP_VAL_BODY_EMPTY = IResponse::VAL_BODY_EMPTY;
+    public const string RESP_VAL_BODY_EMPTY = ResponseParameterData::VAL_BODY_EMPTY;
 
-    public const int RESP_VAL_PAGE_ID_NO = IResponse::VAL_PAGE_ID_NO;
+    public const int RESP_VAL_PAGE_ID_NO = ResponseParameterData::VAL_PAGE_ID_NO;
 
-    public const int RESP_VAL_RESULT_FIRST = IResponse::VAL_RESULT_FIRST;
+    public const int RESP_VAL_RESULT_FIRST = ResponseParameterData::VAL_RESULT_FIRST;
 
-    public const string RESP_VAL_TITLE_EMPTY = IResponse::VAL_TITLE_EMPTY;
+    public const string RESP_VAL_TITLE_EMPTY = ResponseParameterData::VAL_TITLE_EMPTY;
 
-    public const int RESP_VAL_VERSION_NO = IResponse::VAL_VERSION_NO;
+    public const int RESP_VAL_VERSION_NO = ResponseParameterData::VAL_VERSION_NO;
 
     /**
      * Create new RapiClient.

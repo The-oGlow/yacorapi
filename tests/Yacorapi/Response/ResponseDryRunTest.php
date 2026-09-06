@@ -52,12 +52,12 @@ class ResponseDryRunTest extends EasyGoingTestCase
         self::assertEquals($actual->count(), $actual2->count());
     }
 
-    public function testGetResponse(): void
+    public function testGetRawData(): void
     {
         $expected = Map::class;
         $expectedCount = 5;
 
-        $actual = $this->getCasto2t()->getResponse();
+        $actual = $this->getCasto2t()->getRawData();
 
         self::assertInstanceOf($expected, $actual);
         self::assertCount($expectedCount, $actual);

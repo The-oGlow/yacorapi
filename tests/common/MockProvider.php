@@ -17,10 +17,10 @@ use Ds\Collection;
 use Ds\Map;
 use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\ConstData;
-use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Provider\AbstractProvider;
 use oglow\tools\Yacorapi\Request\RequestParameterData;
 use oglow\tools\Yacorapi\Request\RequestTypeEnum;
+use oglow\tools\Yacorapi\Response\ResponseParameterData;
 use oglow\tools\Yacorapi\YacorapiTestData;
 use Psr\Log\LoggerInterface;
 
@@ -230,19 +230,19 @@ class MockProvider extends AbstractProvider
         if (str_contains($execUrl, $searchUrl)) {
             self::$logger->notice('A \'listSpaces\'', [$execUrl, $reqType]);
 
-            $response = array_merge($response, [IResponse::KEY_TOTAL_SIZE => 1]);
+            $response = array_merge($response, [ResponseParameterData::KEY_TOTAL_SIZE => 1]);
             $response = array_merge(
                 $response,
-                [IResponse::KEY_RESULTS => [
+                [ResponseParameterData::KEY_RESULTS => [
                             [
-                                IResponse::KEY_ID => YacorapiTestData::C_SPACE_EXIST_ID,
-                                IResponse::KEY_KEY => YacorapiTestData::C_SPACE_EXIST_KEY,
-                                IResponse::KEY_NAME => YacorapiTestData::C_SPACE_EXIST_NAME,
-                                IResponse::KEY_DESCRIPTION => [
-                                    IResponse::KEY_PLAIN => [
-                                        IResponse::KEY_VALUE => YacorapiTestData::C_SPACE_EXIST_DESCRIPTION]],
-                                IResponse::KEY_STATUS => YacorapiTestData::C_SPACE_EXIST_STATUS,
-                                IResponse::KEY_TYPE => 0,
+                                ResponseParameterData::KEY_ID => YacorapiTestData::C_SPACE_EXIST_ID,
+                                ResponseParameterData::KEY_KEY => YacorapiTestData::C_SPACE_EXIST_KEY,
+                                ResponseParameterData::KEY_NAME => YacorapiTestData::C_SPACE_EXIST_NAME,
+                                ResponseParameterData::KEY_DESCRIPTION => [
+                                    ResponseParameterData::KEY_PLAIN => [
+                                        ResponseParameterData::KEY_VALUE => YacorapiTestData::C_SPACE_EXIST_DESCRIPTION]],
+                                ResponseParameterData::KEY_STATUS => YacorapiTestData::C_SPACE_EXIST_STATUS,
+                                ResponseParameterData::KEY_TYPE => 0,
                             ],
                         ]]
             );
@@ -310,7 +310,7 @@ class MockProvider extends AbstractProvider
             self::$logger->notice('A \'createPage\'', [$execUrl, $reqType, $mapParameters]);
 
             $response = array_merge($response, YacorapiTestData::RESP_HEAD_SEARCHPAGEID_01());
-            $response = array_merge($response, [IResponse::KEY_TITLE => $mapParameters->get(RequestParameterData::PROP_TITLE)]);
+            $response = array_merge($response, [ResponseParameterData::KEY_TITLE => $mapParameters->get(RequestParameterData::PROP_TITLE)]);
             $response = array_merge($response, YacorapiTestData::prepareResponseBody('', $mapParameters));
             $response = array_merge($response, YacorapiTestData::prepareResponseSpace('', $mapParameters));
             $response = array_merge($response, YacorapiTestData::prepareResponseAncestor('', $mapParameters));
@@ -346,7 +346,7 @@ class MockProvider extends AbstractProvider
             self::$logger->notice('A \'updatePage\'', [$execUrl, $reqType, $mapParameters]);
 
             $response = array_merge($response, YacorapiTestData::RESP_HEAD_SEARCHPAGEID_01());
-            $response = array_merge($response, [IResponse::KEY_TITLE => $mapParameters->get(RequestParameterData::PROP_TITLE)]);
+            $response = array_merge($response, [ResponseParameterData::KEY_TITLE => $mapParameters->get(RequestParameterData::PROP_TITLE)]);
             $response = array_merge($response, YacorapiTestData::prepareResponseBody('', $mapParameters));
             $done = true;
         } else {
@@ -372,7 +372,7 @@ class MockProvider extends AbstractProvider
 
         if (str_contains($execUrl, $searchUrl) && str_contains($execUrl, $searchParameter)) {
             self::$logger->notice('A \'spaceHomepage\'', [$execUrl, $reqType, $searchParameter]);
-            $response = array_merge($response, [IResponse::KEY_HOMEPAGE => [IResponse::KEY_ID => YacorapiTestData::C_SPACE_EXIST_ID]]);
+            $response = array_merge($response, [ResponseParameterData::KEY_HOMEPAGE => [ResponseParameterData::KEY_ID => YacorapiTestData::C_SPACE_EXIST_ID]]);
         } else {
             self::$logger->debug('Not a \'spaceHomepage\'', [$execUrl, $reqType, $searchParameter]);
         }
