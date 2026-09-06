@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace oglow\tools\Addon\UserMacro\Macro;
 
-use Ds\Vector;
 use oglow\tools\Yacorapi\Macro\AbstractAddon;
 
 /**
@@ -23,20 +22,4 @@ use oglow\tools\Yacorapi\Macro\AbstractAddon;
  */
 class UserMacroAddon extends AbstractAddon
 {
-    #[\Override]
-    protected function init(): void
-    {
-        parent::init();
-        $this->addonsMacros->putAll(
-            [
-                'Confluence User Macros' => new Vector(
-                    [
-                        'um-css-style',
-                        'um-iframe',
-                        'um-rule-blue',
-                    ]
-                ),
-            ]
-        );
-    }
 }
