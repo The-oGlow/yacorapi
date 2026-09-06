@@ -34,7 +34,6 @@ abstract class AbstractAddon implements IAddon
         self::$logger = new ConsoleLogger(AbstractAddon::class);
         self::$logger->debug('START');
         $this->init();
-        $this->write();
         self::$logger->debug('Is initiated', [AbstractAddon::class]);
         self::$logger->debug('END');
     }
@@ -45,19 +44,18 @@ abstract class AbstractAddon implements IAddon
         $file = ClazzHelper::getClazzPath(static::class) . DIRECTORY_SEPARATOR . ClazzHelper::getClazzFilename(static::class).  JsonHelper::FILE_EXT_JSON;
         if (file_exists($file)) {
             try {
-                $this->addonsMacros = new Map(JsonHelper::loadJson($file));
+                $jsonData = JsonHelper::loadJson($file);
+                $map = new Map();
+                foreach ($jsonData as $key => $value) {
+                    $map->put($key, new Vector($value));
+                }
+                $this->addonsMacros = $map;
             } catch (Exception $exception) {
                 self::$logger->error($exception->getMessage());
             }
         } else {
-            self::$logger->notice('No addon datafile to load', [$file]);
+            self::$logger->debug('No addon datafile to load', [$file]);
         }
-    }
-
-    protected function write(): void
-    {
-//        $file = 'c:\\projekte\\webdata\\tmp\\' . ClazzHelper::getClazzFilename(static::class);
-//        JsonHelper::storeJsonCollection($this->addonsMacros, $file, JsonHelper::FILE_EXT_JSON, false);
     }
 
     /**

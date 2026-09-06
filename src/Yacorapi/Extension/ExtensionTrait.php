@@ -14,12 +14,8 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Extension;
 
 use Ds\Map;
+use Ds\Collection;
 use Ds\Vector;
-// use oglow\tools\Addon\Atlassian\Extension\AdminExtension;
-// use oglow\tools\Addon\Atlassian\Extension\AtlassianExtension;
-// use oglow\tools\Addon\Projectdoc\Extension\ProjectdocExtension;
-// use oglow\tools\Addon\ThirdParty\Extension\ThirdPartyExtension;
-// use oglow\tools\Addon\UserMacro\Extension\UserMacroExtension;
 use oglow\tools\Yacorapi\ExitCodes;
 use ollily\Tools\Emergency;
 
@@ -36,27 +32,15 @@ trait ExtensionTrait
         ExtensionEnum::EXTENSION_PROJECTDOC_TOOLBOX,
     ];
 
-    //    protected RapiClientExtension $commonExtension;
-    //
-    //    protected AdminExtension $adminExtension;
-    //
-    //    protected AtlassianExtension $atlassianExtension;
-    //
-    //    protected UserMacroExtension $userMacroExtension;
-    //
-    //    protected ThirdPartyExtension $thirdPartyExtension;
-    //
-    //    protected ProjectdocExtension $projectdocExtension;
-
     /** @var Map<mixed,IExtension> */
     protected Map $loadedExtensions;
 
     /**
-     * @param Map<mixed,Vector<mixed>> $addons
+     * @param Collection<mixed,Vector<mixed>> $addons
      *
      * @return Vector<mixed>
      */
-    public function getExtensionAddonMacros(Map $addons): Vector
+    public function getExtensionAddonMacros(Collection $addons): Vector
     {
         $macros = new Vector();
 
@@ -93,53 +77,27 @@ trait ExtensionTrait
      *
      * @param ExtensionEnum $modeExtension
      *
-     * @return Map<mixed,IExtension>
+     * @return Collection<mixed,IExtension>
      */
-    protected function loadExtensions(ExtensionEnum $modeExtension): Map
+    protected function loadExtensions(ExtensionEnum $modeExtension): Collection
     {
         self::$logger->debug('START', [$modeExtension]);
 
         $this->loadedExtensions = $this->initExtensions($modeExtension);
 
-        //        $extensions = $this->initExtensions($modeExtension);
-        //        foreach ($extensions as $key => $extension) {
-        //            self::$logger->debug('Key,Ext', [$key]);
-        //            switch ($key) {
-        //                case ExtensionEnum::EXTENSION_RAPI_CLIENT->value:
-        //                    //                    $this->commonExtension = $extension; // @phpstan-ignore assign.propertyType
-        //                    break;
-        //                case ExtensionEnum::EXTENSION_ATLASSIAN->value:
-        //                    $this->atlassianExtension = $extension; // @phpstan-ignore assign.propertyType
-        //                    break;
-        //                case ExtensionEnum::EXTENSION_ATLASSIAN_ADMIN->value:
-        //                    $this->adminExtension = $extension; // @phpstan-ignore assign.propertyType
-        //                    break;
-        //                case ExtensionEnum::EXTENSION_ATLASSIAN_USER_MACRO->value:
-        //                    $this->userMacroExtension = $extension; // @phpstan-ignore assign.propertyType
-        //                    break;
-        //                case ExtensionEnum::EXTENSION_THIRD_PARTY->value:
-        //                    $this->thirdPartyExtension = $extension; // @phpstan-ignore assign.propertyType
-        //                    break;
-        //                case ExtensionEnum::EXTENSION_PROJECTDOC_TOOLBOX->value:
-        //                    $this->projectdocExtension = $extension; // @phpstan-ignore assign.propertyType
-        //                    break;
-        //                default:
-        //                    Emergency::breakSystem(ExitCodes::ERR_CODE_EXTENSION_NOT_LOADED, sprintf('Extension not loaded: %s, %s ', $key, print_r($extension, true)));
-        //            }
-        //        }
         self::$logger->debug('END');
 
         return $this->loadedExtensions;
     }
 
     /**
-     * Init extensions into a map.
+     * Init extensions into a collection.
      *
      * @param ExtensionEnum $modeExtension
      *
-     * @return Map<mixed,IExtension>
+     * @return Collection<mixed,IExtension>
      */
-    protected function initExtensions(ExtensionEnum $modeExtension): Map
+    protected function initExtensions(ExtensionEnum $modeExtension): Collection
     {
         self::$logger->debug('START', [$modeExtension]);
 
@@ -153,7 +111,6 @@ trait ExtensionTrait
                     $extensions->put($newInstance->getId(), $newInstance); // @phpstan-ignore staticMethod.dynamicCall
                 }
             } else {
-                //                self::$logger->notice('Extension not loaded', [$extensionEnum->name]);
                 Emergency::breakSystem(ExitCodes::ERR_CODE_EXTENSION_NOT_LOADED, sprintf('Extension not loaded: %s ', $extensionEnum->name));
             }
         }
@@ -164,13 +121,13 @@ trait ExtensionTrait
     }
 
     /**
-     * Returns a map of all addons (incl. macros) from all extensions.
+     * Returns a collection of all addons (incl. macros) from all extensions.
      *
-     * @param Map<mixed,IExtension> $extensions
+     * @param Collection<mixed,IExtension> $extensions
      *
-     * @return Map<mixed,Vector<mixed>>
+     * @return Collection<mixed,Vector<mixed>>
      */
-    protected function getExtensionAddons(Map $extensions): Map
+    protected function getExtensionAddons(Map $extensions): Collection
     {
         self::$logger->debug('START');
 
@@ -193,11 +150,11 @@ trait ExtensionTrait
     /**
      * Returns an.
      *
-     * @param Map<mixed,Vector<mixed>> $addons
+     * @param Collection<mixed,Vector<mixed>> $addons
      *
      * @return array<mixed,mixed>
      */
-    protected function getExtensionAddonMacrosArray(Map $addons): array
+    protected function getExtensionAddonMacrosArray(Collection $addons): array
     {
         $macros = $this->getExtensionAddonMacros($addons);
 

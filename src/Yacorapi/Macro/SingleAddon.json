@@ -1,0 +1,10 @@
+{
+    "single-addon": 
+            [
+                "children",
+                "code",
+                "create - from - template",
+                "section",
+                "column"
+            ]
+}

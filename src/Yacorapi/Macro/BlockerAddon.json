@@ -1,0 +1,121 @@
+{
+    "Advanced Roadmaps for Jira in Confluence":
+            [
+                "portfolio-for-jira-plan"],
+    "Advanced Tables for Confluence":
+            [
+                "json-table",
+                "table-plus",
+                "csv",
+                "jql-table"
+            ],
+    "BPMN Modeler Enterprise":
+            [
+                "vbcp-macro-enterprise",
+                "chart-plugin",
+                "chart"
+            ],
+    "Comala Document Management":
+            [
+                "document-actions-report",
+                "document-approvals-report",
+                "document-states-report",
+                "document-stats-report",
+                "document-tasks-report",
+                "get-metadata",
+                "pageactivity",
+                "pagestatus",
+                "workflowreport",
+                "workflow-reporter"
+            ],
+    "Confluence HTML Macros":
+            [
+                "html",
+                "html-include",
+                "rss",
+                "rss-include"
+            ],
+    "Linking for Confluence":
+            [
+                "add-page",
+                "add-page-form",
+                "child-counter",
+                "incoming-links",
+                "link-page",
+                "link-to",
+                "link-window",
+                "orphaned-links",
+                "outgoing-links",
+                "undefined-links"
+            ],
+    "projectdoc Toolbox":
+            [
+                "projectdoc-aside-panel-macro",
+                "projectdoc-box-caution",
+                "projectdoc-box-deprecated",
+                "projectdoc-box-example",
+                "projectdoc-box-fault",
+                "projectdoc-box-feedback",
+                "projectdoc-box-generic",
+                "projectdoc-box-info",
+                "projectdoc-box-note",
+                "projectdoc-box-pending",
+                "projectdoc-box-question",
+                "projectdoc-box-references",
+                "projectdoc-box-tip",
+                "projectdoc-box-version",
+                "projectdoc-box-warning",
+                "projectdoc-code-block-placeholder-macro",
+                "projectdoc-content-marker",
+                "projectdoc-definition-list-macro",
+                "projectdoc-display-list",
+                "projectdoc-display-table",
+                "projectdoc-display-template-list",
+                "projectdoc-layout-element-macro",
+                "projectdoc-link-external",
+                "projectdoc-name-list",
+                "projectdoc-properties-marker",
+                "projectdoc-properties-supplier-macro",
+                "projectdoc-section",
+                "projectdoc-table-merger-macro",
+                "projectdoc-tour-by-property-macro",
+                "projectdoc-tour-macro",
+                "projectdoc-transclude-documents-macro",
+                "projectdoc-transclusion-macro"
+            ],
+    "Scroll Documents for Confluence":
+            [
+                "scroll-document-location"
+            ],
+    "Scroll Versions for Confluence":
+            [
+                "excerpt-includeplus",
+                "includeplus",
+                "sv-pagetree"
+            ],
+    "Scroll Runtime for Confluence":
+            [
+                "sp-image",
+                "sp-nobody-link",
+                "sp-pagelayout",
+                "sp-pagelayout-cell",
+                "sp-pagelayout-section",
+                "sp-plaintextbody-link",
+                "sp-richtextbody-link"
+            ],
+    "Table Filter, Charts and Spreadsheets for Confluence":
+            [
+                "ai-table",
+                "csv-table",
+                "json-from-table",
+                "pivot-table",
+                "spreadsheet-body-table",
+                "spreadsheet-include",
+                "spreadsheet-table",
+                "table-chart",
+                "table-excerpt",
+                "table-excerpt-include",
+                "table-filter",
+                "table-joiner"
+            ]
+}

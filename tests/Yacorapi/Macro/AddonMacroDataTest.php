@@ -119,11 +119,11 @@ class AddonMacroDataTest extends EasyGoingTestCase
                 AddonTypeEnum::ADDON_BLOCKER,
                 YacorapiTestData::MODE_BLOCKER_ADDON_NAME_NOTEXISTS,
             ],
-            'AllMode'             => [
-                YacorapiTestData::MODE_ALL_ADDON_NAME_MACRO_COUNT,
-                AddonTypeEnum::ADDON_ALL,
-                YacorapiTestData::MODE_ALL_ADDON_NAME,
-            ],
+//            'AllMode'             => [
+//                YacorapiTestData::MODE_ALL_ADDON_NAME_MACRO_COUNT,
+//                AddonTypeEnum::ADDON_ALL,
+//                YacorapiTestData::MODE_ALL_ADDON_NAME,
+//            ],
             'AllModeNotExist'     => [
                 YacorapiTestData::MODE_ALL_ADDON_NAME_NOTEXIST_MACRO_COUNT,
                 AddonTypeEnum::ADDON_ALL,

@@ -15,9 +15,9 @@ namespace oglow\tools\Yacorapi\Helper;
 
 use Ds\Map;
 use oglow\tools\Yacorapi\Macro\HasMacroBodyEnum;
-use ollily\Tools\Test\TestData;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\ConstantCheckTestCase;
+use oglow\tools\Yacorapi\YacorapiTestData;
 
 class ContentHelperTest extends ConstantCheckTestCase
 {
@@ -159,8 +159,8 @@ class ContentHelperTest extends ConstantCheckTestCase
     public static function providerPreparePlainBody(): array
     {
         return [
-            'empty' => [TestData::DATA_EMPTY, TestData::DATA_EMPTY],
-            'content' => [self::prepareBodyPlain(TestData::DATA_CONTENT), TestData::DATA_CONTENT],
+            'empty' => [YacorapiTestData::DATA_EMPTY, YacorapiTestData::DATA_EMPTY],
+            'content' => [self::prepareBodyPlain(YacorapiTestData::MACR_BODY_CONTENT), YacorapiTestData::MACR_BODY_CONTENT],
         ];
     }
 
@@ -170,8 +170,8 @@ class ContentHelperTest extends ConstantCheckTestCase
     public static function providerPrepareRichBody(): array
     {
         return [
-            'empty' => [TestData::DATA_EMPTY, TestData::DATA_EMPTY],
-            'content' => [self::prepareBodyRich(TestData::DATA_CONTENT), TestData::DATA_CONTENT],
+            'empty' => [YacorapiTestData::DATA_EMPTY, YacorapiTestData::DATA_EMPTY],
+            'content' => [self::prepareBodyRich(YacorapiTestData::MACR_BODY_CONTENT), YacorapiTestData::MACR_BODY_CONTENT],
         ];
     }
 
@@ -181,7 +181,7 @@ class ContentHelperTest extends ConstantCheckTestCase
     public static function providerMacroName(): array
     {
         return [
-            'empty' => [false, TestData::DATA_EMPTY],
+            'empty' => [false, YacorapiTestData::DATA_EMPTY],
             'html' => [false, self::MACRO_HTML],
             'code' => [false, self::MACRO_CODE],
             'section' => [false, self::MACRO_SECTION],
@@ -195,8 +195,8 @@ class ContentHelperTest extends ConstantCheckTestCase
     public static function providerChooseMacroBody(): array
     {
         return [
-            'empty' => [HasMacroBodyEnum::NONE, TestData::DATA_EMPTY],
-            'notExist' => [HasMacroBodyEnum::NONE, TestData::DATA_NOTEXIST],
+            'empty' => [HasMacroBodyEnum::NONE, YacorapiTestData::DATA_EMPTY],
+            'notExist' => [HasMacroBodyEnum::NONE, YacorapiTestData::DATA_NOTEXIST],
             'html' => [HasMacroBodyEnum::PLAIN, self::MACRO_HTML],
             'code' => [HasMacroBodyEnum::PLAIN, self::MACRO_CODE],
             'section' => [HasMacroBodyEnum::RICH, self::MACRO_SECTION],
@@ -212,23 +212,23 @@ class ContentHelperTest extends ConstantCheckTestCase
         return [
             'empty' => ['', new Map()],
             'oneParam' => [
-                self::prepareParameter(TestData::KEY_NUM1, TestData::DATA_NUM1),
-//                sprintf(ContentHelper::TAG_PARAM_START . TestData::DATA_NUM1 . ContentHelper::TAG_PARAM_END, TestData::KEY_NUM1),
-                new Map(TestData::ARRAY_NUM_KEY1)],
+                self::prepareParameter(YacorapiTestData::KEY_NUM1, YacorapiTestData::DATA_NUM1),
+//                sprintf(ContentHelper::TAG_PARAM_START . YacorapiTestData::DATA_NUM1 . ContentHelper::TAG_PARAM_END, YacorapiTestData::KEY_NUM1),
+                new Map(YacorapiTestData::ARRAY_NUM_KEY1)],
             'twoParam' => [
-                self::prepareParameter(0, TestData::DATA_BOOL_T) .
-//                sprintf(ContentHelper::TAG_PARAM_START . TestData::DATA_BOOL_T . ContentHelper::TAG_PARAM_END, 0) .
-                self::prepareParameter(1, TestData::DATA_BOOL_F),
-//                sprintf(ContentHelper::TAG_PARAM_START . TestData::DATA_BOOL_F . ContentHelper::TAG_PARAM_END, 1),
-                new Map(TestData::ARRAY_BOOL2)],
+                self::prepareParameter(0, YacorapiTestData::DATA_BOOL_T) .
+//                sprintf(ContentHelper::TAG_PARAM_START . YacorapiTestData::DATA_BOOL_T . ContentHelper::TAG_PARAM_END, 0) .
+                self::prepareParameter(1, YacorapiTestData::DATA_BOOL_F),
+//                sprintf(ContentHelper::TAG_PARAM_START . YacorapiTestData::DATA_BOOL_F . ContentHelper::TAG_PARAM_END, 1),
+                new Map(YacorapiTestData::ARRAY_BOOL2)],
             'threeParam' => [
-                self::prepareParameter(TestData::KEY_NUM1, TestData::DATA_NUM1) .
-//                sprintf(ContentHelper::TAG_PARAM_START . TestData::DATA_NUM1 . ContentHelper::TAG_PARAM_END, TestData::KEY_NUM1) .
-                self::prepareParameter(TestData::KEY_NUM2, TestData::DATA_NUM2) .
-//                sprintf(ContentHelper::TAG_PARAM_START . TestData::DATA_NUM2 . ContentHelper::TAG_PARAM_END, TestData::KEY_NUM2) .
-                self::prepareParameter(TestData::KEY_NUM3, TestData::DATA_NUM3),
-//                sprintf(ContentHelper::TAG_PARAM_START . TestData::DATA_NUM3 . ContentHelper::TAG_PARAM_END, TestData::KEY_NUM3),
-                new Map(TestData::ARRAY_NUM_KEY3)],
+                self::prepareParameter(YacorapiTestData::KEY_NUM1, YacorapiTestData::DATA_NUM1) .
+//                sprintf(ContentHelper::TAG_PARAM_START . YacorapiTestData::DATA_NUM1 . ContentHelper::TAG_PARAM_END, YacorapiTestData::KEY_NUM1) .
+                self::prepareParameter(YacorapiTestData::KEY_NUM2, YacorapiTestData::DATA_NUM2) .
+//                sprintf(ContentHelper::TAG_PARAM_START . YacorapiTestData::DATA_NUM2 . ContentHelper::TAG_PARAM_END, YacorapiTestData::KEY_NUM2) .
+                self::prepareParameter(YacorapiTestData::KEY_NUM3, YacorapiTestData::DATA_NUM3),
+//                sprintf(ContentHelper::TAG_PARAM_START . YacorapiTestData::DATA_NUM3 . ContentHelper::TAG_PARAM_END, YacorapiTestData::KEY_NUM3),
+                new Map(YacorapiTestData::ARRAY_NUM_KEY3)],
         ];
     }
 
@@ -238,24 +238,24 @@ class ContentHelperTest extends ConstantCheckTestCase
     public static function providerPrepareMacroBody(): array
     {
         return [
-            'emptyAll' => [TestData::DATA_EMPTY, TestData::DATA_EMPTY, TestData::DATA_EMPTY],
-            'htmlEmptyBody' => [TestData::DATA_EMPTY, self::MACRO_HTML, TestData::DATA_EMPTY],
-            'codeEmptyBody' => [TestData::DATA_EMPTY, self::MACRO_CODE, TestData::DATA_EMPTY],
-            'sectionEmptyBody' => [TestData::DATA_EMPTY, self::MACRO_SECTION, TestData::DATA_EMPTY],
-            'columnEmptyBody' => [TestData::DATA_EMPTY, self::MACRO_COLUMN, TestData::DATA_EMPTY],
-            'emptyMacroWithBody' => [TestData::DATA_EMPTY, TestData::DATA_EMPTY, TestData::DATA_ALPHA1],
+            'emptyAll' => [YacorapiTestData::DATA_EMPTY, YacorapiTestData::DATA_EMPTY, YacorapiTestData::DATA_EMPTY],
+            'htmlEmptyBody' => [YacorapiTestData::DATA_EMPTY, self::MACRO_HTML, YacorapiTestData::DATA_EMPTY],
+            'codeEmptyBody' => [YacorapiTestData::DATA_EMPTY, self::MACRO_CODE, YacorapiTestData::DATA_EMPTY],
+            'sectionEmptyBody' => [YacorapiTestData::DATA_EMPTY, self::MACRO_SECTION, YacorapiTestData::DATA_EMPTY],
+            'columnEmptyBody' => [YacorapiTestData::DATA_EMPTY, self::MACRO_COLUMN, YacorapiTestData::DATA_EMPTY],
+            'emptyMacroWithBody' => [YacorapiTestData::DATA_EMPTY, YacorapiTestData::DATA_EMPTY, YacorapiTestData::DATA_ALPHA1],
             'htmlWithBody' => [
-            self::prepareBodyPlain(TestData::DATA_ALPHA1),
-                self::MACRO_HTML, TestData::DATA_ALPHA1],
+            self::prepareBodyPlain(YacorapiTestData::DATA_ALPHA1),
+                self::MACRO_HTML, YacorapiTestData::DATA_ALPHA1],
             'codeWithBody' => [
-            self::prepareBodyPlain(TestData::DATA_ALPHA1),
-                self::MACRO_CODE, TestData::DATA_ALPHA1],
+            self::prepareBodyPlain(YacorapiTestData::DATA_ALPHA1),
+                self::MACRO_CODE, YacorapiTestData::DATA_ALPHA1],
             'sectionWithBody' => [
-                self::prepareBodyRich(TestData::DATA_ALPHA1),
-                self::MACRO_SECTION, TestData::DATA_ALPHA1],
+                self::prepareBodyRich(YacorapiTestData::DATA_ALPHA1),
+                self::MACRO_SECTION, YacorapiTestData::DATA_ALPHA1],
             'columnWithBody' => [
-            self::prepareBodyRich(TestData::DATA_ALPHA1),
-            self::MACRO_COLUMN, TestData::DATA_ALPHA1],
+            self::prepareBodyRich(YacorapiTestData::DATA_ALPHA1),
+            self::MACRO_COLUMN, YacorapiTestData::DATA_ALPHA1],
         ];
     }
 
@@ -266,55 +266,55 @@ class ContentHelperTest extends ConstantCheckTestCase
     {
         return [
             'emptyParam' => [
-                self::prepareMacro(TestData::DATA_EMPTY), TestData::DATA_EMPTY, new Map(), TestData::DATA_EMPTY],
+                self::prepareMacro(YacorapiTestData::DATA_EMPTY), YacorapiTestData::DATA_EMPTY, new Map(), YacorapiTestData::DATA_EMPTY],
             'oneParam' => [
                 sprintf(
                     ContentHelper::TAG_MACRO_START .
-                        self::prepareParameter(0, TestData::DATA_ALPHA1) .
+                        self::prepareParameter(0, YacorapiTestData::DATA_ALPHA1) .
                         ContentHelper::TAG_MACRO_END,
-                    TestData::DATA_ALPHA2,
+                    YacorapiTestData::DATA_ALPHA2,
                     ContentHelper::TAG_MACRO_VERSION
                 ),
-                TestData::DATA_ALPHA2, new Map(TestData::ARRAY_ALPHA1), TestData::DATA_ALPHA3],
+                YacorapiTestData::DATA_ALPHA2, new Map(YacorapiTestData::ARRAY_ALPHA1), YacorapiTestData::DATA_ALPHA3],
             'twoParam' => [
                 sprintf(
                     ContentHelper::TAG_MACRO_START .
-                        self::prepareParameter(0, TestData::DATA_BOOL_T) .
-                        self::prepareParameter(1, TestData::DATA_BOOL_F) .
+                        self::prepareParameter(0, YacorapiTestData::DATA_BOOL_T) .
+                        self::prepareParameter(1, YacorapiTestData::DATA_BOOL_F) .
                         ContentHelper::TAG_MACRO_END,
-                    TestData::DATA_ALPHA1,
+                    YacorapiTestData::DATA_ALPHA1,
                     ContentHelper::TAG_MACRO_VERSION
                 ),
-                TestData::DATA_ALPHA1, new Map(TestData::ARRAY_BOOL2), TestData::DATA_ALPHA2],
+                YacorapiTestData::DATA_ALPHA1, new Map(YacorapiTestData::ARRAY_BOOL2), YacorapiTestData::DATA_ALPHA2],
             'threeParam' => [
                 sprintf(
                     ContentHelper::TAG_MACRO_START .
-                        self::prepareParameter(0, TestData::DATA_NUM1) .
-                        self::prepareParameter(1, TestData::DATA_NUM2) .
-                        self::prepareParameter(2, TestData::DATA_NUM3) .
+                        self::prepareParameter(0, YacorapiTestData::DATA_NUM1) .
+                        self::prepareParameter(1, YacorapiTestData::DATA_NUM2) .
+                        self::prepareParameter(2, YacorapiTestData::DATA_NUM3) .
                         ContentHelper::TAG_MACRO_END,
-                    TestData::DATA_ALPHA5,
+                    YacorapiTestData::DATA_ALPHA5,
                     ContentHelper::TAG_MACRO_VERSION
                 ),
-                TestData::DATA_ALPHA5, new Map(TestData::ARRAY_NUM3), TestData::DATA_ALPHA2],
+                YacorapiTestData::DATA_ALPHA5, new Map(YacorapiTestData::ARRAY_NUM3), YacorapiTestData::DATA_ALPHA2],
             'codePlainBody' => [
                 sprintf(
                     ContentHelper::TAG_MACRO_START .
-                        self::prepareBodyPlain(TestData::DATA_CONTENT) .
+                        self::prepareBodyPlain(YacorapiTestData::MACR_BODY_CONTENT) .
                         ContentHelper::TAG_MACRO_END,
                     self::MACRO_CODE,
                     ContentHelper::TAG_MACRO_VERSION
                 ),
-                self::MACRO_CODE, new Map(), TestData::DATA_CONTENT],
+                self::MACRO_CODE, new Map(), YacorapiTestData::MACR_BODY_CONTENT],
             'sectionRichBody' => [
                 sprintf(
                     ContentHelper::TAG_MACRO_START .
-                        self::prepareBodyRich(TestData::DATA_CONTENT) .
+                        self::prepareBodyRich(YacorapiTestData::MACR_BODY_CONTENT) .
                         ContentHelper::TAG_MACRO_END,
                     self::MACRO_SECTION,
                     ContentHelper::TAG_MACRO_VERSION
                 ),
-                self::MACRO_SECTION, new Map(), TestData::DATA_CONTENT],
+                self::MACRO_SECTION, new Map(), YacorapiTestData::MACR_BODY_CONTENT],
         ];
     }
 

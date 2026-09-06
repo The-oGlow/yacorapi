@@ -18,6 +18,7 @@ use oglow\tools\Yacorapi\YacorapiTestData;
 
 class AbstractAddonTestClazz extends AbstractAddon
 {
+    #[\Override]
     protected function init(): void
     {
         parent::init();
