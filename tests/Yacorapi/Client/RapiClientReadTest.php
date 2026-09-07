@@ -322,7 +322,7 @@ class RapiClientReadTest extends EasyGoingTestCase
     public static function providerReadPageByPageId(): array
     {
         return [
-            'exists' => [YacorapiTestData::HTML_PAGE, YacorapiTestData::C_SEARCHPAGEID_01],
+            'exists' => [YacorapiTestData::C_PAGE_BODY_1, YacorapiTestData::C_SEARCHPAGEID_01],
             'notExist' => [YacorapiTestData::DATA_EMPTY, YacorapiTestData::C_PAGEID_NOTEXIST],
         ];
     }

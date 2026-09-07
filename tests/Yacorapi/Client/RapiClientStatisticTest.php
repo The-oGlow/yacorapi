@@ -20,6 +20,9 @@ use oglow\tools\Yacorapi\Space\SpaceTypeEnum;
 use oglow\tools\Yacorapi\YacorapiTestData;
 use PHPUnit\Framework\EasyGoingTestCase;
 use Psr\Log\LoggerInterface;
+use oglow\tools\Yacorapi\Response\ResponseParameterData;
+use oglow\tools\Yacorapi\Statistic\StatisticStatistic;
+use oglow\tools\Yacorapi\Statistic\StatisticTypeEnum;
 
 class RapiClientStatisticTest extends EasyGoingTestCase
 {
@@ -45,6 +48,54 @@ class RapiClientStatisticTest extends EasyGoingTestCase
     protected function getCasto2t(): RapiClientStatisticTestClazz
     {
         return $this->o2t;
+    }
+
+    public function testListSpaces(): void {
+        self::$logger->info('START');
+
+        $expectedCount = 1;
+
+        $response = $this->getCasto2t()->listSpaces();
+
+        $actualCount = $response->getRawData()->get(ResponseParameterData::KEY_TOTAL_SIZE, -1);
+
+        self::$logger->info('response', [$response->getRawData()]);
+        self::$logger->info('results', [$response->getResults()]);
+
+        self::assertNotEmpty($response);
+        self::assertCount($expectedCount, $response->getResults());
+        self::assertCount($actualCount, $response->getResults());
+
+        self::$logger->info('END');
+    }
+
+    public function testCountMacrosInSpace(): void {
+        self::$logger->info('START');
+
+        $spaceKey = YacorapiTestData::C_SPACE_EXIST_KEY;
+
+        $outputMatrix = new StatisticStatistic($spaceKey, StatisticTypeEnum::SPACE);
+
+        $statistic = $this->getCasto2t()->countMacrosInSpace($spaceKey, $this->getCasto2t()->prepareAddonSet(), $outputMatrix);
+
+        self::$logger->info('statistic', [$statistic]);
+        self::assertNotEmpty($statistic);
+
+        self::$logger->info('outputMatrix', [$outputMatrix]);
+        self::assertNotEmpty($outputMatrix);
+
+        self::$logger->info('END');
+    }
+
+    public function testCountItemsinSpace(): void {
+        self::$logger->info('START');
+
+        $statistic = $this->getCasto2t()->countItemsinSpace(YacorapiTestData::C_SPACE_EXIST_KEY);
+
+        self::$logger->info('statistic', [$statistic->flatten()]);
+        self::assertNotEmpty($statistic);
+
+        self::$logger->info('END');
     }
 
     public function testPrepareSpacePagesUrl(): void

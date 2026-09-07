@@ -46,30 +46,16 @@ class RapiClientPermissionTest extends EasyGoingTestCase
         return $this->o2t;
     }
 
-    public function testPrepareRestrictByOpUrl(): void
-    {
-        $pageId = YacorapiTestData::C_PAGEID_EXIST;
+    public function testReadRestrictionsByPageId(): void {
+        self::$logger->info('START');
 
-        $expected1 = ConstData::C_RAPI_RESTRICTION_BYOP;
-        $expected2 = "$pageId";
+        $response = $this->getCasto2t()->readRestrictionsByPageId(YacorapiTestData::C_SEARCHPAGEID_01);
 
-        $actual = $this->getCasto2t()->publicPrepareRestrictByOpUrl($pageId);
+        self::$logger->info('response', [$response->getRawData()]);
+        self::assertNotEmpty($response);
+        self::assertNotEmpty($response->getRestrictions());
 
-        self::assertStringContainsString($expected1, $actual);
-        self::assertStringContainsString($expected2, $actual);
-    }
-
-    public function testPrepareRestrictUpdateUrl(): void
-    {
-        $pageId = YacorapiTestData::C_PAGEID_EXIST;
-
-        $expected1 = ConstData::C_RAPI_RESTRICTION;
-        $expected2 = "$pageId";
-
-        $actual = $this->getCasto2t()->publicPrepareRestrictUpdateUrl($pageId);
-
-        self::assertStringContainsString($expected1, $actual);
-        self::assertStringContainsString($expected2, $actual);
+        self::$logger->info('END');
     }
 
     public function testWriteRestrictionsByPageId(): void
@@ -82,7 +68,7 @@ class RapiClientPermissionTest extends EasyGoingTestCase
 
         self::assertEquals($expected1, $actual);
     }
-
+    
     public function testAddRestrictionForGroupEmpty(): void
     {
         $restrictions = [];
@@ -103,5 +89,29 @@ class RapiClientPermissionTest extends EasyGoingTestCase
         $actual       = $this->getCasto2t()->publicAddRestrictionForUser($restrictions);
 
         self::assertEquals($expected1, $actual);
+    }
+    
+    public function testPrepareRestrictByOpUrl(): void {
+        $pageId = YacorapiTestData::C_PAGEID_EXIST;
+
+        $expected1 = ConstData::C_RAPI_RESTRICTION_BYOP;
+        $expected2 = "$pageId";
+
+        $actual = $this->getCasto2t()->publicPrepareRestrictByOpUrl($pageId);
+
+        self::assertStringContainsString($expected1, $actual);
+        self::assertStringContainsString($expected2, $actual);
+    }
+
+    public function testPrepareRestrictUpdateUrl(): void {
+        $pageId = YacorapiTestData::C_PAGEID_EXIST;
+
+        $expected1 = ConstData::C_RAPI_RESTRICTION;
+        $expected2 = "$pageId";
+
+        $actual = $this->getCasto2t()->publicPrepareRestrictUpdateUrl($pageId);
+
+        self::assertStringContainsString($expected1, $actual);
+        self::assertStringContainsString($expected2, $actual);
     }
 }

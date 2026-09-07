@@ -18,6 +18,7 @@ use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\YacorapiTestData;
 use PHPUnit\Framework\EasyGoingTestCase;
 use Psr\Log\LoggerInterface;
+use oglow\tools\Yacorapi\Response\ResponseParameterData;
 
 class RapiClientWriteTest extends EasyGoingTestCase
 {
@@ -43,6 +44,67 @@ class RapiClientWriteTest extends EasyGoingTestCase
     protected function getCasto2t(): RapiClientWriteTestClazz
     {
         return $this->o2t;
+    }
+
+    public function testCreatePage(): void {
+        self::$logger->info('START');
+
+        $spaceKey = YacorapiTestData::C_SPACE_EXIST_KEY;
+        $pageTitle = sprintf('%s %s-$s', YacorapiTestData::C_PAGE_TITLE_1, date('Ymd-His'), 1);
+        $pageBody = YacorapiTestData::C_PAGE_BODY_1;
+        $parentId = YacorapiTestData::C_SPACE_EXIST_ID;
+
+        $response = $this->getCasto2t()->createPage($spaceKey, $pageTitle, $pageBody, $parentId);
+
+        self::$logger->info('response', [$response->getRawData()]);
+
+        self::assertNotEmpty($response);
+        self::assertNotEmpty($response->getValue(ResponseParameterData::KEY_ID));
+
+        self::assertEquals($pageTitle, $response->getValue(ResponseParameterData::KEY_TITLE));
+        self::assertEquals($pageBody, $response->getBody());
+        self::assertEquals($spaceKey, $response->getValue(ResponseParameterData::KEY_SPACE)[ResponseParameterData::KEY_KEY]);
+        self::assertEquals($parentId, $response->getValue(ResponseParameterData::KEY_ANCESTORS)[ResponseParameterData::KEY_ID]);
+
+        self::$logger->info('END');
+    }
+
+    public function testUpdatePage(): void {
+        self::$logger->info('START');
+
+        $updateId = YacorapiTestData::C_SEARCHPAGEID_01;
+        $updateTitle = sprintf('%s %s-$s',YacorapiTestData::C_PAGE_TITLE_2, date('Ymd-His'), 1);
+        $updateBody = YacorapiTestData::C_PAGE_BODY_2;
+
+        $before = $this->getCasto2t()->readPageByPageId($updateId);
+        self::$logger->info('before', [$before->getRawData()]);
+
+        self::assertNotEmpty($before);
+        self::assertEquals($updateId, $before->getValue(ResponseParameterData::KEY_ID));
+
+        $after = $this->getCasto2t()->updatePage($updateId, $updateBody, $updateTitle);
+        self::$logger->info('after', [$after->getRawData()]);
+
+        self::assertNotEmpty($after);
+        self::assertEquals($updateId, $after->getValue(ResponseParameterData::KEY_ID));
+        self::assertEquals($updateTitle, $after->getValue(ResponseParameterData::KEY_TITLE));
+        self::assertEquals($updateBody, $after->getBody());
+        
+        self::assertNotEquals($before->getValue(ResponseParameterData::KEY_TITLE), $after->getValue(ResponseParameterData::KEY_TITLE));
+        self::assertNotEquals($before->getBody(), $after->getBody());
+
+        self::$logger->info('END');
+    }
+
+    public function testMovePage(): void {
+        self::$logger->info('START');
+
+        $response = $this->getCasto2t()->movePage(YacorapiTestData::C_SEARCHPAGEID_01, YacorapiTestData::C_PAGEID_NEW);
+
+        self::$logger->info('response', [$response->getRawData()]);
+        self::assertNotEmpty($response);
+
+        self::$logger->info('END');
     }
 
     public function testPrepareUpdateURL(): void
