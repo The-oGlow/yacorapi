@@ -21,9 +21,9 @@ use Psr\Log\LoggerInterface;
 
 class ResponseSpaceDataDecorate extends AbstractResponse
 {
-    public const string SPACE_ARCH_FLAG1  = '[archived]';
 
-    public const string SPACE_ARCH_FLAG2  = '[archive]';
+    public const string SPACE_ARCH_FLAG1 = '[archived]';
+    public const string SPACE_ARCH_FLAG2 = '[archive]';
 
     private static LoggerInterface $logger;
 
@@ -34,7 +34,7 @@ class ResponseSpaceDataDecorate extends AbstractResponse
     {
         self::$logger = new ConsoleLogger(ResponseSpaceDataDecorate::class);
         self::$logger->debug('START');
-        $data                    = $response->getRawData();
+        $data = $response->getRawData();
         $data->put(ResponseParameterData::KEY_RESULTS, $response->getResults());
         parent::__construct($data->toArray());
         $this->spaces = $this->prepareSpaceArray($response->getResults()->toArray());
@@ -151,54 +151,29 @@ class ResponseSpaceDataDecorate extends AbstractResponse
             if ($asCsv) {
                 $idx = 0;
                 foreach ($spaces as $space) {
-                    $line = '';
                     if (is_array($space)) {
-                        $addResult = true;
-                        $descr     = $space[ResponseParameterData::KEY_DESCRIPTION][ResponseParameterData::KEY_PLAIN][ResponseParameterData::KEY_VALUE];
-                        if ($noArchived && $this->isArchived($descr)) {
-                            $addResult = false;
-                        }
-                        if ($addResult) {
+                        if ($this->isAddSpaceToList($space, $noArchived)) {
                             $resultSpaces[] = $space[ResponseParameterData::KEY_KEY];
-
-                            $line .= sprintf(
-                                '%s;%s;%s;%s',
-                                ++$idx, // NOSONAR php:S881
-                                $space[ResponseParameterData::KEY_KEY],
-                                $space[ResponseParameterData::KEY_TYPE],
-                                $this->isArchived($descr) ? ResponseParameterData::VAL_TRUE : ResponseParameterData::VAL_FALSE
-                            );
-                            $line .= sprintf(
-                                ';\'%s\';\'%s\'',
-                                $space[ResponseParameterData::KEY_NAME],
-                                htmlentities(
-                                    implode(
-                                        '',
-                                        explode(
-                                            PHP_EOL,
-                                            $descr
-                                        )
-                                    )
-                                )
-                            );
+                            $this->printSpaceInfo($space, ++$idx);
                         } else {
                             self::$logger->notice('  ++ Space already archived', [$space[ResponseParameterData::KEY_KEY]]);
                         }
                     }
-                    self::$logger->debug($line);
                 }
             } else {
                 foreach ($spaces as $space) {
                     if (is_array($space)) {
-                        $descr    = $space[ResponseParameterData::KEY_DESCRIPTION][ResponseParameterData::KEY_PLAIN][ResponseParameterData::KEY_VALUE];
+                        $descr = $space[ResponseParameterData::KEY_DESCRIPTION][ResponseParameterData::KEY_PLAIN][ResponseParameterData::KEY_VALUE];
                         $newSpace = [
-                            ResponseParameterData::KEY_KEY      => $space[ResponseParameterData::KEY_KEY],
-                            ResponseParameterData::KEY_NAME     => $space[ResponseParameterData::KEY_NAME],
-                            ResponseParameterData::KEY_TYPE     => $space[ResponseParameterData::KEY_TYPE],
+                            ResponseParameterData::KEY_ID => $space[ResponseParameterData::KEY_ID],
+                            ResponseParameterData::KEY_KEY => $space[ResponseParameterData::KEY_KEY],
+                            ResponseParameterData::KEY_NAME => $space[ResponseParameterData::KEY_NAME],
+                            ResponseParameterData::KEY_TYPE => $space[ResponseParameterData::KEY_TYPE],
+                            ResponseParameterData::KEY_HOMEPAGE => $space[ResponseParameterData::KEY_HOMEPAGE],
                             ResponseParameterData::KEY_ARCHIVED => $this->isArchived($descr) ? ResponseParameterData::VAL_TRUE : ResponseParameterData::VAL_FALSE,
                         ];
 
-                        $resultSpaces[(string)$space[ResponseParameterData::KEY_KEY]] = $newSpace;
+                        $resultSpaces[(string) $space[ResponseParameterData::KEY_KEY]] = $newSpace;
                     }
                 }
             }
@@ -206,6 +181,35 @@ class ResponseSpaceDataDecorate extends AbstractResponse
         }
 
         return $resultSpaces;
+    }
+
+    protected function isAddSpaceToList(mixed $space, bool $noArchived): bool
+    {
+        $addResult = true;
+        $descr = $space[ResponseParameterData::KEY_DESCRIPTION][ResponseParameterData::KEY_PLAIN][ResponseParameterData::KEY_VALUE];
+        if ($noArchived && $this->isArchived($descr)) {
+            $addResult = false;
+        }
+        return $addResult;
+    }
+
+    protected function printSpaceInfo(mixed $space, int $idx): void
+    {
+        $descr = $space[ResponseParameterData::KEY_DESCRIPTION][ResponseParameterData::KEY_PLAIN][ResponseParameterData::KEY_VALUE];
+
+        $line .= sprintf(
+            '%s;%s;%s;%s',
+            $idx,
+            $space[ResponseParameterData::KEY_KEY],
+            $space[ResponseParameterData::KEY_TYPE],
+            $this->isArchived($descr) ? ResponseParameterData::VAL_TRUE : ResponseParameterData::VAL_FALSE
+        );
+        $line .= sprintf(
+            ';\'%s\';\'%s\'',
+            $space[ResponseParameterData::KEY_NAME],
+            htmlentities(implode('', explode(PHP_EOL, $descr)))
+        );
+        self::$logger->debug($line);
     }
 
     /**

@@ -19,7 +19,7 @@ class ConstDataTest extends ConstantCheckTestCase
 {
     public const string  CLASS_PREFIX = ConstData::class . self::C_STATIC_SEP;
 
-    protected const int EXPECTED_CONSTANT_COUNT = 41;
+    protected const int EXPECTED_CONSTANT_COUNT = 38;
 
     protected const bool WITH_CONST_CROSSCHECK = true;
 
@@ -108,9 +108,6 @@ class ConstDataTest extends ConstantCheckTestCase
             self::CLASS_PREFIX . 'CONF_USERAUTHFILE',
             self::CLASS_PREFIX . 'CONF_USERFOLDER',
             self::CLASS_PREFIX . 'CONF_AUTH_CLAZZ',
-            self::CLASS_PREFIX . 'ENV_HOME',
-            self::CLASS_PREFIX . 'ENV_OFFSET',
-            self::CLASS_PREFIX . 'ENV_USERPROFILE',
             self::CLASS_PREFIX . 'KEY_CONF_PAT_PROD',
             self::CLASS_PREFIX . 'KEY_CONF_PAT_TEST',
             self::CLASS_PREFIX . 'KEY_USE_PROD',
