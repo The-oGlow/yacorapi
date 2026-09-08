@@ -20,16 +20,14 @@ use Monolog\DoNothingLogger;
 use oglow\tools\common\AbstractSingleton;
 use oglow\tools\Yacorapi\Request\RequestParameterData;
 use ollily\Tools\Emergency;
-use ollily\Tools\EnvironmentVariableTrait;
+use ollily\Tools\EnvironmentHelper;
 use Psr\Log\LoggerInterface;
-
 /**
  * Class ConstData.
  */
 // @phpcs:ignoreFile PSR1.Methods.CamelCapsMethodName.NotCamelCaps
 final class ConstData extends AbstractSingleton
 {
-    use EnvironmentVariableTrait;
 
     //
     // Public Consts
@@ -276,7 +274,7 @@ final class ConstData extends AbstractSingleton
 
         $this->definedConst = new Map();
 
-        $this->putConst(self::KEY_MY_DIR, self::getHome() . DIRECTORY_SEPARATOR . self::CONF_USERFOLDER);
+        $this->putConst(self::KEY_MY_DIR, EnvironmentHelper::getHome() . DIRECTORY_SEPARATOR . self::CONF_USERFOLDER);
         $this->prepareUserAuthorization((string) $this->definedConst->get(self::KEY_MY_DIR), self::CONF_USERAUTHFILE, self::CONF_AUTH_CLAZZ);
 
         if (is_bool($ovUseProd)) {
