@@ -264,26 +264,6 @@ final class ConstData extends AbstractSingleton
         return $this->userAuth;
     }
 
-    public function prepareFinalTarget(string $pathPre, string $outputFileName, string $pathPost = ''): string
-    {
-        self::$logger->debug('START - pathPre,outputFileName,pathPost ', [$pathPre, $outputFileName, $pathPost]);
-
-        $pathMid = dirname($outputFileName);
-        if (!empty($pathMid)) {
-            $pathMidSplit = explode(DIRECTORY_SEPARATOR, $pathMid);
-            $callback = fn (string $val): string => substr($val, 0, 2);
-            $pathMid = implode('-', array_map($callback, $pathMidSplit));
-        }
-        $fullTargetFile = $pathPre . DIRECTORY_SEPARATOR . $pathMid . DIRECTORY_SEPARATOR . basename($outputFileName);
-        if (!empty($pathPost)) {
-            $fullTargetFile .= DIRECTORY_SEPARATOR . $pathPost;
-        }
-
-        self::$logger->debug('END - fullTargetFile', [$fullTargetFile]);
-
-        return $fullTargetFile;
-    }
-
     /**
      * @inheritDoc
      */

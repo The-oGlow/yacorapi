@@ -16,6 +16,7 @@ namespace oglow\tools\Yacorapi\Store;
 use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\ConstData;
 use Psr\Log\LoggerInterface;
+use oglow\tools\Yacorapi\Store\FileStoreStageEnum;
 
 class FileAdapter extends AbstractStoreAdapter
 {
@@ -25,16 +26,20 @@ class FileAdapter extends AbstractStoreAdapter
      * @param string $outputFileName  The filename, without suffix, of the output file
      * @param string $fileSuffix      An optional suffix of the output file
      * @param string $customTargetDir The folder where to store the output file
+     * @param FileStoreStageEnum $storeStage The stage where to store the file (Default {@link FileStoreStageEnum::BASE})
+     * @param int|\Monolog\Level|\Psr\Log\LogLevel::*|string $level      The minimum logging level at which this handler will be triggered (Default: {@link AbstractStoreAdapter::LEVEL_DEFAULT})
      */
     public function __construct(
         string $outputFileName,
         string $fileSuffix = self::DEFAULT_FILE_SUFFIX,
-        string $customTargetDir = self::DEFAULT_CUSTOM_TARGET_DIR
+        string $customTargetDir = self::DEFAULT_CUSTOM_TARGET_DIR,
+        FileStoreStageEnum $storeStage = FileStoreStageEnum::BASE,
+            mixed $level = self::LEVEL_DEFAULT
     ) {
-        self::$logger    = new ConsoleLogger(FileAdapter::class);
-        self::$logger->debug("START", [$outputFileName,$fileSuffix, $customTargetDir]);
+        self::$logger    = new ConsoleLogger(FileAdapter::class, level: $level);
+        self::$logger->debug("START", [$outputFileName,$fileSuffix, $customTargetDir, $storeStage->name]);
 
-        parent::__construct($outputFileName, $fileSuffix, $customTargetDir);
+        parent::__construct($outputFileName, $fileSuffix, $customTargetDir, $storeStage, $level);
 
         self::$logger->debug('END');
     }

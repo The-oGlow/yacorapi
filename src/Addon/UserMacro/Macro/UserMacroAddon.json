@@ -1,1 +1,7 @@
-{"Confluence User Macros":["um-css-style","um-iframe","um-rule-blue"]}
+{
+    "Confluence User Macros": [
+        "um-css-style",
+        "um-iframe",
+        "um-rule-blue"
+    ]
+}

@@ -17,9 +17,14 @@ use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\ConstData;
 use ollily\Tools\Emergency;
 use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
+use oglow\tools\Yacorapi\Store\FileStoreStageEnum;
 
 abstract class AbstractStoreAdapter implements IStoreAdapter
 {
+    /** Default output level */
+    public const string LEVEL_DEFAULT = LogLevel::INFO;
+
     /** Field Separator */
     public const string DEFAULT_ITEM_SEP = ';';
 
@@ -61,14 +66,18 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
      * @param string $outputFileName  The filename, without suffix, of the output file
      * @param string $fileSuffix      An optional suffix of the output file
      * @param string $customTargetDir The folder where to store the output file
+     * @param FileStoreStageEnum $storeStage The stage where to store the file (Default {@link FileStoreStageEnum::BASE})
+     * @param int|\Monolog\Level|\Psr\Log\LogLevel::*|string $level      The minimum logging level at which this handler will be triggered (Default: {@link AbstractStoreAdapter::LEVEL_DEFAULT})
      */
     public function __construct(
         string $outputFileName,
         string $fileSuffix = self::DEFAULT_FILE_SUFFIX,
-        string $customTargetDir = self::DEFAULT_CUSTOM_TARGET_DIR
+        string $customTargetDir = self::DEFAULT_CUSTOM_TARGET_DIR,
+        FileStoreStageEnum $storeStage = FileStoreStageEnum::BASE,
+        mixed $level = self::LEVEL_DEFAULT
     ) {
-        self::$logger = new ConsoleLogger(AbstractStoreAdapter::class);
-        self::$logger->debug("START", [$outputFileName, $fileSuffix, $customTargetDir]);
+        self::$logger = new ConsoleLogger(AbstractStoreAdapter::class, level: $level);
+        self::$logger->debug("START", [$outputFileName, $fileSuffix, $customTargetDir, $storeStage->name]);
 
         // Init Dynamic Consts
         $this->constData = new ConstData(AbstractStoreAdapter::class);
@@ -77,8 +86,17 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
             $this->constData->c(ConstData::KEY_TARGET_ROOTDIR),
             $this->constData->c(ConstData::KEY_TARGET_DIR)
         );
-        $this->prepareTargetFolderSpecial($this->sessionTargetDir, ConstData::TARGET_ORGDIR, ConstData::TARGET_MODDIR);
-        $this->storeItem = $this->prepareStoreItem($outputFileName, $fileSuffix, $customTargetDir);
+        $finalTargetDir = $this->sessionTargetDir;
+
+        if (!$storeStage->isDefault()){
+            $finalTargetDir=$this->prepareTargetFolderSpecial($storeStage, $this->sessionTargetDir, ConstData::TARGET_ORGDIR, ConstData::TARGET_MODDIR);
+        }
+        
+        if (!empty($customTargetDir)) {
+            $finalTargetDir = $customTargetDir;
+        }
+
+        $this->storeItem = $this->prepareStoreItem($outputFileName, $fileSuffix, $finalTargetDir);
 
         self::$logger->debug('END');
     }
@@ -103,11 +121,11 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
     {
         self::$logger->debug("START", [$outputFileName, $targetRootDir, $sessionDir]);
 
-        $sessionDir = $this->constData->prepareFinalTarget($sessionDir, $outputFileName);
+        $sessionDir = $this->prepareFinalTarget($sessionDir, $outputFileName);
 
         self::$logger->debug('Create TARGET_ROOT', [$targetRootDir]);
         $this->mkdir($targetRootDir);
-        self::$logger->debug('Create session folder in TARGET_DIR', [$sessionDir]);
+        self::$logger->debug('Create session folder in TARGET_ROOT', [$sessionDir]);
         $this->mkdir($sessionDir);
 
         self::$logger->debug('END');
@@ -116,38 +134,79 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
     }
 
     /**
+     * @param FileStoreStageEnum $storeStage The stage where to store the file
      * @param string $sessionDir The current used folder for this session
      * @param string $orgDir     The folder name where to store the original files
      * @param string $modDir     the folder name where to store the modified files
+     * 
+     * @return string A stage specifix path for the outputfile
      */
-    protected function prepareTargetFolderSpecial(string $sessionDir, string $orgDir, string $modDir): void
+    protected function prepareTargetFolderSpecial(FileStoreStageEnum $storeStage, string $sessionDir, string $orgDir, string $modDir): string
     {
-        self::$logger->debug("START", [$sessionDir, $orgDir, $modDir]);
+        self::$logger->debug("START", [$storeStage->name, $sessionDir, $orgDir, $modDir]);
 
+        $specialPath = '';
         if (file_exists($sessionDir)) {
-            $targetOrgDir = $this->constData->prepareFinalTarget($sessionDir, $orgDir);
-            $targetModDir = $this->constData->prepareFinalTarget($sessionDir, $modDir);
-
-            self::$logger->debug('Create TARGET_ORG_DIR & TARGET_MOD_DIR', [$targetOrgDir, $targetModDir]);
-            $this->mkdir($targetOrgDir);
-            $this->mkdir($targetModDir);
+            switch ($storeStage) {
+                case FileStoreStageEnum::ORIGINAL:
+                    $specialPath = $this->prepareFinalTarget($sessionDir, $orgDir);
+                    $this->mkdir($specialPath);
+                    break;
+                case FileStoreStageEnum::MODIFIED:
+                    $specialPath = $this->prepareFinalTarget($sessionDir, $modDir);
+                    $this->mkdir($specialPath);
+                    break;
+                default:
+                    break;
+            }
         } else {
             self::$logger->warning('Session folder does not exists', [$sessionDir]);
         }
 
-        self::$logger->debug('END');
+        self::$logger->debug('END',[$specialPath]);
+        return $specialPath;
+        
+    }
+
+    /**
+     * Returns the output file including the full output path<br/>
+     * <pre>
+     * fullOutputFile = $pathPre + path ouf $outputFile + $pathPost + filename of $outputFile
+     * </pre>
+     * @param string $pathPre  a path used as in front of the outputPath
+     * @param string $outputFile  The file for output, incl. path
+     * @param string $pathPost a path used between the old output path and the output filename
+     * @return string The complete output file, incl. the new output path
+     */
+    public function prepareFinalTarget(string $pathPre, string $outputFile, string $pathPost = ''): string {
+        self::$logger->debug('START', [$pathPre, $outputFile, $pathPost]);
+
+        $pathMid = dirname($outputFile);
+        if (!empty($pathMid)) {
+            $pathMidSplit = explode(DIRECTORY_SEPARATOR, $pathMid);
+            $callback = fn(string $val): string => substr($val, 0, 2);
+            $pathMid = implode('-', array_map($callback, $pathMidSplit));
+        }
+        $fullTargetFile = $pathPre . DIRECTORY_SEPARATOR . $pathMid . DIRECTORY_SEPARATOR . basename($outputFile);
+        if (!empty($pathPost)) {
+            $fullTargetFile .= DIRECTORY_SEPARATOR . $pathPost;
+        }
+
+        self::$logger->debug('END - fullTargetFile', [$fullTargetFile]);
+
+        return $fullTargetFile;
     }
 
     /**
      * @param string $outputFileName  The filename, without suffix, of the output file
      * @param string $fileSuffix      An optional suffix of the output file
-     * @param string $customTargetDir The folder where to store the output file
+     * @param string $finalTargetDir The folder where to store the output file
      *
      * @return IStoreItem A newly created store item
      */
-    protected function prepareStoreItem(string $outputFileName, string $fileSuffix, string $customTargetDir): IStoreItem
+    protected function prepareStoreItem(string $outputFileName, string $fileSuffix, string $finalTargetDir): IStoreItem
     {
-        return $this->invokeStoreItem($customTargetDir, $this->extendNameWithSuffix($outputFileName, $fileSuffix));
+        return $this->invokeStoreItem($this->extendNameWithSuffix($outputFileName, $fileSuffix), $finalTargetDir);
     }
 
     /**
@@ -213,6 +272,7 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
 
         if (!is_null($anyData)) {
             $targetFolder = dirname($storeItem->__toString());
+            self::$logger->debug("Ensure target folder exists",[$targetFolder]);
             $this->mkdir($targetFolder);
             file_put_contents($storeItem->__toString(), $anyData, FILE_APPEND);
             file_put_contents($storeItem->__toString(), self::C_FILE_EOL, FILE_APPEND);
@@ -222,8 +282,8 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
     }
 
     /**
-     * @param string $customTargetDir The folder where to store the output file
      * @param string $outputFileName  The filename, without suffix, of the output file
+     * @param string $finalTargetDir The folder where to store the output file
      * @param string $fileSuffix      An optional suffix of the output file
      * @param string $storeItemClazz  The class of the storeItem
      * @param string $methodName      The method of the storeItem to create the store item
@@ -231,24 +291,23 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
      * @return IStoreItem A newly created store item
      */
     protected function invokeStoreItem(
-        string $customTargetDir,
         string $outputFileName,
+        string $finalTargetDir,
         string $fileSuffix = self::DEFAULT_STORE_ITEM_SUFFIX,
         string $storeItemClazz = self::DEFAULT_STORE_ITEM_CLAZZ,
         string $methodName = self::DEFAULT_STORE_ITEM_METHOD
     ): IStoreItem {
-        self::$logger->debug("START");
+        self::$logger->debug("START",[$outputFileName, $finalTargetDir, $fileSuffix, $storeItemClazz, $methodName]);
 
-        if (empty($customTargetDir)) {
-            $customTargetDir = $this->sessionTargetDir;
-        }
-        $params = [$customTargetDir, $outputFileName, $fileSuffix];
+        $params = [$finalTargetDir, $outputFileName, $fileSuffix];
 
         try {
+            self::$logger->debug("Invoke",[$storeItemClazz,$methodName,$params]);
             /**
              * @phpstan-ignore staticMethod.dynamicName
              */
             $newClazz = $storeItemClazz::$methodName(...$params);
+            self::$logger->debug("Get newClazz", [$newClazz]);
         } catch (\Exception $e) {
             Emergency::breakSystem(self::ERR_NOT_INVOKED, $e->getMessage());
         }

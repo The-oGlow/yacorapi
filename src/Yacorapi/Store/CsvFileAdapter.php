@@ -16,6 +16,7 @@ namespace oglow\tools\Yacorapi\Store;
 use Monolog\ConsoleLogger;
 use ollily\Tools\String\ImplodeTrait;
 use Psr\Log\LoggerInterface;
+use oglow\tools\Yacorapi\Store\FileStoreStageEnum;
 
 class CsvFileAdapter extends FileAdapter
 {
@@ -38,16 +39,20 @@ class CsvFileAdapter extends FileAdapter
      * @param string $outputFileName  The filename, without suffix, of the output file
      * @param string $fileSuffix      An optional suffix of the output file
      * @param string $customTargetDir The folder where to store the output file
+     * @param FileStoreStageEnum $storeStage The stage where to store the file (Default {@link FileStoreStageEnum::BASE})
+     * @param int|\Monolog\Level|\Psr\Log\LogLevel::*|string $level      The minimum logging level at which this handler will be triggered (Default: {@link AbstractStoreAdapter::LEVEL_DEFAULT})
      */
     public function __construct(
         string $outputFileName,
         string $fileSuffix = self::DEFAULT_FILE_SUFFIX,
-        string $customTargetDir = self::DEFAULT_CUSTOM_TARGET_DIR
+        string $customTargetDir = self::DEFAULT_CUSTOM_TARGET_DIR,
+        FileStoreStageEnum $storeStage = FileStoreStageEnum::BASE,
+            mixed $level = self::LEVEL_DEFAULT
     ) {
-        self::$logger = new ConsoleLogger(CsvFileAdapter::class);
-        self::$logger->debug("START");
+        self::$logger = new ConsoleLogger(CsvFileAdapter::class, level: $level);
+        self::$logger->debug("START", [$outputFileName, $fileSuffix, $customTargetDir, $storeStage->name]);
 
-        parent::__construct($outputFileName, $fileSuffix, $customTargetDir);
+        parent::__construct($outputFileName, $fileSuffix, $customTargetDir, $storeStage, $level);
 
         self::$logger->debug('END');
     }
@@ -77,8 +82,8 @@ class CsvFileAdapter extends FileAdapter
      */
     #[\Override]
     protected function invokeStoreItem(
-        string $customTargetDir,
         string $outputFileName,
+        string $customTargetDir,
         string $fileSuffix = self::DEFAULT_STORE_ITEM_SUFFIX,
         string $storeItemClazz = self::DEFAULT_STORE_ITEM_CLAZZ,
         string $methodName = self::DEFAULT_STORE_ITEM_METHOD
@@ -91,7 +96,7 @@ class CsvFileAdapter extends FileAdapter
 
         self::$logger->debug('END');
 
-        return parent::invokeStoreItem($customTargetDir, $outputFileName, $fileSuffix, $storeItemClazz, $methodName);
+        return parent::invokeStoreItem($outputFileName, $customTargetDir,  $fileSuffix, $storeItemClazz, $methodName);
     }
 
     /**
