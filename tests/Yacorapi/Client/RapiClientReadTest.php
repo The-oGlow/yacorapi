@@ -144,7 +144,7 @@ class RapiClientReadTest extends EasyGoingTestCase
 
     public function testAddSpaceFilterEmptyBoth(): void
     {
-        $spaceKey   = YacorapiTestData::C_SPACE_EMPTY;
+        $spaceKey   = YacorapiTestData::C_SPACE_EMPTY_KEY;
         $prepareUrl = YacorapiTestData::C_SEARCHTERM_EMPTY;
 
         $actual = $this->getCasto2t()->publicAddSpaceFilter($spaceKey, $prepareUrl);
@@ -181,7 +181,7 @@ class RapiClientReadTest extends EasyGoingTestCase
         $searchTerm = YacorapiTestData::C_SEARCHTERM_01;
 
         $expected1 = ConstData::C_RAPI_CONTENT;
-        $expected2 = YacorapiTestData::C_SPACE_EMPTY;
+        $expected2 = YacorapiTestData::C_SPACE_EMPTY_KEY;
 
         $actual = $this->getCasto2t()->publicPrepareSearchUrl($searchTerm);
 
@@ -298,7 +298,7 @@ class RapiClientReadTest extends EasyGoingTestCase
     public static function providerSpaceHomepage(): array
     {
         return [
-            'empty' => [YacorapiTestData::C_PAGEID_NOTEXIST,YacorapiTestData::C_SPACE_EMPTY ],
+            'empty' => [YacorapiTestData::C_PAGEID_NOTEXIST,YacorapiTestData::C_SPACE_EMPTY_KEY],
             'notExists' => [YacorapiTestData::C_PAGEID_NOTEXIST, YacorapiTestData::NOTEXIST_SPACE_KEY],
             'exists' => [YacorapiTestData::C_SPACE_EXIST_ID, YacorapiTestData::C_SPACE_EXIST_KEY],
         ];

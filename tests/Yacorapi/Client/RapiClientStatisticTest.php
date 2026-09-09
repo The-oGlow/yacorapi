@@ -68,6 +68,7 @@ class RapiClientStatisticTest extends EasyGoingTestCase
         self::assertCount($actualCount, $response->getResults());
 
         self::$logger->info('END');
+
     }
 
     public function testCountMacrosInSpace(): void

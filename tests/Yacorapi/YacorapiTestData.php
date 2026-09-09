@@ -191,9 +191,13 @@ class YacorapiTestData extends TestData
 
     public const string C_PAGE_BODY_2 = ' Totally different content of a <b>page body</b>.';
 
+    public const string C_PAGE_EXIST_STATUS = ResponseParameterData::VAL_STATUS_TYPE_CURRENT;
+    
+    public const int C_PAGE_POSITION_HOMEPAGE = -1;
+    
     public const ItemTypeEnum C_ITEM_TYPE_PAGE = ItemTypeEnum::PAGE;
 
-    public const string C_SPACE_EMPTY = '';
+    public const string C_SPACE_EMPTY_KEY = '';
 
     public const string C_SPACE_EXIST_KEY = 'SPCEX';
 
@@ -206,6 +210,10 @@ class YacorapiTestData extends TestData
     public const string C_SPACE_EXIST_STATUS = RequestParameterData::VAL_STATUS_TYPE_CURRENT;
 
     public const SpaceTypeEnum C_SPACE_EXIST_TYPE = SpaceTypeEnum::SPACE_TYPE_GLOBAL;
+    
+    public const int C_SPACE_EXIST_HOMEPAGE_ID = 567890;
+    
+    public const string C_SPACE_EXIST_HOMEPAGE_TITLE = 'Existing Space Homepage';
 
     public const string C_FILTERTERM_01 = 'filter=1';
 

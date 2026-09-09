@@ -169,7 +169,7 @@ class ResponseSpaceDataDecorate extends AbstractResponse
                             ResponseParameterData::KEY_KEY => $space[ResponseParameterData::KEY_KEY],
                             ResponseParameterData::KEY_NAME => $space[ResponseParameterData::KEY_NAME],
                             ResponseParameterData::KEY_TYPE => $space[ResponseParameterData::KEY_TYPE],
-                            ResponseParameterData::KEY_HOMEPAGE => $space[ResponseParameterData::KEY_HOMEPAGE],
+                            ResponseParameterData::KEY_HOMEPAGE => $space[ResponseParameterData::KEY_HOMEPAGE][ResponseParameterData::KEY_ID],
                             ResponseParameterData::KEY_ARCHIVED => $this->isArchived($descr) ? ResponseParameterData::VAL_TRUE : ResponseParameterData::VAL_FALSE,
                         ];
 
