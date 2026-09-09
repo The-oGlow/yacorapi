@@ -18,9 +18,13 @@ use Ds\Map;
 use Monolog\ConsoleLogger;
 use Monolog\DoNothingLogger;
 use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 
 abstract class AbstractSingleton implements ISingleton
 {
+    /** Default output level */
+    public const string LEVEL_DEFAULT = LogLevel::INFO;
+
     private static LoggerInterface $logger;
 
     private string $key;
@@ -62,7 +66,7 @@ abstract class AbstractSingleton implements ISingleton
     public function __construct(string $key = '', bool $withLogger = true)
     {
         if ($withLogger) {
-            self::$logger = new ConsoleLogger(AbstractSingleton::class);
+            self::$logger = new ConsoleLogger(AbstractSingleton::class, level: AbstractSingleton::LEVEL_DEFAULT);
         } else {
             self::$logger = new DoNothingLogger();
         }

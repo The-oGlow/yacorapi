@@ -17,10 +17,14 @@ use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\ConstData;
 use ollily\Tools\String\ToStringTrait;
 use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 
 abstract class AbstractContainer implements IContainer
 {
     use ToStringTrait;
+
+    /** Default output level */
+    public const string LEVEL_DEFAULT = LogLevel::INFO;
 
     protected ConstData $constData;
 
@@ -38,7 +42,7 @@ abstract class AbstractContainer implements IContainer
 
     public function __construct()
     {
-        self::$logger = new ConsoleLogger(AbstractContainer::class);
+        self::$logger = new ConsoleLogger(AbstractContainer::class, level: AbstractContainer::LEVEL_DEFAULT);
         self::$logger->debug('START');
         // Init Dynamic Consts
         $this->constData =  new ConstData(AbstractContainer::class);

@@ -170,7 +170,7 @@ final class ConstData extends AbstractSingleton
     {
         // Init logger at first
         if ($withLogger) {
-            self::$logger = new ConsoleLogger(ConstData::class);
+            self::$logger = new ConsoleLogger(ConstData::class, level: self::LEVEL_DEFAULT);
         } else {
             self::$logger = new DoNothingLogger();
         }
