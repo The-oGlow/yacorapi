@@ -14,59 +14,81 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Macro;
 
 use ollily\Tools\Arrays\IDoubleBackedEnum;
-use ollily\Tools\JsonHelper;
 
-enum HasMacroBodyEnum: string implements IDoubleBackedEnum {
-
-    /** Macro has no body. */
+enum HasMacroBodyEnum: string implements IDoubleBackedEnum
+{
+    /**
+     * Macro has no body.
+     */
     case NONE = 'none';
 
-    /** Macro has a plain body. */
+    /**
+     * Macro has a plain body.
+     */
     case PLAIN = 'plain';
 
-    /** Macro has a rich body. */
+    /**
+     * Macro has a rich body.
+     */
     case RICH = 'rich';
 
-    /** Macro has a specialized body. */
+    /**
+     * Macro has a specialized body.
+     */
     case CUSTOM = 'custom';
 
-    public static function hasBody(string $macro): HasMacroBodyEnum {
-        return self::PLAIN;
-//        $result = self::NONE;
-//        foreach (self::cases() as $case) {
-//            $found = array_search(strtolower($macro), $case->objectValue(), true);
-//            if ($found !== false) {
-//                $result = $case;
-//                break;
-//            }
-//        }
-//
-//        return $result;
+    public static function hasBody(string $macro): HasMacroBodyEnum
+    {
+        $result = self::NONE;
+        foreach (self::cases() as $case) {
+            $found = array_search(strtolower($macro), $case->objectValue(), true);
+            if ($found !== false) {
+                $result = $case;
+                break;
+            }
+        }
+
+        return $result;
     }
 
     #[\Override]
-    public function intValue(): int {
+    public function intValue(): int
+    {
         return -1;
     }
 
     #[\Override]
-    public function objectValue(): mixed {
+    public function objectValue(): mixed
+    {
         return match ($this) {
-            self::PLAIN => ['csv', 'html', 'code', 'json-table', 'projectdoc-code-block-placeholder-macro', 'projectdoc-hide', 'sp-plaintextbody-link', 'um-iframe'],
+            self::PLAIN => [
+                'code',
+                'csv',
+                'html',
+                'html-include',
+                'json-table',
+                'noformat',
+                'projectdoc-code-block-placeholder-macro',
+                'projectdoc-hide',
+                'projectdoc-index-entries-table-macro',
+                'projectdoc-properties-supply-by-attachment-macro',
+                'scroll-ignore-inline',
+                'scroll-only-inline',
+                'scroll-pagetitle',
+                'sp-plaintextbody-link',
+                'um-css-style',
+                'unmigrated-wiki-markup',
+                ],
             self::RICH => [
                 'ai-table',
                 'chart',
                 'chart-plugin',
                 'column',
                 'details',
-                'document-properties-macro',
                 'excerpt',
                 'expand',
                 'gadget',
-                'html',
-                'html-include',
                 'info',
-                'multiexcerpt-fast-block-macro',
                 'note',
                 'orphaned-links',
                 'panel',
@@ -93,7 +115,6 @@ enum HasMacroBodyEnum: string implements IDoubleBackedEnum {
                 'projectdoc-hide-from-reader-macro',
                 'projectdoc-layout-element-macro',
                 'projectdoc-link-external',
-                'projectdoc-link-wiki',
                 'projectdoc-properties-marker',
                 'projectdoc-properties-supplier-macro',
                 'projectdoc-quote',
@@ -108,10 +129,7 @@ enum HasMacroBodyEnum: string implements IDoubleBackedEnum {
                 'projectdoc-tour-macro',
                 'projectdoc-transclude-documents-macro',
                 'projectdoc-transclusion-macro',
-                'projectdoc-transclusion-property-display',
                 'projectdoc-transclusion-ref-macro',
-                'rss',
-                'rss-include',
                 'scroll-content-block',
                 'scroll-ignore',
                 'scroll-only',
@@ -130,12 +148,9 @@ enum HasMacroBodyEnum: string implements IDoubleBackedEnum {
                 'table-plus',
                 'tip',
                 'toc-zone',
-                'tour-macro',
-                'um-rule-blue',
                 'undefined-links,',
-                'unmigrated-wiki-markup',
                 'warning',
-                'workflow-reporter'
+                'workflow-reporter',
             ],
             self::CUSTOM => [],
             default => []
@@ -143,7 +158,8 @@ enum HasMacroBodyEnum: string implements IDoubleBackedEnum {
     }
 
     #[\Override]
-    public function text(): string {
+    public function text(): string
+    {
         return $this->value;
     }
 }

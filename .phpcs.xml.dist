@@ -40,7 +40,7 @@
     <rule ref="Generic.Formatting.MultipleStatementAlignment">
         <properties>
             <property name="alignAtEnd" value="true" />
-            <property name="maxPadding" value="30" />
+            <property name="maxPadding" value="50" />
         </properties>
     </rule>
     <rule ref="Generic.Arrays.DisallowLongArraySyntax" />
@@ -75,6 +75,9 @@
     <rule ref="PSR2.ControlStructures.SwitchDeclaration">
         <exclude name="PSR2.ControlStructures.SwitchDeclaration.WrongOpenercase" />
         <exclude name="PSR2.ControlStructures.SwitchDeclaration.WrongOpenerdefault" />
+    </rule>
+    <rule ref="PSR2.ControlStructures.ControlStructureSpacing">
+        <exclude name="PSR2.ControlStructures.ControlStructureSpacing.SpacingAfterOpenBrace" />
     </rule>
 
     <!-- Squiz -->

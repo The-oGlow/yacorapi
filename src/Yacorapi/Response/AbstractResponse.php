@@ -141,7 +141,8 @@ abstract class AbstractResponse implements IResponse
                     self::$logger->debug('Response has no results');
                     $hasData = false;
                 } else {
-                    self::$logger->debug('Response has results with size', [$this->keyExists(ResponseParameterData::KEY_RESULTS), $this->getValue(ResponseParameterData::KEY_SIZE)]);
+                    self::$logger->debug('Response has results with size', [
+                        $this->keyExists(ResponseParameterData::KEY_RESULTS), $this->getValue(ResponseParameterData::KEY_SIZE)]);
                 }
             }
         } else {
@@ -225,7 +226,7 @@ abstract class AbstractResponse implements IResponse
         $body = '';
         if ($this->keyExists(ResponseParameterData::KEY_BODY)) {
             $tmpBody = $this->getValue(ResponseParameterData::KEY_BODY, []);
-            if (array_key_exists(ResponseParameterData::KEY_STORAGE, $tmpBody)) {
+            if (array_key_exists(ResponseParameterData::KEY_STORAGE, $tmpBody)) { // NOSONAR: php:S1066
                 if (array_key_exists(ResponseParameterData::KEY_VALUE, $tmpBody[ResponseParameterData::KEY_STORAGE])) {
                     $body = $tmpBody[ResponseParameterData::KEY_STORAGE][ResponseParameterData::KEY_VALUE];
                 }

@@ -16,17 +16,17 @@ namespace oglow\tools\Yacorapi\Client;
 use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\Data\ItemTypeEnum;
+use oglow\tools\Yacorapi\Response\ResponseParameterData;
 use oglow\tools\Yacorapi\Space\SpaceTypeEnum;
+use oglow\tools\Yacorapi\Statistic\StatisticStatistic;
+use oglow\tools\Yacorapi\Statistic\StatisticTypeEnum;
 use oglow\tools\Yacorapi\YacorapiTestData;
 use PHPUnit\Framework\EasyGoingTestCase;
 use Psr\Log\LoggerInterface;
-use oglow\tools\Yacorapi\Response\ResponseParameterData;
-use oglow\tools\Yacorapi\Statistic\StatisticStatistic;
-use oglow\tools\Yacorapi\Statistic\StatisticTypeEnum;
 
 class RapiClientStatisticTest extends EasyGoingTestCase
 {
-    private static LoggerInterface $logger; // @phpstan-ignore property.onlyWritten
+    private static LoggerInterface $logger;
 
     #[\Override]
     public static function setUpBeforeClass(): void
@@ -50,7 +50,8 @@ class RapiClientStatisticTest extends EasyGoingTestCase
         return $this->o2t;
     }
 
-    public function testListSpaces(): void {
+    public function testListSpaces(): void
+    {
         self::$logger->info('START');
 
         $expectedCount = 1;
@@ -69,7 +70,8 @@ class RapiClientStatisticTest extends EasyGoingTestCase
         self::$logger->info('END');
     }
 
-    public function testCountMacrosInSpace(): void {
+    public function testCountMacrosInSpace(): void
+    {
         self::$logger->info('START');
 
         $spaceKey = YacorapiTestData::C_SPACE_EXIST_KEY;
@@ -87,7 +89,8 @@ class RapiClientStatisticTest extends EasyGoingTestCase
         self::$logger->info('END');
     }
 
-    public function testCountItemsinSpace(): void {
+    public function testCountItemsinSpace(): void
+    {
         self::$logger->info('START');
 
         $statistic = $this->getCasto2t()->countItemsinSpace(YacorapiTestData::C_SPACE_EXIST_KEY);

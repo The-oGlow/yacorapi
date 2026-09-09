@@ -128,14 +128,13 @@ class CurlProvider extends AbstractProvider
 
         $execSession = $this->prepareCurl($reqType);
         switch ($reqType) {
-            case RequestTypeEnum::POST: {
+            case RequestTypeEnum::POST:
                 $this->preparePostParameter($execSession, $parameters);
                 break;
-            }
             case RequestTypeEnum::PUT:
-            default: {
+            default:
                 $this->preparePutParameter($execSession, $parameters);
-            }
+                break;
         }
 
         self::$logger->debug('END');

@@ -14,35 +14,17 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Client;
 
 use Ds\Set;
-use Monolog\ConsoleLogger;
 use oglow\tools\common\MockProvider;
-use oglow\tools\Yacorapi\Client\IRapiClientBase;
-use oglow\tools\Yacorapi\Response\ResponseParameterData;
-use oglow\tools\Yacorapi\Statistic\StatisticStatistic;
-use oglow\tools\Yacorapi\Statistic\StatisticTypeEnum;
-use oglow\tools\Yacorapi\YacorapiTestData;
 use PHPUnit\Framework\EasyGoingTestCase;
-use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
-use oglow\tools\Yacorapi\Client\RapiClient;
 
 class RapiClientBaseTest extends EasyGoingTestCase
 {
     public const array AVAILABLE_METHODS = [
         'newClient', 'readPageByPageId', 'readPagesByTitle', 'checkPageExists', 'scanPages', 'searchPagesWithFilter', 'countItemsinSpace', 'spaceHomepage',
         'readRestrictionsByPageId', 'writeRestrictionsByPageId', 'listSpaces', 'countMacrosInSpace', 'createPage', 'updatePage', 'createOrUpdatePage',
-             'movePage', 'prepareAddonSet', 'taskitemMethods', 'getExtensionAddonMacros', 'processQueue',
+        'movePage', 'prepareAddonSet', 'taskitemMethods', 'getExtensionAddonMacros', 'processQueue',
     ];
-
-
-    private static LoggerInterface $logger;
-
-    #[\Override]
-    public static function setUpBeforeClass(): void
-    {
-        parent::setUpBeforeClass();
-        self::$logger = new ConsoleLogger(RapiClientBaseTest::class);
-    }
 
     #[\Override]
     protected static function prepareO2t(): IRapiClientBase
@@ -73,5 +55,4 @@ class RapiClientBaseTest extends EasyGoingTestCase
         }
         self::assertTrue($expected->isEmpty(), sprintf("Forgotten: '%s'", join('()\',\'', $expected->toArray())));
     }
-
 }

@@ -29,11 +29,14 @@ enum ExtensionEnum: int implements IDoubleBackedEnum
     case EXTENSION_THIRD_PARTY = 16;
     case EXTENSION_PROJECTDOC_TOOLBOX = 32;
     case EXTENSION_MIN = self::EXTENSION_RAPI_CLIENT->value + self::EXTENSION_ATLASSIAN->value;
-    case EXTENSION_ALL = self::EXTENSION_MIN->value +
-    self::EXTENSION_ATLASSIAN_ADMIN->value +
-    self::EXTENSION_ATLASSIAN_USER_MACRO->value +
-    self::EXTENSION_THIRD_PARTY->value +
-    self::EXTENSION_PROJECTDOC_TOOLBOX->value;
+
+    // phpcs:disable Generic.WhiteSpace.ScopeIndent.IncorrectExact
+    case EXTENSION_ALL = self::EXTENSION_MIN->value
+        + self::EXTENSION_ATLASSIAN_ADMIN->value
+        + self::EXTENSION_ATLASSIAN_USER_MACRO->value
+        + self::EXTENSION_THIRD_PARTY->value
+        + self::EXTENSION_PROJECTDOC_TOOLBOX->value;
+    // phpcs:enable Generic.WhiteSpace.ScopeIndent.IncorrectExact
 
     /**
      * @inheritDoc

@@ -18,8 +18,10 @@ use oglow\tools\Yacorapi\ConstData;
 use ollily\Tools\Emergency;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
-use oglow\tools\Yacorapi\Store\FileStoreStageEnum;
 
+/**
+ * @phpstan-import-type LoggingLevel from \Monolog\AbstractEasyGoingLogger
+ */
 abstract class AbstractStoreAdapter implements IStoreAdapter
 {
     /** Default output level */
@@ -36,6 +38,7 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
 
     public const string DEFAULT_STORE_ITEM_METHOD = 'prepareTargetFile';
 
+    /** @var string */
     public const string DEFAULT_STORE_ITEM_SUFFIX = IStoreItem::C_FILE_EXT_TEXT;
 
     public const int ERR_NOT_INVOKED = 30;
@@ -63,11 +66,13 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
     private string $sessionTargetDir;
 
     /**
-     * @param string $outputFileName  The filename, without suffix, of the output file
-     * @param string $fileSuffix      An optional suffix of the output file
-     * @param string $customTargetDir The folder where to store the output file
-     * @param FileStoreStageEnum $storeStage The stage where to store the file (Default {@link FileStoreStageEnum::BASE})
-     * @param int|\Monolog\Level|\Psr\Log\LogLevel::*|string $level      The minimum logging level at which this handler will be triggered (Default: {@link AbstractStoreAdapter::LEVEL_DEFAULT})
+     * @param string                                         $outputFileName  The filename, without suffix, of the output file
+     * @param string                                         $fileSuffix      An optional suffix of the output file
+     * @param string                                         $customTargetDir The folder where to store the output file
+     * @param FileStoreStageEnum                             $storeStage      The stage where to store the file (Default {@link FileStoreStageEnum::BASE})
+     * @param int|\Monolog\Level|\Psr\Log\LogLevel::*|string $level           The minimum logging level at which this handler will be triggered (Default: {@link AbstractStoreAdapter::LEVEL_DEFAULT})
+     *
+     * @phpstan-param LoggingLevel $level
      */
     public function __construct(
         string $outputFileName,
@@ -88,10 +93,10 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
         );
         $finalTargetDir = $this->sessionTargetDir;
 
-        if (!$storeStage->isDefault()){
-            $finalTargetDir=$this->prepareTargetFolderSpecial($storeStage, $this->sessionTargetDir, ConstData::TARGET_ORGDIR, ConstData::TARGET_MODDIR);
+        if (!$storeStage->isDefault()) {
+            $finalTargetDir = $this->prepareTargetFolderSpecial($storeStage, $this->sessionTargetDir, ConstData::TARGET_ORGDIR, ConstData::TARGET_MODDIR);
         }
-        
+
         if (!empty($customTargetDir)) {
             $finalTargetDir = $customTargetDir;
         }
@@ -135,10 +140,10 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
 
     /**
      * @param FileStoreStageEnum $storeStage The stage where to store the file
-     * @param string $sessionDir The current used folder for this session
-     * @param string $orgDir     The folder name where to store the original files
-     * @param string $modDir     the folder name where to store the modified files
-     * 
+     * @param string             $sessionDir The current used folder for this session
+     * @param string             $orgDir     The folder name where to store the original files
+     * @param string             $modDir     the folder name where to store the modified files
+     *
      * @return string A stage specifix path for the outputfile
      */
     protected function prepareTargetFolderSpecial(FileStoreStageEnum $storeStage, string $sessionDir, string $orgDir, string $modDir): string
@@ -163,28 +168,31 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
             self::$logger->warning('Session folder does not exists', [$sessionDir]);
         }
 
-        self::$logger->debug('END',[$specialPath]);
+        self::$logger->debug('END', [$specialPath]);
+
         return $specialPath;
-        
     }
 
     /**
      * Returns the output file including the full output path<br/>
      * <pre>
      * fullOutputFile = $pathPre + path ouf $outputFile + $pathPost + filename of $outputFile
-     * </pre>
-     * @param string $pathPre  a path used as in front of the outputPath
-     * @param string $outputFile  The file for output, incl. path
-     * @param string $pathPost a path used between the old output path and the output filename
+     * </pre>.
+     *
+     * @param string $pathPre    a path used as in front of the outputPath
+     * @param string $outputFile The file for output, incl. path
+     * @param string $pathPost   a path used between the old output path and the output filename
+     *
      * @return string The complete output file, incl. the new output path
      */
-    public function prepareFinalTarget(string $pathPre, string $outputFile, string $pathPost = ''): string {
+    public function prepareFinalTarget(string $pathPre, string $outputFile, string $pathPost = ''): string
+    {
         self::$logger->debug('START', [$pathPre, $outputFile, $pathPost]);
 
         $pathMid = dirname($outputFile);
         if (!empty($pathMid)) {
             $pathMidSplit = explode(DIRECTORY_SEPARATOR, $pathMid);
-            $callback = fn(string $val): string => substr($val, 0, 2);
+            $callback = fn (string $val): string => substr($val, 0, 2);
             $pathMid = implode('-', array_map($callback, $pathMidSplit));
         }
         $fullTargetFile = $pathPre . DIRECTORY_SEPARATOR . $pathMid . DIRECTORY_SEPARATOR . basename($outputFile);
@@ -198,8 +206,8 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
     }
 
     /**
-     * @param string $outputFileName  The filename, without suffix, of the output file
-     * @param string $fileSuffix      An optional suffix of the output file
+     * @param string $outputFileName The filename, without suffix, of the output file
+     * @param string $fileSuffix     An optional suffix of the output file
      * @param string $finalTargetDir The folder where to store the output file
      *
      * @return IStoreItem A newly created store item
@@ -272,7 +280,7 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
 
         if (!is_null($anyData)) {
             $targetFolder = dirname($storeItem->__toString());
-            self::$logger->debug("Ensure target folder exists",[$targetFolder]);
+            self::$logger->debug("Ensure target folder exists", [$targetFolder]);
             $this->mkdir($targetFolder);
             file_put_contents($storeItem->__toString(), $anyData, FILE_APPEND);
             file_put_contents($storeItem->__toString(), self::C_FILE_EOL, FILE_APPEND);
@@ -282,11 +290,11 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
     }
 
     /**
-     * @param string $outputFileName  The filename, without suffix, of the output file
+     * @param string $outputFileName The filename, without suffix, of the output file
      * @param string $finalTargetDir The folder where to store the output file
-     * @param string $fileSuffix      An optional suffix of the output file
-     * @param string $storeItemClazz  The class of the storeItem
-     * @param string $methodName      The method of the storeItem to create the store item
+     * @param string $fileSuffix     An optional suffix of the output file
+     * @param string $storeItemClazz The class of the storeItem
+     * @param string $methodName     The method of the storeItem to create the store item
      *
      * @return IStoreItem A newly created store item
      */
@@ -297,12 +305,12 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
         string $storeItemClazz = self::DEFAULT_STORE_ITEM_CLAZZ,
         string $methodName = self::DEFAULT_STORE_ITEM_METHOD
     ): IStoreItem {
-        self::$logger->debug("START",[$outputFileName, $finalTargetDir, $fileSuffix, $storeItemClazz, $methodName]);
+        self::$logger->debug("START", [$outputFileName, $finalTargetDir, $fileSuffix, $storeItemClazz, $methodName]);
 
         $params = [$finalTargetDir, $outputFileName, $fileSuffix];
 
         try {
-            self::$logger->debug("Invoke",[$storeItemClazz,$methodName,$params]);
+            self::$logger->debug("Invoke", [$storeItemClazz,$methodName,$params]);
             /**
              * @phpstan-ignore staticMethod.dynamicName
              */

@@ -87,29 +87,21 @@ class MockProvider extends AbstractProvider
 
         switch ($reqType) {
             case RequestTypeEnum::GET:
-                if ($this->evalReadPagesByTitle($execUrl, $reqType, $response)) {
-                    break;
-                }
-                if ($this->evalReadPageByPageId($execUrl, $reqType, $response)) {
-                    break;
-                }
-                if ($this->evalScanPages($execUrl, $reqType, $response)) {
-                    break;
-                }
-                if ($this->evalSearchPagesWithFilter($execUrl, $reqType, $response)) {
-                    break;
-                }
-                if ($this->evalListSpaces($execUrl, $reqType, $response)) {
-                    break;
-                }
-                if ($this->evalSpaceHomepage($execUrl, $reqType, $response)) {
+                if (
+                    $this->evalReadPagesByTitle($execUrl, $reqType, $response)
+                    || $this->evalReadPageByPageId($execUrl, $reqType, $response)
+                    || $this->evalScanPages($execUrl, $reqType, $response)
+                    || $this->evalSearchPagesWithFilter($execUrl, $reqType, $response)
+                    || $this->evalListSpaces($execUrl, $reqType, $response)
+                    || $this->evalSpaceHomepage($execUrl, $reqType, $response)
+                ) {
                     break;
                 }
                 self::$logger->notice('No mock result found', [$execUrl, $reqType]);
-                // no break
-            default: {
+                break;
+            default:
                 self::$logger->notice('No mock for this request type', [$execUrl, $reqType]);
-            }
+                break;
         }
 
         return $response;
@@ -278,9 +270,9 @@ class MockProvider extends AbstractProvider
                 }
                 self::$logger->notice('No mock result found', [$execUrl, $reqType, $parameters]);
                 break;
-            default: {
+            default:
                 self::$logger->notice('No mock for this request type', [$execUrl, $reqType, $parameters]);
-            }
+                break;
         }
 
         return $response;

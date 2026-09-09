@@ -18,6 +18,9 @@ use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\Macro\HasMacroBodyEnum;
 use Psr\Log\LoggerInterface;
 
+/**
+ * @phpstan-type HeaderLevelType 1|2|3|4|5|6
+ */
 class ContentHelper extends AbstractHelper
 {
     /** Start tag for macro  */
@@ -181,6 +184,21 @@ class ContentHelper extends AbstractHelper
         }
 
         return $newTag;
+    }
+
+    /**
+     * Creates a &lt;h*&gt;-tag with text.
+     *
+     * @param string $text        The text used as heading
+     * @param int    $headerLevel the level for the &lt;h*&gt;-tag
+     *
+     * @phpstan-param HeaderLevelType $headerLevel
+     *
+     * @return string
+     */
+    public static function prepareHeading(string $text, int $headerLevel = 1): string
+    {
+        return sprintf('<h%s>%s</h%s>', $headerLevel, $text, $headerLevel);
     }
 
     /**

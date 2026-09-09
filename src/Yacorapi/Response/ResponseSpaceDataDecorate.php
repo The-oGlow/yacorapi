@@ -21,8 +21,8 @@ use Psr\Log\LoggerInterface;
 
 class ResponseSpaceDataDecorate extends AbstractResponse
 {
-
     public const string SPACE_ARCH_FLAG1 = '[archived]';
+
     public const string SPACE_ARCH_FLAG2 = '[archive]';
 
     private static LoggerInterface $logger;
@@ -190,6 +190,7 @@ class ResponseSpaceDataDecorate extends AbstractResponse
         if ($noArchived && $this->isArchived($descr)) {
             $addResult = false;
         }
+
         return $addResult;
     }
 
@@ -197,7 +198,7 @@ class ResponseSpaceDataDecorate extends AbstractResponse
     {
         $descr = $space[ResponseParameterData::KEY_DESCRIPTION][ResponseParameterData::KEY_PLAIN][ResponseParameterData::KEY_VALUE];
 
-        $line .= sprintf(
+        $line = sprintf(
             '%s;%s;%s;%s',
             $idx,
             $space[ResponseParameterData::KEY_KEY],

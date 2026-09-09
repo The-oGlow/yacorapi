@@ -22,7 +22,7 @@ use Psr\Log\LoggerInterface;
 
 class RapiClientPermissionTest extends EasyGoingTestCase
 {
-    private static LoggerInterface $logger; // @phpstan-ignore property.onlyWritten
+    private static LoggerInterface $logger;
 
     #[\Override]
     public static function setUpBeforeClass(): void
@@ -46,7 +46,8 @@ class RapiClientPermissionTest extends EasyGoingTestCase
         return $this->o2t;
     }
 
-    public function testReadRestrictionsByPageId(): void {
+    public function testReadRestrictionsByPageId(): void
+    {
         self::$logger->info('START');
 
         $response = $this->getCasto2t()->readRestrictionsByPageId(YacorapiTestData::C_SEARCHPAGEID_01);
@@ -68,7 +69,7 @@ class RapiClientPermissionTest extends EasyGoingTestCase
 
         self::assertEquals($expected1, $actual);
     }
-    
+
     public function testAddRestrictionForGroupEmpty(): void
     {
         $restrictions = [];
@@ -90,8 +91,9 @@ class RapiClientPermissionTest extends EasyGoingTestCase
 
         self::assertEquals($expected1, $actual);
     }
-    
-    public function testPrepareRestrictByOpUrl(): void {
+
+    public function testPrepareRestrictByOpUrl(): void
+    {
         $pageId = YacorapiTestData::C_PAGEID_EXIST;
 
         $expected1 = ConstData::C_RAPI_RESTRICTION_BYOP;
@@ -103,7 +105,8 @@ class RapiClientPermissionTest extends EasyGoingTestCase
         self::assertStringContainsString($expected2, $actual);
     }
 
-    public function testPrepareRestrictUpdateUrl(): void {
+    public function testPrepareRestrictUpdateUrl(): void
+    {
         $pageId = YacorapiTestData::C_PAGEID_EXIST;
 
         $expected1 = ConstData::C_RAPI_RESTRICTION;

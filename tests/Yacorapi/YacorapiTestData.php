@@ -182,13 +182,15 @@ class YacorapiTestData extends TestData
     public const int C_PAGEID_EXIST = 123;
 
     public const int C_PAGEID_NEW = 11;
-    
-    public const string C_PAGE_TITLE_1= 'Title of a page';
+
+    public const string C_PAGE_TITLE_1 = 'Title of a page';
+
     public const string C_PAGE_TITLE_2 = 'Another title of a page';
-    
+
     public const string C_PAGE_BODY_1 = 'Content of a <i>page body</i>.';
+
     public const string C_PAGE_BODY_2 = ' Totally different content of a <b>page body</b>.';
-    
+
     public const ItemTypeEnum C_ITEM_TYPE_PAGE = ItemTypeEnum::PAGE;
 
     public const string C_SPACE_EMPTY = '';
@@ -221,7 +223,6 @@ class YacorapiTestData extends TestData
 
     public const int C_SEARCHPAGESPARENT_01 = self::C_PAGEID_EXIST;
 
-    
     public const string HTML_PAGE = '<!DOCTYPE html><html><head><title>#pagetitle#</title></head><body></body></html>';
 
     // Macro Code
@@ -309,7 +310,7 @@ class YacorapiTestData extends TestData
     /**
      * @return array<mixed,mixed>
      */
-    public static function RESP_HEAD_SEARCHPAGEID_01(): array
+    public static function RESP_HEAD_SEARCHPAGEID_01(): array // NOSONAR:  php:S116
     {
         self::$RESP_HEAD_SEARCHPAGEID_01 = [
             ResponseParameterData::KEY_ID => self::C_SEARCHPAGEID_01,
@@ -326,7 +327,7 @@ class YacorapiTestData extends TestData
     /**
      * @return array<mixed,mixed>
      */
-    public static function RESP_BODY(): array
+    public static function RESP_BODY(): array // NOSONAR:  php:S116
     {
         self::$RESP_BODY =             self::prepareResponseBody(YacorapiTestData::C_PAGE_BODY_1, new Map());
 
@@ -336,7 +337,7 @@ class YacorapiTestData extends TestData
     /**
      * @return array<mixed,mixed>
      */
-    public static function RESP_CONTENTFILTER_RESULT(): array
+    public static function RESP_CONTENTFILTER_RESULT(): array // NOSONAR:  php:S116
     {
         self::$RESP_CONTENTFILTER_RESULT = self::prepareResponseResults([self::RESP_HEAD_SEARCHPAGEID_01()]);
 
@@ -346,7 +347,7 @@ class YacorapiTestData extends TestData
     /**
      * @return array<mixed,mixed>
      */
-    public static function RESP_SCAN_RESULT(): array
+    public static function RESP_SCAN_RESULT(): array // NOSONAR:  php:S116
     {
         self::$RESP_SCAN_RESULT = self::prepareResponseResults([self::RESP_HEAD_SEARCHPAGEID_01()]);
 
@@ -356,7 +357,7 @@ class YacorapiTestData extends TestData
     /**
      * @return array<mixed,mixed>
      */
-    public static function RESP_SEARCH_RESULT(): array
+    public static function RESP_SEARCH_RESULT(): array // NOSONAR:  php:S116
     {
         self::$RESP_SEARCH_RESULT = self::prepareResponseResults([self::RESP_HEAD_SEARCHPAGEID_01()]);
 

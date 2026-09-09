@@ -16,13 +16,14 @@ namespace oglow\tools\Yacorapi\Store;
 use Monolog\ConsoleLogger;
 use ollily\Tools\String\ImplodeTrait;
 use Psr\Log\LoggerInterface;
-use oglow\tools\Yacorapi\Store\FileStoreStageEnum;
 
+/**
+ * @phpstan-import-type LoggingLevel from \Monolog\AbstractEasyGoingLogger
+ */
 class CsvFileAdapter extends FileAdapter
 {
     use ImplodeTrait;
 
-    /** @psalm-suppress InvalidClassConstantType  */
     public const string DEFAULT_STORE_ITEM_SUFFIX = IStoreItem::C_FILE_EXT_CSV;
 
     public const string DEFAULT_COLUMN_TEXT_SEP = '"';
@@ -36,18 +37,20 @@ class CsvFileAdapter extends FileAdapter
     private static LoggerInterface $logger;
 
     /**
-     * @param string $outputFileName  The filename, without suffix, of the output file
-     * @param string $fileSuffix      An optional suffix of the output file
-     * @param string $customTargetDir The folder where to store the output file
-     * @param FileStoreStageEnum $storeStage The stage where to store the file (Default {@link FileStoreStageEnum::BASE})
-     * @param int|\Monolog\Level|\Psr\Log\LogLevel::*|string $level      The minimum logging level at which this handler will be triggered (Default: {@link AbstractStoreAdapter::LEVEL_DEFAULT})
+     * @param string                                         $outputFileName  The filename, without suffix, of the output file
+     * @param string                                         $fileSuffix      An optional suffix of the output file
+     * @param string                                         $customTargetDir The folder where to store the output file
+     * @param FileStoreStageEnum                             $storeStage      The stage where to store the file (Default {@link FileStoreStageEnum::BASE})
+     * @param int|\Monolog\Level|\Psr\Log\LogLevel::*|string $level           The minimum logging level at which this handler will be triggered (Default: {@link AbstractStoreAdapter::LEVEL_DEFAULT})
+     *
+     * @phpstan-param LoggingLevel $level
      */
     public function __construct(
         string $outputFileName,
         string $fileSuffix = self::DEFAULT_FILE_SUFFIX,
         string $customTargetDir = self::DEFAULT_CUSTOM_TARGET_DIR,
         FileStoreStageEnum $storeStage = FileStoreStageEnum::BASE,
-            mixed $level = self::LEVEL_DEFAULT
+        mixed $level = self::LEVEL_DEFAULT
     ) {
         self::$logger = new ConsoleLogger(CsvFileAdapter::class, level: $level);
         self::$logger->debug("START", [$outputFileName, $fileSuffix, $customTargetDir, $storeStage->name]);
@@ -83,12 +86,12 @@ class CsvFileAdapter extends FileAdapter
     #[\Override]
     protected function invokeStoreItem(
         string $outputFileName,
-        string $customTargetDir,
+        string $finalTargetDir,
         string $fileSuffix = self::DEFAULT_STORE_ITEM_SUFFIX,
         string $storeItemClazz = self::DEFAULT_STORE_ITEM_CLAZZ,
         string $methodName = self::DEFAULT_STORE_ITEM_METHOD
     ): IStoreItem {
-        self::$logger->debug("START");
+        self::$logger->debug("START", [$outputFileName, $finalTargetDir, $fileSuffix, $storeItemClazz, $methodName]);
 
         if (!str_ends_with($fileSuffix, self::DEFAULT_STORE_ITEM_SUFFIX)) {
             $fileSuffix = $fileSuffix . self::C_FILE_SEP . self::DEFAULT_STORE_ITEM_SUFFIX;
@@ -96,7 +99,7 @@ class CsvFileAdapter extends FileAdapter
 
         self::$logger->debug('END');
 
-        return parent::invokeStoreItem($outputFileName, $customTargetDir,  $fileSuffix, $storeItemClazz, $methodName);
+        return parent::invokeStoreItem($outputFileName, $finalTargetDir, $fileSuffix, $storeItemClazz, $methodName);
     }
 
     /**
@@ -136,7 +139,7 @@ class CsvFileAdapter extends FileAdapter
      *
      * @return string
      */
-    protected function prepareCsvLine(array|string $param): string
+    protected function prepareCsvLine(string|array $param): string
     {
         if (!is_array($param)) {
             $param = [$param];

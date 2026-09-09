@@ -22,13 +22,13 @@ use oglow\tools\Yacorapi\Request\RequestParameterData;
 use ollily\Tools\Emergency;
 use ollily\Tools\EnvironmentHelper;
 use Psr\Log\LoggerInterface;
+
 /**
  * Class ConstData.
  */
 // @phpcs:ignoreFile PSR1.Methods.CamelCapsMethodName.NotCamelCaps
 final class ConstData extends AbstractSingleton
 {
-
     //
     // Public Consts
 

@@ -32,7 +32,7 @@ interface IStoreAdapter
     public function storeData(mixed $dataContent): void;
 
     /**
-     * @param string|string[] $dataHeader A header which will be stored
+     * @param array<string>|string $dataHeader A header which will be stored
      */
     public function storeDataHeader(string|array $dataHeader): void;
 

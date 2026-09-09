@@ -21,12 +21,6 @@ use PHPUnit\Framework\EasyGoingTestCase;
 
 class AbstractProviderTest extends EasyGoingTestCase
 {
-    #[\Override]
-    public function setUp(): void
-    {
-        parent::setUp();
-    }
-
     /**
      * @return AbstractProviderTestDummyClazz
      */

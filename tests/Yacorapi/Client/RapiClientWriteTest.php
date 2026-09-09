@@ -15,14 +15,14 @@ namespace oglow\tools\Yacorapi\Client;
 
 use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\ConstData;
+use oglow\tools\Yacorapi\Response\ResponseParameterData;
 use oglow\tools\Yacorapi\YacorapiTestData;
 use PHPUnit\Framework\EasyGoingTestCase;
 use Psr\Log\LoggerInterface;
-use oglow\tools\Yacorapi\Response\ResponseParameterData;
 
 class RapiClientWriteTest extends EasyGoingTestCase
 {
-    private static LoggerInterface $logger; // @phpstan-ignore property.onlyWritten
+    private static LoggerInterface $logger;
 
     #[\Override]
     public static function setUpBeforeClass(): void
@@ -46,11 +46,12 @@ class RapiClientWriteTest extends EasyGoingTestCase
         return $this->o2t;
     }
 
-    public function testCreatePage(): void {
+    public function testCreatePage(): void
+    {
         self::$logger->info('START');
 
         $spaceKey = YacorapiTestData::C_SPACE_EXIST_KEY;
-        $pageTitle = sprintf('%s %s-$s', YacorapiTestData::C_PAGE_TITLE_1, date('Ymd-His'), 1);
+        $pageTitle = sprintf('%s %s-%s', YacorapiTestData::C_PAGE_TITLE_1, date('Ymd-His'), 1);
         $pageBody = YacorapiTestData::C_PAGE_BODY_1;
         $parentId = YacorapiTestData::C_SPACE_EXIST_ID;
 
@@ -69,11 +70,12 @@ class RapiClientWriteTest extends EasyGoingTestCase
         self::$logger->info('END');
     }
 
-    public function testUpdatePage(): void {
+    public function testUpdatePage(): void
+    {
         self::$logger->info('START');
 
         $updateId = YacorapiTestData::C_SEARCHPAGEID_01;
-        $updateTitle = sprintf('%s %s-$s',YacorapiTestData::C_PAGE_TITLE_2, date('Ymd-His'), 1);
+        $updateTitle = sprintf('%s %s-%s', YacorapiTestData::C_PAGE_TITLE_2, date('Ymd-His'), 1);
         $updateBody = YacorapiTestData::C_PAGE_BODY_2;
 
         $before = $this->getCasto2t()->readPageByPageId($updateId);
@@ -89,14 +91,15 @@ class RapiClientWriteTest extends EasyGoingTestCase
         self::assertEquals($updateId, $after->getValue(ResponseParameterData::KEY_ID));
         self::assertEquals($updateTitle, $after->getValue(ResponseParameterData::KEY_TITLE));
         self::assertEquals($updateBody, $after->getBody());
-        
+
         self::assertNotEquals($before->getValue(ResponseParameterData::KEY_TITLE), $after->getValue(ResponseParameterData::KEY_TITLE));
         self::assertNotEquals($before->getBody(), $after->getBody());
 
         self::$logger->info('END');
     }
 
-    public function testMovePage(): void {
+    public function testMovePage(): void
+    {
         self::$logger->info('START');
 
         $response = $this->getCasto2t()->movePage(YacorapiTestData::C_SEARCHPAGEID_01, YacorapiTestData::C_PAGEID_NEW);

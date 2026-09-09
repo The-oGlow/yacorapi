@@ -21,7 +21,7 @@ use oglow\tools\Yacorapi\IConnectionProvider;
 use oglow\tools\Yacorapi\IRapiClient;
 use Psr\Log\LoggerInterface;
 
-class RapiClient extends RapiClientBatch implements IRapiClient // NOSONAR: php:S1448
+class RapiClient extends RapiClientBatch implements IRapiClient
 {
     use ExtensionTrait;
 

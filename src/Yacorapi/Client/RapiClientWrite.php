@@ -98,7 +98,7 @@ class RapiClientWrite extends RapiClientRead implements IRapiClientWrite
             parentId: $parentId,
             pageBody: $pageBody,
             nextVersion: IRapiClientBase::REQ_VAL_VERSION_FIRST,
-            comment:  $comment
+            comment: $comment
         );
         $response = $this->execPost($this->prepareCreatePage(), $parameters, RequestTypeEnum::POST);
 
@@ -240,10 +240,11 @@ class RapiClientWrite extends RapiClientRead implements IRapiClientWrite
         $currentPage = $this->readPageByPageId($pageId);
         if ($currentPage->checkStatus()) {
             $pageTitle = $currentPage->getValue(ResponseParameterData::KEY_TITLE);
-            $pageBody =  $currentPage->getValue(ResponseParameterData::KEY_BODY)[ResponseParameterData::KEY_STORAGE][ResponseParameterData::KEY_VALUE];
+            $pageBody = $currentPage->getValue(ResponseParameterData::KEY_BODY)[ResponseParameterData::KEY_STORAGE][ResponseParameterData::KEY_VALUE];
             $itemType = ItemTypeEnum::tryFrom($currentPage->getValue(ResponseParameterData::KEY_TYPE));
             $versionData = $currentPage->getValue(ResponseParameterData::KEY_VERSION, []);
-            $currentVersion = intval(array_key_exists(ResponseParameterData::KEY_NUMBER, $versionData) ? $versionData[ResponseParameterData::KEY_NUMBER] : IRapiClientBase::RESP_VAL_VERSION_NO);
+            $currentVersion = intval(array_key_exists(ResponseParameterData::KEY_NUMBER, $versionData) ?
+                    $versionData[ResponseParameterData::KEY_NUMBER] : IRapiClientBase::RESP_VAL_VERSION_NO);
             $nextVersion = $currentVersion + 1;
         } else {
             self::$logger->warning('Cannot find page', [$pageId]);
