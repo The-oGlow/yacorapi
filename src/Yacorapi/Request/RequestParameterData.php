@@ -16,6 +16,11 @@ namespace oglow\tools\Yacorapi\Request;
 use Ds\Collection;
 use oglow\tools\common\AbstractSingleton;
 
+/**
+ * Constants clazz for the individual keys of the request structure and their values.
+ * 
+ * @author ollily
+ */
 class RequestParameterData extends AbstractSingleton
 {
     // Property Consts

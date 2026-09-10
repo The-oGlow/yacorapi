@@ -84,7 +84,12 @@ class MockProvider extends AbstractProvider {
         switch ($reqType) {
             case RequestTypeEnum::GET:
                 if (
-                        $this->evalReadPagesByTitle($execUrl, $reqType, $response) || $this->evalReadPageByPageId($execUrl, $reqType, $response) || $this->evalScanPages($execUrl, $reqType, $response) || $this->evalSearchPagesWithFilter($execUrl, $reqType, $response) || $this->evalListSpaces($execUrl, $reqType, $response) || $this->evalSpaceHomepage($execUrl, $reqType, $response)
+                        $this->evalReadPagesByTitle($execUrl, $reqType, $response) 
+                        || $this->evalReadPageByPageId($execUrl, $reqType, $response) 
+                        || $this->evalScanPages($execUrl, $reqType, $response) 
+                        || $this->evalSearchPagesWithFilter($execUrl, $reqType, $response) 
+                        || $this->evalListSpaces($execUrl, $reqType, $response) 
+                        || $this->evalSpaceHomepage($execUrl, $reqType, $response)
                 ) {
                     break;
                 }

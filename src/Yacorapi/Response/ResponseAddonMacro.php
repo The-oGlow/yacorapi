@@ -17,21 +17,26 @@ use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\Macro\AddonTypeEnum;
 use Psr\Log\LoggerInterface;
 
-class ResponseAddonMacroDecorate extends AbstractResponse
+/**
+ * Response structure for handling addon data.
+ * 
+ * @author ollily
+ */
+class ResponseAddonMacro extends AbstractResponse
 {
     private static LoggerInterface $logger;
 
     private AddonTypeEnum $mode;
 
     /**
-     * ResponseAddonMacroDecorate constructor.
+     * ResponseAddonMacro constructor.
      *
      * @param AddonTypeEnum      $mode
      * @param array<mixed,mixed> $data
      */
     public function __construct(AddonTypeEnum $mode, array $data = [])
     {
-        self::$logger = new ConsoleLogger(ResponseAddonMacroDecorate::class);
+        self::$logger = new ConsoleLogger(ResponseAddonMacro::class);
         self::$logger->debug('START');
         parent::__construct($data);
         $this->mode = $mode;
@@ -46,7 +51,7 @@ class ResponseAddonMacroDecorate extends AbstractResponse
     #[\Override]
     public function getResult(int $idx): mixed
     {
-        throw new \BadFunctionCallException('Use instead ResponseAddonMacroDecorate->getValue()');
+        throw new \BadFunctionCallException('Use instead ResponseAddonMacro->getValue()');
     }
 
     /**

@@ -30,8 +30,15 @@ class CsvFileAdapter extends FileAdapter
 
     public const string DEFAULT_SQUARE_BRACK_OPEN = '[';
 
+    public const string DEFAULT_SQUARE_BRACK_CLOSE = ']';
+
+    /** @var array<mixed,mixed> Chars to clean */
+    private const array STORDATA_CLEAN = [self::DEFAULT_SQUARE_BRACK_OPEN, self::DEFAULT_SQUARE_BRACK_CLOSE];
+    
+    /** Looking for ";[" */
     private const string STOREDATA_SEARCH = self::DEFAULT_ITEM_SEP . self::DEFAULT_SQUARE_BRACK_OPEN;
 
+    /** Replacing ";\n[" */
     private const string STOREDATA_REPL = self::DEFAULT_ITEM_SEP . self::C_FILE_EOL . self::DEFAULT_SQUARE_BRACK_OPEN;
 
     private static LoggerInterface $logger;
@@ -113,6 +120,7 @@ class CsvFileAdapter extends FileAdapter
         if (!is_null($dataContent)) {
             $csvLine = self::implode_recursive(self::DEFAULT_ITEM_SEP, $dataContent, false, false);
             $csvLine = str_replace(self::STOREDATA_SEARCH, self::STOREDATA_REPL, $csvLine);
+            $csvLine  = str_replace(self::STORDATA_CLEAN, '',$csvLine);
             $this->writeData($this->storeItem, $csvLine);
         }
 

@@ -15,7 +15,7 @@ namespace oglow\tools\Yacorapi\Client;
 
 use oglow\tools\Yacorapi\Data\ItemTypeEnum;
 use oglow\tools\Yacorapi\IResponse;
-use oglow\tools\Yacorapi\Response\ResponseAddonMacroDecorate;
+use oglow\tools\Yacorapi\Response\ResponseAddonMacro;
 use oglow\tools\Yacorapi\Space\SpaceTypeEnum;
 use oglow\tools\Yacorapi\Statistic\IStatistic;
 
@@ -35,14 +35,14 @@ interface IRapiClientStatistic extends IRapiClientPermission
      * Scans a space and count the macros in the space.
      *
      * @param string                     $spaceKey     Limited to the space
-     * @param ResponseAddonMacroDecorate $addonSet     The set of addons containing the macros to scan for
+     * @param ResponseAddonMacro $addonSet     The set of addons containing the macros to scan for
      * @param IStatistic                 $outputMatrix An empty or previous statistic to add
      *
      * @return IStatistic The found and counted macros
      *
      * @see IRapiClient::prepareAddonSet()
      */
-    public function countMacrosInSpace(string $spaceKey, ResponseAddonMacroDecorate $addonSet, IStatistic $outputMatrix): IStatistic;
+    public function countMacrosInSpace(string $spaceKey, ResponseAddonMacro $addonSet, IStatistic $outputMatrix): IStatistic;
 
     /**
      * @param SpaceTypeEnum $spaceType The type of spaces (Default: global spaces)

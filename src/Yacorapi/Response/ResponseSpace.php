@@ -18,8 +18,14 @@ use Ds\Vector;
 use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\IResponse;
 use Psr\Log\LoggerInterface;
+use BadFunctionCallException;
 
-class ResponseSpaceDataDecorate extends AbstractResponse
+/**
+ * Response structure for handling space data.
+ * 
+ * @author ollily
+ */
+class ResponseSpace extends AbstractResponse
 {
     public const string SPACE_ARCH_FLAG1 = '[archived]';
 
@@ -32,12 +38,16 @@ class ResponseSpaceDataDecorate extends AbstractResponse
 
     public function __construct(IResponse $response)
     {
-        self::$logger = new ConsoleLogger(ResponseSpaceDataDecorate::class);
+        self::$logger = new ConsoleLogger(ResponseSpace::class);
         self::$logger->debug('START');
+
         $data = $response->getRawData();
         $data->put(ResponseParameterData::KEY_RESULTS, $response->getResults());
+
         parent::__construct($data->toArray());
+
         $this->spaces = $this->prepareSpaceArray($response->getResults()->toArray());
+
         self::$logger->debug('END');
     }
 
@@ -97,7 +107,7 @@ class ResponseSpaceDataDecorate extends AbstractResponse
     #[\Override]
     public function getResult(int $idx): mixed
     {
-        throw new \BadFunctionCallException('Try instead ResponseSpaceDataDecorate->getValue()');
+        throw new BadFunctionCallException('Try instead ResponseSpace->getValue()');
     }
 
     /**
@@ -163,13 +173,15 @@ class ResponseSpaceDataDecorate extends AbstractResponse
             } else {
                 foreach ($spaces as $space) {
                     if (is_array($space)) {
+
                         $descr = $space[ResponseParameterData::KEY_DESCRIPTION][ResponseParameterData::KEY_PLAIN][ResponseParameterData::KEY_VALUE];
                         $newSpace = [
                             ResponseParameterData::KEY_ID => $space[ResponseParameterData::KEY_ID],
                             ResponseParameterData::KEY_KEY => $space[ResponseParameterData::KEY_KEY],
                             ResponseParameterData::KEY_NAME => $space[ResponseParameterData::KEY_NAME],
                             ResponseParameterData::KEY_TYPE => $space[ResponseParameterData::KEY_TYPE],
-                            ResponseParameterData::KEY_HOMEPAGE => $space[ResponseParameterData::KEY_HOMEPAGE][ResponseParameterData::KEY_ID],
+                            ResponseParameterData::KEY_HOMEPAGE => array_key_exists(ResponseParameterData::KEY_HOMEPAGE, $space) 
+                                ? $space[ResponseParameterData::KEY_HOMEPAGE][ResponseParameterData::KEY_ID] : [],                            
                             ResponseParameterData::KEY_ARCHIVED => $this->isArchived($descr) ? ResponseParameterData::VAL_TRUE : ResponseParameterData::VAL_FALSE,
                         ];
 
@@ -177,7 +189,7 @@ class ResponseSpaceDataDecorate extends AbstractResponse
                     }
                 }
             }
-            asort($resultSpaces);
+            ksort($resultSpaces, SORT_FLAG_CASE | SORT_NATURAL);
         }
 
         return $resultSpaces;

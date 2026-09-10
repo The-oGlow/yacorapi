@@ -24,9 +24,9 @@ use oglow\tools\Yacorapi\Extension\ExtensionEnum;
 use oglow\tools\Yacorapi\IConnectionProvider;
 use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Macro\AddonTypeEnum;
-use oglow\tools\Yacorapi\Response\ResponseAddonMacroDecorate;
+use oglow\tools\Yacorapi\Response\ResponseAddonMacro;
 use oglow\tools\Yacorapi\Response\ResponseParameterData;
-use oglow\tools\Yacorapi\Response\ResponseSpaceDataDecorate;
+use oglow\tools\Yacorapi\Response\ResponseSpace;
 use oglow\tools\Yacorapi\Space\SpaceTypeEnum;
 use oglow\tools\Yacorapi\Statistic\IStatistic;
 use oglow\tools\Yacorapi\Statistic\StatisticStatistic;
@@ -89,7 +89,7 @@ class RapiClientStatistic extends RapiClientPermission implements IRapiClientSta
      * @inheritDoc
      */
     #[\Override]
-    public function countMacrosInSpace(string $spaceKey, ResponseAddonMacroDecorate $addonSet, IStatistic $outputMatrix): IStatistic
+    public function countMacrosInSpace(string $spaceKey, ResponseAddonMacro $addonSet, IStatistic $outputMatrix): IStatistic
     {
         self::$logger->debug('START - spaceKey,addonSet', [$spaceKey, $addonSet]);
 
@@ -112,7 +112,7 @@ class RapiClientStatistic extends RapiClientPermission implements IRapiClientSta
 
         $prepareUrl = $this->prepareSpaceListUrl($spaceType, $limit);
 
-        return new ResponseSpaceDataDecorate($this->exec($prepareUrl));
+        return new ResponseSpace($this->exec($prepareUrl));
     }
 
     /**

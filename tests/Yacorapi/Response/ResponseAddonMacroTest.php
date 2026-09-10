@@ -16,19 +16,19 @@ namespace oglow\tools\Yacorapi\Response;
 use oglow\tools\Yacorapi\Macro\AddonTypeEnum;
 use PHPUnit\Framework\EasyGoingTestCase;
 
-class ResponseAddonMacroDecorateTest extends EasyGoingTestCase
+class ResponseAddonMacroTest extends EasyGoingTestCase
 {
     #[\Override]
-    protected static function prepareO2t(): ResponseAddonMacroDecorate
+    protected static function prepareO2t(): ResponseAddonMacro
     {
-        return new ResponseAddonMacroDecorate(AddonTypeEnum::ADDON_SINGLE);
+        return new ResponseAddonMacro(AddonTypeEnum::ADDON_SINGLE);
     }
 
     /**
      * @inheritDoc
      */
     #[\Override]
-    protected function getCasto2t(): ResponseAddonMacroDecorate
+    protected function getCasto2t(): ResponseAddonMacro
     {
         return $this->o2t;
     }

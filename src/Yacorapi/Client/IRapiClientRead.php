@@ -16,7 +16,7 @@ namespace oglow\tools\Yacorapi\Client;
 use oglow\tools\Yacorapi\Data\ItemTypeEnum;
 use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Macro\AddonTypeEnum;
-use oglow\tools\Yacorapi\Response\ResponseAddonMacroDecorate;
+use oglow\tools\Yacorapi\Response\ResponseAddonMacro;
 
 interface IRapiClientRead extends IRapiClientBase
 {
@@ -25,11 +25,11 @@ interface IRapiClientRead extends IRapiClientBase
      *
      * @param AddonTypeEnum $addonMode Predefined set of addons (Default: {@link AddonTypeEnum::ADDON_ALL})
      *
-     * @return ResponseAddonMacroDecorate Set of Addons or empty
+     * @return ResponseAddonMacro Set of Addons or empty
      *
      * @see IRapiClient::countMacrosInSpace()
      */
-    public function prepareAddonSet(AddonTypeEnum $addonMode = IRapiClientBase::ADDON_DEFAULT): ResponseAddonMacroDecorate;
+    public function prepareAddonSet(AddonTypeEnum $addonMode = IRapiClientBase::ADDON_DEFAULT): ResponseAddonMacro;
 
     /**
      * Loads a confluence page by its page id.

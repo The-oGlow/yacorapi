@@ -16,33 +16,52 @@ namespace oglow\tools\Yacorapi;
 use Ds\Collection;
 use Ds\Map;
 use Ds\Vector;
+use Stringable;
 
-interface IResponse extends \Stringable
+/**
+ * Structure for holding the data which comes from a REST-API call.
+ * This can be
+ * <ul>
+ * <li>The data of a confluence item (eg. page)</li>
+ * <li>The result of search call</li>
+ * <ul>
+ * 
+ * @author ollily
+*/
+interface IResponse extends Stringable
 {
     /**
-     * @return Collection<mixed,mixed>
+     * Returns the raw data of the response as it was returnd from the REST API call.
+     * 
+     * @return Collection<mixed,mixed> The raw response
      *
      * @phpstan-return Map<mixed,mixed>
      */
     public function getRawData(): Collection;
 
     /**
-     * @param mixed $key
+     * Verifies, if the key does exists at the first level of the response.
      *
-     * @return bool
+     * @param mixed $key The key to check for
+     *
+     * @return bool TRUE=true key exists, else FALSE
      */
     public function keyExists(mixed $key): bool;
 
     /**
-     * @return Vector<mixed>
+     * Returns all keys at first level of the response.
+     * 
+     * @return Vector<mixed> All keys
      */
     public function keys(): Vector;
 
     /**
-     * @param mixed $key
-     * @param mixed $default
+     * Returns the value for the key (only from first level of the response) or a default value.
+     * 
+     * @param mixed $key The key to check for
+     * @param mixed $default A default value (Default: ''=
      *
-     * @return mixed
+     * @return mixed The found value or {@link $default}
      */
     public function getValue(mixed $key, mixed $default = ''): mixed;
 
@@ -54,6 +73,8 @@ interface IResponse extends \Stringable
     public function checkStatus(): bool;
 
     /**
+     * Returns the information about the error which was produced by the last REST-API call.
+     * 
      * @return Collection<mixed,mixed> Error information
      *
      * @phpstan-return Map<mixed,mixed>
@@ -61,47 +82,62 @@ interface IResponse extends \Stringable
     public function getError(): Collection;
 
     /**
-     * Response has data.
+     * Verifies if the response has data.
      *
      * @return bool TRUE=response has data, else FALSE
      */
     public function checkData(): bool;
 
     /**
-     * Data for Writing is valid.
+     * Verifies if the data is valid to write.
      *
-     * @return mixed pageId=Data is valid, else FALSE
+     * @return mixed itemId=Data is valid, else FALSE
      */
     public function checkDataWrite(): mixed;
 
     /**
-     * @return Collection<mixed,mixed>
+     * Returns the complete search result.
+     * 
+     * @return Collection<mixed,mixed> The complete search result
      *
      * @phpstan-return Map<mixed,mixed>
      */
     public function getResults(): Collection;
 
     /**
-     * @param int $idx
+     * Returns a single result from the given position.
+     * 
+     * @param int $idx The position in the result
      *
-     * @return mixed
+     * @return mixed The search result at position {@link $idx} or null
      */
     public function getResult(int $idx): mixed;
 
     /**
-     * @return string
+     * Returns the id of the confluence item.
+     * 
+     * @return int The itemId
+     */
+    public function getItemId(): int;
+
+    /**
+     * Returns the body of the item in storage format.
+     * 
+     * @return string The body of the item
      */
     public function getBody(): string;
 
     /**
-     * @return array<mixed,mixed>
+     * Returns all item restrictions.
+     * 
+     * @return array<mixed,mixed> All defined item restrictions
      */
     public function getRestrictions(): array;
 
     /**
-     * Response has results.
+     * Verifies if the search result has entries.
      *
-     * @return bool TRUE=has results, else FALSE
+     * @return bool TRUE=search result has at least one entry, else FALSE
      */
     public function isResultsAvailable(): bool;
 

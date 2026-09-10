@@ -16,6 +16,11 @@ namespace oglow\tools\Yacorapi\Response;
 use Ds\Collection;
 use oglow\tools\common\AbstractSingleton;
 
+/**
+ * Constants clazz for the individual keys of the response structure and their values.
+ * 
+ * @author ollily
+ */
 class ResponseParameterData extends AbstractSingleton
 {
     // Access Keys

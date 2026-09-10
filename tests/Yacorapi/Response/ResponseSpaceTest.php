@@ -18,19 +18,19 @@ use Ds\Vector;
 use oglow\tools\Yacorapi\YacorapiTestData;
 use PHPUnit\Framework\EasyGoingTestCase;
 
-class ResponseSpaceDataDecorateTest extends EasyGoingTestCase
+class ResponseSpaceTest extends EasyGoingTestCase
 {
     #[\Override]
-    protected static function prepareO2t(): ResponseSpaceDataDecorate
+    protected static function prepareO2t(): ResponseSpace
     {
-        return new ResponseSpaceDataDecorate(new Response());
+        return new ResponseSpace(new Response());
     }
 
     /**
      * @inheritDoc
      */
     #[\Override]
-    protected function getCasto2t(): ResponseSpaceDataDecorate
+    protected function getCasto2t(): ResponseSpace
     {
         return $this->o2t;
     }

@@ -22,7 +22,7 @@ use oglow\tools\Yacorapi\Extension\ExtensionEnum;
 use oglow\tools\Yacorapi\IConnectionProvider;
 use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Macro\AddonTypeEnum;
-use oglow\tools\Yacorapi\Response\ResponseAddonMacroDecorate;
+use oglow\tools\Yacorapi\Response\ResponseAddonMacro;
 use oglow\tools\Yacorapi\Response\ResponseParameterData;
 use oglow\tools\Yacorapi\Space\SpaceTypeEnum;
 use Psr\Log\LoggerInterface;
@@ -60,16 +60,16 @@ class RapiClientRead extends RapiClientBase implements IRapiClientRead
      * @inheritDoc
      */
     #[\Override]
-    public function prepareAddonSet(AddonTypeEnum $addonMode = IRapiClientBase::ADDON_DEFAULT): ResponseAddonMacroDecorate
+    public function prepareAddonSet(AddonTypeEnum $addonMode = IRapiClientBase::ADDON_DEFAULT): ResponseAddonMacro
     {
         self::$logger->debug('START - mode', [$addonMode]);
 
         $data = $this->addons->getDataByMode($addonMode->value);
         if (!empty($data)) {
             /** @psalm-suppress MixedMethodCall */
-            $addonSet = new ResponseAddonMacroDecorate($addonMode, $data->toArray());
+            $addonSet = new ResponseAddonMacro($addonMode, $data->toArray());
         } else {
-            $addonSet = new ResponseAddonMacroDecorate($addonMode);
+            $addonSet = new ResponseAddonMacro($addonMode);
         }
         self::$logger->debug('END');
 
