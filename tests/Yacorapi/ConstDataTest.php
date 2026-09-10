@@ -26,7 +26,7 @@ class ConstDataTest extends ConstantCheckTestCase
     #[\Override]
     protected static function prepareO2t(): ConstData
     {
-        return new ConstData();
+        return new ConstData(ConstDataTest::class);
     }
 
     /**

@@ -13,16 +13,13 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Store;
 
+/**
+ * Interface for the store item.
+ * 
+ * @author ollily
+ */
 interface IStoreItem extends \Stringable
 {
-    public const string C_FILE_EXT_TEXT = 'txt';
-
-    public const string C_FILE_EXT_CSV = 'csv';
-
-    public const string C_FILE_SEP = '.';
-
-    public const string C_DIR_SEP = DIRECTORY_SEPARATOR;
-
     /**
      * @param string $dir The new folder of the store item
      *
@@ -59,6 +56,11 @@ interface IStoreItem extends \Stringable
      */
     public function getExt(): string;
 
+    /**
+     * @return string The full filename of the store item
+     */
+    public function getStoreName(): string;
+    
     /**
      * @return string The full filename of the store item
      */

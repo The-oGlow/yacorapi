@@ -238,7 +238,7 @@ final class ConstData extends AbstractSingleton
      */
     public function c(string $constKey, mixed $default = null): mixed
     {
-        return self::getConst($constKey, $default);
+        return $this->getConst($constKey, $default);
     }
 
     /**
@@ -346,38 +346,38 @@ final class ConstData extends AbstractSingleton
         self::$logger->debug('START');
 
         // Common
-        $this->putConst(self::KEY_MY_CERT_CA, ((string) self::getConst(self::KEY_MY_DIR)) . DIRECTORY_SEPARATOR . self::CONF_USERCERTFILE);
-        $this->putConst(self::KEY_WEB_SHOW_PAGEID, sprintf('%s' . self::C_RAPI_VIEWPAGE, self::getConst(self::KEY_CONF_BASE_URL)));
+        $this->putConst(self::KEY_MY_CERT_CA, ((string) $this->getConst(self::KEY_MY_DIR)) . DIRECTORY_SEPARATOR . self::CONF_USERCERTFILE);
+        $this->putConst(self::KEY_WEB_SHOW_PAGEID, sprintf('%s' . self::C_RAPI_VIEWPAGE, $this->getConst(self::KEY_CONF_BASE_URL)));
 
         // Urls
-        $this->putConst(self::KEY_CONF_CONTENT_URL, sprintf('%s' . self::C_RAPI_CONTENT, self::getConst(self::KEY_CONF_BASE_URL)));
-        $this->putConst(self::KEY_CONF_SEARCH_URL, sprintf('%s' . self::C_RAPI_SEARCH, self::getConst(self::KEY_CONF_BASE_URL)));
-        $this->putConst(self::KEY_CONF_SPACE_URL, sprintf('%s' . self::C_RAPI_SPACE, self::getConst(self::KEY_CONF_BASE_URL)));
+        $this->putConst(self::KEY_CONF_CONTENT_URL, sprintf('%s' . self::C_RAPI_CONTENT, $this->getConst(self::KEY_CONF_BASE_URL)));
+        $this->putConst(self::KEY_CONF_SEARCH_URL, sprintf('%s' . self::C_RAPI_SEARCH, $this->getConst(self::KEY_CONF_BASE_URL)));
+        $this->putConst(self::KEY_CONF_SPACE_URL, sprintf('%s' . self::C_RAPI_SPACE, $this->getConst(self::KEY_CONF_BASE_URL)));
 
         // Folders
         $this->putConst(self::KEY_PROJECT_ROOT, realpath(__DIR__ . str_repeat(DIRECTORY_SEPARATOR . '..', 2)));
         $this->putConst(
             self::KEY_TARGET_ROOTDIR,
-            sprintf('%s%starget', self::getConst(self::KEY_PROJECT_ROOT), DIRECTORY_SEPARATOR)
+            sprintf('%s%starget', $this->getConst(self::KEY_PROJECT_ROOT), DIRECTORY_SEPARATOR)
         );
         $this->putConst(
             self::KEY_TARGET_DIR,
             sprintf(
                 '%s%s%s',
-                self::getConst(self::KEY_TARGET_ROOTDIR),
+                $this->getConst(self::KEY_TARGET_ROOTDIR),
                 DIRECTORY_SEPARATOR,
                 '' . self::$tsNow
             )
         );
         $this->putConst(
             self::KEY_INPUT_ROOTDIR,
-            sprintf('%s%sinput', self::getConst(self::KEY_PROJECT_ROOT), DIRECTORY_SEPARATOR)
+            sprintf('%s%sinput', $this->getConst(self::KEY_PROJECT_ROOT), DIRECTORY_SEPARATOR)
         );
         $this->putConst(
             self::KEY_INPUT_DIR,
             sprintf(
                 '%s',
-                self::getConst(self::KEY_INPUT_ROOTDIR)
+                $this->getConst(self::KEY_INPUT_ROOTDIR)
             )
         );
 

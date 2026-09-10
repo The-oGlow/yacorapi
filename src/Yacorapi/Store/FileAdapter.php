@@ -18,52 +18,51 @@ use oglow\tools\Yacorapi\ConstData;
 use Psr\Log\LoggerInterface;
 
 /**
+ * Implementation for a standarf file adapter.
+ * 
+ * @author ollily
+ * 
  * @phpstan-import-type LoggingLevel from \Monolog\AbstractEasyGoingLogger
  */
 class FileAdapter extends AbstractStoreAdapter
 {
+    /** @var string */
+    public const string DEFAULT_STORE_ITEM_SUFFIX = StoreParameterData::C_FILE_EXT_TEXT;
+
     private static LoggerInterface $logger;
 
     /**
-     * @param string                                         $outputFileName  The filename, without suffix, of the output file
-     * @param string                                         $fileSuffix      An optional suffix of the output file
-     * @param string                                         $customTargetDir The folder where to store the output file
-     * @param FileStoreStageEnum                             $storeStage      The stage where to store the file (Default {@link FileStoreStageEnum::BASE})
+     * Constructor for a store adapter.
+     * 
+     * @param string                                         $fileName  The filename, without suffix, of the output file
+     * @param string                                         $filePrefix      Prefix of the output file (Default: {@link StoreParameterData::DEFAULT_FILE_PREFIX})
+     * @param string                                         $fileSuffix      Suffix of the output file (Default: {@link StoreParameterData::DEFAULT_FILE_SUFFIX})
+     * @param string                                         $fileExt         File extension of the output file (Default: {@link StoreParameterData::DEFAULT_FILE_EXT})
+     * @param string                                         $pathToFile      Folder where to store the output file (Default: {@link StoreParameterData::DEFAULT_FOLDER_NAME})
+     * @param FileStoreStageEnum                             $staging      The stage where to store the file (Default {@link FileStoreStageEnum::BASE})
      * @param int|\Monolog\Level|\Psr\Log\LogLevel::*|string $level           The minimum logging level at which this handler will be triggered (Default: {@link AbstractStoreAdapter::LEVEL_DEFAULT})
      *
      * @phpstan-param LoggingLevel $level
      */
     public function __construct(
-        string $outputFileName,
-        string $fileSuffix = self::DEFAULT_FILE_SUFFIX,
-        string $customTargetDir = self::DEFAULT_CUSTOM_TARGET_DIR,
-        FileStoreStageEnum $storeStage = FileStoreStageEnum::BASE,
+        string $fileName,
+        string $filePrefix = StoreParameterData::DEFAULT_FILE_PREFIX,
+        string $fileSuffix = StoreParameterData::DEFAULT_FILE_SUFFIX,
+        string $fileExt = StoreParameterData::DEFAULT_FILE_EXT,
+        string $pathToFile = StoreParameterData::DEFAULT_FOLDER_NAME,
+        FileStoreStageEnum $staging = FileStoreStageEnum::BASE,
         mixed $level = self::LEVEL_DEFAULT
     ) {
         self::$logger    = new ConsoleLogger(FileAdapter::class, level: $level);
-        self::$logger->debug("START", [$outputFileName,$fileSuffix, $customTargetDir, $storeStage->name]);
+        self::$logger->debug("START", [$fileName, $filePrefix, $fileSuffix, $fileExt, $pathToFile, $staging->name]);
 
-        parent::__construct($outputFileName, $fileSuffix, $customTargetDir, $storeStage, $level);
+        if (empty($fileExt)) {
+            $finalFileExt = self::DEFAULT_STORE_ITEM_SUFFIX;
+        } else {
+            $finalFileExt = $fileExt;
+        }
 
-        self::$logger->debug('END');
-    }
-
-    /**
-     * @param array<mixed,mixed> $resultsEntry Array of results from a query
-     */
-    public function storeResults(array $resultsEntry): void
-    {
-        self::$logger->debug('START', [$this->storeItem]);
-
-        $pageId      = $resultsEntry[self::KEY_KEY];
-        $line        = sprintf(
-            '%s;%s%s;%s',
-            $pageId,
-            $this->constData->c(ConstData::KEY_CONF_BASE_URL),
-            $resultsEntry[self::KEY_LINKS][self::KEY_TINYUI],
-            $resultsEntry[self::KEY_TITLE]
-        );
-        $this->writeData($this->storeItem, $line);
+        parent::__construct($fileName, $filePrefix, $fileSuffix, $finalFileExt, $pathToFile, $staging, $level);
 
         self::$logger->debug('END');
     }
@@ -92,6 +91,25 @@ class FileAdapter extends AbstractStoreAdapter
         if (!empty($dataHeader)) {
             $this->writeData($this->storeItem, $this->flattenDataHeader($dataHeader));
         }
+
+        self::$logger->debug('END');
+    }
+    
+        /**
+     * @param array<mixed,mixed> $resultsEntry Array of results from a query
+     */
+    public function storeResults(array $resultsEntry): void
+    {
+        self::$logger->debug('START', [$this->storeItem]);
+
+        $line = sprintf(
+            '%s;%s%s;%s',
+            $resultsEntry[StoreParameterData::KEY_KEY],
+            $this->constData->c(ConstData::KEY_CONF_BASE_URL),
+            $resultsEntry[StoreParameterData::KEY_LINKS][StoreParameterData::KEY_TINYUI],
+            $resultsEntry[StoreParameterData::KEY_TITLE]
+        );
+        $this->writeData($this->storeItem, $line);
 
         self::$logger->debug('END');
     }

@@ -14,29 +14,29 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Store;
 
 /**
- * Interface IStoreAdapter.
+ * Interface for the store adapter.
+ * 
+ * @author ollily
  */
 interface IStoreAdapter
 {
-    public const string KEY_KEY    = 'key';
-
-    public const string KEY_LINKS  = '_links';
-
-    public const string KEY_TINYUI = 'tinyui';
-
-    public const string KEY_TITLE  = 'title';
-
     /**
+     * Store any data with the adapter.
+     * 
      * @param mixed $dataContent The content which will be stored
      */
     public function storeData(mixed $dataContent): void;
 
     /**
-     * @param array<string>|string $dataHeader A header which will be stored
+     * Store header data with the adapter.
+     * 
+     * @param string|array<mixed,string> $dataHeader A header which will be stored
      */
     public function storeDataHeader(string|array $dataHeader): void;
 
     /**
+     * Returns the item which stores the data.
+     * 
      * @return string The item which is stored
      */
     public function getStoreItem(): string;

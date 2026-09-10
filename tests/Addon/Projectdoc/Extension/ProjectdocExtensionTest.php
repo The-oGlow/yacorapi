@@ -26,7 +26,7 @@ class ProjectdocExtensionTest extends TestCase
         $clazz = static::CLAZZNAME;
 
         try {
-            $actual = new $clazz(new ConstData());
+            $actual = new $clazz(new ConstData(ProjectdocExtensionTest::class));
             self::assertInstanceOf(static::CLAZZNAME, $actual);
         } catch (\Exception $e) {
             self::fail('Should not raise any exection: ' . $e->getMessage());
