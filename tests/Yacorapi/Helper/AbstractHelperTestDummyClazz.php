@@ -15,17 +15,11 @@ namespace oglow\tools\Yacorapi\Helper;
 
 use Ds\Collection;
 
+/**
+ * @author ollily
+ */
 class AbstractHelperTestDummyClazz extends AbstractHelper
 {
-    /**
-     * @inheritDoc
-     */
-    #[\Override]
-    protected function prepareSettings(Collection $overrideParameters): void
-    {
-        // Nothing to do
-    }
-
     /**
      * @inheritDoc
      */

@@ -20,7 +20,7 @@ class ExitCodesTest extends EasyGoingTestCase
     #[\Override]
     protected static function prepareO2t(): ExitCodes
     {
-        return new ExitCodes();
+        return ExitCodes::i();
     }
 
     /**

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Store;
 
-use Ds\Collection;
 use oglow\tools\common\AbstractSingleton;
 
 /**
@@ -71,16 +70,4 @@ class StoreParameter extends AbstractSingleton
     public const string DEFAULT_SQUARE_BRACK_OPEN = '[';
 
     public const string DEFAULT_SQUARE_BRACK_CLOSE = ']';
-
-    #[\Override]
-    protected function prepareSettings(Collection $overrideParameters): void
-    {
-        // nothing to do
-    }
-
-    #[\Override]
-    protected function validateSettings(Collection $overrideParameters): bool
-    {
-        return true;
-    }
 }

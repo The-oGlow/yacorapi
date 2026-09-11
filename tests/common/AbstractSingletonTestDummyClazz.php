@@ -17,29 +17,6 @@ use Ds\Collection;
 
 class AbstractSingletonTestDummyClazz extends AbstractSingleton
 {
-    /**
-     * @inheritDoc
-     */
-    #[\Override]
-    protected function prepareSettings(Collection $overrideParameters): void
-    {
-        // Nothing to do
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[\Override]
-    protected function validateSettings(Collection $overrideParameters): bool
-    {
-        $result = false;
-        if ($overrideParameters->isEmpty()) {
-            $result = true;
-        }
-
-        return $result;
-    }
-
     // Change visibility
 
     /**

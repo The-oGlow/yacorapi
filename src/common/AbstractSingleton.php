@@ -19,31 +19,59 @@ use Monolog\ConsoleLogger;
 use Monolog\DoNothingLogger;
 use Psr\Log\LoggerInterface;
 
+/**
+ * Abstract implementation for a singleton.
+ * 
+ * @author olliy
+ */
 abstract class AbstractSingleton implements ISingleton
 {
     private static LoggerInterface $logger;
-
     private string $key;
 
     /**
-     * Initialize this singleton.
-     *
-     * @param Collection<mixed, mixed> $overrideParameters
+     * Public constructor.
+     * 
+     * @param string $key Unique id of this singleton
+     * @param bool $withLogger TRUE=activate logging, else FALSE
      */
-    abstract protected function prepareSettings(Collection $overrideParameters): void;
+    public function __construct(string $key = '', bool $withLogger = true)
+    {
+        if ($withLogger) {
+            self::$logger = new ConsoleLogger(AbstractSingleton::class, level: static::LEVEL_DEFAULT);
+        } else {
+            self::$logger = new DoNothingLogger();
+        }
+        self::$logger->debug('START');
+
+        if (empty($key)) {
+            $key = static::class;
+        }
+        $overrideParameters = $this->parseArguments($this->prepareShortOpts(), $this->prepareLongOpts());
+        $this->key = $key;
+        $this->prepareSettings($overrideParameters);
+        $valid = $this->validateSettings($overrideParameters);
+
+        self::$logger->debug('END - Is initiated', [$valid]);
+    }
 
     /**
-     * @param Collection<mixed, mixed> $overrideParameters
-     *
-     * @return bool
+     * Returns static access on this singletion.
+     * 
+     * @return object This singleton
      */
-    abstract protected function validateSettings(Collection $overrideParameters): bool;
+    public static function i(): object
+    {
+        return new static();
+    }
 
     /**
-     * @param Collection<mixed, mixed> $overrideParameters
-     * @param string                   $keyName
+     * Returns a boolean value from a settings entry (incl. overrides).
+     * 
+     * @param Collection<mixed, mixed> $overrideParameters Override the settings with these parameters
+     * @param string                   $keyName The id of a bool parameter
      *
-     * @return mixed
+     * @return mixed The boolean value of the parameter or ''
      */
     protected static function parseBool(Collection $overrideParameters, string $keyName): mixed
     {
@@ -59,55 +87,68 @@ abstract class AbstractSingleton implements ISingleton
         return $foundBool;
     }
 
-    public function __construct(string $key = '', bool $withLogger = true)
+    /**
+     * Parse the given override parameters.
+     * 
+     * @param string             $shortOpts Override parameter as short version
+     * @param array<mixed,mixed> $longOpts Override parameter as long version
+     *
+     * @return Collection<mixed, mixed> A collection of override parameter
+     */
+    private static function parseArguments(string $shortOpts, array $longOpts): Collection
     {
-        if ($withLogger) {
-            self::$logger = new ConsoleLogger(AbstractSingleton::class, level: AbstractSingleton::LEVEL_DEFAULT);
-        } else {
-            self::$logger = new DoNothingLogger();
-        }
-        self::$logger->debug('START');
-
-        if (empty($key)) {
-            $key = static::class;
-        }
-        $overrideParameters = $this->parseArguments($this->prepareShortOpts(), $this->prepareLongOpts());
-        $this->key          = $key;
-        $this->prepareSettings($overrideParameters);
-        $valid = $this->validateSettings($overrideParameters);
-
-        self::$logger->debug('END - Is initiated', [$valid]);
+        return new Map(getopt($shortOpts, $longOpts));
     }
 
     /**
-     * @return string
+     * Returns the unique id of this singleton.
+     * 
+     * @return string The unique idd of this singleton
      */
-    final public function getKey(): string
+    public function getKey(): string
     {
         return $this->key;
     }
 
+    /**
+     * Initialize this singleton with the settings.
+     *
+     * @param Collection<mixed, mixed> $overrideParameters Override the settings with these parameters
+     */
+    protected function prepareSettings(Collection $overrideParameters): void
+    {
+        // nothing to do here
+    }
+
+    /**
+     * Check, if the settings are valid.
+     * 
+     * @param Collection<mixed, mixed> $overrideParameters Verify the settings with these parameters
+     *
+     * @return bool TRUE=settings are valid, else FALSE
+     */
+    protected function validateSettings(Collection $overrideParameters): bool
+    {
+        return true;
+    }
+
+    /**
+     * Define the valid short options.
+     * 
+     * @return string The short options
+     */
     protected function prepareShortOpts(): string
     {
         return '';
     }
 
     /**
-     * @return array<mixed,mixed>
+     * Define the valid log options.
+     * 
+     * @return array<mixed,mixed> Array of long options
      */
     protected function prepareLongOpts(): array
     {
         return [];
-    }
-
-    /**
-     * @param string             $shortOpts
-     * @param array<mixed,mixed> $longOpts
-     *
-     * @return Collection<mixed, mixed>
-     */
-    private function parseArguments(string $shortOpts, array $longOpts): Collection
-    {
-        return new Map(getopt($shortOpts, $longOpts));
     }
 }

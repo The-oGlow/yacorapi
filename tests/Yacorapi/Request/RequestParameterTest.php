@@ -28,7 +28,7 @@ class RequestParameterTest extends ConstantCheckTestCase
     #[\Override]
     protected static function prepareO2t(): RequestParameter
     {
-        return new RequestParameter();
+        return RequestParameter::i();
     }
 
     /**

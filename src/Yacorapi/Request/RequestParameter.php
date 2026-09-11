@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Request;
 
-use Ds\Collection;
 use oglow\tools\common\AbstractSingleton;
 
 /**
@@ -104,22 +103,4 @@ class RequestParameter extends AbstractSingleton
 
     /** Max length of a comment (without APP_USER) */
     public const int VAL_COMMENT_MAXLEN = 200;
-
-    /**
-     * @inheritDoc
-     */
-    #[\Override]
-    protected function prepareSettings(Collection $overrideParameters): void
-    {
-        // NothingToDo
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[\Override]
-    final protected function validateSettings(Collection $overrideParameters): bool
-    {
-        return true;
-    }
 }

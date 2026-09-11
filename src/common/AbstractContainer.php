@@ -18,27 +18,41 @@ use oglow\tools\Yacorapi\ConstData;
 use ollily\Tools\String\ToStringTrait;
 use Psr\Log\LoggerInterface;
 
+/**
+ * Abstract implementation for a container clazz.
+ * 
+ * @author ollily
+ */
 abstract class AbstractContainer implements IContainer
 {
     use ToStringTrait;
 
     protected ConstData $constData;
 
-    /** @var array<mixed,mixed> */
+    /** @var array<mixed,mixed> Stored data */
     private array $data = [];
 
-    /** @var int[]|string[] */
+    /** @var int[]|string[] The modes how to access the data */
     private array $modes = [];
 
     private static LoggerInterface $logger;
 
+    /**
+     * Define the valid modes to access the data.
+     */
     abstract protected function prepareModes(): void;
 
+    /**
+     * Initialize the data.
+     */
     abstract protected function prepareData(): void;
 
+    /**
+     * Public constructor.
+     */
     public function __construct()
     {
-        self::$logger = new ConsoleLogger(AbstractContainer::class, level: AbstractContainer::LEVEL_DEFAULT);
+        self::$logger = new ConsoleLogger(AbstractContainer::class, level: static::LEVEL_DEFAULT);
         self::$logger->debug('START');
         // Init Dynamic Consts
         $this->constData =  new ConstData(AbstractContainer::class);
@@ -54,7 +68,9 @@ abstract class AbstractContainer implements IContainer
     }
 
     /**
-     * @param array<mixed,mixed> $allData
+     * Set the complete data.
+     * 
+     * @param array<mixed,mixed> $allData Array of stored data
      */
     protected function setAllData(array $allData): void
     {
@@ -80,7 +96,9 @@ abstract class AbstractContainer implements IContainer
     }
 
     /**
-     * @param int[]|string[] $modes
+     * Set all the valid modes.
+     * 
+     * @param int[]|string[] $modes The modes how to access the data
      */
     protected function setModes(array $modes): void
     {

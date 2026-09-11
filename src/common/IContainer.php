@@ -14,41 +14,53 @@ declare(strict_types=1);
 namespace oglow\tools\common;
 
 use Psr\Log\LogLevel;
-
+use Stringable;
 /**
+ * Interface for a helper clazz.
+ * 
  * @author olliy
  */
-interface IContainer extends \Stringable
+interface IContainer extends Stringable
 {
-    /** Default output level */
+    /** @var LogLevel Default output level */
     public const string LEVEL_DEFAULT = LogLevel::INFO;
 
     /**
-     * @return array<mixed,mixed>
+     * Returns all store data in the container.
+     * 
+     * @return array<mixed,mixed> Array of stored data
      */
     public function getAllData(): array;
 
     /**
-     * @return array<mixed,mixed>
+     * Returns all keys used in the container.
+     * 
+     * @return array<mixed,mixed> Array of keys
      */
     public function getKeys(): array;
 
     /**
-     * @param mixed $key
+     * Checks, if the key is used in the container.
+     * 
+     * @param mixed $key Name of the key
      *
-     * @return bool
+     * @return bool TRUE=the key exists, else FALSE
      */
     public function keyExists(mixed $key): bool;
 
     /**
-     * @return int[]|string[]
+     * Returns the modes how to access the assigned data for this mode in the container.
+     * 
+     * @return int[]|string[] Array of modes
      */
     public function getModes(): array;
 
     /**
-     * @param int|string $mode
+     * Return the assigned data for this mode.
+     * 
+     * @param int|string $mode The mode to access the assigned data
      *
-     * @return mixed
+     * @return mixed The assigned data or null
      */
     public function getDataByMode(int|string $mode): mixed;
 

@@ -24,7 +24,9 @@ use ollily\Tools\EnvironmentHelper;
 use Psr\Log\LoggerInterface;
 
 /**
- * Class ConstData.
+ * Main settings clazz for the application.
+ * 
+ * @author ollily
  */
 // @phpcs:ignoreFile PSR1.Methods.CamelCapsMethodName.NotCamelCaps
 final class ConstData extends AbstractSingleton
@@ -32,140 +34,148 @@ final class ConstData extends AbstractSingleton
     //
     // Public Consts
 
-    /** Name of this application */
+    /** @var string Name of this application */
     public const string VAL_APP_USER = 'yacorapi';
 
     // Page Consts
-    /** First line on a page */
+    /** @var int First line on a page */
     public const int PAGE_START = 0;
 
-    /** Last line on a page */
+    /** @var int Last line on a page */
     public const int PAGE_LIMIT = 50;
 
-    /** Max count of pages */
+    /** @var int Max count of pages */
     public const int PAGE_MAX_PAGES = 20;
 
-    /** Max count of lines */
+    /** @var int Max count of lines */
     public const int PAGE_MAX_RESULTS = 50 * 20;
 
     // Instance Consts
-    /** Key: URL of the confluence instance */
+    /** @var string Key: URL of the confluence instance */
     public const string KEY_CONF_BASE_URL = 'CONF_BASE_URL';
 
     // Folder Consts
-    /** Key: Folder where the personal information are stored */
+    /** @var string Key: Folder where the personal information are stored */
     public const string KEY_MY_DIR = 'MY_DIR';
 
-    /** Key: Folder of the project-root */
+    /** @var string Key: Folder of the project-root */
     public const string KEY_PROJECT_ROOT = 'PROJECT_ROOT';
 
-    /** Key: Basefolder of the generated files */
+    /** @var string Key: Basefolder of the generated files */
     public const string KEY_TARGET_ROOTDIR = 'TARGET_ROOTDIR';
 
-    /** Key: Folder for the target with the current run */
+    /** @var string Key: Folder for the target with the current run */
     public const string KEY_TARGET_DIR = 'TARGET_DIR';
 
-    /** Key: Basefolder for all input files */
+    /** @var string Key: Basefolder for all input files */
     public const string KEY_INPUT_ROOTDIR = 'INPUT_ROOTDIR';
 
-    /** Key: Folder for the input files with the current run */
+    /** @var string Key: Folder for the input files with the current run */
     public const string KEY_INPUT_DIR = 'INPUT_DIR';
 
     // Url Consts
-    /** Key: Confluence URL for accessing the content */
+    /** @var string Key: Confluence URL for accessing the content */
     public const string KEY_CONF_CONTENT_URL = 'CONF_CONTENT_URL';
 
-    /** Key: Confluence URL for using the search */
+    /** @var string Key: Confluence URL for using the search */
     public const string KEY_CONF_SEARCH_URL = 'CONF_SEARCH_URL';
 
-    /** Key: Confluence URL for accessing space data */
+    /** @var string Key: Confluence URL for accessing space data */
     public const string KEY_CONF_SPACE_URL = 'CONF_SPACE_URL';
 
     // Misc Consts
-    /** Key: Confluence URL for recieving the rendered page content */
+    /** @var string Key: Confluence URL for recieving the rendered page content */
     public const string KEY_WEB_SHOW_PAGEID = 'WEB_SHOW_PAGEID';
 
-    /** Key: Currently defined max count of search results */
+    /** @var string Key: Currently defined max count of search results */
     public const string KEY_SEARCH_LIMIT = 'SEARCH_LIMIT';
 
-    /** Foldername for the original recieved files */
+    /** @var string Foldername for the original recieved files */
     public const string TARGET_ORGDIR = 'org';
 
-    /** Foldername for the modified files */
+    /** @var string Foldername for the modified files */
     public const string TARGET_MODDIR = 'mod';
 
-    /** URL path for accessing the content */
+    /** @var string URL path for accessing the content */
     public const string C_RAPI_CONTENT = '/rest/api/content';
 
-    /** URL path for using the search with 'scan' */
+    /** @var string URL path for using the search with 'scan' */
     public const string C_RAPI_SCAN = self::C_RAPI_CONTENT . '/scan';
 
-    /** URL path for using the search with 'search' */
+    /** @var string URL path for using the search with 'search' */
     public const string C_RAPI_SEARCH = '/rest/api/search';
 
-    /** URL path for accessing space data */
+    /** @var string URL path for accessing space data */
     public const string C_RAPI_SPACE = '/rest/api/space';
 
-    /** URL path for receiving the rendered page content */
+    /** @var string URL path for receiving the rendered page content */
     public const string C_RAPI_VIEWPAGE = '/pages/viewpage.action?pageId=';
 
-    /** URL path for accessing page restrictions */
+    /** @var string URL path for accessing page restrictions */
     public const string C_RAPI_RESTRICTION = '/restriction';
 
-    /** URL path for accessing page restrictions by mode */
+    /** @var string URL path for accessing page restrictions by mode */
     public const string C_RAPI_RESTRICTION_BYOP = '/restriction/byOperation';
 
     //
     // Private Consts
     // User Configuration Consts
-    /** Filename of the certificate file */
+    /** @var string Filename of the certificate file */
     private const string CONF_USERCERTFILE = 'cacert.pem';
 
-    /** Filename of the authorisation class */
+    /** @var string Filename of the authorisation class */
     private const string CONF_USERAUTHFILE = 'MyAuth.php';
 
-    /** Foldername where the personal information are stored */
+    /** @var string Foldername where the personal information are stored */
     private const string CONF_USERFOLDER = '.yacorapi';
 
-    /** Classname of the authorisation class */
+    /** @var string Classname of the authorisation class */
     private const string CONF_AUTH_CLAZZ = '\oglow\tools\Yacorapi\MyAuth';
 
     // Auth Consts
-    /** Key: Name of the token the authentication is stored */
+    /** @var string Key: Name of the token the authentication is stored */
     public const string KEY_AUTH_TOKEN_NAME = 'AUTH_TOKEN_NAME';
 
-    /** Key: Filename of the certificate file */
+    /** @var string Key: Filename of the certificate file */
     public const string KEY_MY_CERT_CA = 'MY_CERT_CA';
 
-    /** Key: Flag, which instance is used, true=production, false=test */
+    /** @var string Key: Flag, which instance is used, true=production, false=test */
     public const string KEY_USE_PROD = 'USE_PROD';
 
-    /** Key: URL of the test-instance */
+    /** @var string Key: URL of the test-instance */
     public const string KEY_TEST_URL = 'TEST_URL';
 
-    /** Key: URL of the production-instance */
+    /** @var string Key: URL of the production-instance */
     public const string KEY_PROD_URL = 'PROD_URL';
 
-    /** Key: Authorisation token for production instance */
+    /** @var string Key: Authorisation token for production instance */
     private const string KEY_CONF_PAT_PROD = 'CONF_PAT_PROD';
 
-    /** Key: Authorisation token for test instance */
+    /** @var string Key: Authorisation token for test instance */
     private const string KEY_CONF_PAT_TEST = 'CONF_PAT_TEST';
 
-    /** List of options (long) */
+    /** @var array<mixed,mixed> List of options (long) */
     private const array CLI_LONG_OPTS = [self::KEY_USE_PROD . ':'];
 
     private static LoggerInterface $logger;
 
+    /** @var string Timestamp of the creation of this instance */
     private static string $tsNow;
 
     // Variables
 
-    /** @var Map<string,scalar> */
+    /** @var Map<string,scalar> All defined settings */
     private Collection $definedConst;
 
+    /** @var object User authorization */
     private object $userAuth;
 
+    /**
+     * Public constructor.
+     * 
+     * @param string $key Unique id of this singleton
+     * @param bool $withLogger TRUE=activate logging, else FALSE
+     */
     public function __construct(string $key = '', bool $withLogger = false)
     {
         // Init logger at first
@@ -184,9 +194,11 @@ final class ConstData extends AbstractSingleton
     }
 
     /**
-     * @param mixed $ovUseProd Overrides the USE_PROD flag by commandline
+     * Returns the base url of the REST-API endpoint.
+     * 
+     * @param mixed $ovUseProd Overrides the flag 'USE_PROD' flag by commandline (Default: '')
      *
-     * @return string
+     * @return string base url of the REST-API endpoint
      *
      * @see ConstData::KEY_USE_PROD
      */
@@ -212,7 +224,9 @@ final class ConstData extends AbstractSingleton
     }
 
     /**
-     * @return string
+     * Returns the timestamp of the creation of this instance.
+     * 
+     * @return string Timestamp
      */
     public static function getTsNow(): string
     {
@@ -221,6 +235,9 @@ final class ConstData extends AbstractSingleton
         return self::$tsNow;
     }
 
+    /**
+     * Remember the creation of this instance.
+     */
     private static function initTsNow(): void
     {
         if (empty(self::$tsNow)) {
@@ -229,10 +246,12 @@ final class ConstData extends AbstractSingleton
     }
 
     /**
-     * @param string $constKey
-     * @param mixed  $default
+     * Returns the value of the setting by shorthand.
+     * 
+     * @param string $constKey Id of the setting
+     * @param mixed  $default A default value, if {@link $constKey} does not exist (Default: null)
      *
-     * @return mixed
+     * @return mixed The value of settings or the default value
      *
      * @SuppressWarnings("PHPMD.ShortMethodName")
      */
@@ -242,20 +261,24 @@ final class ConstData extends AbstractSingleton
     }
 
     /**
-     * @param string $constName
+     * Checks, if the setting exists.
+     * 
+     * @param string $constKey Id of the setting
      *
-     * @return bool
+     * @return bool TRUE=setting exists, else FALSE
      */
-    public function isDefined(string $constName): bool
+    public function isDefined(string $constKey): bool
     {
-        $found = $this->definedConst->hasKey($constName);
-        self::$logger->info('Const is defined', [$constName, $found]);
+        $found = $this->definedConst->hasKey($constKey);
+        self::$logger->info('Const is defined', [$constKey, $found]);
 
         return $found;
     }
 
     /**
-     * @return object
+     * Returns the user authorization.
+     * 
+     * @return object User authorization
      */
     public function getPersonalAuth(): object
     {
@@ -310,11 +333,22 @@ final class ConstData extends AbstractSingleton
     }
 
     /**
-     * @param string $authFilePath
-     * @param string $authFileName
-     * @param string $authClazzName
+     * @inheritDoc
+     */
+    #[\Override]
+    protected function prepareLongOpts(): array
+    {
+        return self::CLI_LONG_OPTS;
+    }
+
+    /**
+     * Initialize the user authorization.
+     * 
+     * @param string $authFilePath Path to the authorization file
+     * @param string $authFileName Name of the authorization file
+     * @param string $authClazzName Clazzname of the authorization
      *
-     * @return bool
+     * @return bool TRUE=initialization successful, else FALSE
      */
     protected function prepareUserAuthorization(string $authFilePath, string $authFileName, string $authClazzName): bool
     {
@@ -341,6 +375,9 @@ final class ConstData extends AbstractSingleton
         return $prepared;
     }
 
+    /**
+     * Define the settings.
+     */
     protected function defineConsts(): void
     {
         self::$logger->debug('START');
@@ -385,7 +422,9 @@ final class ConstData extends AbstractSingleton
     }
 
     /**
-     * @return bool
+     * Check, if setting for production is activated.
+     * 
+     * @return bool TRUE=production is activated, else FALSE
      */
     protected function validateForProductionUse(): bool
     {
@@ -410,7 +449,9 @@ final class ConstData extends AbstractSingleton
     }
 
     /**
-     * @return bool
+     * Checks, if mandatory settings are valid.
+     * 
+     * @return bool TRUE=mandatory settings are valid, else FALSE
      */
     protected function validateMandatory(): bool
     {
@@ -432,40 +473,38 @@ final class ConstData extends AbstractSingleton
     }
 
     /**
-     * @inheritDoc
-     */
-    #[\Override]
-    protected function prepareLongOpts(): array
-    {
-        return self::CLI_LONG_OPTS;
-    }
-
-    /**
-     * @param mixed $constName
-     * @param mixed $constValue
-     * @param bool  $replace    TRUE=replace constant, if already exists, else FALSE
-     */
-    private function putConst(mixed $constName, mixed $constValue, bool $replace = true): void
-    {
-        if ($this->isDefined($constName)) {
-            if ($replace) {
-                $this->definedConst->put($constName, $constValue);
-            } else {
-                self::$logger->notice("'$constName' exists and will not be replaced.");
-            }
-        } else {
-            $this->definedConst->put($constName, $constValue);
-        }
-    }
-
-    /**
-     * @param string $constKey
-     * @param mixed  $default
+     * Returns the value of a setting.
+     * 
+     * @param string $constKey Id of the setting
+     * @param mixed  $default A default value, if {@link $constKey} does not exist (Default: null)
      *
-     * @return mixed
+     * @return mixed The value of settings or the default value
+     * @internal Use only for internal
      */
     private function getConst(string $constKey, mixed $default = null): mixed
     {
         return $this->definedConst->get($constKey, $default);
     }
+
+    /**
+     * Sets the value for a setting.
+     * 
+     * @param string $constKey Id of the setting
+     * @param mixed $newValue The new value of the setting
+     * @param bool  $replace    TRUE=replace the old value, if setting already exists, else FALSE
+     * @internal Use only for internal
+     */
+    private function putConst(mixed $constKey, mixed $newValue, bool $replace = true): void
+    {
+        if ($this->isDefined($constKey)) {
+            if ($replace) {
+                $this->definedConst->put($constKey, $newValue);
+            } else {
+                self::$logger->notice("'$constKey' exists and will not be replaced.");
+            }
+        } else {
+            $this->definedConst->put($constKey, $newValue);
+        }
+    }
+
 }

@@ -13,9 +13,7 @@ declare(strict_types=1);
 
 namespace oglow\tools\Addon\Projectdoc\Helper;
 
-use Ds\Collection;
 use Monolog\ConsoleLogger;
-use Monolog\DoNothingLogger;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\Helper\AbstractHelper;
 use oglow\tools\Yacorapi\IResponse;
@@ -24,36 +22,23 @@ use oglow\tools\Yacorapi\Store\FileAdapter;
 use oglow\tools\Yacorapi\Store\IStoreAdapter;
 use Psr\Log\LoggerInterface;
 
+/**
+ * @author ollily
+ */
 class ProjectDocToolboxHelper extends AbstractHelper
 {
     private static LoggerInterface $logger;
 
-    public function __construct(bool $withLogger = true)
+    public function __construct()
     {
-        if ($withLogger) {
-            self::$logger = new ConsoleLogger(ProjectDocToolboxHelper::class);
-        } else {
-            self::$logger = new DoNothingLogger();
-        }
+        self::$logger = new ConsoleLogger(ProjectDocToolboxHelper::class, level: self::LEVEL_DEFAULT);
         self::$logger->debug('START');
 
-        parent::__construct(ProjectDocToolboxHelper::class, $withLogger);
+        parent::__construct(ProjectDocToolboxHelper::class);
 
         self::$logger->debug('END');
     }
 
-    private function prepareStoreAdapter(string $fileName): IStoreAdapter
-    {
-        return new FileAdapter($fileName, 'html', $this->constData->c(ConstData::KEY_TARGET_DIR));
-    }
-
-    /**
-     * @param string $body
-     * @param string $oldDoctype
-     * @param string $newDoctype
-     *
-     * @return string
-     */
     public function replaceDoctype(string $body, string $oldDoctype, string $newDoctype): string
     {
         $newBody = $body;
@@ -113,22 +98,9 @@ class ProjectDocToolboxHelper extends AbstractHelper
 
         return $modified;
     }
-
-    /**
-     * @inheritDoc
-     */
-    #[\Override]
-    protected function prepareSettings(Collection $overrideParameters): void
+    
+        private function prepareStoreAdapter(string $fileName): IStoreAdapter
     {
-        // NothingToDo
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[\Override]
-    final protected function validateSettings(Collection $overrideParameters): bool
-    {
-        return true;
+        return new FileAdapter($fileName, 'html', $this->constData->c(ConstData::KEY_TARGET_DIR));
     }
 }

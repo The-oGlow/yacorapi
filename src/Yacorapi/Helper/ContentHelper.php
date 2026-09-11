@@ -19,42 +19,45 @@ use oglow\tools\Yacorapi\Macro\HasMacroBodyEnum;
 use Psr\Log\LoggerInterface;
 
 /**
+ * Helper clazz for generating content for a confluence page.
+ * 
+ * @author ollily
  * @phpstan-type HeaderLevelType 1|2|3|4|5|6
  */
 class ContentHelper extends AbstractHelper
 {
-    /** Start tag for macro  */
+    /** @var string Start tag for macro  */
     public const string TAG_MACRO_START = '<ac:structured-macro ac:name="%s" ac:schema-version="%s">';
 
-    /** END tag for macro */
+    /** @var string End tag for macro */
     public const string TAG_MACRO_END = '</ac:structured-macro>';
 
-    /** Tag for macro version */
+    /** @var string Tag for macro version */
     public const string TAG_MACRO_VERSION = '1';
 
-    /** Tag for macro parameter */
+    /** @var string Tag for macro parameter */
     public const string TAG_PARAMETER = '<ac:parameter ac:name="%s">%s</ac:parameter>';
 
-    /** Start tag for plain body */
+    /** @var string Start tag for plain body */
     public const string TAG_BODY_PLAIN = '<ac:plain-text-body><![CDATA[%s]]></ac:plain-text-body>';
 
-    /** Tag for rich body */
+    /** @var string Tag for rich body */
     public const string TAG_BODY_RICH = '<ac:rich-text-body>%s</ac:rich-text-body>';
 
-    /** The initial content for a macro body */
+    /** @var string The initial content for a macro body */
     public const string VAL_BODY_EMPTY = '';
 
-    /** The initial content for a macro tag */
+    /** @var string The initial content for a macro tag */
     public const string VAL_TAG_EMPTY = '';
 
     private static LoggerInterface $logger;
 
-    public function __construct(bool $withLogger = true)
+    public function __construct()
     {
-        self::$logger = new ConsoleLogger(ContentHelper::class);
+        self::$logger = new ConsoleLogger(ContentHelper::class, level: static::LEVEL_DEFAULT);
         self::$logger->debug('START');
 
-        parent::__construct(ContentHelper::class, $withLogger);
+        parent::__construct(ContentHelper::class);
 
         self::$logger->debug('END');
     }
@@ -64,11 +67,11 @@ class ContentHelper extends AbstractHelper
      *
      * @param string                    $macroName  The name of the confluence macro as it shown in the source view
      * @param Collection<string,string> $parameters A map of parameters (optional)
-     * @param string                    $body       The content of the body of the macro (Default {@link self::BODY_EMPTY})
+     * @param string                    $body       The content of the body of the macro (Default {@link self::VAL_BODY_EMPTY})
      *
      * @return string The full tag for the macro
      *
-     * @see self::BODY_EMPTY
+     * @see self::VAL_BODY_EMPTY
      */
     public static function prepareMacro(string $macroName, Collection $parameters, string $body = self::VAL_BODY_EMPTY): string
     {
@@ -105,11 +108,11 @@ class ContentHelper extends AbstractHelper
      * Creates the tag for the body in the macro. Dependent on the macro, a plain body tag or a rich body tag is used.
      *
      * @param string $macroName The name of the confluence macro as it shown in the source view
-     * @param string $body      The content of the body of the macro (Default {@link self::BODY_EMPTY})
+     * @param string $body      The content of the body of the macro (Default {@link self::VAL_BODY_EMPTY})
      *
      * @return string The tag for the macro body
      *
-     * @see self::BODY_EMPTY
+     * @see self::VAL_BODY_EMPTY
      */
     public static function prepareMacroBody(string $macroName, string $body = self::VAL_BODY_EMPTY): string
     {
@@ -137,11 +140,12 @@ class ContentHelper extends AbstractHelper
     /**
      * Dependent on the macro, the mode for a plain or a rich body tag is chosen. If macro not defined or empty the custom mode is chosen.
      *
-     * @param string $macroName The name of the confluence macro as it shown in the source view (Default {@link self::TAG_EMPTY})
+     * @param string $macroName The name of the confluence macro as it shown in the source view (Default {@link self::VAL_TAG_EMPTY})
      *
      * @return HasMacroBodyEnum The mode for the macro body
      *
      * @see HasMacroBodyEnum
+     * @see self::VAL_TAG_EMPTY
      */
     public static function chooseMacroBody(string $macroName = self::VAL_TAG_EMPTY): HasMacroBodyEnum
     {
@@ -151,11 +155,11 @@ class ContentHelper extends AbstractHelper
     /**
      * Creates a tag with a plain body tag.
      *
-     * @param string $body The content of the body of the macro (Default {@link self::BODY_EMPTY})
+     * @param string $body The content of the body of the macro (Default {@link self::VAL_BODY_EMPTY})
      *
      * @return string The plain body tag
      *
-     * @see self::BODY_EMPTY
+     * @see self::VAL_BODY_EMPTY
      */
     public static function preparePlainBody(string $body = self::VAL_BODY_EMPTY): string
     {
@@ -170,11 +174,11 @@ class ContentHelper extends AbstractHelper
     /**
      * Creates a tag with a rich body tag.
      *
-     * @param string $body The content of the body of the macro (Default {@link self::BODY_EMPTY})
+     * @param string $body The content of the body of the macro (Default {@link self::VAL_BODY_EMPTY})
      *
      * @return string The rich body tag
      *
-     * @see self::BODY_EMPTY
+     * @see self::VAL_BODY_EMPTY
      */
     public static function prepareRichTextBody(string $body = self::VAL_BODY_EMPTY): string
     {
@@ -190,32 +194,14 @@ class ContentHelper extends AbstractHelper
      * Creates a &lt;h*&gt;-tag with text.
      *
      * @param string $text        The text used as heading
-     * @param int    $headerLevel the level for the &lt;h*&gt;-tag
+     * @param int    $headerLevel the level for the &lt;h*&gt;-tag (Default: 1)
      *
      * @phpstan-param HeaderLevelType $headerLevel
      *
-     * @return string
+     * @return string &lt;h*&gt;-tag
      */
     public static function prepareHeading(string $text, int $headerLevel = 1): string
     {
         return sprintf('<h%s>%s</h%s>', $headerLevel, $text, $headerLevel);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[\Override]
-    protected function prepareSettings(Collection $overrideParameters): void
-    {
-        // NothingToDo
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[\Override]
-    protected function validateSettings(Collection $overrideParameters): bool
-    {
-        return true;
     }
 }

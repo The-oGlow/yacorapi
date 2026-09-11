@@ -35,7 +35,7 @@ class ContentHelperTest extends EasyGoingTestCase
     #[\Override]
     protected static function prepareO2t(): ContentHelper
     {
-        return new ContentHelper();
+        return ContentHelper::i();
     }
 
     /**

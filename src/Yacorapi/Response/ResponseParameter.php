@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Response;
 
-use Ds\Collection;
 use oglow\tools\common\AbstractSingleton;
 
 /**
@@ -132,22 +131,4 @@ class ResponseParameter extends AbstractSingleton
     public const string VAL_REPRESENTATION_TYPE_STORAGE = 'storage';
 
     public const string VAL_STATUS_TYPE_CURRENT = 'current';
-
-    /**
-     * @inheritDoc
-     */
-    #[\Override]
-    protected function prepareSettings(Collection $overrideParameters): void
-    {
-        // Nothing to do
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[\Override]
-    protected function validateSettings(Collection $overrideParameters): bool
-    {
-        return true;
-    }
 }

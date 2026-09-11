@@ -28,7 +28,7 @@ class StoreParameterTest extends ConstantCheckTestCase
     #[\Override]
     protected static function prepareO2t(): StoreParameter
     {
-        return new StoreParameter();
+        return StoreParameter::i();
     }
 
     /**

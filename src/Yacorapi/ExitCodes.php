@@ -13,9 +13,15 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi;
 
-use Ds\Collection;
 use oglow\tools\common\AbstractSingleton;
 
+/**
+ * All possible exits for this application.
+ * 
+ * @author ollily
+ * 
+ * @see \ollily\Tools\Emergency::breakSystem($errorCode)
+ */
 class ExitCodes extends AbstractSingleton
 {
     public const int ERR_CODE_NO_URL_SET               = 1;
@@ -37,22 +43,4 @@ class ExitCodes extends AbstractSingleton
     public const int ERR_CODE_CURL_INIT = 30;
 
     public const int ERR_CODE_RESPONSE_INVALID_OR_NULL = 31;
-
-    /**
-     * @inheritDoc
-     */
-    #[\Override]
-    protected function prepareSettings(Collection $overrideParameters): void
-    {
-        // Nothing2Do
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[\Override]
-    protected function validateSettings(Collection $overrideParameters): bool
-    {
-        return true;
-    }
 }

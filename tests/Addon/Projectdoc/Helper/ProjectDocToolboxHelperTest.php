@@ -26,7 +26,7 @@ class ProjectDocToolboxHelperTest extends EasyGoingTestCase
     #[\Override]
     protected static function prepareO2t(): ProjectDocToolboxHelper
     {
-        return new ProjectDocToolboxHelper();
+        return ProjectDocToolboxHelper::i();
     }
 
     #[\Override]
