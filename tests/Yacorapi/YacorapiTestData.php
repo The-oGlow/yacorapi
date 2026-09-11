@@ -270,6 +270,20 @@ class YacorapiTestData extends TestData
 
     public const string MACR_PDT_PROPERTIES_MARKER_02 = '</ac:parameter>';
 
+    // Tag
+    public const ?string TAG_NULL = null;
+    public const string TAG_EMPTY= '';
+    public const string TAG_WRONG_NAME = 'tagwrong';
+    public const string TAG_EXIST_NAME = 'tagexist';
+    public const string TAG_BODY_NAME = 'tagbody';
+    public const string TAG_PARM_NAME = 'tagparam';
+    public const string TAG_WRONG = '<tagwrong></tagwrong>';
+    public const string TAG_EXIST = '<tagexist></tagexist>';
+    public const string TAG_EXIST_SHORT = '<tagexist/>';
+    public const string TAG_BODY_CONTENT = 'Content of the tag body';
+    public const string TAG_WITH_BODY = '<tagbody>'.self::TAG_BODY_CONTENT.'</tagbody>';
+    public const string TAG_WITH_PARAM = '<tagparam name="'.self::KEY_ALPHA1.'">'.self::TAG_BODY_CONTENT.'</tagparam>';
+
     // Response
 
     /** @var array<mixed,mixed> */
@@ -305,13 +319,6 @@ class YacorapiTestData extends TestData
             ],
         ],
     ];
-
-    // Misc Constants
-
-    private function __construct()
-    {
-        // Hide the public constructor
-    }
 
     // Static functions
 

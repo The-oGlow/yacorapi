@@ -18,9 +18,14 @@
 
 namespace oglow\tools\Yacorapi\Helper;
 
+use Ds\Vector;
+use Ds\Sequence;
 use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\Helper\AbstractHelper;
 use Psr\Log\LoggerInterface;
+use DOMDocument;
+use DOMXPath;
+use DOMNodeList;
 
 /**
  * Helper clazz for editing tags of a confluence page.
@@ -29,6 +34,7 @@ use Psr\Log\LoggerInterface;
  */
 class TagHelper extends AbstractHelper
 {
+
     private static LoggerInterface $logger;
 
     public function __construct()
@@ -39,5 +45,29 @@ class TagHelper extends AbstractHelper
         parent::__construct(TagHelper::class);
 
         self::$logger->debug('END');
+    }
+
+    /**
+     * @param string $tagName
+     * @param DOMDocument $page
+     * @return Sequence
+     */
+    public static function findTag(string $tagName, DOMDocument $page): Sequence
+    {
+        /** @var bool|DOMNodeList */
+        $result = false;
+        if (!empty($tagName)) {
+            try {
+                $xpath = new DOMXPath($page);
+                $result = $xpath->query($tagName);
+            } catch (\Throwable $exception) {
+                self::$logger->notice($exception->getMessage());
+            }
+        }
+        $tags = new Vector();
+        if ($result) {
+            $tags = new Vector($result);
+        }
+        return $tags;
     }
 }
