@@ -23,10 +23,10 @@ use oglow\tools\Yacorapi\Data\ItemTypeEnum;
 use oglow\tools\Yacorapi\Extension\ExtensionEnum;
 use oglow\tools\Yacorapi\IConnectionProvider;
 use oglow\tools\Yacorapi\IResponse;
-use oglow\tools\Yacorapi\Request\RequestParameterData;
+use oglow\tools\Yacorapi\Request\RequestParameter;
 use oglow\tools\Yacorapi\Request\RequestTypeEnum;
 use oglow\tools\Yacorapi\Response\Response;
-use oglow\tools\Yacorapi\Response\ResponseParameterData;
+use oglow\tools\Yacorapi\Response\ResponseParameter;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -239,12 +239,12 @@ class RapiClientWrite extends RapiClientRead implements IRapiClientWrite
 
         $currentPage = $this->readPageByPageId($pageId);
         if ($currentPage->checkStatus()) {
-            $pageTitle = $currentPage->getValue(ResponseParameterData::KEY_TITLE);
-            $pageBody = $currentPage->getValue(ResponseParameterData::KEY_BODY)[ResponseParameterData::KEY_STORAGE][ResponseParameterData::KEY_VALUE];
-            $itemType = ItemTypeEnum::tryFrom($currentPage->getValue(ResponseParameterData::KEY_TYPE));
-            $versionData = $currentPage->getValue(ResponseParameterData::KEY_VERSION, []);
-            $currentVersion = intval(array_key_exists(ResponseParameterData::KEY_NUMBER, $versionData) ?
-                    $versionData[ResponseParameterData::KEY_NUMBER] : IRapiClientBase::RESP_VAL_VERSION_NO);
+            $pageTitle = $currentPage->getValue(ResponseParameter::KEY_TITLE);
+            $pageBody = $currentPage->getValue(ResponseParameter::KEY_BODY)[ResponseParameter::KEY_STORAGE][ResponseParameter::KEY_VALUE];
+            $itemType = ItemTypeEnum::tryFrom($currentPage->getValue(ResponseParameter::KEY_TYPE));
+            $versionData = $currentPage->getValue(ResponseParameter::KEY_VERSION, []);
+            $currentVersion = intval(array_key_exists(ResponseParameter::KEY_NUMBER, $versionData) ?
+                    $versionData[ResponseParameter::KEY_NUMBER] : IRapiClientBase::RESP_VAL_VERSION_NO);
             $nextVersion = $currentVersion + 1;
         } else {
             self::$logger->warning('Cannot find page', [$pageId]);
@@ -290,24 +290,24 @@ class RapiClientWrite extends RapiClientRead implements IRapiClientWrite
         /** @var Map<mixed,mixed> */
         $parameters = new Map(
             [
-            RequestParameterData::PROP_TYPE => $itemType,
-            RequestParameterData::PROP_TITLE => $pageTitle,
-            RequestParameterData::PROP_STATUS => RequestParameterData::VAL_STATUS_TYPE_CURRENT,
-            RequestParameterData::PROP_BODY => [
-                RequestParameterData::PROP_STORAGE => [
-                    RequestParameterData::PROP_VALUE => $pageBody,
-                    RequestParameterData::PROP_REPRESENTATION => RequestParameterData::VAL_REPRESENTATION_TYPE_STORAGE,
+            RequestParameter::PROP_TYPE => $itemType,
+            RequestParameter::PROP_TITLE => $pageTitle,
+            RequestParameter::PROP_STATUS => RequestParameter::VAL_STATUS_TYPE_CURRENT,
+            RequestParameter::PROP_BODY => [
+                RequestParameter::PROP_STORAGE => [
+                    RequestParameter::PROP_VALUE => $pageBody,
+                    RequestParameter::PROP_REPRESENTATION => RequestParameter::VAL_REPRESENTATION_TYPE_STORAGE,
                 ],
             ],
-            RequestParameterData::PROP_SPACE => [RequestParameterData::PROP_KEY => $spaceKey],
-            RequestParameterData::PROP_VERSION => [
-                RequestParameterData::PROP_NUMBER => $nextVersion,
-                RequestParameterData::PROP_MESSAGE => $this->validateComment($comment),
+            RequestParameter::PROP_SPACE => [RequestParameter::PROP_KEY => $spaceKey],
+            RequestParameter::PROP_VERSION => [
+                RequestParameter::PROP_NUMBER => $nextVersion,
+                RequestParameter::PROP_MESSAGE => $this->validateComment($comment),
             ],
                 ]
         );
         if ($parentId > IRapiClientBase::REQ_VAL_PARENT_ID_NO) {
-            $parameters->put(RequestParameterData::PROP_ANCESTORS, [[RequestParameterData::PROP_ID => $parentId]]);
+            $parameters->put(RequestParameter::PROP_ANCESTORS, [[RequestParameter::PROP_ID => $parentId]]);
         } else {
             throw new InvalidArgumentException(self::ERR_MSG_PARENT_ID_MUST_BE_NUMERIC);
         }
@@ -351,18 +351,18 @@ class RapiClientWrite extends RapiClientRead implements IRapiClientWrite
 
         $parameters = new Map(
             [
-            RequestParameterData::PROP_ID => $pageId,
-            RequestParameterData::PROP_TYPE => $itemType,
-            RequestParameterData::PROP_TITLE => $pageTitle,
-            RequestParameterData::PROP_BODY => [
-                RequestParameterData::PROP_STORAGE => [
-                    RequestParameterData::PROP_VALUE => $pageBody,
-                    RequestParameterData::PROP_REPRESENTATION => RequestParameterData::VAL_REPRESENTATION_TYPE_STORAGE,
+            RequestParameter::PROP_ID => $pageId,
+            RequestParameter::PROP_TYPE => $itemType,
+            RequestParameter::PROP_TITLE => $pageTitle,
+            RequestParameter::PROP_BODY => [
+                RequestParameter::PROP_STORAGE => [
+                    RequestParameter::PROP_VALUE => $pageBody,
+                    RequestParameter::PROP_REPRESENTATION => RequestParameter::VAL_REPRESENTATION_TYPE_STORAGE,
                 ],
             ],
-            RequestParameterData::PROP_VERSION => [
-                RequestParameterData::PROP_NUMBER => $nextVersion,
-                RequestParameterData::PROP_MESSAGE => $this->validateComment($comment),
+            RequestParameter::PROP_VERSION => [
+                RequestParameter::PROP_NUMBER => $nextVersion,
+                RequestParameter::PROP_MESSAGE => $this->validateComment($comment),
             ],
                 ]
         );
@@ -403,13 +403,13 @@ class RapiClientWrite extends RapiClientRead implements IRapiClientWrite
 
         $parameters = new Map(
             [
-            RequestParameterData::PROP_TYPE => $itemType,
-            RequestParameterData::PROP_TITLE => $pageTitle,
-            RequestParameterData::PROP_ANCESTORS => [[RequestParameterData::PROP_ID => $newParentId]],
-            RequestParameterData::PROP_VERSION =>
+            RequestParameter::PROP_TYPE => $itemType,
+            RequestParameter::PROP_TITLE => $pageTitle,
+            RequestParameter::PROP_ANCESTORS => [[RequestParameter::PROP_ID => $newParentId]],
+            RequestParameter::PROP_VERSION =>
             [
-                RequestParameterData::PROP_NUMBER => $nextVersion,
-                RequestParameterData::PROP_MESSAGE => $this->validateComment($comment),
+                RequestParameter::PROP_NUMBER => $nextVersion,
+                RequestParameter::PROP_MESSAGE => $this->validateComment($comment),
             ],
                 ]
         );

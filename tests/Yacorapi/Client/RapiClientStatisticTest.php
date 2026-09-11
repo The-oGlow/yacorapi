@@ -16,7 +16,7 @@ namespace oglow\tools\Yacorapi\Client;
 use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\Data\ItemTypeEnum;
-use oglow\tools\Yacorapi\Response\ResponseParameterData;
+use oglow\tools\Yacorapi\Response\ResponseParameter;
 use oglow\tools\Yacorapi\Space\SpaceTypeEnum;
 use oglow\tools\Yacorapi\Statistic\StatisticStatistic;
 use oglow\tools\Yacorapi\Statistic\StatisticTypeEnum;
@@ -58,7 +58,7 @@ class RapiClientStatisticTest extends EasyGoingTestCase
 
         $response = $this->getCasto2t()->listSpaces();
 
-        $actualCount = $response->getRawData()->get(ResponseParameterData::KEY_TOTAL_SIZE, -1);
+        $actualCount = $response->getRawData()->get(ResponseParameter::KEY_TOTAL_SIZE, -1);
 
         self::$logger->info('response', [$response->getRawData()]);
         self::$logger->info('results', [$response->getResults()]);
@@ -68,7 +68,6 @@ class RapiClientStatisticTest extends EasyGoingTestCase
         self::assertCount($actualCount, $response->getResults());
 
         self::$logger->info('END');
-
     }
 
     public function testCountMacrosInSpace(): void

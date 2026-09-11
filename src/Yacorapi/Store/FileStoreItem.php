@@ -18,9 +18,9 @@ use Psr\Log\LoggerInterface;
 
 /**
  * Default implementation for a store item.
- * 
+ *
  * @author ollily
- * 
+ *
  * @phpstan-import-type LoggingLevel from \Monolog\AbstractEasyGoingLogger
  */
 class FileStoreItem extends AbstractStoreItem
@@ -40,30 +40,34 @@ class FileStoreItem extends AbstractStoreItem
      *
      * @return IStoreItem A newly created store item
      */
-    public static function prepareTargetFile(string $dir, string $file, string $ext = StoreParameterData::C_FILE_EXT_TEXT): IStoreItem
+    public static function prepareTargetFile(string $dir, string $file, string $ext = StoreParameter::C_FILE_EXT_TEXT): IStoreItem
     {
         return new self($dir, $file, $ext);
     }
 
     /**
-     * @param string $dir  The folder of this store item
-     * @param string $file The filename of this store item
-     * @param string $ext  The suffix of the filename of this store item
-     * @param int|\Monolog\Level|\Psr\Log\LogLevel::*|string $level           The minimum logging level at which this handler will be triggered (Default: {@link AbstractStoreAdapter::LEVEL_DEFAULT})
+     * @param string                                         $dir   The folder of this store item
+     * @param string                                         $file  The filename of this store item
+     * @param string                                         $ext   The suffix of the filename of this store item
+     * @param int|\Monolog\Level|\Psr\Log\LogLevel::*|string $level The minimum logging level at which this handler will be triggered
+     *                                                              (Default: {@link self::LEVEL_DEFAULT})
      *
      * @phpstan-param LoggingLevel $level
      */
-    protected function __construct(string $dir, string $file, string $ext = StoreParameterData::C_FILE_EXT_TEXT,  mixed $level = self::LEVEL_DEFAULT
-    )
-    {
+    protected function __construct(
+        string $dir,
+        string $file,
+        string $ext = StoreParameter::C_FILE_EXT_TEXT,
+        mixed $level = self::LEVEL_DEFAULT
+    ) {
         self::$logger = new ConsoleLogger(FileStoreItem::class, level: $level);
         self::$logger->debug("START");
 
         parent::__construct(level: $level);
-     
+
         $this->storeItems->put(self::KEY_DIR, $dir);
         $this->storeItems->put(self::KEY_FILE, $file);
-        $ext = str_replace(StoreParameterData::C_FILE_SEP, '', $ext);
+        $ext = str_replace(StoreParameter::C_FILE_SEP, '', $ext);
         $this->storeItems->put(self::KEY_EXT, $ext);
 
         self::$logger->debug("END");
@@ -113,9 +117,9 @@ class FileStoreItem extends AbstractStoreItem
      * @inheritDoc
      */
     #[\Override]
-    public function setExt(string $ext = StoreParameterData::C_FILE_EXT_TEXT): IStoreItem
+    public function setExt(string $ext = StoreParameter::C_FILE_EXT_TEXT): IStoreItem
     {
-        $ext= str_replace(StoreParameterData::C_FILE_SEP, '', $ext);
+        $ext = str_replace(StoreParameter::C_FILE_SEP, '', $ext);
         $this->storeItems->put(self::KEY_EXT, $ext);
 
         return $this;
@@ -127,7 +131,7 @@ class FileStoreItem extends AbstractStoreItem
     #[\Override]
     public function getExt(): string
     {
-        return $this->storeItems->get(self::KEY_EXT,StoreParameterData::C_FILE_EXT_TEXT);
+        return $this->storeItems->get(self::KEY_EXT, StoreParameter::C_FILE_EXT_TEXT);
     }
 
     #[\Override]
@@ -142,6 +146,6 @@ class FileStoreItem extends AbstractStoreItem
     #[\Override]
     public function __toString(): string
     {
-        return $this->getDir() . DIRECTORY_SEPARATOR . $this->getFile() .  StoreParameterData::C_FILE_SEP. $this->getExt();
+        return $this->getDir() . DIRECTORY_SEPARATOR . $this->getFile() .  StoreParameter::C_FILE_SEP . $this->getExt();
     }
 }

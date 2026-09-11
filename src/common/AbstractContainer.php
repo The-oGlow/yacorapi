@@ -17,14 +17,10 @@ use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\ConstData;
 use ollily\Tools\String\ToStringTrait;
 use Psr\Log\LoggerInterface;
-use Psr\Log\LogLevel;
 
 abstract class AbstractContainer implements IContainer
 {
     use ToStringTrait;
-
-    /** Default output level */
-    public const string LEVEL_DEFAULT = LogLevel::INFO;
 
     protected ConstData $constData;
 

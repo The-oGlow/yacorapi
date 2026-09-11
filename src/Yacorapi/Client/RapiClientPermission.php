@@ -21,7 +21,7 @@ use oglow\tools\Yacorapi\Data\QueryExtensionEnum;
 use oglow\tools\Yacorapi\Extension\ExtensionEnum;
 use oglow\tools\Yacorapi\IConnectionProvider;
 use oglow\tools\Yacorapi\IResponse;
-use oglow\tools\Yacorapi\Request\RequestParameterData;
+use oglow\tools\Yacorapi\Request\RequestParameter;
 use oglow\tools\Yacorapi\Request\RequestTypeEnum;
 use Psr\Log\LoggerInterface;
 
@@ -159,14 +159,14 @@ class RapiClientPermission extends RapiClientWrite implements IRapiClientPermiss
         self::$logger->debug('START - readRestrictions', [$readRestrictions]);
 
         $readUser = [];
-        if (array_key_exists(RequestParameterData::PROP_USER, $readRestrictions)) {
-            foreach ($readRestrictions[RequestParameterData::PROP_USER] as $readRestriction) {
-                $readUser[] = [RequestParameterData::PROP_TYPE => RequestParameterData::VAL_USER_TYPE_KNOWN, RequestParameterData::PROP_USERNAME => $readRestriction];
+        if (array_key_exists(RequestParameter::PROP_USER, $readRestrictions)) {
+            foreach ($readRestrictions[RequestParameter::PROP_USER] as $readRestriction) {
+                $readUser[] = [RequestParameter::PROP_TYPE => RequestParameter::VAL_USER_TYPE_KNOWN, RequestParameter::PROP_USERNAME => $readRestriction];
             }
         }
 
         // REFACTOR: really an array as return?
-        return [RequestParameterData::PROP_USER => $readUser];
+        return [RequestParameter::PROP_USER => $readUser];
     }
 
     /**
@@ -181,13 +181,13 @@ class RapiClientPermission extends RapiClientWrite implements IRapiClientPermiss
         self::$logger->debug('START - readRestrictions', [$readRestrictions]);
 
         $readGroup = [];
-        if (array_key_exists(RequestParameterData::PROP_GROUP, $readRestrictions)) {
-            foreach ($readRestrictions[RequestParameterData::PROP_GROUP] as $readRestriction) {
-                $readGroup[] = [RequestParameterData::PROP_TYPE => RequestParameterData::VAL_USER_TYPE_KNOWN, RequestParameterData::PROP_USERNAME => $readRestriction];
+        if (array_key_exists(RequestParameter::PROP_GROUP, $readRestrictions)) {
+            foreach ($readRestrictions[RequestParameter::PROP_GROUP] as $readRestriction) {
+                $readGroup[] = [RequestParameter::PROP_TYPE => RequestParameter::VAL_USER_TYPE_KNOWN, RequestParameter::PROP_USERNAME => $readRestriction];
             }
         }
 
         // REFACTOR: really an array as return?
-        return [RequestParameterData::PROP_GROUP => $readGroup];
+        return [RequestParameter::PROP_GROUP => $readGroup];
     }
 }

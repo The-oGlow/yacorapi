@@ -21,16 +21,12 @@ use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Request\RequestTypeEnum;
 use oglow\tools\Yacorapi\Response\Response;
 use Psr\Log\LoggerInterface;
-use Psr\Log\LogLevel;
 
 /**
  * @phpstan-type LoggingLevel 100|200|250|300|400|500|550|600|'alert'|'critical'|'debug'|'emergency'|'error'|'info'|'notice'|'warning'|\Psr\Log\LogLevel::*
  */
 abstract class AbstractProvider implements IConnectionProvider
 {
-    /** Default output level (INFO) */
-    public const string LEVEL_DEFAULT = LogLevel::INFO;
-
     private static LoggerInterface $logger;
 
     protected ConstData $constData;

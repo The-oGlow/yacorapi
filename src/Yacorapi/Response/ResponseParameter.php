@@ -18,10 +18,10 @@ use oglow\tools\common\AbstractSingleton;
 
 /**
  * Constants clazz for the individual keys of the response structure and their values.
- * 
+ *
  * @author ollily
  */
-class ResponseParameterData extends AbstractSingleton
+class ResponseParameter extends AbstractSingleton
 {
     // Access Keys
 
@@ -62,7 +62,7 @@ class ResponseParameterData extends AbstractSingleton
     public const string KEY_PLAIN = 'plain';
 
     public const string KEY_POSITION = 'position';
-    
+
     public const string KEY_READ = 'read';
 
     public const string KEY_REASON = 'reason';
@@ -128,8 +128,9 @@ class ResponseParameterData extends AbstractSingleton
     public const string VAL_TITLE_EMPTY = '';
 
     public const int VAL_RESULT_FIRST = 0;
-    
+
     public const string VAL_REPRESENTATION_TYPE_STORAGE = 'storage';
+
     public const string VAL_STATUS_TYPE_CURRENT = 'current';
 
     /**

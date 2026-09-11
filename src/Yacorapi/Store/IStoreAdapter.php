@@ -13,30 +13,35 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Store;
 
+use Psr\Log\LogLevel;
+
 /**
  * Interface for the store adapter.
- * 
+ *
  * @author ollily
  */
 interface IStoreAdapter
 {
+    /** Default output level */
+    public const string LEVEL_DEFAULT = LogLevel::INFO;
+
     /**
      * Store any data with the adapter.
-     * 
+     *
      * @param mixed $dataContent The content which will be stored
      */
     public function storeData(mixed $dataContent): void;
 
     /**
      * Store header data with the adapter.
-     * 
-     * @param string|array<mixed,string> $dataHeader A header which will be stored
+     *
+     * @param array<mixed,string>|string $dataHeader A header which will be stored
      */
     public function storeDataHeader(string|array $dataHeader): void;
 
     /**
      * Returns the item which stores the data.
-     * 
+     *
      * @return string The item which is stored
      */
     public function getStoreItem(): string;

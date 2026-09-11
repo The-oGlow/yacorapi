@@ -19,37 +19,40 @@ use Psr\Log\LoggerInterface;
 
 /**
  * Implementation for a standarf file adapter.
- * 
+ *
  * @author ollily
- * 
+ *
  * @phpstan-import-type LoggingLevel from \Monolog\AbstractEasyGoingLogger
  */
 class FileAdapter extends AbstractStoreAdapter
 {
     /** @var string */
-    public const string DEFAULT_STORE_ITEM_SUFFIX = StoreParameterData::C_FILE_EXT_TEXT;
+    public const string DEFAULT_STORE_ITEM_SUFFIX = StoreParameter::C_FILE_EXT_TEXT;
 
     private static LoggerInterface $logger;
 
     /**
      * Constructor for a store adapter.
-     * 
-     * @param string                                         $fileName  The filename, without suffix, of the output file
-     * @param string                                         $filePrefix      Prefix of the output file (Default: {@link StoreParameterData::DEFAULT_FILE_PREFIX})
-     * @param string                                         $fileSuffix      Suffix of the output file (Default: {@link StoreParameterData::DEFAULT_FILE_SUFFIX})
-     * @param string                                         $fileExt         File extension of the output file (Default: {@link StoreParameterData::DEFAULT_FILE_EXT})
-     * @param string                                         $pathToFile      Folder where to store the output file (Default: {@link StoreParameterData::DEFAULT_FOLDER_NAME})
-     * @param FileStoreStageEnum                             $staging      The stage where to store the file (Default {@link FileStoreStageEnum::BASE})
-     * @param int|\Monolog\Level|\Psr\Log\LogLevel::*|string $level           The minimum logging level at which this handler will be triggered (Default: {@link AbstractStoreAdapter::LEVEL_DEFAULT})
+     *
+     * @param string                                         $fileName   The filename, without suffix, of the output file
+     * @param string                                         $filePrefix Prefix of the output file (Default: {@link StoreParameterData::DEFAULT_FILE_PREFIX})
+     * @param string                                         $fileSuffix Suffix of the output file (Default: {@link StoreParameterData::DEFAULT_FILE_SUFFIX})
+     * @param string                                         $fileExt    File extension of the output file
+     *                                                                   (Default: {@link StoreParameterData::DEFAULT_FILE_EXT})
+     * @param string                                         $pathToFile Folder where to store the output file
+     *                                                                   (Default: {@link StoreParameterData::DEFAULT_FOLDER_NAME})
+     * @param FileStoreStageEnum                             $staging    The stage where to store the file (Default {@link FileStoreStageEnum::BASE})
+     * @param int|\Monolog\Level|\Psr\Log\LogLevel::*|string $level      The minimum logging level at which this handler will be triggered
+     *                                                                   (Default: {@link self::LEVEL_DEFAULT})
      *
      * @phpstan-param LoggingLevel $level
      */
     public function __construct(
         string $fileName,
-        string $filePrefix = StoreParameterData::DEFAULT_FILE_PREFIX,
-        string $fileSuffix = StoreParameterData::DEFAULT_FILE_SUFFIX,
-        string $fileExt = StoreParameterData::DEFAULT_FILE_EXT,
-        string $pathToFile = StoreParameterData::DEFAULT_FOLDER_NAME,
+        string $filePrefix = StoreParameter::DEFAULT_FILE_PREFIX,
+        string $fileSuffix = StoreParameter::DEFAULT_FILE_SUFFIX,
+        string $fileExt = StoreParameter::DEFAULT_FILE_EXT,
+        string $pathToFile = StoreParameter::DEFAULT_FOLDER_NAME,
         FileStoreStageEnum $staging = FileStoreStageEnum::BASE,
         mixed $level = self::LEVEL_DEFAULT
     ) {
@@ -94,8 +97,8 @@ class FileAdapter extends AbstractStoreAdapter
 
         self::$logger->debug('END');
     }
-    
-        /**
+
+    /**
      * @param array<mixed,mixed> $resultsEntry Array of results from a query
      */
     public function storeResults(array $resultsEntry): void
@@ -104,10 +107,10 @@ class FileAdapter extends AbstractStoreAdapter
 
         $line = sprintf(
             '%s;%s%s;%s',
-            $resultsEntry[StoreParameterData::KEY_KEY],
+            $resultsEntry[StoreParameter::KEY_KEY],
             $this->constData->c(ConstData::KEY_CONF_BASE_URL),
-            $resultsEntry[StoreParameterData::KEY_LINKS][StoreParameterData::KEY_TINYUI],
-            $resultsEntry[StoreParameterData::KEY_TITLE]
+            $resultsEntry[StoreParameter::KEY_LINKS][StoreParameter::KEY_TINYUI],
+            $resultsEntry[StoreParameter::KEY_TITLE]
         );
         $this->writeData($this->storeItem, $line);
 

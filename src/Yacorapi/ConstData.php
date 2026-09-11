@@ -18,7 +18,7 @@ use Ds\Map;
 use Monolog\ConsoleLogger;
 use Monolog\DoNothingLogger;
 use oglow\tools\common\AbstractSingleton;
-use oglow\tools\Yacorapi\Request\RequestParameterData;
+use oglow\tools\Yacorapi\Request\RequestParameter;
 use ollily\Tools\Emergency;
 use ollily\Tools\EnvironmentHelper;
 use Psr\Log\LoggerInterface;
@@ -423,7 +423,7 @@ final class ConstData extends AbstractSingleton
             Emergency::breakSystem(ExitCodes::ERR_CODE_NO_URL_SET, 'No URL for confluence is set');
         }
         if (!$this->isDefined(self::KEY_SEARCH_LIMIT)) {
-            $this->putConst(self::KEY_SEARCH_LIMIT, ((string) RequestParameterData::VAL_SEARCH_LIMIT_MAX));
+            $this->putConst(self::KEY_SEARCH_LIMIT, ((string) RequestParameter::VAL_SEARCH_LIMIT_MAX));
         }
 
         self::$logger->debug('END - Is valid', [$validated]);

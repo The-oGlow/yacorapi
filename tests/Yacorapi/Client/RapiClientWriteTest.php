@@ -15,7 +15,7 @@ namespace oglow\tools\Yacorapi\Client;
 
 use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\ConstData;
-use oglow\tools\Yacorapi\Response\ResponseParameterData;
+use oglow\tools\Yacorapi\Response\ResponseParameter;
 use oglow\tools\Yacorapi\YacorapiTestData;
 use PHPUnit\Framework\EasyGoingTestCase;
 use Psr\Log\LoggerInterface;
@@ -60,12 +60,12 @@ class RapiClientWriteTest extends EasyGoingTestCase
         self::$logger->info('response', [$response->getRawData()]);
 
         self::assertNotEmpty($response);
-        self::assertNotEmpty($response->getValue(ResponseParameterData::KEY_ID));
+        self::assertNotEmpty($response->getValue(ResponseParameter::KEY_ID));
 
-        self::assertEquals($pageTitle, $response->getValue(ResponseParameterData::KEY_TITLE));
+        self::assertEquals($pageTitle, $response->getValue(ResponseParameter::KEY_TITLE));
         self::assertEquals($pageBody, $response->getBody());
-        self::assertEquals($spaceKey, $response->getValue(ResponseParameterData::KEY_SPACE)[ResponseParameterData::KEY_KEY]);
-        self::assertEquals($parentId, $response->getValue(ResponseParameterData::KEY_ANCESTORS)[ResponseParameterData::KEY_ID]);
+        self::assertEquals($spaceKey, $response->getValue(ResponseParameter::KEY_SPACE)[ResponseParameter::KEY_KEY]);
+        self::assertEquals($parentId, $response->getValue(ResponseParameter::KEY_ANCESTORS)[ResponseParameter::KEY_ID]);
 
         self::$logger->info('END');
     }
@@ -82,17 +82,17 @@ class RapiClientWriteTest extends EasyGoingTestCase
         self::$logger->info('before', [$before->getRawData()]);
 
         self::assertNotEmpty($before);
-        self::assertEquals($updateId, $before->getValue(ResponseParameterData::KEY_ID));
+        self::assertEquals($updateId, $before->getValue(ResponseParameter::KEY_ID));
 
         $after = $this->getCasto2t()->updatePage($updateId, $updateBody, $updateTitle);
         self::$logger->info('after', [$after->getRawData()]);
 
         self::assertNotEmpty($after);
-        self::assertEquals($updateId, $after->getValue(ResponseParameterData::KEY_ID));
-        self::assertEquals($updateTitle, $after->getValue(ResponseParameterData::KEY_TITLE));
+        self::assertEquals($updateId, $after->getValue(ResponseParameter::KEY_ID));
+        self::assertEquals($updateTitle, $after->getValue(ResponseParameter::KEY_TITLE));
         self::assertEquals($updateBody, $after->getBody());
 
-        self::assertNotEquals($before->getValue(ResponseParameterData::KEY_TITLE), $after->getValue(ResponseParameterData::KEY_TITLE));
+        self::assertNotEquals($before->getValue(ResponseParameter::KEY_TITLE), $after->getValue(ResponseParameter::KEY_TITLE));
         self::assertNotEquals($before->getBody(), $after->getBody());
 
         self::$logger->info('END');

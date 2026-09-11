@@ -15,7 +15,7 @@ namespace oglow\tools\Yacorapi\Client;
 
 use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\ConstData;
-use oglow\tools\Yacorapi\Request\RequestParameterData;
+use oglow\tools\Yacorapi\Request\RequestParameter;
 use oglow\tools\Yacorapi\YacorapiTestData;
 use PHPUnit\Framework\EasyGoingTestCase;
 use Psr\Log\LoggerInterface;
@@ -74,7 +74,7 @@ class RapiClientPermissionTest extends EasyGoingTestCase
     {
         $restrictions = [];
 
-        $expected1 = [RequestParameterData::PROP_GROUP => []];
+        $expected1 = [RequestParameter::PROP_GROUP => []];
 
         $actual       = $this->getCasto2t()->publicAddRestrictionForGroup($restrictions);
 
@@ -85,7 +85,7 @@ class RapiClientPermissionTest extends EasyGoingTestCase
     {
         $restrictions = [];
 
-        $expected1 = [RequestParameterData::PROP_USER => []];
+        $expected1 = [RequestParameter::PROP_USER => []];
 
         $actual       = $this->getCasto2t()->publicAddRestrictionForUser($restrictions);
 

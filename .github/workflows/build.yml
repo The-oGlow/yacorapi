@@ -69,13 +69,13 @@ jobs:
         run: mkdir -p ${{ env.PHPUNIT_DIR }}
 
       - name: checkout
-        uses: actions/checkout@v4.3.0
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
       - name: setup PHP
         id: setup-php
-        uses: shivammathur/setup-php@2.35.3
+        uses: shivammathur/setup-php@v2
         with:
           php-version: '${{ matrix.php }}'
           extensions: ${{ env.PHP_MODULES }}
@@ -90,7 +90,7 @@ jobs:
           echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
       - name: cache composer packages
-        uses: actions/cache@v4.2.3
+        uses: actions/cache@v6
         id: cache
         with:
           path: |
@@ -107,7 +107,7 @@ jobs:
         run: composer c-package
 
       - name: upload artifact
-        uses: actions/upload-artifact@v4.6.2
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ env.GITHUB_UPLOAD_NAME }}.zip
           path: ${{ env.GITHUB_UPLOAD_DIR }}/*-${{ env.GITHUB_UPLOAD_NAME }}*.zip

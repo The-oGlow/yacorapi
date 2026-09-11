@@ -15,7 +15,7 @@ namespace oglow\tools\Yacorapi\Store;
 
 /**
  * Staging options for the output pathToFile.
- * 
+ *
  * @author ollily
  */
 enum FileStoreStageEnum

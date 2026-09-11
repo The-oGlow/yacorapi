@@ -17,16 +17,20 @@ use Monolog\ConsoleLogger;
 use oglow\tools\common\AbstractContainer;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\ExitCodes;
-use oglow\tools\Yacorapi\Response\ResponseParameterData;
+use oglow\tools\Yacorapi\Response\ResponseParameter;
 use ollily\Tools\Emergency;
 use Psr\Log\LoggerInterface;
 
-class SpaceData extends AbstractContainer {
-
+class SpaceData extends AbstractContainer
+{
     public const string VAL_SPACE_NS_SEP = '\\';
+
     public const string VAL_SPACES_NS = 'oglow\\tools\\Yacorapi';
+
     public const string VAL_SPACES_CLAZZ = 'MySpaces';
+
     public const string VAL_SPACES_CLAZZ_FULL = self::VAL_SPACE_NS_SEP . self::VAL_SPACES_NS . self::VAL_SPACE_NS_SEP . self::VAL_SPACES_CLAZZ;
+
     public const string VAL_SPACES_FILE = self::VAL_SPACES_CLAZZ . '.php';
 
     private static LoggerInterface $logger;
@@ -34,7 +38,8 @@ class SpaceData extends AbstractContainer {
     /** @psalm-suppress PropertyNotSetInConstructor     */
     private string $mySpaceFileDefault;
 
-    public function __construct() {
+    public function __construct()
+    {
         self::$logger = new ConsoleLogger(SpaceData::class);
         self::$logger->debug('START');
         parent::__construct();
@@ -46,31 +51,34 @@ class SpaceData extends AbstractContainer {
      *
      * @return string
      */
-    public static function prepareMySpacesContent(array $spaces): string {
+    public static function prepareMySpacesContent(array $spaces): string
+    {
         $line = "<?php\ndeclare(strict_types=1);\n" .
-                "namespace " .
-                self::VAL_SPACES_NS .
-                ";\n" .
-                "class " .
-                self::VAL_SPACES_CLAZZ .
-                "\n{\n" .
-                "public static function " .
-                SpaceTypeEnum::SPACE_ALL->method() .
-                "(): array\n{return [";
+        "namespace " .
+        self::VAL_SPACES_NS .
+        ";\n" .
+        "class " .
+        self::VAL_SPACES_CLAZZ .
+        "\n{\n" .
+        "public static function " .
+        SpaceTypeEnum::SPACE_ALL->method() .
+        "(): array\n{return [";
 
         foreach ($spaces as $space) {
-            $line .= sprintf("'%s',\n", $space[ResponseParameterData::KEY_KEY]);
+            $line .= sprintf("'%s',\n", $space[ResponseParameter::KEY_KEY]);
         }
         $line .= "\n];\n}\n}\n";
 
         return $line;
     }
 
-    public static function prepareMySpacesFileName(): string {
+    public static function prepareMySpacesFileName(): string
+    {
         return self::VAL_SPACES_FILE;
     }
 
-    public function getMySpaceFileDefault(): string {
+    public function getMySpaceFileDefault(): string
+    {
         return $this->mySpaceFileDefault;
     }
 
@@ -80,7 +88,8 @@ class SpaceData extends AbstractContainer {
      *
      * @return bool TRUE=file was loaded, else FALSE
      */
-    public function loadPersonalSpaces(string $mySpacesFile, bool $unitTest = false): bool {
+    public function loadPersonalSpaces(string $mySpacesFile, bool $unitTest = false): bool
+    {
         $loaded = false;
         if (file_exists($mySpacesFile)) {
             $loaded = true;
@@ -94,13 +103,15 @@ class SpaceData extends AbstractContainer {
     }
 
     #[\Override]
-    protected function prepareModes(): void {
+    protected function prepareModes(): void
+    {
         $allModes = [SpaceTypeEnum::SPACE_SINGLE->value, SpaceTypeEnum::SPACE_SIMPLE->value, SpaceTypeEnum::SPACE_ALL->value];
         $this->setModes($allModes);
     }
 
     #[\Override]
-    protected function prepareData(): void {
+    protected function prepareData(): void
+    {
         $this->mySpaceFileDefault = ((string) $this->constData->c(ConstData::KEY_MY_DIR)) . DIRECTORY_SEPARATOR . self::VAL_SPACES_FILE;
 
         $allData = [];
@@ -116,7 +127,8 @@ class SpaceData extends AbstractContainer {
      *
      * @return mixed
      */
-    private function prepareSpaces(string $mySpacesFunc, string $mySpaceFile): mixed {
+    private function prepareSpaces(string $mySpacesFunc, string $mySpaceFile): mixed
+    {
         self::loadPersonalSpaces($mySpaceFile);
         $mySpaces = [];
         /**

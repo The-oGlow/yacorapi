@@ -18,7 +18,7 @@ use oglow\tools\common\MockProvider;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\Data\ItemTypeEnum;
 use oglow\tools\Yacorapi\IResponse;
-use oglow\tools\Yacorapi\Request\RequestParameterData;
+use oglow\tools\Yacorapi\Request\RequestParameter;
 use Psr\Log\LoggerInterface;
 
 class RapiClientReadTestClazz extends RapiClientRead implements IRapiClientRead
@@ -51,9 +51,9 @@ class RapiClientReadTestClazz extends RapiClientRead implements IRapiClientRead
 
     public function publicPrepareSearchUrl(
         string $searchTerm,
-        string $spaceKey = RequestParameterData::VAL_SPACE_EMPTY,
+        string $spaceKey = RequestParameter::VAL_SPACE_EMPTY,
         ItemTypeEnum $pageType = ItemTypeEnum::PAGE,
-        bool $withBody = RequestParameterData::VAL_BODY_NO
+        bool $withBody = RequestParameter::VAL_BODY_NO
     ): string {
         return $this->prepareSearchUrl($searchTerm, $spaceKey, $pageType, $withBody);
     }
@@ -61,20 +61,20 @@ class RapiClientReadTestClazz extends RapiClientRead implements IRapiClientRead
     public function publicPrepareSearchUrlExt(
         string $searchTerm,
         string $spaceKey,
-        int $searchFromPos = RequestParameterData::VAL_SEARCH_START_NO,
-        int $searchLimit = RequestParameterData::VAL_SEARCH_LIMIT_NO,
+        int $searchFromPos = RequestParameter::VAL_SEARCH_START_NO,
+        int $searchLimit = RequestParameter::VAL_SEARCH_LIMIT_NO,
         ItemTypeEnum $pageType = ItemTypeEnum::PAGE,
-        bool $withBody = RequestParameterData::VAL_BODY_NO
+        bool $withBody = RequestParameter::VAL_BODY_NO
     ): string {
         return $this->prepareSearchUrlExt($searchTerm, $spaceKey, $searchFromPos, $searchLimit, $pageType, $withBody);
     }
 
-    public function publicPrepareBrowseUrl(string $filterTerm, string $spaceKey = RequestParameterData::VAL_SPACE_EMPTY): string
+    public function publicPrepareBrowseUrl(string $filterTerm, string $spaceKey = RequestParameter::VAL_SPACE_EMPTY): string
     {
         return $this->prepareBrowseUrl($filterTerm, $spaceKey);
     }
 
-    public function publicPrepareScanUrl(string $spaceKey = RequestParameterData::VAL_SPACE_EMPTY): string
+    public function publicPrepareScanUrl(string $spaceKey = RequestParameter::VAL_SPACE_EMPTY): string
     {
         return $this->prepareScanUrl($spaceKey);
     }

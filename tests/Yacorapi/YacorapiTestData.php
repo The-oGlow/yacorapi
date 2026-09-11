@@ -18,8 +18,8 @@ use Ds\Map;
 use oglow\tools\Addon\Atlassian\Extension\AtlassianExtension;
 use oglow\tools\Yacorapi\Data\ItemTypeEnum;
 use oglow\tools\Yacorapi\Extension\RapiClientExtension;
-use oglow\tools\Yacorapi\Request\RequestParameterData;
-use oglow\tools\Yacorapi\Response\ResponseParameterData;
+use oglow\tools\Yacorapi\Request\RequestParameter;
+use oglow\tools\Yacorapi\Response\ResponseParameter;
 use oglow\tools\Yacorapi\Space\SpaceTypeEnum;
 use ollily\Tools\Test\TestData;
 
@@ -191,10 +191,10 @@ class YacorapiTestData extends TestData
 
     public const string C_PAGE_BODY_2 = ' Totally different content of a <b>page body</b>.';
 
-    public const string C_PAGE_EXIST_STATUS = ResponseParameterData::VAL_STATUS_TYPE_CURRENT;
-    
+    public const string C_PAGE_EXIST_STATUS = ResponseParameter::VAL_STATUS_TYPE_CURRENT;
+
     public const int C_PAGE_POSITION_HOMEPAGE = -1;
-    
+
     public const ItemTypeEnum C_ITEM_TYPE_PAGE = ItemTypeEnum::PAGE;
 
     public const string C_SPACE_EMPTY_KEY = '';
@@ -207,12 +207,12 @@ class YacorapiTestData extends TestData
 
     public const string C_SPACE_EXIST_DESCRIPTION = 'A space which exists.';
 
-    public const string C_SPACE_EXIST_STATUS = RequestParameterData::VAL_STATUS_TYPE_CURRENT;
+    public const string C_SPACE_EXIST_STATUS = RequestParameter::VAL_STATUS_TYPE_CURRENT;
 
     public const SpaceTypeEnum C_SPACE_EXIST_TYPE = SpaceTypeEnum::SPACE_TYPE_GLOBAL;
-    
+
     public const int C_SPACE_EXIST_HOMEPAGE_ID = 567890;
-    
+
     public const string C_SPACE_EXIST_HOMEPAGE_TITLE = 'Existing Space Homepage';
 
     public const string C_FILTERTERM_01 = 'filter=1';
@@ -288,19 +288,19 @@ class YacorapiTestData extends TestData
     private static array $RESP_SCAN_RESULT;
 
     public const array RESP_RESTRICTION = [
-        ResponseParameterData::KEY_RESTRICTIONS => [
-            ResponseParameterData::KEY_READ => [
-                ResponseParameterData::KEY_OPERATION => ResponseParameterData::KEY_READ,
-                ResponseParameterData::KEY_RESTRICTIONS => [
-                    ResponseParameterData::KEY_USER => [],
-                    ResponseParameterData::KEY_GROUP => [],
+        ResponseParameter::KEY_RESTRICTIONS => [
+            ResponseParameter::KEY_READ => [
+                ResponseParameter::KEY_OPERATION => ResponseParameter::KEY_READ,
+                ResponseParameter::KEY_RESTRICTIONS => [
+                    ResponseParameter::KEY_USER => [],
+                    ResponseParameter::KEY_GROUP => [],
                 ],
             ],
-            ResponseParameterData::KEY_UPDATE => [
-                ResponseParameterData::KEY_OPERATION => ResponseParameterData::KEY_UPDATE,
-                ResponseParameterData::KEY_RESTRICTIONS => [
-                    ResponseParameterData::KEY_USER => [],
-                    ResponseParameterData::KEY_GROUP => [],
+            ResponseParameter::KEY_UPDATE => [
+                ResponseParameter::KEY_OPERATION => ResponseParameter::KEY_UPDATE,
+                ResponseParameter::KEY_RESTRICTIONS => [
+                    ResponseParameter::KEY_USER => [],
+                    ResponseParameter::KEY_GROUP => [],
                 ],
             ],
         ],
@@ -321,9 +321,9 @@ class YacorapiTestData extends TestData
     public static function RESP_HEAD_SEARCHPAGEID_01(): array // NOSONAR:  php:S116
     {
         self::$RESP_HEAD_SEARCHPAGEID_01 = [
-            ResponseParameterData::KEY_ID => self::C_SEARCHPAGEID_01,
-            ResponseParameterData::KEY_TITLE => self::C_SEARCHPAGETITLE_01,
-            ResponseParameterData::KEY_TYPE => self::C_ITEM_TYPE_PAGE->value,
+            ResponseParameter::KEY_ID => self::C_SEARCHPAGEID_01,
+            ResponseParameter::KEY_TITLE => self::C_SEARCHPAGETITLE_01,
+            ResponseParameter::KEY_TYPE => self::C_ITEM_TYPE_PAGE->value,
         ];
         self::$RESP_HEAD_SEARCHPAGEID_01 = array_merge(self::$RESP_HEAD_SEARCHPAGEID_01, self::prepareResponseVersion());
         self::$RESP_HEAD_SEARCHPAGEID_01 = array_merge(self::$RESP_HEAD_SEARCHPAGEID_01, self::prepareResponseSpace(self::C_SEARCHPAGESPACE_01, new Map()));
@@ -400,8 +400,8 @@ class YacorapiTestData extends TestData
     public static function prepareResponseResults(array $items): array
     {
         return [
-            ResponseParameterData::KEY_TOTAL_SIZE => count($items),
-            ResponseParameterData::KEY_RESULTS => $items,
+            ResponseParameter::KEY_TOTAL_SIZE => count($items),
+            ResponseParameter::KEY_RESULTS => $items,
         ];
     }
 
@@ -417,15 +417,15 @@ class YacorapiTestData extends TestData
         $mapParameters = $parameters;
 
         if (!$mapParameters->isEmpty()) {
-            $value = $mapParameters->get(RequestParameterData::PROP_SPACE);
+            $value = $mapParameters->get(RequestParameter::PROP_SPACE);
             if (is_array($value) && count($value) > 0) {
-                $text = $value[RequestParameterData::PROP_KEY];
+                $text = $value[RequestParameter::PROP_KEY];
             }
         }
 
         return [
-            ResponseParameterData::KEY_SPACE => [
-                ResponseParameterData::KEY_KEY => $text,
+            ResponseParameter::KEY_SPACE => [
+                ResponseParameter::KEY_KEY => $text,
             ]];
     }
 
@@ -436,7 +436,7 @@ class YacorapiTestData extends TestData
      */
     public static function prepareResponseVersion(int $currentVersion = 1): array
     {
-        return [ResponseParameterData::KEY_VERSION => [ResponseParameterData::KEY_NUMBER => $currentVersion]];
+        return [ResponseParameter::KEY_VERSION => [ResponseParameter::KEY_NUMBER => $currentVersion]];
     }
 
     /**
@@ -451,15 +451,15 @@ class YacorapiTestData extends TestData
         $mapParameters = $parameters;
 
         if (!$mapParameters->isEmpty()) {
-            $value = $mapParameters->get(RequestParameterData::PROP_ANCESTORS);
+            $value = $mapParameters->get(RequestParameter::PROP_ANCESTORS);
             if (is_array($value) && count($value) > 0) {
-                $text = $value[0][RequestParameterData::PROP_ID];
+                $text = $value[0][RequestParameter::PROP_ID];
             }
         }
 
         return [
-            ResponseParameterData::KEY_ANCESTORS => [
-                ResponseParameterData::KEY_ID => $text,
+            ResponseParameter::KEY_ANCESTORS => [
+                ResponseParameter::KEY_ID => $text,
             ]];
     }
 
@@ -475,16 +475,16 @@ class YacorapiTestData extends TestData
         $mapParameters = $parameters;
 
         if (!$mapParameters->isEmpty()) {
-            $value = $mapParameters->get(RequestParameterData::PROP_BODY);
+            $value = $mapParameters->get(RequestParameter::PROP_BODY);
             if (is_array($value) && count($value) > 0) {
-                $text = $value[RequestParameterData::PROP_STORAGE][RequestParameterData::PROP_VALUE];
+                $text = $value[RequestParameter::PROP_STORAGE][RequestParameter::PROP_VALUE];
             }
         }
 
         return [
-            ResponseParameterData::KEY_BODY => [
-                ResponseParameterData::KEY_STORAGE => [
-                    ResponseParameterData::KEY_VALUE => $text,
+            ResponseParameter::KEY_BODY => [
+                ResponseParameter::KEY_STORAGE => [
+                    ResponseParameter::KEY_VALUE => $text,
                 ]]];
     }
 

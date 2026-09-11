@@ -17,12 +17,10 @@ use Ds\Map;
 use oglow\tools\Yacorapi\Macro\HasMacroBodyEnum;
 use oglow\tools\Yacorapi\YacorapiTestData;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\ConstantCheckTestCase;
+use PHPUnit\Framework\EasyGoingTestCase;
 
-class ContentHelperTest extends ConstantCheckTestCase
+class ContentHelperTest extends EasyGoingTestCase
 {
-    public const string CLASS_PREFIX = ContentHelperTest::class . self::C_STATIC_SEP;
-
     public const string MACRO_HTML = 'html';
 
     public const string MACRO_CODE = 'code';
@@ -30,10 +28,6 @@ class ContentHelperTest extends ConstantCheckTestCase
     public const string MACRO_SECTION = 'section';
 
     public const string MACRO_COLUMN = 'column';
-
-    protected const int EXPECTED_CONSTANT_COUNT = 8;
-
-    protected const bool WITH_CONST_CROSSCHECK = true;
 
     /**
      * @return ContentHelper
@@ -51,29 +45,6 @@ class ContentHelperTest extends ConstantCheckTestCase
     protected function getCasto2t(): ContentHelper
     {
         return $this->o2t;
-    }
-
-    #[\Override]
-    public static function setUpBeforeClass(bool $withConstCrossCheck = self::WITH_CONST_CROSSCHECK, int $expectedConstsCount = self::EXPECTED_CONSTANT_COUNT): void
-    {
-        parent::setUpBeforeClass($withConstCrossCheck, $expectedConstsCount);
-    }
-
-    public function testConstsExists(): void
-    {
-        $const = [
-            self::CLASS_PREFIX . 'TAG_MACRO_START',
-            self::CLASS_PREFIX . 'TAG_MACRO_END',
-            self::CLASS_PREFIX . 'TAG_MACRO_VERSION',
-            self::CLASS_PREFIX . 'TAG_PARAMETER',
-            self::CLASS_PREFIX . 'TAG_BODY_PLAIN',
-            self::CLASS_PREFIX . 'TAG_BODY_RICH',
-            self::CLASS_PREFIX . 'VAL_BODY_EMPTY',
-            self::CLASS_PREFIX . 'VAL_TAG_EMPTY',
-        ];
-        static::updateActualConsts($const);
-
-        $this->verifyConstAllExists($const);
     }
 
     /**

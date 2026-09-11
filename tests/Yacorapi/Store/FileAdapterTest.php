@@ -66,10 +66,10 @@ class FileAdapterTest extends EasyGoingTestCase
     public function testStoreResults(): void
     {
         $results = [
-            StoreParameterData::KEY_KEY => YacorapiTestData::C_PAGEID_EXIST,
-            StoreParameterData::KEY_TITLE => YacorapiTestData::FILE_EXT_JSON,
+            StoreParameter::KEY_KEY => YacorapiTestData::C_PAGEID_EXIST,
+            StoreParameter::KEY_TITLE => YacorapiTestData::FILE_EXT_JSON,
         ];
-        $results[StoreParameterData::KEY_LINKS][StoreParameterData::KEY_TINYUI] = YacorapiTestData::FILE_EXT_JSON;
+        $results[StoreParameter::KEY_LINKS][StoreParameter::KEY_TINYUI] = YacorapiTestData::FILE_EXT_JSON;
         $expected = 42;
 
         $this->getCasto2t()->storeResults($results);

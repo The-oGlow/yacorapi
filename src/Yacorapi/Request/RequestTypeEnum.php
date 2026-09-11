@@ -15,7 +15,7 @@ namespace oglow\tools\Yacorapi\Request;
 
 /**
  * Types of requests sending as REST-API call.
- * 
+ *
  * @author ollily
  */
 enum RequestTypeEnum: string

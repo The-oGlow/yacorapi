@@ -15,7 +15,7 @@ namespace oglow\tools\Yacorapi\Response;
 
 /**
  * Default implementation of a resonse structure.
- * 
+ *
  * @author ollily
  */
 class Response extends AbstractResponse

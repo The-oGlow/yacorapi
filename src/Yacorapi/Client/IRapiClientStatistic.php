@@ -34,9 +34,9 @@ interface IRapiClientStatistic extends IRapiClientPermission
     /**
      * Scans a space and count the macros in the space.
      *
-     * @param string                     $spaceKey     Limited to the space
+     * @param string             $spaceKey     Limited to the space
      * @param ResponseAddonMacro $addonSet     The set of addons containing the macros to scan for
-     * @param IStatistic                 $outputMatrix An empty or previous statistic to add
+     * @param IStatistic         $outputMatrix An empty or previous statistic to add
      *
      * @return IStatistic The found and counted macros
      *

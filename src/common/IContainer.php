@@ -13,8 +13,16 @@ declare(strict_types=1);
 
 namespace oglow\tools\common;
 
+use Psr\Log\LogLevel;
+
+/**
+ * @author olliy
+ */
 interface IContainer extends \Stringable
 {
+    /** Default output level */
+    public const string LEVEL_DEFAULT = LogLevel::INFO;
+
     /**
      * @return array<mixed,mixed>
      */

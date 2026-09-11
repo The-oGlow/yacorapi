@@ -19,7 +19,7 @@ use Psr\Log\LoggerInterface;
 
 /**
  * Response structure for handling addon data.
- * 
+ *
  * @author ollily
  */
 class ResponseAddonMacro extends AbstractResponse

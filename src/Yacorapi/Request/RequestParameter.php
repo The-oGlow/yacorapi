@@ -18,10 +18,10 @@ use oglow\tools\common\AbstractSingleton;
 
 /**
  * Constants clazz for the individual keys of the request structure and their values.
- * 
+ *
  * @author ollily
  */
-class RequestParameterData extends AbstractSingleton
+class RequestParameter extends AbstractSingleton
 {
     // Property Consts
     public const string PROP_ANCESTORS = 'ancestors';

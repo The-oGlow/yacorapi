@@ -20,13 +20,16 @@ use oglow\tools\Yacorapi\Extension\ExtensionEnum;
 use oglow\tools\Yacorapi\IConnectionProvider;
 use oglow\tools\Yacorapi\IRapiClient;
 use oglow\tools\Yacorapi\Macro\AddonTypeEnum;
-use oglow\tools\Yacorapi\Request\RequestParameterData;
-use oglow\tools\Yacorapi\Response\ResponseParameterData;
+use oglow\tools\Yacorapi\Request\RequestParameter;
+use oglow\tools\Yacorapi\Response\ResponseParameter;
 use Psr\Log\LogLevel;
 
+/**
+ * @author olliy
+ */
 interface IRapiClientBase
 {
-    /** Default output level (INFO) */
+    /** Default output level */
     public const string LEVEL_DEFAULT = LogLevel::INFO;
 
     // Common Parameter
@@ -34,51 +37,51 @@ interface IRapiClientBase
 
     public const ExtensionEnum EXTENSION_DEFAULT = ExtensionEnum::EXTENSION_ALL;
 
-    public const int VAL_COMMENT_MAXLEN = RequestParameterData::VAL_COMMENT_MAXLEN;
+    public const int VAL_COMMENT_MAXLEN = RequestParameter::VAL_COMMENT_MAXLEN;
 
     public const int VAL_LOG_SPACE = 100;
     // Request Parameter
 
-    public const string REQ_VAL_BODY_EMPTY = RequestParameterData::VAL_BODY_EMPTY;
+    public const string REQ_VAL_BODY_EMPTY = RequestParameter::VAL_BODY_EMPTY;
 
-    public const bool REQ_VAL_BODY_NO = RequestParameterData::VAL_BODY_NO;
+    public const bool REQ_VAL_BODY_NO = RequestParameter::VAL_BODY_NO;
 
-    public const string REQ_VAL_COMMENT_EMPTY = RequestParameterData::VAL_COMMENT_EMPTY;
+    public const string REQ_VAL_COMMENT_EMPTY = RequestParameter::VAL_COMMENT_EMPTY;
 
     public const ItemTypeEnum REQ_VAL_ITEM_TYPE_PAGE = ItemTypeEnum::PAGE;
 
-    public const int REQ_VAL_PAGE_ID_NO = RequestParameterData::VAL_PAGE_ID_NO;
+    public const int REQ_VAL_PAGE_ID_NO = RequestParameter::VAL_PAGE_ID_NO;
 
-    public const string REQ_VAL_PAGE_TITLE_EMPTY = RequestParameterData::VAL_PAGE_TITLE_EMPTY;
+    public const string REQ_VAL_PAGE_TITLE_EMPTY = RequestParameter::VAL_PAGE_TITLE_EMPTY;
 
-    public const int REQ_VAL_PARENT_ID_NO = RequestParameterData::VAL_PARENT_ID_NO;
+    public const int REQ_VAL_PARENT_ID_NO = RequestParameter::VAL_PARENT_ID_NO;
 
-    public const int REQ_VAL_SEARCH_LIMIT_MIN = RequestParameterData::VAL_SEARCH_LIMIT_MIN;
+    public const int REQ_VAL_SEARCH_LIMIT_MIN = RequestParameter::VAL_SEARCH_LIMIT_MIN;
 
-    public const int REQ_VAL_SEARCH_LIMIT_1ENTRY = RequestParameterData::VAL_SEARCH_LIMIT_1ENTRY;
+    public const int REQ_VAL_SEARCH_LIMIT_1ENTRY = RequestParameter::VAL_SEARCH_LIMIT_1ENTRY;
 
-    public const int REQ_VAL_SEARCH_LIMIT_NO = RequestParameterData::VAL_SEARCH_LIMIT_NO;
+    public const int REQ_VAL_SEARCH_LIMIT_NO = RequestParameter::VAL_SEARCH_LIMIT_NO;
 
-    public const int REQ_VAL_SEARCH_START = RequestParameterData::VAL_SEARCH_START;
+    public const int REQ_VAL_SEARCH_START = RequestParameter::VAL_SEARCH_START;
 
-    public const int REQ_VAL_SEARCH_START_NO = RequestParameterData::VAL_SEARCH_START_NO;
+    public const int REQ_VAL_SEARCH_START_NO = RequestParameter::VAL_SEARCH_START_NO;
 
-    public const int REQ_VAL_SPACE_LIMIT_DEFAULT = RequestParameterData::VAL_SPACE_LIMIT_DEFAULT;
+    public const int REQ_VAL_SPACE_LIMIT_DEFAULT = RequestParameter::VAL_SPACE_LIMIT_DEFAULT;
 
-    public const string REQ_VAL_SPACE_EMPTY = RequestParameterData::VAL_SPACE_EMPTY;
+    public const string REQ_VAL_SPACE_EMPTY = RequestParameter::VAL_SPACE_EMPTY;
 
-    public const int REQ_VAL_VERSION_FIRST = RequestParameterData::VAL_VERSION_FIRST;
+    public const int REQ_VAL_VERSION_FIRST = RequestParameter::VAL_VERSION_FIRST;
 
     // Response Parameter
-    public const string RESP_VAL_BODY_EMPTY = ResponseParameterData::VAL_BODY_EMPTY;
+    public const string RESP_VAL_BODY_EMPTY = ResponseParameter::VAL_BODY_EMPTY;
 
-    public const int RESP_VAL_PAGE_ID_NO = ResponseParameterData::VAL_PAGE_ID_NO;
+    public const int RESP_VAL_PAGE_ID_NO = ResponseParameter::VAL_PAGE_ID_NO;
 
-    public const int RESP_VAL_RESULT_FIRST = ResponseParameterData::VAL_RESULT_FIRST;
+    public const int RESP_VAL_RESULT_FIRST = ResponseParameter::VAL_RESULT_FIRST;
 
-    public const string RESP_VAL_TITLE_EMPTY = ResponseParameterData::VAL_TITLE_EMPTY;
+    public const string RESP_VAL_TITLE_EMPTY = ResponseParameter::VAL_TITLE_EMPTY;
 
-    public const int RESP_VAL_VERSION_NO = ResponseParameterData::VAL_VERSION_NO;
+    public const int RESP_VAL_VERSION_NO = ResponseParameter::VAL_VERSION_NO;
 
     /**
      * Create new RapiClient.

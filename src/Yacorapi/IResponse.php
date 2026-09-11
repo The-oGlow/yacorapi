@@ -24,15 +24,15 @@ use Stringable;
  * <ul>
  * <li>The data of a confluence item (eg. page)</li>
  * <li>The result of search call</li>
- * <ul>
- * 
+ * <ul>.
+ *
  * @author ollily
-*/
+ */
 interface IResponse extends Stringable
 {
     /**
      * Returns the raw data of the response as it was returnd from the REST API call.
-     * 
+     *
      * @return Collection<mixed,mixed> The raw response
      *
      * @phpstan-return Map<mixed,mixed>
@@ -50,15 +50,15 @@ interface IResponse extends Stringable
 
     /**
      * Returns all keys at first level of the response.
-     * 
+     *
      * @return Vector<mixed> All keys
      */
     public function keys(): Vector;
 
     /**
      * Returns the value for the key (only from first level of the response) or a default value.
-     * 
-     * @param mixed $key The key to check for
+     *
+     * @param mixed $key     The key to check for
      * @param mixed $default A default value (Default: ''=
      *
      * @return mixed The found value or {@link $default}
@@ -74,7 +74,7 @@ interface IResponse extends Stringable
 
     /**
      * Returns the information about the error which was produced by the last REST-API call.
-     * 
+     *
      * @return Collection<mixed,mixed> Error information
      *
      * @phpstan-return Map<mixed,mixed>
@@ -97,7 +97,7 @@ interface IResponse extends Stringable
 
     /**
      * Returns the complete search result.
-     * 
+     *
      * @return Collection<mixed,mixed> The complete search result
      *
      * @phpstan-return Map<mixed,mixed>
@@ -106,7 +106,7 @@ interface IResponse extends Stringable
 
     /**
      * Returns a single result from the given position.
-     * 
+     *
      * @param int $idx The position in the result
      *
      * @return mixed The search result at position {@link $idx} or null
@@ -115,21 +115,21 @@ interface IResponse extends Stringable
 
     /**
      * Returns the id of the confluence item.
-     * 
+     *
      * @return int The itemId
      */
     public function getItemId(): int;
 
     /**
      * Returns the body of the item in storage format.
-     * 
+     *
      * @return string The body of the item
      */
     public function getBody(): string;
 
     /**
      * Returns all item restrictions.
-     * 
+     *
      * @return array<mixed,mixed> All defined item restrictions
      */
     public function getRestrictions(): array;

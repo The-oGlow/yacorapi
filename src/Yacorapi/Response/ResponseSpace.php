@@ -13,16 +13,16 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Response;
 
+use BadFunctionCallException;
 use Ds\Map;
 use Ds\Vector;
 use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\IResponse;
 use Psr\Log\LoggerInterface;
-use BadFunctionCallException;
 
 /**
  * Response structure for handling space data.
- * 
+ *
  * @author ollily
  */
 class ResponseSpace extends AbstractResponse
@@ -42,7 +42,7 @@ class ResponseSpace extends AbstractResponse
         self::$logger->debug('START');
 
         $data = $response->getRawData();
-        $data->put(ResponseParameterData::KEY_RESULTS, $response->getResults());
+        $data->put(ResponseParameter::KEY_RESULTS, $response->getResults());
 
         parent::__construct($data->toArray());
 
@@ -163,29 +163,28 @@ class ResponseSpace extends AbstractResponse
                 foreach ($spaces as $space) {
                     if (is_array($space)) {
                         if ($this->isAddSpaceToList($space, $noArchived)) {
-                            $resultSpaces[] = $space[ResponseParameterData::KEY_KEY];
+                            $resultSpaces[] = $space[ResponseParameter::KEY_KEY];
                             $this->printSpaceInfo($space, ++$idx);
                         } else {
-                            self::$logger->notice('  ++ Space already archived', [$space[ResponseParameterData::KEY_KEY]]);
+                            self::$logger->notice('  ++ Space already archived', [$space[ResponseParameter::KEY_KEY]]);
                         }
                     }
                 }
             } else {
                 foreach ($spaces as $space) {
                     if (is_array($space)) {
-
-                        $descr = $space[ResponseParameterData::KEY_DESCRIPTION][ResponseParameterData::KEY_PLAIN][ResponseParameterData::KEY_VALUE];
+                        $descr = $space[ResponseParameter::KEY_DESCRIPTION][ResponseParameter::KEY_PLAIN][ResponseParameter::KEY_VALUE];
                         $newSpace = [
-                            ResponseParameterData::KEY_ID => $space[ResponseParameterData::KEY_ID],
-                            ResponseParameterData::KEY_KEY => $space[ResponseParameterData::KEY_KEY],
-                            ResponseParameterData::KEY_NAME => $space[ResponseParameterData::KEY_NAME],
-                            ResponseParameterData::KEY_TYPE => $space[ResponseParameterData::KEY_TYPE],
-                            ResponseParameterData::KEY_HOMEPAGE => array_key_exists(ResponseParameterData::KEY_HOMEPAGE, $space) 
-                                ? $space[ResponseParameterData::KEY_HOMEPAGE][ResponseParameterData::KEY_ID] : [],                            
-                            ResponseParameterData::KEY_ARCHIVED => $this->isArchived($descr) ? ResponseParameterData::VAL_TRUE : ResponseParameterData::VAL_FALSE,
+                            ResponseParameter::KEY_ID => $space[ResponseParameter::KEY_ID],
+                            ResponseParameter::KEY_KEY => $space[ResponseParameter::KEY_KEY],
+                            ResponseParameter::KEY_NAME => $space[ResponseParameter::KEY_NAME],
+                            ResponseParameter::KEY_TYPE => $space[ResponseParameter::KEY_TYPE],
+                            ResponseParameter::KEY_HOMEPAGE => array_key_exists(ResponseParameter::KEY_HOMEPAGE, $space)
+                                ? $space[ResponseParameter::KEY_HOMEPAGE][ResponseParameter::KEY_ID] : [],
+                            ResponseParameter::KEY_ARCHIVED => $this->isArchived($descr) ? ResponseParameter::VAL_TRUE : ResponseParameter::VAL_FALSE,
                         ];
 
-                        $resultSpaces[(string) $space[ResponseParameterData::KEY_KEY]] = $newSpace;
+                        $resultSpaces[(string) $space[ResponseParameter::KEY_KEY]] = $newSpace;
                     }
                 }
             }
@@ -198,7 +197,7 @@ class ResponseSpace extends AbstractResponse
     protected function isAddSpaceToList(mixed $space, bool $noArchived): bool
     {
         $addResult = true;
-        $descr = $space[ResponseParameterData::KEY_DESCRIPTION][ResponseParameterData::KEY_PLAIN][ResponseParameterData::KEY_VALUE];
+        $descr = $space[ResponseParameter::KEY_DESCRIPTION][ResponseParameter::KEY_PLAIN][ResponseParameter::KEY_VALUE];
         if ($noArchived && $this->isArchived($descr)) {
             $addResult = false;
         }
@@ -208,18 +207,18 @@ class ResponseSpace extends AbstractResponse
 
     protected function printSpaceInfo(mixed $space, int $idx): void
     {
-        $descr = $space[ResponseParameterData::KEY_DESCRIPTION][ResponseParameterData::KEY_PLAIN][ResponseParameterData::KEY_VALUE];
+        $descr = $space[ResponseParameter::KEY_DESCRIPTION][ResponseParameter::KEY_PLAIN][ResponseParameter::KEY_VALUE];
 
         $line = sprintf(
             '%s;%s;%s;%s',
             $idx,
-            $space[ResponseParameterData::KEY_KEY],
-            $space[ResponseParameterData::KEY_TYPE],
-            $this->isArchived($descr) ? ResponseParameterData::VAL_TRUE : ResponseParameterData::VAL_FALSE
+            $space[ResponseParameter::KEY_KEY],
+            $space[ResponseParameter::KEY_TYPE],
+            $this->isArchived($descr) ? ResponseParameter::VAL_TRUE : ResponseParameter::VAL_FALSE
         );
         $line .= sprintf(
             ';\'%s\';\'%s\'',
-            $space[ResponseParameterData::KEY_NAME],
+            $space[ResponseParameter::KEY_NAME],
             htmlentities(implode('', explode(PHP_EOL, $descr)))
         );
         self::$logger->debug($line);
@@ -231,6 +230,6 @@ class ResponseSpace extends AbstractResponse
     #[\Override]
     protected function __toStringValues(): mixed
     {
-        return [ResponseParameterData::KEY_SPACES => $this->spaces];
+        return [ResponseParameter::KEY_SPACES => $this->spaces];
     }
 }

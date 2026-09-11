@@ -18,15 +18,14 @@ use PHPUnit\Framework\EasyGoingTestCase;
 
 class FileStoreItemTest extends EasyGoingTestCase
 {
-
     #[\Override]
     protected static function prepareO2t(): IStoreItem
     {
         return FileStoreItem::prepareTargetFile(
-                YacorapiTestData::FILE_FOLDERNAME,
-                YacorapiTestData::FILE_FILENAME,
-                YacorapiTestData::FILE_EXT_NAME
-            );
+            YacorapiTestData::FILE_FOLDERNAME,
+            YacorapiTestData::FILE_FILENAME,
+            YacorapiTestData::FILE_EXT_NAME
+        );
     }
 
     /**
@@ -83,7 +82,7 @@ class FileStoreItemTest extends EasyGoingTestCase
 
     public function testGetExt(): void
     {
-        $expected = str_replace(StoreParameterData::C_FILE_SEP, '', YacorapiTestData::FILE_EXT_NAME);
+        $expected = str_replace(StoreParameter::C_FILE_SEP, '', YacorapiTestData::FILE_EXT_NAME);
 
         $actual = $this->getCasto2t()->getExt();
 
@@ -102,7 +101,7 @@ class FileStoreItemTest extends EasyGoingTestCase
         $this->getCasto2t()->setExt($expected2);
         $actual = $this->getCasto2t()->getExt();
 
-        $expected2 = str_replace(StoreParameterData::C_FILE_SEP, '', $expected2);
+        $expected2 = str_replace(StoreParameter::C_FILE_SEP, '', $expected2);
         self::assertEquals($expected2, $actual);
     }
 

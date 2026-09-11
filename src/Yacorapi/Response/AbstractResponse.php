@@ -23,7 +23,7 @@ use Psr\Log\LoggerInterface;
 
 /**
  * Abstract implementation for the response structure.
- * 
+ *
  * @author ollily
  */
 abstract class AbstractResponse implements IResponse
@@ -103,8 +103,8 @@ abstract class AbstractResponse implements IResponse
     public function checkStatus(): bool
     {
         $statusOk = false;
-        if ($this->keyExists(ResponseParameterData::KEY_STATUS_CODE)) {
-            self::$logger->debug(ResponseParameterData::ERR_MSG_COMMON, $this->getError()->toArray());
+        if ($this->keyExists(ResponseParameter::KEY_STATUS_CODE)) {
+            self::$logger->debug(ResponseParameter::ERR_MSG_COMMON, $this->getError()->toArray());
         } else {
             $statusOk = true;
         }
@@ -120,10 +120,10 @@ abstract class AbstractResponse implements IResponse
     public function getError(): Collection
     {
         $error = new Map();
-        if ($this->keyExists(ResponseParameterData::KEY_STATUS_CODE)) {
-            $error->put(ResponseParameterData::KEY_STATUS_CODE, $this->getValue(ResponseParameterData::KEY_STATUS_CODE));
-            $error->put(ResponseParameterData::KEY_REASON, $this->getValue(ResponseParameterData::KEY_REASON));
-            $error->put(ResponseParameterData::KEY_MESSAGE, $this->getValue(ResponseParameterData::KEY_MESSAGE));
+        if ($this->keyExists(ResponseParameter::KEY_STATUS_CODE)) {
+            $error->put(ResponseParameter::KEY_STATUS_CODE, $this->getValue(ResponseParameter::KEY_STATUS_CODE));
+            $error->put(ResponseParameter::KEY_REASON, $this->getValue(ResponseParameter::KEY_REASON));
+            $error->put(ResponseParameter::KEY_MESSAGE, $this->getValue(ResponseParameter::KEY_MESSAGE));
         }
 
         return $error;
@@ -138,12 +138,12 @@ abstract class AbstractResponse implements IResponse
         if ($this->isResultsAvailable()) {
             $hasData = $this->checkStatus();
             if ($hasData) {
-                if (!$this->keyExists(ResponseParameterData::KEY_RESULTS) || $this->getValue(ResponseParameterData::KEY_SIZE) <= 0) {
-                    self::$logger->debug('Response size <=',[0]);
+                if (!$this->keyExists(ResponseParameter::KEY_RESULTS) || $this->getValue(ResponseParameter::KEY_SIZE) <= 0) {
+                    self::$logger->debug('Response size <=', [0]);
                     $hasData = false;
                 } else {
                     self::$logger->debug('Response size =', [
-                        $this->keyExists(ResponseParameterData::KEY_RESULTS), $this->getValue(ResponseParameterData::KEY_SIZE)]);
+                        $this->keyExists(ResponseParameter::KEY_RESULTS), $this->getValue(ResponseParameter::KEY_SIZE)]);
                 }
             }
         } else {
@@ -165,11 +165,11 @@ abstract class AbstractResponse implements IResponse
         if ($this->isResultsAvailable()) {
             $hasData = $this->checkStatus();
             if ($hasData) {
-                if (!$this->keyExists(ResponseParameterData::KEY_KEY) || $this->getValue(ResponseParameterData::KEY_KEY) <= 0) {
+                if (!$this->keyExists(ResponseParameter::KEY_KEY) || $this->getValue(ResponseParameter::KEY_KEY) <= 0) {
                     self::$logger->info('No itemId found or is 0');
                     $hasData = false;
                 } else {
-                    $itemId = $this->getValue(ResponseParameterData::KEY_KEY);
+                    $itemId = $this->getValue(ResponseParameter::KEY_KEY);
                     self::$logger->notice('Write to itemId', [$itemId]);
                     $hasData = $itemId;
                 }
@@ -215,13 +215,14 @@ abstract class AbstractResponse implements IResponse
     {
         return !$this->results->isEmpty();
     }
-    
+
     /**
      * @inheritDoc
      */
     #[\Override]
-    public function getItemId(): int {
-        return $this->getValue(ResponseParameterData::KEY_ID, ResponseParameterData::VAL_PAGE_ID_NO);
+    public function getItemId(): int
+    {
+        return $this->getValue(ResponseParameter::KEY_ID, ResponseParameter::VAL_PAGE_ID_NO);
     }
 
     /**
@@ -231,12 +232,12 @@ abstract class AbstractResponse implements IResponse
     public function getBody(): string
     {
         $body = '';
-            $tmpBody = $this->getValue(ResponseParameterData::KEY_BODY, []);
-            if (array_key_exists(ResponseParameterData::KEY_STORAGE, $tmpBody)) { // NOSONAR: php:S1066
-                if (array_key_exists(ResponseParameterData::KEY_VALUE, $tmpBody[ResponseParameterData::KEY_STORAGE])) {
-                    $body = $tmpBody[ResponseParameterData::KEY_STORAGE][ResponseParameterData::KEY_VALUE];
-                }
+        $tmpBody = $this->getValue(ResponseParameter::KEY_BODY, []);
+        if (array_key_exists(ResponseParameter::KEY_STORAGE, $tmpBody)) { // NOSONAR: php:S1066
+            if (array_key_exists(ResponseParameter::KEY_VALUE, $tmpBody[ResponseParameter::KEY_STORAGE])) {
+                $body = $tmpBody[ResponseParameter::KEY_STORAGE][ResponseParameter::KEY_VALUE];
             }
+        }
 
         return $body;
     }
@@ -247,7 +248,7 @@ abstract class AbstractResponse implements IResponse
     #[\Override]
     public function getRestrictions(): array
     {
-        return $this->getValue(ResponseParameterData::KEY_RESTRICTIONS, []);
+        return $this->getValue(ResponseParameter::KEY_RESTRICTIONS, []);
     }
 
     /**
@@ -256,7 +257,7 @@ abstract class AbstractResponse implements IResponse
     #[\Override]
     protected function __toStringValues(): mixed
     {
-        return [ResponseParameterData::KEY_RESPONSE => $this->rawData, ResponseParameterData::KEY_RESULTS => $this->results];
+        return [ResponseParameter::KEY_RESPONSE => $this->rawData, ResponseParameter::KEY_RESULTS => $this->results];
     }
 
     /**
@@ -264,9 +265,9 @@ abstract class AbstractResponse implements IResponse
      */
     private function prepareData(array $data = []): void
     {
-        if (array_key_exists(ResponseParameterData::KEY_RESULTS, $data)) {
-            $this->results = new Map($data[ResponseParameterData::KEY_RESULTS]);
-            unset($data[ResponseParameterData::KEY_RESULTS]);
+        if (array_key_exists(ResponseParameter::KEY_RESULTS, $data)) {
+            $this->results = new Map($data[ResponseParameter::KEY_RESULTS]);
+            unset($data[ResponseParameter::KEY_RESULTS]);
         } else {
             $this->results = new Map([]);
         }

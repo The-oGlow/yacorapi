@@ -16,48 +16,49 @@ namespace oglow\tools\Yacorapi\Store;
 use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\ConstData;
 use Psr\Log\LoggerInterface;
-use Psr\Log\LogLevel;
 
 /**
  * Abstract implementation for a store adapter.
- * 
+ *
  * @author ollily
- * 
+ *
  * @phpstan-import-type LoggingLevel from \Monolog\AbstractEasyGoingLogger
  */
 abstract class AbstractStoreAdapter implements IStoreAdapter
 {
-    /** Default output level */
-    public const string LEVEL_DEFAULT = LogLevel::INFO;
-
     private static LoggerInterface $logger;
+
     protected ConstData $constData;
+
     protected IStoreItem $storeItem;
+
     private string $sessionFolder;
 
     /**
      * Constructor for a store adapter.
-     * 
-     * @param string                                         $fileName  The filename, without suffix, of the output file
-     * @param string                                         $filePrefix      Prefix of the output file (Default: {@link StoreParameterData::DEFAULT_FILE_PREFIX})
-     * @param string                                         $fileSuffix      Suffix of the output file (Default: {@link StoreParameterData::DEFAULT_FILE_SUFFIX})
-     * @param string                                         $fileExt         File extension of the output file (Default: {@link StoreParameterData::DEFAULT_FILE_EXT})
-     * @param string                                         $pathToFile      Folder where to store the output file (Default: {@link StoreParameterData::DEFAULT_FOLDER_NAME})
-     * @param FileStoreStageEnum                             $staging      The stage where to store the file (Default {@link FileStoreStageEnum::BASE})
-     * @param int|\Monolog\Level|\Psr\Log\LogLevel::*|string $level           The minimum logging level at which this handler will be triggered (Default: {@link AbstractStoreAdapter::LEVEL_DEFAULT})
+     *
+     * @param string                                         $fileName   The filename, without suffix, of the output file
+     * @param string                                         $filePrefix Prefix of the output file (Default: {@link StoreParameterData::DEFAULT_FILE_PREFIX})
+     * @param string                                         $fileSuffix Suffix of the output file (Default: {@link StoreParameterData::DEFAULT_FILE_SUFFIX})
+     * @param string                                         $fileExt    File extension of the output file
+     *                                                                   (Default: {@link StoreParameterData::DEFAULT_FILE_EXT})
+     * @param string                                         $pathToFile Folder where to store the output file
+     *                                                                   (Default: {@link StoreParameterData::DEFAULT_FOLDER_NAME})
+     * @param FileStoreStageEnum                             $staging    The stage where to store the file (Default {@link FileStoreStageEnum::BASE})
+     * @param int|\Monolog\Level|\Psr\Log\LogLevel::*|string $level      The minimum logging level at which this handler will be triggered
+     *                                                                   (Default: {@link self::LEVEL_DEFAULT})
      *
      * @phpstan-param LoggingLevel $level
      */
     public function __construct(
         string $fileName,
-        string $filePrefix = StoreParameterData::DEFAULT_FILE_PREFIX,
-        string $fileSuffix = StoreParameterData::DEFAULT_FILE_SUFFIX,
-        string $fileExt = StoreParameterData::DEFAULT_FILE_EXT,
-        string $pathToFile = StoreParameterData::DEFAULT_FOLDER_NAME,
+        string $filePrefix = StoreParameter::DEFAULT_FILE_PREFIX,
+        string $fileSuffix = StoreParameter::DEFAULT_FILE_SUFFIX,
+        string $fileExt = StoreParameter::DEFAULT_FILE_EXT,
+        string $pathToFile = StoreParameter::DEFAULT_FOLDER_NAME,
         FileStoreStageEnum $staging = FileStoreStageEnum::BASE,
         mixed $level = self::LEVEL_DEFAULT
-    )
-    {
+    ) {
         self::$logger = new ConsoleLogger(AbstractStoreAdapter::class, level: $level);
         self::$logger->debug("START", [$fileName, $filePrefix, $fileSuffix, $fileExt, $pathToFile, $staging->name]);
 
@@ -86,11 +87,12 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
 
     /**
      * Returns the final file name.
-     * 
+     *
      * @param string $fileName
      * @param string $filePrefix
      * @param string $fileSuffix
      * @param string $fileExt
+     *
      * @return string
      */
     protected function prepareFileName(string $fileName, string $filePrefix, string $fileSuffix, string $fileExt): string
@@ -111,9 +113,9 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
 
     /**
      * Returns the target folder for this session.
-     * 
-     * @param string $fileName The filename, without suffix, of the output file
-     * @param string $sessionFolder     The current used folder for this session
+     *
+     * @param string $fileName      The filename, without suffix, of the output file
+     * @param string $sessionFolder The current used folder for this session
      *
      * @return string The final full target folder
      */
@@ -133,10 +135,10 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
      * Returns the output file including the full output path<br/>
      * <pre>
      * finalTargetFolder = $pathToFile + filename of $fileName
-     * </pre>
+     * </pre>.
      *
-     * @param string $fileName The file for output
-     * @param string $pathToFile      Folder where to store the output file
+     * @param string $fileName   The file for output
+     * @param string $pathToFile Folder where to store the output file
      *
      * @return string The complete output folder
      */
@@ -153,8 +155,8 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
 
     /**
      * Returns the target folder based on the staging.
-     * 
-     * @param FileStoreStageEnum $staging The stage where to store the file
+     *
+     * @param FileStoreStageEnum $staging    The stage where to store the file
      * @param string             $sessionDir The current used folder for this session
      *
      * @return string A stage specifix path for the outputfile
@@ -189,7 +191,7 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
 
     /**
      * Creates the folder where to store the file.
-     * 
+     *
      * @param string $directory The folder to create
      *
      * @return bool TRUE=The folder was created, else FALSE
@@ -199,7 +201,7 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
         $result = true;
         if (!file_exists($directory)) {
             self::$logger->debug('Create folder', [$directory]);
-            $result = mkdir($directory, StoreParameterData::C_DIR_MASK, StoreParameterData::C_DIR_RECURSIVE);
+            $result = mkdir($directory, StoreParameter::C_DIR_MASK, StoreParameter::C_DIR_RECURSIVE);
         }
 
         return $result;
@@ -207,8 +209,8 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
 
     /**
      * Creates the store item.
-     * 
-     * @param string $fileName The filename, without suffix, of the output file
+     *
+     * @param string $fileName   The filename, without suffix, of the output file
      * @param string $pathToFile The folder where to store the output file
      *
      * @return IStoreItem A newly created store item
@@ -226,7 +228,7 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
 
     /**
      * The header for the file will be flatten from array to string.
-     * 
+     *
      * @param string|string[] $dataHeader The header which will be flatten
      *
      * @return string The header as string
@@ -240,7 +242,7 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
             if (!is_array($dataHeader)) {
                 $dataHeader = [$dataHeader];
             }
-            $header = implode(StoreParameterData::DEFAULT_ITEM_SEP, $dataHeader);
+            $header = implode(StoreParameter::DEFAULT_ITEM_SEP, $dataHeader);
         }
 
         self::$logger->debug('END');
@@ -250,7 +252,7 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
 
     /**
      * Store any data into the store item.
-     * 
+     *
      * @param IStoreItem $storeItem The item in which the data will be stored
      * @param mixed      $anyData   The data to store
      */
@@ -263,7 +265,7 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
             self::$logger->debug("Ensure target folder exists", [dirname($fileName)]);
             $this->mkdir(dirname($fileName));
             file_put_contents($fileName, $anyData, FILE_APPEND);
-            file_put_contents($fileName, StoreParameterData::C_FILE_EOL, FILE_APPEND);
+            file_put_contents($fileName, StoreParameter::C_FILE_EOL, FILE_APPEND);
         }
 
         self::$logger->debug('END');
@@ -280,13 +282,13 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
 
         $resultList = [];
         if (file_exists($fileName)) {
-            $fHandle = fopen($fileName, StoreParameterData::C_FILE_READ);
+            $fHandle = fopen($fileName, StoreParameter::C_FILE_READ);
 
             if (!empty($fHandle)) {
-                while ($line = fgets($fHandle, StoreParameterData::C_FILE_LINE_LEN)) {
-                    $convertedLine = mb_convert_encoding($line, StoreParameterData::C_FILE_UTF8);
+                while ($line = fgets($fHandle, StoreParameter::C_FILE_LINE_LEN)) {
+                    $convertedLine = mb_convert_encoding($line, StoreParameter::C_FILE_UTF8);
                     if (is_string($convertedLine)) { // @phpstan-ignore function.alreadyNarrowedType
-                        $resultList[] = explode(StoreParameterData::DEFAULT_ITEM_SEP, $convertedLine);
+                        $resultList[] = explode(StoreParameter::DEFAULT_ITEM_SEP, $convertedLine);
                     }
                 }
                 fclose($fHandle);

@@ -25,7 +25,7 @@ use oglow\tools\Yacorapi\IConnectionProvider;
 use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Macro\AddonTypeEnum;
 use oglow\tools\Yacorapi\Response\ResponseAddonMacro;
-use oglow\tools\Yacorapi\Response\ResponseParameterData;
+use oglow\tools\Yacorapi\Response\ResponseParameter;
 use oglow\tools\Yacorapi\Response\ResponseSpace;
 use oglow\tools\Yacorapi\Space\SpaceTypeEnum;
 use oglow\tools\Yacorapi\Statistic\IStatistic;
@@ -74,7 +74,7 @@ class RapiClientStatistic extends RapiClientPermission implements IRapiClientSta
         $prepareUrl = $this->prepareCountItemsUrl($itemType, $spaceKey);
         $response = $this->exec($prepareUrl);
 
-        $itemCount = $response->getValue(ResponseParameterData::KEY_TOTAL_SIZE, 0);
+        $itemCount = $response->getValue(ResponseParameter::KEY_TOTAL_SIZE, 0);
         $valueStatistic = new ValueStatistic(ValueStatistic::EMPTY_STRING, null);
         $valueStatistic->addItem(ValueStatistic::EMPTY_STRING, $itemCount);
         $singleStatistic = new StatisticStatistic($itemType->value, StatisticTypeEnum::PAGETYPE);
