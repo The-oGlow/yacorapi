@@ -25,7 +25,7 @@ use Psr\Log\LoggerInterface;
 
 /**
  * Main settings clazz for the application.
- * 
+ *
  * @author ollily
  */
 // @phpcs:ignoreFile PSR1.Methods.CamelCapsMethodName.NotCamelCaps
@@ -172,11 +172,11 @@ final class ConstData extends AbstractSingleton
 
     /**
      * Public constructor.
-     * 
-     * @param string $key Unique id of this singleton
-     * @param bool $withLogger TRUE=activate logging, else FALSE
+     *
+     * @param string $key        Unique id of this singleton
+     * @param bool   $withLogger TRUE=activate logging, else FALSE
      */
-    public function __construct(string $key = '', bool $withLogger = false)
+    public function __construct(string $key = '', bool $withLogger = true)
     {
         // Init logger at first
         if ($withLogger) {
@@ -195,7 +195,7 @@ final class ConstData extends AbstractSingleton
 
     /**
      * Returns the base url of the REST-API endpoint.
-     * 
+     *
      * @param mixed $ovUseProd Overrides the flag 'USE_PROD' flag by commandline (Default: '')
      *
      * @return string base url of the REST-API endpoint
@@ -225,7 +225,7 @@ final class ConstData extends AbstractSingleton
 
     /**
      * Returns the timestamp of the creation of this instance.
-     * 
+     *
      * @return string Timestamp
      */
     public static function getTsNow(): string
@@ -247,9 +247,9 @@ final class ConstData extends AbstractSingleton
 
     /**
      * Returns the value of the setting by shorthand.
-     * 
+     *
      * @param string $constKey Id of the setting
-     * @param mixed  $default A default value, if {@link $constKey} does not exist (Default: null)
+     * @param mixed  $default  A default value, if {@link $constKey} does not exist (Default: null)
      *
      * @return mixed The value of settings or the default value
      *
@@ -262,7 +262,7 @@ final class ConstData extends AbstractSingleton
 
     /**
      * Checks, if the setting exists.
-     * 
+     *
      * @param string $constKey Id of the setting
      *
      * @return bool TRUE=setting exists, else FALSE
@@ -277,7 +277,7 @@ final class ConstData extends AbstractSingleton
 
     /**
      * Returns the user authorization.
-     * 
+     *
      * @return object User authorization
      */
     public function getPersonalAuth(): object
@@ -343,9 +343,9 @@ final class ConstData extends AbstractSingleton
 
     /**
      * Initialize the user authorization.
-     * 
-     * @param string $authFilePath Path to the authorization file
-     * @param string $authFileName Name of the authorization file
+     *
+     * @param string $authFilePath  Path to the authorization file
+     * @param string $authFileName  Name of the authorization file
      * @param string $authClazzName Clazzname of the authorization
      *
      * @return bool TRUE=initialization successful, else FALSE
@@ -423,7 +423,7 @@ final class ConstData extends AbstractSingleton
 
     /**
      * Check, if setting for production is activated.
-     * 
+     *
      * @return bool TRUE=production is activated, else FALSE
      */
     protected function validateForProductionUse(): bool
@@ -450,7 +450,7 @@ final class ConstData extends AbstractSingleton
 
     /**
      * Checks, if mandatory settings are valid.
-     * 
+     *
      * @return bool TRUE=mandatory settings are valid, else FALSE
      */
     protected function validateMandatory(): bool
@@ -474,11 +474,12 @@ final class ConstData extends AbstractSingleton
 
     /**
      * Returns the value of a setting.
-     * 
+     *
      * @param string $constKey Id of the setting
-     * @param mixed  $default A default value, if {@link $constKey} does not exist (Default: null)
+     * @param mixed  $default  A default value, if {@link $constKey} does not exist (Default: null)
      *
      * @return mixed The value of settings or the default value
+     *
      * @internal Use only for internal
      */
     private function getConst(string $constKey, mixed $default = null): mixed
@@ -488,10 +489,11 @@ final class ConstData extends AbstractSingleton
 
     /**
      * Sets the value for a setting.
-     * 
+     *
      * @param string $constKey Id of the setting
-     * @param mixed $newValue The new value of the setting
-     * @param bool  $replace    TRUE=replace the old value, if setting already exists, else FALSE
+     * @param mixed  $newValue The new value of the setting
+     * @param bool   $replace  TRUE=replace the old value, if setting already exists, else FALSE
+     *
      * @internal Use only for internal
      */
     private function putConst(mixed $constKey, mixed $newValue, bool $replace = true): void
@@ -506,5 +508,4 @@ final class ConstData extends AbstractSingleton
             $this->definedConst->put($constKey, $newValue);
         }
     }
-
 }

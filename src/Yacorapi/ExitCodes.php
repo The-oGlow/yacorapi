@@ -17,9 +17,9 @@ use oglow\tools\common\AbstractSingleton;
 
 /**
  * All possible exits for this application.
- * 
+ *
  * @author ollily
- * 
+ *
  * @see \ollily\Tools\Emergency::breakSystem($errorCode)
  */
 class ExitCodes extends AbstractSingleton

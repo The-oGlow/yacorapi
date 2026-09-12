@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Store;
 
-use Psr\Log\LogLevel;
-
 /**
  * Interface for the store item.
  *
@@ -22,8 +20,8 @@ use Psr\Log\LogLevel;
  */
 interface IStoreItem extends \Stringable
 {
-    /** Default output level */
-    public const string LEVEL_DEFAULT = LogLevel::INFO;
+    /** @var string Default output level */
+    public const string LEVEL_DEFAULT = 'info';
 
     /**
      * @param string $dir The new folder of the store item

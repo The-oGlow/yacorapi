@@ -18,7 +18,7 @@ use PHPUnit\Framework\EasyGoingTestCase;
 class ExitCodesTest extends EasyGoingTestCase
 {
     #[\Override]
-    protected static function prepareO2t(): ExitCodes
+    protected static function prepareO2t(): object
     {
         return ExitCodes::i();
     }

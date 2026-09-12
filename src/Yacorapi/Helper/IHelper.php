@@ -17,7 +17,7 @@ use oglow\tools\common\ISingleton;
 
 /**
  * Interface for a helper clazz.
- * 
+ *
  * @author ollily
  */
 interface IHelper extends ISingleton

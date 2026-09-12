@@ -20,13 +20,16 @@ use Psr\Log\LoggerInterface;
 
 /**
  * Helper clazz for generating content for a confluence page.
- * 
+ *
  * @author ollily
+ *
  * @phpstan-type HeaderLevelType 1|2|3|4|5|6
+ *
+ * @phpstan-import-type LoggingLevel from \Monolog\AbstractEasyGoingLogger
  */
 class ContentHelper extends AbstractHelper
 {
-    /** @var string Start tag for macro  */
+    /** @var string Start tag for macro */
     public const string TAG_MACRO_START = '<ac:structured-macro ac:name="%s" ac:schema-version="%s">';
 
     /** @var string End tag for macro */
@@ -52,8 +55,17 @@ class ContentHelper extends AbstractHelper
 
     private static LoggerInterface $logger;
 
-    public function __construct()
+    /**
+     * Public constructor.
+     *
+     * @param string $key        Unique id of this singleton
+     * @param bool   $withLogger TRUE=activate logging, else FALSE
+     *
+     * @phpstan-ignore constructor.unusedParameter,constructor.unusedParameter
+     */
+    public function __construct(string $key = '', bool $withLogger = true)
     {
+        /** @phpstan-ignore argument.type */
         self::$logger = new ConsoleLogger(ContentHelper::class, level: static::LEVEL_DEFAULT);
         self::$logger->debug('START');
 
@@ -194,11 +206,11 @@ class ContentHelper extends AbstractHelper
      * Creates a &lt;h*&gt;-tag with text.
      *
      * @param string $text        The text used as heading
-     * @param int    $headerLevel the level for the &lt;h*&gt;-tag (Default: 1)
+     * @param int    $headerLevel the level for the H*-tag (Default: 1)
      *
      * @phpstan-param HeaderLevelType $headerLevel
      *
-     * @return string &lt;h*&gt;-tag
+     * @return string H*-tag
      */
     public static function prepareHeading(string $text, int $headerLevel = 1): string
     {

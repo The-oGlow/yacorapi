@@ -21,23 +21,27 @@ use Psr\Log\LoggerInterface;
 
 /**
  * Abstract implementation for a singleton.
- * 
+ *
  * @author olliy
+ *
+ *  @phpstan-consistent-constructor
  */
 abstract class AbstractSingleton implements ISingleton
 {
     private static LoggerInterface $logger;
+
     private string $key;
 
     /**
      * Public constructor.
-     * 
-     * @param string $key Unique id of this singleton
-     * @param bool $withLogger TRUE=activate logging, else FALSE
+     *
+     * @param string $key        Unique id of this singleton
+     * @param bool   $withLogger TRUE=activate logging, else FALSE
      */
     public function __construct(string $key = '', bool $withLogger = true)
     {
         if ($withLogger) {
+            /** @phpstan-ignore argument.type */
             self::$logger = new ConsoleLogger(AbstractSingleton::class, level: static::LEVEL_DEFAULT);
         } else {
             self::$logger = new DoNothingLogger();
@@ -47,7 +51,7 @@ abstract class AbstractSingleton implements ISingleton
         if (empty($key)) {
             $key = static::class;
         }
-        $overrideParameters = $this->parseArguments($this->prepareShortOpts(), $this->prepareLongOpts());
+        $overrideParameters = self::parseArguments($this->prepareShortOpts(), $this->prepareLongOpts());
         $this->key = $key;
         $this->prepareSettings($overrideParameters);
         $valid = $this->validateSettings($overrideParameters);
@@ -57,7 +61,7 @@ abstract class AbstractSingleton implements ISingleton
 
     /**
      * Returns static access on this singletion.
-     * 
+     *
      * @return object This singleton
      */
     public static function i(): object
@@ -67,9 +71,9 @@ abstract class AbstractSingleton implements ISingleton
 
     /**
      * Returns a boolean value from a settings entry (incl. overrides).
-     * 
+     *
      * @param Collection<mixed, mixed> $overrideParameters Override the settings with these parameters
-     * @param string                   $keyName The id of a bool parameter
+     * @param string                   $keyName            The id of a bool parameter
      *
      * @return mixed The boolean value of the parameter or ''
      */
@@ -89,9 +93,9 @@ abstract class AbstractSingleton implements ISingleton
 
     /**
      * Parse the given override parameters.
-     * 
+     *
      * @param string             $shortOpts Override parameter as short version
-     * @param array<mixed,mixed> $longOpts Override parameter as long version
+     * @param array<mixed,mixed> $longOpts  Override parameter as long version
      *
      * @return Collection<mixed, mixed> A collection of override parameter
      */
@@ -102,7 +106,7 @@ abstract class AbstractSingleton implements ISingleton
 
     /**
      * Returns the unique id of this singleton.
-     * 
+     *
      * @return string The unique idd of this singleton
      */
     public function getKey(): string
@@ -122,7 +126,7 @@ abstract class AbstractSingleton implements ISingleton
 
     /**
      * Check, if the settings are valid.
-     * 
+     *
      * @param Collection<mixed, mixed> $overrideParameters Verify the settings with these parameters
      *
      * @return bool TRUE=settings are valid, else FALSE
@@ -134,7 +138,7 @@ abstract class AbstractSingleton implements ISingleton
 
     /**
      * Define the valid short options.
-     * 
+     *
      * @return string The short options
      */
     protected function prepareShortOpts(): string
@@ -144,7 +148,7 @@ abstract class AbstractSingleton implements ISingleton
 
     /**
      * Define the valid log options.
-     * 
+     *
      * @return array<mixed,mixed> Array of long options
      */
     protected function prepareLongOpts(): array

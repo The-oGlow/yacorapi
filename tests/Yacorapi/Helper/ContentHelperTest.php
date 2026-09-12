@@ -29,18 +29,12 @@ class ContentHelperTest extends EasyGoingTestCase
 
     public const string MACRO_COLUMN = 'column';
 
-    /**
-     * @return ContentHelper
-     */
     #[\Override]
-    protected static function prepareO2t(): ContentHelper
+    protected static function prepareO2t(): object
     {
         return ContentHelper::i();
     }
 
-    /**
-     * @return ContentHelper
-     */
     #[\Override]
     protected function getCasto2t(): ContentHelper
     {

@@ -20,7 +20,7 @@ use Psr\Log\LoggerInterface;
 
 /**
  * Abstract implementation for a container clazz.
- * 
+ *
  * @author ollily
  */
 abstract class AbstractContainer implements IContainer
@@ -52,6 +52,7 @@ abstract class AbstractContainer implements IContainer
      */
     public function __construct()
     {
+        /** @phpstan-ignore argument.type */
         self::$logger = new ConsoleLogger(AbstractContainer::class, level: static::LEVEL_DEFAULT);
         self::$logger->debug('START');
         // Init Dynamic Consts
@@ -69,7 +70,7 @@ abstract class AbstractContainer implements IContainer
 
     /**
      * Set the complete data.
-     * 
+     *
      * @param array<mixed,mixed> $allData Array of stored data
      */
     protected function setAllData(array $allData): void
@@ -97,7 +98,7 @@ abstract class AbstractContainer implements IContainer
 
     /**
      * Set all the valid modes.
-     * 
+     *
      * @param int[]|string[] $modes The modes how to access the data
      */
     protected function setModes(array $modes): void

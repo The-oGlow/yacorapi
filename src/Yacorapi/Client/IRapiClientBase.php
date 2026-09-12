@@ -29,8 +29,8 @@ use Psr\Log\LogLevel;
  */
 interface IRapiClientBase
 {
-    /** Default output level */
-    public const string LEVEL_DEFAULT = LogLevel::INFO;
+    /** @var string Default output level */
+    public const string LEVEL_DEFAULT = 'info';
 
     // Common Parameter
     public const AddonTypeEnum ADDON_DEFAULT = AddonTypeEnum::ADDON_ALL;

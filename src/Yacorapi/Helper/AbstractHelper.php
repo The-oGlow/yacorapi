@@ -21,8 +21,10 @@ use Psr\Log\LoggerInterface;
 
 /**
  * Abstract implementation for a helper clazz.
- * 
+ *
  * @author ollily
+ *
+ * @phpstan-import-type LoggingLevel from \Monolog\AbstractEasyGoingLogger
  */
 abstract class AbstractHelper extends AbstractSingleton implements IHelper
 {
@@ -32,13 +34,14 @@ abstract class AbstractHelper extends AbstractSingleton implements IHelper
 
     /**
      * Public constructor.
-     * 
-     * @param string $key Unique id of this singleton
-     * @param bool $withLogger TRUE=activate logging, else FALSE
+     *
+     * @param string $key        Unique id of this singleton
+     * @param bool   $withLogger TRUE=activate logging, else FALSE
      */
-    public function __construct(string $key, bool $withLogger = true)
+    public function __construct(string $key = '', bool $withLogger = true)
     {
         if ($withLogger) {
+            /** @phpstan-ignore argument.type */
             self::$logger = new ConsoleLogger(AbstractHelper::class, level: static::LEVEL_DEFAULT);
         } else {
             self::$logger = new DoNothingLogger();

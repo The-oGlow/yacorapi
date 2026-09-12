@@ -26,7 +26,7 @@ class StoreParameterTest extends ConstantCheckTestCase
     protected const bool WITH_CONST_CROSSCHECK = true;
 
     #[\Override]
-    protected static function prepareO2t(): StoreParameter
+    protected static function prepareO2t(): object
     {
         return StoreParameter::i();
     }

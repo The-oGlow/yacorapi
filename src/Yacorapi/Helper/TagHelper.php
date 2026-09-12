@@ -1,44 +1,49 @@
 <?php
 
+declare(strict_types=1);
+
 /*
- * Copyright 2026 postm.
+ * This file is part of ezlogging
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * (c) 2024 Oliver Glowa, coding.glowa.com
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * This source file is subject to the Apache-2.0 license that is bundled
+ * with this source code in the file LICENSE.
  */
 
 namespace oglow\tools\Yacorapi\Helper;
 
-use Ds\Vector;
-use Ds\Sequence;
-use Monolog\ConsoleLogger;
-use oglow\tools\Yacorapi\Helper\AbstractHelper;
-use Psr\Log\LoggerInterface;
 use DOMDocument;
-use DOMXPath;
+use DOMNode;
 use DOMNodeList;
+use DOMXPath;
+use Ds\Sequence;
+use Ds\Vector;
+use Monolog\ConsoleLogger;
+use Psr\Log\LoggerInterface;
 
 /**
  * Helper clazz for editing tags of a confluence page.
- * 
+ *
  * @author ollily
+ *
+ * @phpstan-import-type LoggingLevel from \Monolog\AbstractEasyGoingLogger
  */
 class TagHelper extends AbstractHelper
 {
-
     private static LoggerInterface $logger;
 
-    public function __construct()
+    /**
+     * Public constructor.
+     *
+     * @param string $key        Unique id of this singleton
+     * @param bool   $withLogger TRUE=activate logging, else FALSE
+     *
+     * @phpstan-ignore constructor.unusedParameter,constructor.unusedParameter
+     */
+    public function __construct(string $key = '', bool $withLogger = true)
     {
+        /** @phpstan-ignore argument.type */
         self::$logger = new ConsoleLogger(TagHelper::class, level: static::LEVEL_DEFAULT);
         self::$logger->debug('START');
 
@@ -48,26 +53,138 @@ class TagHelper extends AbstractHelper
     }
 
     /**
-     * @param string $tagName
-     * @param DOMDocument $page
-     * @return Sequence
+     * Returns all tags with a specific tag name.
+     *
+     * @param string      $tagName The tag name
+     * @param DOMDocument $domDoc  The dom structure to search in
+     *
+     * @return Sequence<mixed> All found tags
      */
-    public static function findTag(string $tagName, DOMDocument $page): Sequence
+    public static function getTag(string $tagName, DOMDocument $domDoc): Sequence
     {
-        /** @var bool|DOMNodeList */
+        /** @var bool|DOMNodeList<DOMNode> */
+        $result = false;
+        if (!empty($tagName)) {
+            $result = $domDoc->getElementsByTagName($tagName);
+        }
+        if (!is_bool($result)) {
+            $tags = new Vector($result);
+        } else {
+            $tags = new Vector();
+        }
+
+        return $tags;
+    }
+
+    /**
+     * Returns all tags with a specific tag name using {@link \DOMXPath}.
+     *
+     * @param string      $tagName The tag name
+     * @param DOMDocument $domDoc  The dom structure to search in
+     *
+     * @return Sequence<mixed> All found tags
+     */
+    public static function findTag(string $tagName, DOMDocument $domDoc): Sequence
+    {
+        /** @var bool|DOMNodeList<DOMNode> */
         $result = false;
         if (!empty($tagName)) {
             try {
-                $xpath = new DOMXPath($page);
+                $xpath = new DOMXPath($domDoc);
                 $result = $xpath->query($tagName);
-            } catch (\Throwable $exception) {
-                self::$logger->notice($exception->getMessage());
+            } catch (\Throwable $error) {
+                self::$logger->notice($error->getMessage(), [$error::class]);
             }
         }
-        $tags = new Vector();
-        if ($result) {
+        if (!is_bool($result)) {
             $tags = new Vector($result);
+        } else {
+            $tags = new Vector();
         }
+
         return $tags;
+    }
+
+    /**
+     * Removes the first found or all tags with a specific tag name.
+     *
+     * @param string          $tagName     The tag name
+     * @param DOMDocument     $domDoc      The dom structure to remove in
+     * @param Sequence<mixed> $deletedTags All deleted tags
+     * @param bool            $allTags     TRUE=remove all found tags, FALSE=remove the first found tag
+     *
+     * @return DOMDocument The new dom structure
+     */
+    public static function deleteTag(string $tagName, DOMDocument $domDoc, Sequence &$deletedTags, bool $allTags = false): DOMDocument
+    {
+        /** @var bool|DOMNodeList<DOMNode> */
+        $result = false;
+        if (!empty($tagName)) {
+            $foundTags = self::getTag($tagName, $domDoc);
+            if ($allTags) {
+                $result = [];
+                foreach ($foundTags as $foundTag) {
+                    try {
+                        $result[] = $foundTag->parentNode->removeChild($foundTag);
+                    } catch (\Throwable $error) {
+                        self::$logger->warning($error->getMessage(), [$error::class]);
+                    }
+                }
+            } else {
+                if ($foundTags->count() > 0) {
+                    $foundTag = $foundTags->first();
+
+                    try {
+                        $result = [$foundTag->parentNode->removeChild($foundTag)];
+                    } catch (\Throwable $error) {
+                        self::$logger->warning($error->getMessage(), [$error::class]);
+                    }
+                }
+            }
+        }
+        if (!is_bool($result)) {
+            $deletedTags = new Vector($result);
+        } else {
+            $deletedTags = new Vector();
+        }
+
+        return $domDoc;
+    }
+
+    /**
+     * @param string         $tagNameSearch  The tag name to search for
+     * @param DOMNode|string $tagNameReplace The tag name to replace with or the new DOMNode
+     * @param DOMDocument    $domDoc         The dom structure to replace in
+     *
+     * @return DOMDocument The new dom structure
+     */
+    public static function replaceTags(string $tagNameSearch, string|DOMNode $tagNameReplace, DOMDocument $domDoc): DOMDocument
+    {
+        /** @var bool|DOMNodeList<DOMNode> */
+        $result = false;
+        if (!empty($tagNameSearch)) {
+            $foundTags = self::getTag($tagNameSearch, $domDoc);
+            $result = [];
+            $i = $foundTags->count() - 1;
+            while ($i > -1) {
+                $foundTag = $foundTags->get($i);
+
+                try {
+                    if (empty($tagNameReplace)) {
+                        $newTag = $domDoc->createTextNode($tagNameReplace);
+                    } elseif ($tagNameReplace instanceof DOMNode) {
+                        $newTag = $tagNameReplace;
+                    } else {
+                        $newTag = $domDoc->createElement($tagNameReplace);
+                    }
+                    $result[] = $foundTag->parentNode->replaceChild($newTag, $foundTag);
+                } catch (\Throwable $error) {
+                    self::$logger->warning($error->getMessage(), [$error::class]);
+                }
+                $i--;
+            }
+        }
+
+        return $domDoc;
     }
 }

@@ -30,6 +30,8 @@ class ResponseDryRun implements IResponse
 
     public const string DUMMY_BODY  = 'dummy-body';
 
+    public const int DUMMY_ID = 9999;
+
     public const string DUMMY_KEY   = 'dummy-key';
 
     public const string DUMMY_TITLE = 'dummy-title';
@@ -67,7 +69,7 @@ class ResponseDryRun implements IResponse
     protected static function dummyResultEntry(bool $withBody = false, bool $isContentArray = false): array
     {
         $item = [
-            ResponseParameter::KEY_ID => self::DUMMY_KEY,
+            ResponseParameter::KEY_ID => self::DUMMY_ID,
             ResponseParameter::KEY_KEY => self::DUMMY_KEY,
             ResponseParameter::KEY_TITLE => self::DUMMY_TITLE,
             ResponseParameter::KEY_TYPE => self::DUMMY_TYPE,
@@ -79,6 +81,7 @@ class ResponseDryRun implements IResponse
             $item[ResponseParameter::KEY_BODY][ResponseParameter::KEY_STORAGE][ResponseParameter::KEY_VALUE] = self::dummyBody();
         }
 
+        $entry = [];
         if ($isContentArray) {
             $entry[ResponseParameter::KEY_CONTENT]  = $item;
         } else {
@@ -219,7 +222,7 @@ class ResponseDryRun implements IResponse
     #[\Override]
     public function getItemId(): int
     {
-        return self::DUMMY_KEY;
+        return self::DUMMY_ID;
     }
 
     /**

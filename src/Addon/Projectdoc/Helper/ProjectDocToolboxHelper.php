@@ -98,8 +98,8 @@ class ProjectDocToolboxHelper extends AbstractHelper
 
         return $modified;
     }
-    
-        private function prepareStoreAdapter(string $fileName): IStoreAdapter
+
+    private function prepareStoreAdapter(string $fileName): IStoreAdapter
     {
         return new FileAdapter($fileName, 'html', $this->constData->c(ConstData::KEY_TARGET_DIR));
     }

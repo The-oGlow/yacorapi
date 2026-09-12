@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi;
 
+use DOMDocument;
+use DOMElement;
 use Ds\Collection;
 use Ds\Map;
 use oglow\tools\Addon\Atlassian\Extension\AtlassianExtension;
@@ -272,17 +274,36 @@ class YacorapiTestData extends TestData
 
     // Tag
     public const ?string TAG_NULL = null;
-    public const string TAG_EMPTY= '';
+
+    public const string TAG_EMPTY = '';
+
+    public const string TAG_ROOT_NAME = 'roottag';
+
     public const string TAG_WRONG_NAME = 'tagwrong';
+
     public const string TAG_EXIST_NAME = 'tagexist';
+
     public const string TAG_BODY_NAME = 'tagbody';
+
     public const string TAG_PARM_NAME = 'tagparam';
+
+    public const string TAG_CONTAINER_NAME = 'tagcontainer';
+
+    public const string TAG_ROOT = '<roottag %s>%s</roottag>';
+
     public const string TAG_WRONG = '<tagwrong></tagwrong>';
+
     public const string TAG_EXIST = '<tagexist></tagexist>';
+
     public const string TAG_EXIST_SHORT = '<tagexist/>';
+
     public const string TAG_BODY_CONTENT = 'Content of the tag body';
-    public const string TAG_WITH_BODY = '<tagbody>'.self::TAG_BODY_CONTENT.'</tagbody>';
-    public const string TAG_WITH_PARAM = '<tagparam name="'.self::KEY_ALPHA1.'">'.self::TAG_BODY_CONTENT.'</tagparam>';
+
+    public const string TAG_CONTAINER = '<tagcontainer>%s</tagcontainer>';
+
+    public const string TAG_WITH_BODY = '<tagbody>' . self::TAG_BODY_CONTENT . '</tagbody>';
+
+    public const string TAG_WITH_PARAM = '<tagparam name="' . self::KEY_ALPHA1 . '">' . self::TAG_BODY_CONTENT . '</tagparam>';
 
     // Response
 
@@ -344,7 +365,7 @@ class YacorapiTestData extends TestData
      */
     public static function RESP_BODY(): array // NOSONAR:  php:S116
     {
-        self::$RESP_BODY =             self::prepareResponseBody(YacorapiTestData::C_PAGE_BODY_1, new Map());
+        self::$RESP_BODY = self::prepareResponseBody(YacorapiTestData::C_PAGE_BODY_1, new Map());
 
         return self::$RESP_BODY;
     }
@@ -433,7 +454,7 @@ class YacorapiTestData extends TestData
         return [
             ResponseParameter::KEY_SPACE => [
                 ResponseParameter::KEY_KEY => $text,
-            ]];
+        ]];
     }
 
     /**
@@ -467,7 +488,7 @@ class YacorapiTestData extends TestData
         return [
             ResponseParameter::KEY_ANCESTORS => [
                 ResponseParameter::KEY_ID => $text,
-            ]];
+        ]];
     }
 
     /**
@@ -492,7 +513,30 @@ class YacorapiTestData extends TestData
             ResponseParameter::KEY_BODY => [
                 ResponseParameter::KEY_STORAGE => [
                     ResponseParameter::KEY_VALUE => $text,
-                ]]];
+        ]]];
+    }
+
+    // Tag Specific
+
+    public static function prepareDOMDocument(string $content): DOMDocument
+    {
+        $newDom = new DOMDocument();
+        if (!empty($content)) {
+            $newDom->loadXML($content);
+        }
+
+        return $newDom;
+    }
+
+    public static function prepareDOMElement(string $tagName): DOMElement|false
+    {
+        $newElement = false;
+        if (!empty($tagName)) {
+            $tmpDom = new DOMDocument();
+            $newElement = $tmpDom->createElement($tagName);
+        }
+
+        return $newElement;
     }
 
     // Macro Code Specific

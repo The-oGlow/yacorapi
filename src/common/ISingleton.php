@@ -13,15 +13,13 @@ declare(strict_types=1);
 
 namespace oglow\tools\common;
 
-use Psr\Log\LogLevel;
-
 /**
  * Interface for a singleton.
- * 
+ *
  * @author olliy
  */
 interface ISingleton
 {
-    /** @var LogLevel Default output level */
-    public const string LEVEL_DEFAULT = LogLevel::INFO;
+    /** @var string Default output level */
+    public const string LEVEL_DEFAULT = 'info';
 }

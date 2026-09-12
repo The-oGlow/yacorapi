@@ -24,7 +24,7 @@ class ProjectDocToolboxHelperTest extends EasyGoingTestCase
     private string $cleanupFile = '';
 
     #[\Override]
-    protected static function prepareO2t(): ProjectDocToolboxHelper
+    protected static function prepareO2t(): object
     {
         return ProjectDocToolboxHelper::i();
     }

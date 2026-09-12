@@ -26,7 +26,7 @@ class ResponseParameterTest extends ConstantCheckTestCase
     protected const bool WITH_CONST_CROSSCHECK = true;
 
     #[\Override]
-    protected static function prepareO2t(): ResponseParameter
+    protected static function prepareO2t(): object
     {
         return ResponseParameter::i();
     }
