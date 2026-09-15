@@ -76,7 +76,7 @@ interface IRapiClientRead extends IRapiClientBase
      * @param string       $filterTerm    A search term like the confluence search
      * @param string       $spaceKey      Limited to the space
      * @param int          $searchFromPos Starting from which result position (Default: {@link IRapiClientBase::REQ_VAL_SEARCH_START})
-     * @param int          $searchLimit   The number of items which will be returned (Default: {@link IRapiClientBase::REQ_VAL_SEARCH_LIMIT_MIN})
+     * @param int          $searchLimit   The number of items which will be returned (Default: {@link IRapiClientBase::REQ_VAL_SEARCH_OVERALL_MIN})
      * @param ItemTypeEnum $itemType      The type of the item (Default {@link IRapiClientBase::REQ_VAL_ITEM_TYPE_PAGE}
      *
      * @return IResponse The found pages or empty response
@@ -85,7 +85,7 @@ interface IRapiClientRead extends IRapiClientBase
         string $filterTerm,
         string $spaceKey,
         int $searchFromPos = IRapiClientBase::REQ_VAL_SEARCH_START,
-        int $searchLimit = IRapiClientBase::REQ_VAL_SEARCH_LIMIT_MIN,
+        int $searchLimit = IRapiClientBase::REQ_VAL_SEARCH_OVERALL_MIN,
         ItemTypeEnum $itemType = IRapiClientBase::REQ_VAL_ITEM_TYPE_PAGE
     ): IResponse;
 

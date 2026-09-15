@@ -197,6 +197,14 @@ abstract class AbstractResponse implements IResponse
      * @inheritDoc
      */
     #[\Override]
+    public function getResultsCount(): int {
+        return $this->results->count();
+    }
+    
+    /**
+     * @inheritDoc
+     */
+    #[\Override]
     public function getResult(int $idx): mixed
     {
         $result = null;
@@ -222,7 +230,7 @@ abstract class AbstractResponse implements IResponse
     #[\Override]
     public function getItemId(): int
     {
-        return $this->getValue(ResponseParameter::KEY_ID, ResponseParameter::VAL_PAGE_ID_NO);
+        return intval($this->getValue(ResponseParameter::KEY_ID, ResponseParameter::VAL_PAGE_ID_NO));
     }
 
     /**

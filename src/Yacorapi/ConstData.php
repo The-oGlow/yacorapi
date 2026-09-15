@@ -37,19 +37,6 @@ final class ConstData extends AbstractSingleton
     /** @var string Name of this application */
     public const string VAL_APP_USER = 'yacorapi';
 
-    // Page Consts
-    /** @var int First line on a page */
-    public const int PAGE_START = 0;
-
-    /** @var int Last line on a page */
-    public const int PAGE_LIMIT = 50;
-
-    /** @var int Max count of pages */
-    public const int PAGE_MAX_PAGES = 20;
-
-    /** @var int Max count of lines */
-    public const int PAGE_MAX_RESULTS = 50 * 20;
-
     // Instance Consts
     /** @var string Key: URL of the confluence instance */
     public const string KEY_CONF_BASE_URL = 'CONF_BASE_URL';
@@ -270,7 +257,7 @@ final class ConstData extends AbstractSingleton
     public function isDefined(string $constKey): bool
     {
         $found = $this->definedConst->hasKey($constKey);
-        self::$logger->info('Const is defined', [$constKey, $found]);
+        self::$logger->debug('Const is defined', [$constKey, $found]);
 
         return $found;
     }
@@ -464,7 +451,7 @@ final class ConstData extends AbstractSingleton
             Emergency::breakSystem(ExitCodes::ERR_CODE_NO_URL_SET, 'No URL for confluence is set');
         }
         if (!$this->isDefined(self::KEY_SEARCH_LIMIT)) {
-            $this->putConst(self::KEY_SEARCH_LIMIT, ((string) RequestParameter::VAL_SEARCH_LIMIT_MAX));
+            $this->putConst(self::KEY_SEARCH_LIMIT, ((string) RequestParameter::VAL_SEARCH_LIMIT_END));
         }
 
         self::$logger->debug('END - Is valid', [$validated]);

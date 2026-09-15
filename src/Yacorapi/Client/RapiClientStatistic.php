@@ -261,8 +261,8 @@ class RapiClientStatistic extends RapiClientPermission implements IRapiClientSta
     protected function prepareSpacePagesUrl(
         string $space,
         ItemTypeEnum $pageType = IRapiClientBase::REQ_VAL_ITEM_TYPE_PAGE,
-        int $start = ConstData::PAGE_START,
-        int $limit = ConstData::PAGE_LIMIT
+        int $start = IRapiClientBase::REQ_VAL_SEARCH_START,
+        int $limit = IRapiClientBase::REQ_VAL_SEARCH_LIMIT_END
     ): string {
         return sprintf(
             '%s/%s/content/%s?start=%s&limit=%s&%s',
@@ -277,7 +277,7 @@ class RapiClientStatistic extends RapiClientPermission implements IRapiClientSta
 
     protected function prepareSpaceListUrl(
         SpaceTypeEnum $spaceType = SpaceTypeEnum::SPACE_TYPE_GLOBAL,
-        int $limit = ConstData::PAGE_LIMIT
+        int $limit = IRapiClientBase::REQ_VAL_SEARCH_LIMIT_END
     ): string {
         return sprintf(
             '%s?%s&type=%s&limit=%s',

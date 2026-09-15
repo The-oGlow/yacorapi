@@ -16,7 +16,7 @@ namespace oglow\tools\Yacorapi\Store;
 use oglow\tools\common\AbstractSingleton;
 
 /**
- * Description of StoreParameterData.
+ * Description of StoreParameter.
  *
  * @author ollily
  */
@@ -47,7 +47,14 @@ class StoreParameter extends AbstractSingleton
     public const string C_FILE_EXT_TEXT = 'txt';
 
     public const string C_FILE_EXT_CSV = 'csv';
-
+    
+    public const string C_DIR_SEP_UNIX = '/';
+    
+    public const string C_DIR_SEP_WIN = '\\';
+    
+    /** @var array<mixed,mixed> */
+    public const array C_ILLEGAL_FILE_CHARS = ['\\', '/', ':', '@', '?', '*'];
+    
     public const int ERR_NOT_INVOKED = 30;
 
     /** Field Separator */

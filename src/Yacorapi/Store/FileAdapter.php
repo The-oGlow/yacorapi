@@ -35,12 +35,12 @@ class FileAdapter extends AbstractStoreAdapter
      * Constructor for a store adapter.
      *
      * @param string                                         $fileName   The filename, without suffix, of the output file
-     * @param string                                         $filePrefix Prefix of the output file (Default: {@link StoreParameterData::DEFAULT_FILE_PREFIX})
-     * @param string                                         $fileSuffix Suffix of the output file (Default: {@link StoreParameterData::DEFAULT_FILE_SUFFIX})
+     * @param string                                         $filePrefix Prefix of the output file (Default: {@link StoreParameter::DEFAULT_FILE_PREFIX})
+     * @param string                                         $fileSuffix Suffix of the output file (Default: {@link StoreParameter::DEFAULT_FILE_SUFFIX})
      * @param string                                         $fileExt    File extension of the output file
-     *                                                                   (Default: {@link StoreParameterData::DEFAULT_FILE_EXT})
+     *                                                                   (Default: {@link StoreParameter::DEFAULT_FILE_EXT})
      * @param string                                         $pathToFile Folder where to store the output file
-     *                                                                   (Default: {@link StoreParameterData::DEFAULT_FOLDER_NAME})
+     *                                                                   (Default: {@link StoreParameter::DEFAULT_FOLDER_NAME})
      * @param FileStoreStageEnum                             $staging    The stage where to store the file (Default {@link FileStoreStageEnum::BASE})
      * @param int|\Monolog\Level|\Psr\Log\LogLevel::*|string $level      The minimum logging level at which this handler will be triggered
      *                                                                   (Default: {@link self::LEVEL_DEFAULT})

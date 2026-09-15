@@ -24,6 +24,7 @@ use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Request\RequestParameter;
 use oglow\tools\Yacorapi\Request\RequestTypeEnum;
 use Psr\Log\LoggerInterface;
+use oglow\tools\Yacorapi\Client\IRapiClientBase;
 
 class RapiClientPermission extends RapiClientWrite implements IRapiClientPermission
 {
@@ -161,7 +162,7 @@ class RapiClientPermission extends RapiClientWrite implements IRapiClientPermiss
         $readUser = [];
         if (array_key_exists(RequestParameter::PROP_USER, $readRestrictions)) {
             foreach ($readRestrictions[RequestParameter::PROP_USER] as $readRestriction) {
-                $readUser[] = [RequestParameter::PROP_TYPE => RequestParameter::VAL_USER_TYPE_KNOWN, RequestParameter::PROP_USERNAME => $readRestriction];
+                $readUser[] = [RequestParameter::PROP_TYPE => IRapiClientBase::REQ_VAL_USER_TYPE_KNOWN, RequestParameter::PROP_USERNAME => $readRestriction];
             }
         }
 
@@ -183,7 +184,7 @@ class RapiClientPermission extends RapiClientWrite implements IRapiClientPermiss
         $readGroup = [];
         if (array_key_exists(RequestParameter::PROP_GROUP, $readRestrictions)) {
             foreach ($readRestrictions[RequestParameter::PROP_GROUP] as $readRestriction) {
-                $readGroup[] = [RequestParameter::PROP_TYPE => RequestParameter::VAL_USER_TYPE_KNOWN, RequestParameter::PROP_USERNAME => $readRestriction];
+                $readGroup[] = [RequestParameter::PROP_TYPE => IRapiClientBase::REQ_VAL_USER_TYPE_KNOWN, RequestParameter::PROP_USERNAME => $readRestriction];
             }
         }
 

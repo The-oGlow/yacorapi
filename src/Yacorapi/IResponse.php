@@ -114,6 +114,12 @@ interface IResponse extends Stringable
     public function getResult(int $idx): mixed;
 
     /**
+     * Returns the number of results from the search.
+     * @return int The number of results from the search.
+     */
+    public function getResultsCount(): int;
+
+    /**
      * Returns the id of the confluence item.
      *
      * @return int The itemId

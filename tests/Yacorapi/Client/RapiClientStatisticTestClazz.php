@@ -19,6 +19,7 @@ use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\Data\ItemTypeEnum;
 use oglow\tools\Yacorapi\Space\SpaceTypeEnum;
 use Psr\Log\LoggerInterface;
+use oglow\tools\Yacorapi\Client\IRapiClientBase;
 
 class RapiClientStatisticTestClazz extends RapiClientStatistic implements IRapiClientStatistic
 {
@@ -41,15 +42,15 @@ class RapiClientStatisticTestClazz extends RapiClientStatistic implements IRapiC
     public function publicPrepareSpacePagesUrl(
         string $space,
         ItemTypeEnum $pageType = ItemTypeEnum::PAGE,
-        int $start = ConstData::PAGE_START,
-        int $limit = ConstData::PAGE_LIMIT
+        int $start = IRapiClientBase::REQ_VAL_SEARCH_START,
+        int $limit = IRapiClientBase::REQ_VAL_SEARCH_LIMIT_END
     ): string {
         return $this->prepareSpacePagesUrl($space, $pageType, $start, $limit);
     }
 
     public function publicPrepareSpaceListUrl(
         SpaceTypeEnum $spaceType = SpaceTypeEnum::SPACE_TYPE_GLOBAL,
-        int $limit = ConstData::PAGE_LIMIT
+        int $limit = IRapiClientBase::REQ_VAL_SEARCH_LIMIT_END
     ): string {
         return $this->prepareSpaceListUrl($spaceType, $limit);
     }
