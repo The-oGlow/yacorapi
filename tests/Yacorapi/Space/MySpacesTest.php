@@ -26,7 +26,7 @@ class MySpacesTest extends EasyGoingTestCase
 
     public const string METHOD_PREFIX = 'getMySpaceList';
 
-    /** @var array<mixed,mixed> */
+    /** @var array<mixed> */
     public static array $methodIgnored;
 
     public static string $methodReferenced;

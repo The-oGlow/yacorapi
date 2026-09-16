@@ -57,7 +57,7 @@ class ProjectDocToolboxHelperTest extends EasyGoingTestCase
     }
 
     /**
-     * @return array<mixed,array<mixed,mixed>>
+     * @return array<mixed,array<mixed>>
      */
     public static function providerModifyData(): array
     {
@@ -83,7 +83,7 @@ class ProjectDocToolboxHelperTest extends EasyGoingTestCase
     }
 
     /**
-     * @return array<mixed,array<mixed,mixed>>
+     * @return array<mixed,array<mixed>>
      */
     public static function providerReplaceAndStoreDoctype(): array
     {
@@ -139,7 +139,7 @@ class ProjectDocToolboxHelperTest extends EasyGoingTestCase
     }
 
     /**
-     * @return array<mixed,array<mixed,mixed>>
+     * @return array<mixed,array<mixed>>
      */
     public static function providerReplaceDoctype(): array
     {

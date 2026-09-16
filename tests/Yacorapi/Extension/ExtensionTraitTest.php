@@ -163,7 +163,7 @@ class ExtensionTraitTest extends EasyGoingTestCase
     // DataProvider
 
     /**
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     public static function providerGetExtension(): array
     {

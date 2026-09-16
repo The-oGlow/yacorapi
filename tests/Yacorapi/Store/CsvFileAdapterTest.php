@@ -69,6 +69,7 @@ class CsvFileAdapterTest extends EasyGoingTestCase
         for ($idx = 0; $idx < random_int(self::RAND_MIN, self::RAND_MAX); $idx++) {
             $dataHeader[] = 'COL' . $idx;
         }
+        var_dump(implode(';', $dataHeader));
         $expected = strlen(implode(';', $dataHeader)) + count($dataHeader) * 2 + 1;
 
         $this->getCasto2t()->storeDataHeader($dataHeader);

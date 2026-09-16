@@ -24,7 +24,7 @@ use Psr\Log\LoggerInterface;
  *
  * @author olliy
  *
- *  @phpstan-consistent-constructor
+ * @psalm-consistent-constructor
  */
 abstract class AbstractSingleton implements ISingleton
 {
@@ -41,7 +41,8 @@ abstract class AbstractSingleton implements ISingleton
     public function __construct(string $key = '', bool $withLogger = true)
     {
         if ($withLogger) {
-            /** @phpstan-ignore argument.type */
+            /** @psalm-suppress ArgumentTypeCoercion
+             * @phpstan-ignore argument.type */
             self::$logger = new ConsoleLogger(AbstractSingleton::class, level: static::LEVEL_DEFAULT);
         } else {
             self::$logger = new DoNothingLogger();
@@ -63,6 +64,8 @@ abstract class AbstractSingleton implements ISingleton
      * Returns static access on this singletion.
      *
      * @return object This singleton
+     *
+     * @SuppressWarnings("PHPMD.ShortMethodName")
      */
     public static function i(): object
     {
@@ -94,14 +97,21 @@ abstract class AbstractSingleton implements ISingleton
     /**
      * Parse the given override parameters.
      *
-     * @param string             $shortOpts Override parameter as short version
-     * @param array<mixed,mixed> $longOpts  Override parameter as long version
+     * @param string       $shortOpts Override parameter as short version
+     * @param array<mixed> $longOpts  Override parameter as long version
      *
      * @return Collection<mixed, mixed> A collection of override parameter
      */
     private static function parseArguments(string $shortOpts, array $longOpts): Collection
     {
-        return new Map(getopt($shortOpts, $longOpts));
+        /** @var Map<mixed,mixed> */
+        $mapOpts = new Map();
+        $opts = getopt($shortOpts, $longOpts);
+        if (is_array($opts)) {
+            $mapOpts = new Map($opts);
+        }
+
+        return $mapOpts;
     }
 
     /**
@@ -118,6 +128,8 @@ abstract class AbstractSingleton implements ISingleton
      * Initialize this singleton with the settings.
      *
      * @param Collection<mixed, mixed> $overrideParameters Override the settings with these parameters
+     *
+     * @SuppressWarnings("PHPMD.UnusedFormalParameter")
      */
     protected function prepareSettings(Collection $overrideParameters): void
     {
@@ -130,6 +142,8 @@ abstract class AbstractSingleton implements ISingleton
      * @param Collection<mixed, mixed> $overrideParameters Verify the settings with these parameters
      *
      * @return bool TRUE=settings are valid, else FALSE
+     *
+     * @SuppressWarnings("PHPMD.UnusedFormalParameter")
      */
     protected function validateSettings(Collection $overrideParameters): bool
     {
@@ -149,7 +163,7 @@ abstract class AbstractSingleton implements ISingleton
     /**
      * Define the valid log options.
      *
-     * @return array<mixed,mixed> Array of long options
+     * @return array<mixed> Array of long options
      */
     protected function prepareLongOpts(): array
     {

@@ -38,7 +38,7 @@ class CsvFileAdapter extends FileAdapter
     /** @var string Standard file extension for this adapter */
     public const string DEFAULT_FILE_EXT = SP::C_FILE_EXT_CSV;
 
-    /** @var array<mixed,mixed> Chars to clean */
+    /** @var array<mixed> Chars to clean */
     private const array STORDATA_CLEAN = [SP::DEFAULT_SQUARE_BRACK_OPEN, SP::DEFAULT_SQUARE_BRACK_CLOSE];
 
     /** Looking for ";[" */
@@ -123,7 +123,7 @@ class CsvFileAdapter extends FileAdapter
     }
 
     /**
-     * @param array<mixed,mixed>|string $param
+     * @param array<mixed>|string $param
      *
      * @return string
      */
@@ -166,7 +166,7 @@ class CsvFileAdapter extends FileAdapter
                             $line .= $textSep . addslashes($response->getBody()) . $textSep . $sepChar;
                             break;
                         case RP::KEY_SPACE:
-                            $line .= $textSep . $response->getSpaceInfo(SpaceInfoEnum::SPACEINFO_KEY) . $textSep . $sepChar;
+                            $line .= $textSep . strval($response->getSpaceInfo(SpaceInfoEnum::SPACEINFO_KEY)) . $textSep . $sepChar;
                             break;
                         case RP::KEY_LABELS:
                             $outLabels = $response->getLabels()->join(self::DEFAULT_GLUE);
@@ -184,7 +184,7 @@ class CsvFileAdapter extends FileAdapter
                                         break;
                                 }
                             }
-                            $line .= $textSep . $outValue . $textSep . $sepChar;
+                            $line .= $textSep . strval($outValue) . $textSep . $sepChar;
                             break;
                     }
                 }

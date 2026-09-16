@@ -29,7 +29,7 @@ abstract class AbstractContainer implements IContainer
 
     protected ConstData $constData;
 
-    /** @var array<mixed,mixed> Stored data */
+    /** @var array<mixed> Stored data */
     private array $data = [];
 
     /** @var int[]|string[] The modes how to access the data */
@@ -52,7 +52,8 @@ abstract class AbstractContainer implements IContainer
      */
     public function __construct()
     {
-        /** @phpstan-ignore argument.type */
+        /** @psalm-suppress ArgumentTypeCoercion
+         * @phpstan-ignore argument.type */
         self::$logger = new ConsoleLogger(AbstractContainer::class, level: static::LEVEL_DEFAULT);
         self::$logger->debug('START');
         // Init Dynamic Consts
@@ -71,7 +72,7 @@ abstract class AbstractContainer implements IContainer
     /**
      * Set the complete data.
      *
-     * @param array<mixed,mixed> $allData Array of stored data
+     * @param array<mixed> $allData Array of stored data
      */
     protected function setAllData(array $allData): void
     {

@@ -65,7 +65,8 @@ class ContentHelper extends AbstractHelper
      */
     public function __construct(string $key = '', bool $withLogger = true)
     {
-        /** @phpstan-ignore argument.type */
+        /** @psalm-suppress ArgumentTypeCoercion
+         * @phpstan-ignore argument.type */
         self::$logger = new ConsoleLogger(ContentHelper::class, level: static::LEVEL_DEFAULT);
         self::$logger->debug('START');
 

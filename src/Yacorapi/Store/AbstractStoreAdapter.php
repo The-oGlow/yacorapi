@@ -285,7 +285,7 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
     /**
      * @param string $fileName The filename to read in
      *
-     * @return array<mixed,mixed> The content of the file
+     * @return array<mixed> The content of the file
      */
     protected function readResultFile(string $fileName): array
     {

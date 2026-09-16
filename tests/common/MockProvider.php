@@ -79,7 +79,7 @@ class MockProvider extends AbstractProvider
      * @param string          $execUrl
      * @param RequestTypeEnum $reqType
      *
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     protected function evaluateRequest(string $execUrl, RequestTypeEnum $reqType): array
     {
@@ -108,9 +108,9 @@ class MockProvider extends AbstractProvider
     }
 
     /**
-     * @param string             $execUrl
-     * @param RequestTypeEnum    $reqType
-     * @param array<mixed,mixed> $response
+     * @param string          $execUrl
+     * @param RequestTypeEnum $reqType
+     * @param array<mixed>    $response
      *
      * @return bool
      */
@@ -133,9 +133,9 @@ class MockProvider extends AbstractProvider
     }
 
     /**
-     * @param string             $execUrl
-     * @param RequestTypeEnum    $reqType
-     * @param array<mixed,mixed> $response
+     * @param string          $execUrl
+     * @param RequestTypeEnum $reqType
+     * @param array<mixed>    $response
      *
      * @return bool
      */
@@ -158,9 +158,9 @@ class MockProvider extends AbstractProvider
     }
 
     /**
-     * @param string             $execUrl
-     * @param RequestTypeEnum    $reqType
-     * @param array<mixed,mixed> $response
+     * @param string          $execUrl
+     * @param RequestTypeEnum $reqType
+     * @param array<mixed>    $response
      *
      * @return bool
      */
@@ -183,9 +183,9 @@ class MockProvider extends AbstractProvider
     }
 
     /**
-     * @param string             $execUrl
-     * @param RequestTypeEnum    $reqType
-     * @param array<mixed,mixed> $response
+     * @param string          $execUrl
+     * @param RequestTypeEnum $reqType
+     * @param array<mixed>    $response
      *
      * @return bool
      */
@@ -208,9 +208,9 @@ class MockProvider extends AbstractProvider
     }
 
     /**
-     * @param string             $execUrl
-     * @param RequestTypeEnum    $reqType
-     * @param array<mixed,mixed> $response
+     * @param string          $execUrl
+     * @param RequestTypeEnum $reqType
+     * @param array<mixed>    $response
      *
      * @return bool
      */
@@ -258,7 +258,7 @@ class MockProvider extends AbstractProvider
      * @param Collection<mixed,mixed> $parameters
      * @param RequestTypeEnum         $reqType
      *
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     protected function evaluateParameterRequest(string $execUrl, Collection $parameters, RequestTypeEnum $reqType): array
     {
@@ -289,7 +289,7 @@ class MockProvider extends AbstractProvider
      * @param string                  $execUrl
      * @param Collection<mixed,mixed> $parameters
      * @param RequestTypeEnum         $reqType
-     * @param array<mixed,mixed>      $response
+     * @param array<mixed>            $response
      *
      * @return bool
      */
@@ -326,7 +326,7 @@ class MockProvider extends AbstractProvider
      * @param string                  $execUrl
      * @param Collection<mixed,mixed> $parameters
      * @param RequestTypeEnum         $reqType
-     * @param array<mixed,mixed>      $response
+     * @param array<mixed>            $response
      *
      * @return bool
      */
@@ -356,9 +356,9 @@ class MockProvider extends AbstractProvider
     }
 
     /**
-     * @param string             $execUrl
-     * @param RequestTypeEnum    $reqType
-     * @param array<mixed,mixed> $response
+     * @param string          $execUrl
+     * @param RequestTypeEnum $reqType
+     * @param array<mixed>    $response
      *
      * @return bool
      */
@@ -381,7 +381,7 @@ class MockProvider extends AbstractProvider
 
     /**
      * @param Collection<mixed,mixed> $parameters
-     * @param array<mixed,mixed>      $expectedKeys
+     * @param array<mixed>            $expectedKeys
      *
      * @return bool
      */
@@ -409,7 +409,7 @@ class MockProvider extends AbstractProvider
 
     /**
      * @param Collection<mixed,mixed> $parameters
-     * @param array<mixed,mixed>      $notExpectedKeys
+     * @param array<mixed>            $notExpectedKeys
      *
      * @return bool
      */

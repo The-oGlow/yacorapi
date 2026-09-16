@@ -27,7 +27,7 @@ class ExtensionEnumTest extends TestCase
     }
 
     /**
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     public static function providerIsIn(): array
     {

@@ -225,7 +225,7 @@ class RapiClientWrite extends RapiClientRead implements IRapiClientWrite
      *
      * @param int $pageId Id of the page
      *
-     * @return array<mixed,mixed> Returns [currentVersion,nextVersion,pageTitle,itemType]
+     * @return array<mixed> Returns [currentVersion,nextVersion,pageTitle,itemType]
      *
      * @phpstan-return PageInfo
      */

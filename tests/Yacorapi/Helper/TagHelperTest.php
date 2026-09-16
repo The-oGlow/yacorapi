@@ -92,6 +92,7 @@ class TagHelperTest extends EasyGoingTestCase
 
         try {
             $actual = $this->getCasto2t()::deleteTag($tagName, $domDoc, $deletedTags, $allTags);
+            self::assertEquals($domDoc, $actual);
         } catch (\Throwable $thrown) {
             self::fail(sprintf('%s - %s', $thrown->getMessage(), $thrown::class));
         }
@@ -127,6 +128,7 @@ class TagHelperTest extends EasyGoingTestCase
     public function testReplaceTags(int $expectedCount, string $tagNameSearch, string|DOMNode $tagNameReplace, DOMDocument $domDoc): void
     {
         $actual = $this->getCasto2t()::replaceTags($tagNameSearch, $tagNameReplace, $domDoc);
+        self::assertEquals($domDoc, $actual);
 
         $occurenceAfter = 0;
         if (!empty($tagNameSearch)) {
@@ -176,7 +178,7 @@ class TagHelperTest extends EasyGoingTestCase
     }
 
     /**
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     public static function providerReplaceTags(): array
     {
@@ -229,7 +231,7 @@ class TagHelperTest extends EasyGoingTestCase
     }
 
     /**
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     public static function providerGetTagFindTag(): array
     {
@@ -245,7 +247,7 @@ class TagHelperTest extends EasyGoingTestCase
     }
 
     /**
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     public static function providerDeleteTag(): array
     {

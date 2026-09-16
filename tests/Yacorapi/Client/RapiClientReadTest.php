@@ -293,7 +293,7 @@ class RapiClientReadTest extends EasyGoingTestCase
     // Dataprovider
 
     /**
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     public static function providerSpaceHomepage(): array
     {
@@ -305,7 +305,7 @@ class RapiClientReadTest extends EasyGoingTestCase
     }
 
     /**
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     public static function providerPrepareAddonSet(): array
     {
@@ -317,7 +317,7 @@ class RapiClientReadTest extends EasyGoingTestCase
     }
 
     /**
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     public static function providerReadPageByPageId(): array
     {

@@ -93,14 +93,14 @@ class FileAdapter extends AbstractStoreAdapter
         self::$logger->debug('START', [$this->storeItem]);
 
         if (!empty($dataHeader)) {
-            $this->writeData($this->storeItem, self::flattenDataHeader($dataHeader));
+            $this->writeData($this->storeItem, static::flattenDataHeader($dataHeader));
         }
 
         self::$logger->debug('END');
     }
 
     /**
-     * @param array<mixed,mixed> $resultsEntry Array of results from a query
+     * @param array<mixed> $resultsEntry Array of results from a query
      */
     public function storeResults(array $resultsEntry): void
     {

@@ -22,7 +22,7 @@ class AbstractProviderTestDummyClazz extends AbstractProvider
      * @param string          $execUrl
      * @param RequestTypeEnum $reqType
      *
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     #[\Override]
     protected function execInternal(string $execUrl, RequestTypeEnum $reqType): array
@@ -35,7 +35,7 @@ class AbstractProviderTestDummyClazz extends AbstractProvider
      * @param Collection<mixed,mixed> $parameters
      * @param RequestTypeEnum         $reqType
      *
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     #[\Override]
     protected function execPostInternal(string $execUrl, Collection $parameters, RequestTypeEnum $reqType): array
@@ -49,7 +49,7 @@ class AbstractProviderTestDummyClazz extends AbstractProvider
      * @param string          $execUrl
      * @param RequestTypeEnum $reqType
      *
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     public function publicExecInternal(string $execUrl, RequestTypeEnum $reqType): array
     {
@@ -61,7 +61,7 @@ class AbstractProviderTestDummyClazz extends AbstractProvider
      * @param Collection<mixed,mixed> $parameters
      * @param RequestTypeEnum         $reqType
      *
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     public function publicExecPostInternal(string $execUrl, Collection $parameters, RequestTypeEnum $reqType): array
     {

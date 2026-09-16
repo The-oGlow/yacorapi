@@ -89,9 +89,9 @@ class RapiClientPermission extends RapiClientWrite implements IRapiClientPermiss
     /**
      * REFACTOR: API-Function doesn't work or description is wrong.
      *
-     * @param int                $pageId
-     * @param array<mixed,mixed> $writeRestrictions
-     * @param array<mixed,mixed> $readRestrictions
+     * @param int          $pageId
+     * @param array<mixed> $writeRestrictions
+     * @param array<mixed> $readRestrictions
      *
      * @return bool
      */
@@ -101,8 +101,10 @@ class RapiClientPermission extends RapiClientWrite implements IRapiClientPermiss
         $success = false;
         $prepareUrl = $this->prepareRestrictUpdateUrl($pageId);
 
+        /** @var Map<mixed,mixed> */
         $prepareParameters = new Map();
         $prepareParametersRestrictions = ['restrictions' => []];
+        /** @var array<mixed> */
         $prefix = [
             'content' => [
                 'expanded' => true,
@@ -148,9 +150,9 @@ class RapiClientPermission extends RapiClientWrite implements IRapiClientPermiss
     }
 
     /**
-     * @param array<mixed,mixed> $readRestrictions
+     * @param array<mixed> $readRestrictions
      *
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      *
      * REFACTOR: Switch array to Map
      */
@@ -170,9 +172,9 @@ class RapiClientPermission extends RapiClientWrite implements IRapiClientPermiss
     }
 
     /**
-     * @param array<mixed,mixed> $readRestrictions
+     * @param array<mixed> $readRestrictions
      *
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      *
      * REFACTOR: Switch array to Map
      */

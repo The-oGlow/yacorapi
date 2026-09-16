@@ -146,12 +146,12 @@ class ResponseParameter extends AbstractSingleton
 
     // Others
 
-    /** @var array<mixed,mixed> The minimal column list for an export of pages */
+    /** @var array<mixed> The minimal column list for an export of pages */
     public const array EXPORT_PAGE_MIN = [self::KEY_ID];
 
-    /** @var array<mixed,mixed> The column list for an export of pages */
+    /** @var array<mixed> The column list for an export of pages */
     public const array EXPORT_PAGE_LIGHT = [self::KEY_ID, self::KEY_SPACE, self::KEY_TITLE, self::KEY_LABELS];
 
-    /** @var array<mixed,mixed> The full column list for an export of pages (with body) */
+    /** @var array<mixed> The full column list for an export of pages (with body) */
     public const array EXPORT_PAGE_FULL = [self::KEY_ID, self::KEY_SPACE, self::KEY_TITLE, self::KEY_LABELS, self::KEY_BODY];
 }

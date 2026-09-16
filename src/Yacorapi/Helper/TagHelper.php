@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Helper;
 
 use DOMDocument;
+use DOMElement;
+use DOMNameSpaceNode;
 use DOMNode;
 use DOMNodeList;
 use DOMXPath;
@@ -39,11 +41,14 @@ class TagHelper extends AbstractHelper
      * @param string $key        Unique id of this singleton
      * @param bool   $withLogger TRUE=activate logging, else FALSE
      *
+     * @SuppressWarnings("PMD.UnusedFormalParameter")
+     *
      * @phpstan-ignore constructor.unusedParameter,constructor.unusedParameter
      */
     public function __construct(string $key = '', bool $withLogger = true)
     {
-        /** @phpstan-ignore argument.type */
+        /** @psalm-suppress ArgumentTypeCoercion
+         * @phpstan-ignore argument.type */
         self::$logger = new ConsoleLogger(TagHelper::class, level: static::LEVEL_DEFAULT);
         self::$logger->debug('START');
 
@@ -62,7 +67,8 @@ class TagHelper extends AbstractHelper
      */
     public static function getTag(string $tagName, DOMDocument $domDoc): Sequence
     {
-        /** @var bool|DOMNodeList<DOMNode> */
+        /** @psalm-suppress TooManyTemplateParams
+         *  @var bool|DOMNodeList<DOMNameSpaceNode|DOMNode> */
         $result = false;
         if (!empty($tagName)) {
             $result = $domDoc->getElementsByTagName($tagName);
@@ -86,7 +92,8 @@ class TagHelper extends AbstractHelper
      */
     public static function findTag(string $tagName, DOMDocument $domDoc): Sequence
     {
-        /** @var bool|DOMNodeList<DOMNode> */
+        /** @psalm-suppress TooManyTemplateParams
+         *  @var bool|DOMNodeList<DOMNameSpaceNode|DOMNode> */
         $result = false;
         if (!empty($tagName)) {
             try {
@@ -117,25 +124,32 @@ class TagHelper extends AbstractHelper
      */
     public static function deleteTag(string $tagName, DOMDocument $domDoc, Sequence &$deletedTags, bool $allTags = false): DOMDocument
     {
-        /** @var bool|DOMNodeList<DOMNode> */
+        /** @psalm-suppress TooManyTemplateParams
+         *  @var bool|DOMNodeList<DOMNameSpaceNode|DOMNode> */
         $result = false;
         if (!empty($tagName)) {
             $foundTags = self::getTag($tagName, $domDoc);
             if ($allTags) {
                 $result = [];
+                /** @var DOMElement $foundTag */
                 foreach ($foundTags as $foundTag) {
                     try {
-                        $result[] = $foundTag->parentNode->removeChild($foundTag);
+                        if (!is_null($foundTag->parentNode)) {
+                            $result[] = $foundTag->parentNode->removeChild($foundTag);
+                        }
                     } catch (\Throwable $error) {
                         self::$logger->warning($error->getMessage(), [$error::class]);
                     }
                 }
             } else {
                 if ($foundTags->count() > 0) {
+                    /** @var DOMElement $foundTag */
                     $foundTag = $foundTags->first();
 
                     try {
-                        $result = [$foundTag->parentNode->removeChild($foundTag)];
+                        if (!is_null($foundTag->parentNode)) {
+                            $result = [$foundTag->parentNode->removeChild($foundTag)];
+                        }
                     } catch (\Throwable $error) {
                         self::$logger->warning($error->getMessage(), [$error::class]);
                     }
@@ -158,30 +172,37 @@ class TagHelper extends AbstractHelper
      *
      * @return DOMDocument The new dom structure
      */
-    public static function replaceTags(string $tagNameSearch, string|DOMNode $tagNameReplace, DOMDocument $domDoc): DOMDocument
+    public static function replaceTags(string $tagNameSearch, DOMNode|string $tagNameReplace, DOMDocument $domDoc): DOMDocument
     {
-        /** @var bool|DOMNodeList<DOMNode> */
+        /** @psalm-suppress TooManyTemplateParams
+         *  @var bool|DOMNodeList<DOMNameSpaceNode|DOMNode> */
         $result = false;
         if (!empty($tagNameSearch)) {
             $foundTags = self::getTag($tagNameSearch, $domDoc);
             $result = [];
-            $i = $foundTags->count() - 1;
-            while ($i > -1) {
-                $foundTag = $foundTags->get($i);
+            $posIdx = $foundTags->count() - 1;
+            while ($posIdx > -1) {
+                /** @var DOMElement $foundTag */
+                $foundTag = $foundTags->get($posIdx);
 
                 try {
-                    if (empty($tagNameReplace)) {
+                    /** @psalm-suppress RedundantCondition */
+                    if (is_string($tagNameReplace) && empty($tagNameReplace)) {
                         $newTag = $domDoc->createTextNode($tagNameReplace);
-                    } elseif ($tagNameReplace instanceof DOMNode) {
+                    } elseif (is_string($tagNameReplace)) {
+                        $newTag = $domDoc->createElement($tagNameReplace);
+                    } elseif ($tagNameReplace instanceof DOMNode) { // @phpstan-ignore instanceof.alwaysTrue
                         $newTag = $tagNameReplace;
                     } else {
-                        $newTag = $domDoc->createElement($tagNameReplace);
+                        $newTag = '';
                     }
-                    $result[] = $foundTag->parentNode->replaceChild($newTag, $foundTag);
+                    if (!is_null($foundTag->parentNode) && $newTag instanceof DOMNode) {
+                        $result[] = $foundTag->parentNode->replaceChild($newTag, $foundTag);
+                    }
                 } catch (\Throwable $error) {
                     self::$logger->warning($error->getMessage(), [$error::class]);
                 }
-                $i--;
+                $posIdx--;
             }
         }
 

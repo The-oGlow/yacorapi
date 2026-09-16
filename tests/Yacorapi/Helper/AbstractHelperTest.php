@@ -50,7 +50,7 @@ class AbstractHelperTest extends EasyGoingTestCase
     }
 
     /**
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     public static function providerConstruct(): array
     {

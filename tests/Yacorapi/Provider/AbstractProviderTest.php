@@ -40,8 +40,8 @@ class AbstractProviderTest extends EasyGoingTestCase
     }
 
     /**
-     * @param IResponse          $response
-     * @param array<mixed,mixed> $expectedData
+     * @param IResponse    $response
+     * @param array<mixed> $expectedData
      */
     protected function verifyResponse(IResponse $response, array $expectedData = []): void
     {

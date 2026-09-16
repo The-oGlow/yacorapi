@@ -28,6 +28,8 @@ use Psr\Log\LoggerInterface;
  * Abstract implementation for the response structure.
  *
  * @author ollily
+ *
+ * @SuppressWarnings("PMD.ExcessiveClassComplexity")
  */
 abstract class AbstractResponse implements IResponse
 {
@@ -35,16 +37,13 @@ abstract class AbstractResponse implements IResponse
 
     private static LoggerInterface $logger;
 
-    /** @var Collection<mixed,mixed>
-     * @phpstan-var Map<mixed,mixed> */
+    /** @var Map<mixed,mixed> */
     private Collection $rawData;
 
-    /** @var Collection<mixed,mixed>
-     * @phpstan-var Map<mixed,mixed> */
+    /** @var Map<mixed,mixed> */
     private Collection $results;
 
-    /** @var Sequence<mixed>
-     * @phpstan-var Vector<mixed> */
+    /** @var Vector<mixed> */
     private Sequence $labels;
 
     private string $body;
@@ -52,7 +51,7 @@ abstract class AbstractResponse implements IResponse
     /**
      * Response constructor.
      *
-     * @param array<mixed,mixed> $data
+     * @param array<mixed> $data
      */
     public function __construct(array $data = [])
     {
@@ -128,6 +127,7 @@ abstract class AbstractResponse implements IResponse
     #[\Override]
     public function getError(): Collection
     {
+        /** @var Map<mixed,mixed> */
         $error = new Map();
         if ($this->keyExists(RP::KEY_STATUS_CODE)) {
             $error->put(RP::KEY_STATUS_CODE, $this->getValue(RP::KEY_STATUS_CODE));
@@ -252,12 +252,15 @@ abstract class AbstractResponse implements IResponse
         $info = '';
         if ($flags == SIEnum::SPACEINFO_ALL) {
             $info = new Map();
-            $info->putAll($this->prepareSpaceInfo(SIEnum::SPACEINFO_ID)->toArray());
-            $info->putAll($this->prepareSpaceInfo(SIEnum::SPACEINFO_KEY)->toArray());
-            $info->putAll($this->prepareSpaceInfo(SIEnum::SPACEINFO_TITLE)->toArray());
-            $info->putAll($this->prepareSpaceInfo(SIEnum::SPACEINFO_TYPE)->toArray());
+            $info->putAll($this->prepareSpaceInfo(SIEnum::SPACEINFO_ID));
+            $info->putAll($this->prepareSpaceInfo(SIEnum::SPACEINFO_KEY));
+            $info->putAll($this->prepareSpaceInfo(SIEnum::SPACEINFO_TITLE));
+            $info->putAll($this->prepareSpaceInfo(SIEnum::SPACEINFO_TYPE));
         } else {
-            $info = $this->prepareSpaceInfo($flags)->first()->value;
+            $tmpInfo = $this->prepareSpaceInfo($flags);
+            if ($tmpInfo instanceof Map) {
+                $info = $tmpInfo->first()->value;
+            }
         }
 
         return $info;
@@ -343,7 +346,7 @@ abstract class AbstractResponse implements IResponse
     }
 
     /**
-     * @param array<mixed,mixed> $rawData
+     * @param array<mixed> $rawData
      */
     private function prepareData(array $rawData = []): void
     {
@@ -378,6 +381,7 @@ abstract class AbstractResponse implements IResponse
             }
         }
 
+        /** @psalm-suppress InvalidPropertyAssignmentValue */
         $this->rawData = new Map($rawData);
     }
 }

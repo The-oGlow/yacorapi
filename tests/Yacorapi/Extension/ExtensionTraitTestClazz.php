@@ -91,7 +91,7 @@ class ExtensionTraitTestClazz
      *
      * @phpstan-param Map<mixed,Vector<mixed>> $addons
      *
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     public function publicGetExtensionAddonMacrosArray(Collection $addons): array
     {

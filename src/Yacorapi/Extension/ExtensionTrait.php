@@ -32,8 +32,7 @@ trait ExtensionTrait
         ExtensionEnum::EXTENSION_PROJECTDOC_TOOLBOX,
     ];
 
-    /** @var Collection<mixed,IExtension>
-     * @phpstan-var Map<mixed,IExtension> */
+    /** @var Map<mixed,IExtension> */
     protected Collection $loadedExtensions;
 
     /**
@@ -165,7 +164,7 @@ trait ExtensionTrait
      *
      * @phpstan-param Map<mixed,Vector<mixed>> $addons
      *
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     protected function getExtensionAddonMacrosArray(Collection $addons): array
     {

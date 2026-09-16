@@ -38,7 +38,7 @@ class AbstractSingletonTestDummyClazz extends AbstractSingleton
     }
 
     /**
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     public function publicPrepareLongOpts(): array
     {

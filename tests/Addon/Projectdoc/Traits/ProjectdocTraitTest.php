@@ -86,10 +86,10 @@ class ProjectdocTraitTest extends EasyGoingTestCase
     }
 
     /**
-     * @param IResponse          $expected
-     * @param array<mixed,mixed> $propertyNames
-     * @param string             $spaceKey
-     * @param string             $where
+     * @param IResponse    $expected
+     * @param array<mixed> $propertyNames
+     * @param string       $spaceKey
+     * @param string       $where
      */
     #[DataProvider('providerPdtReadDocument')]
     public function testPdtReadDocument(
@@ -104,7 +104,7 @@ class ProjectdocTraitTest extends EasyGoingTestCase
     }
 
     /**
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     public static function providerResponse(): array
     {
@@ -114,7 +114,7 @@ class ProjectdocTraitTest extends EasyGoingTestCase
     }
 
     /**
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     public static function providerPropertyName(): array
     {
@@ -124,7 +124,7 @@ class ProjectdocTraitTest extends EasyGoingTestCase
     }
 
     /**
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     public static function providerPdtReadProperty(): array
     {
@@ -134,7 +134,7 @@ class ProjectdocTraitTest extends EasyGoingTestCase
     }
 
     /**
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     public static function providerPdtReadDocument(): array
     {

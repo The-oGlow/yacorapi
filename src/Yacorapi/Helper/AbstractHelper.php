@@ -41,7 +41,8 @@ abstract class AbstractHelper extends AbstractSingleton implements IHelper
     public function __construct(string $key = '', bool $withLogger = true)
     {
         if ($withLogger) {
-            /** @phpstan-ignore argument.type */
+            /** @psalm-suppress ArgumentTypeCoercion
+             * @phpstan-ignore argument.type */
             self::$logger = new ConsoleLogger(AbstractHelper::class, level: static::LEVEL_DEFAULT);
         } else {
             self::$logger = new DoNothingLogger();

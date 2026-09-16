@@ -52,7 +52,7 @@ class StoreParameter extends AbstractSingleton
 
     public const string C_DIR_SEP_WIN = '\\';
 
-    /** @var array<mixed,mixed> Illegal chars for a filename */
+    /** @var array<mixed> Illegal chars for a filename */
     public const array C_ILLEGAL_FILE_CHARS = ['\\', '/', ':', '@', '?', '*'];
 
     public const int ERR_NOT_INVOKED = 30;

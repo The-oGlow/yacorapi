@@ -31,8 +31,8 @@ class ResponseAddonMacro extends AbstractResponse
     /**
      * ResponseAddonMacro constructor.
      *
-     * @param AddonTypeEnum      $mode
-     * @param array<mixed,mixed> $data
+     * @param AddonTypeEnum $mode
+     * @param array<mixed>  $data
      */
     public function __construct(AddonTypeEnum $mode, array $data = [])
     {

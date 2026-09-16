@@ -35,9 +35,7 @@ interface IResponse extends Stringable
     /**
      * Returns the raw data of the response as it was returnd from the REST API call.
      *
-     * @return Collection<mixed,mixed> The raw response
-     *
-     * @phpstan-return Map<mixed,mixed>
+     * @return Map<mixed,mixed> The raw response
      */
     public function getRawData(): Collection;
 
@@ -53,9 +51,7 @@ interface IResponse extends Stringable
     /**
      * Returns all keys at first level of the response.
      *
-     * @return Sequence<mixed> All used keys
-     *
-     * @phpstan-return Vector<mixed>
+     * @return Vector<mixed> All used keys
      */
     public function keys(): Sequence;
 
@@ -79,9 +75,7 @@ interface IResponse extends Stringable
     /**
      * Returns the information about the error which was produced by the last REST-API call.
      *
-     * @return Collection<mixed,mixed> Error information
-     *
-     * @phpstan-return Map<mixed,mixed>
+     * @return Map<mixed,mixed> Error information
      */
     public function getError(): Collection;
 
@@ -102,9 +96,7 @@ interface IResponse extends Stringable
     /**
      * Returns the complete search result.
      *
-     * @return Collection<mixed,mixed> The complete search result
-     *
-     * @phpstan-return Map<mixed,mixed>
+     * @return Map<mixed,mixed> The complete search result
      */
     public function getResults(): Collection;
 
@@ -159,9 +151,7 @@ interface IResponse extends Stringable
     /**
      * Returns all labels set to this item.
      *
-     * @return Sequence<mixed> List of labels or empty list
-     *
-     * @phpstan-return Vector<mixed>
+     * @return Vector<mixed> List of labels or empty list
      */
     public function getLabels(): Sequence;
 
@@ -177,7 +167,7 @@ interface IResponse extends Stringable
     /**
      * Returns all item restrictions.
      *
-     * @return array<mixed,mixed> All defined item restrictions
+     * @return array<mixed> All defined item restrictions
      */
     public function getRestrictions(): array;
 

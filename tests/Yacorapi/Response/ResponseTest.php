@@ -192,17 +192,17 @@ class ResponseTest extends EasyGoingTestCase
     }
 
     /**
-     * @param Collection<mixed,mixed>|string $expected
-     * @param bool                           $expectedPrimitive
-     * @param SpaceInfoEnum                  $flags
+     * @param Collection<mixed,mixed>|int|string $expected
+     * @param bool                               $expectedPrimitive
+     * @param SpaceInfoEnum                      $flags
      */
     #[DataProvider('providerGetSpaceInfo')]
-    public function testGetSpaceInfo(Collection|string $expected, bool $expectedPrimitive, SpaceInfoEnum $flags): void
+    public function testGetSpaceInfo(Collection|string|int $expected, bool $expectedPrimitive, SpaceInfoEnum $flags): void
     {
         $actual = $this->getCasto2t()->getSpaceInfo($flags);
 
         self::assertEquals($expectedPrimitive, self::isPrimitive($actual));
-        if ($actual instanceof Collection) {
+        if ($actual instanceof Map && $expected instanceof Map) {
             self::assertEqualsCanonicalizing($expected->keys()->toArray(), $actual->keys()->toArray());
         } else {
             self::assertEquals($expected, $actual);
@@ -210,7 +210,7 @@ class ResponseTest extends EasyGoingTestCase
     }
 
     /**
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     public static function providerGetSpaceInfo(): array
     {

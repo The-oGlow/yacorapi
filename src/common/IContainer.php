@@ -28,14 +28,14 @@ interface IContainer extends Stringable
     /**
      * Returns all store data in the container.
      *
-     * @return array<mixed,mixed> Array of stored data
+     * @return array<mixed> Array of stored data
      */
     public function getAllData(): array;
 
     /**
      * Returns all keys used in the container.
      *
-     * @return array<mixed,mixed> Array of keys
+     * @return array<mixed> Array of keys
      */
     public function getKeys(): array;
 

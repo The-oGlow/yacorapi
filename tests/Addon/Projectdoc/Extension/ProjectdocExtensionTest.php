@@ -18,7 +18,7 @@ use PHPUnit\Framework\TestCase;
 
 class ProjectdocExtensionTest extends TestCase
 {
-    /** @phpstan-var class-string */
+    /** @var class-string */
     public const string CLAZZNAME = '\oglow\tools\Addon\Projectdoc\Extension\ProjectdocExtension';
 
     public function testClazzExist(): void

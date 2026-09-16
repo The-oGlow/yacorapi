@@ -141,7 +141,7 @@ final class ConstData extends AbstractSingleton
     /** @var string Key: Authorisation token for test instance */
     private const string KEY_CONF_PAT_TEST = 'CONF_PAT_TEST';
 
-    /** @var array<mixed,mixed> List of options (long) */
+    /** @var array<mixed> List of options (long) */
     private const array CLI_LONG_OPTS = [self::KEY_USE_PROD . ':'];
 
     private static LoggerInterface $logger;

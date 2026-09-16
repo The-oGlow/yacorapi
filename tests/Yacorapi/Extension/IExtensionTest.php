@@ -51,7 +51,7 @@ class IExtensionTest extends EasyGoingTestCase
     }
 
     /**
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     public static function providerExtensions(): array
     {

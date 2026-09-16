@@ -25,6 +25,8 @@ use ollily\Tools\String\ImplodeTrait;
  * Response which is used as mock for a dry run.
  *
  * @author ollily
+ *
+ * @psalm-suppress InvalidArgument
  */
 class ResponseDryRun implements IResponse
 {
@@ -55,7 +57,7 @@ class ResponseDryRun implements IResponse
     public const int VAL_RESULT_TOTAL_SIZE = 1;
 
     /**
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     protected static function dummyBody(): array
     {
@@ -66,7 +68,7 @@ class ResponseDryRun implements IResponse
      * @param bool $withBody
      * @param bool $isContentArray
      *
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     protected static function dummyResultEntry(bool $withBody = false, bool $isContentArray = false): array
     {

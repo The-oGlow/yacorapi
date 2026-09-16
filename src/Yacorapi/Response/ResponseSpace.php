@@ -33,7 +33,7 @@ class ResponseSpace extends AbstractResponse
 
     private static LoggerInterface $logger;
 
-    /** @var array<mixed,mixed> */
+    /** @var array<mixed> */
     private array $spaces;
 
     public function __construct(IResponse $response)
@@ -52,7 +52,7 @@ class ResponseSpace extends AbstractResponse
     }
 
     /**
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     public function getSpaces(): array
     {
@@ -74,6 +74,7 @@ class ResponseSpace extends AbstractResponse
     #[\Override]
     public function keys(): Vector
     {
+        /** @var Vector<mixed> */
         return new Vector(array_keys($this->spaces));
     }
 
@@ -98,6 +99,7 @@ class ResponseSpace extends AbstractResponse
     #[\Override]
     public function getResults(): Map
     {
+        /** @var Map<mixed,mixed> */
         return new Map($this->getSpaces());
     }
 
@@ -136,10 +138,10 @@ class ResponseSpace extends AbstractResponse
     }
 
     /**
-     * @param null|array<mixed,mixed> $spaces
-     * @param bool                    $noArchived
+     * @param null|array<mixed> $spaces
+     * @param bool              $noArchived
      *
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     protected function prepareSpaceCsv(?array $spaces, bool $noArchived = true): array
     {
@@ -147,11 +149,11 @@ class ResponseSpace extends AbstractResponse
     }
 
     /**
-     * @param null|array<mixed,mixed> $spaces
-     * @param bool                    $noArchived
-     * @param bool                    $asCsv
+     * @param null|array<mixed> $spaces
+     * @param bool              $noArchived
+     * @param bool              $asCsv
      *
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     protected function prepareSpaceArray(?array $spaces, bool $noArchived = false, bool $asCsv = false): array // NOSONAR: php:S3776
     {
