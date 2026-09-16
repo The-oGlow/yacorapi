@@ -64,7 +64,6 @@ class RapiClientReadTestClazz extends RapiClientRead implements IRapiClientRead
         int $searchLimit = IRapiClientBase::REQ_VAL_SEARCH_LIMIT_NO,
         ItemTypeEnum $pageType = IRapiClientBase::REQ_VAL_ITEM_TYPE_PAGE,
         bool $withBody = IRapiClientBase::REQ_VAL_BODY_NO
-
     ): string {
         return $this->prepareSearchUrlExt($searchTerm, $spaceKey, $searchFromPos, $searchLimit, $pageType, $withBody);
     }

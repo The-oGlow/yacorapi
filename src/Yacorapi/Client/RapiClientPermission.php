@@ -24,7 +24,6 @@ use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Request\RequestParameter;
 use oglow\tools\Yacorapi\Request\RequestTypeEnum;
 use Psr\Log\LoggerInterface;
-use oglow\tools\Yacorapi\Client\IRapiClientBase;
 
 class RapiClientPermission extends RapiClientWrite implements IRapiClientPermission
 {

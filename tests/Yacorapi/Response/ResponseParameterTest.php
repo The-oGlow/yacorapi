@@ -19,9 +19,9 @@ class ResponseParameterTest extends ConstantCheckTestCase
 {
     protected const string CLASS_PREFIX = ResponseParameter::class . self::C_STATIC_SEP;
 
-    private const int EXPECTED_OTHER_COUNT = 43 + 9;
+    private const int EXPECTED_OTHER_COUNT = 45 + 13;
 
-    protected const int EXPECTED_CONSTANT_COUNT = 1 + 53;
+    protected const int EXPECTED_CONSTANT_COUNT = 1 + 4 + self::EXPECTED_OTHER_COUNT;
 
     protected const bool WITH_CONST_CROSSCHECK = true;
 
@@ -60,6 +60,9 @@ class ResponseParameterTest extends ConstantCheckTestCase
     {
         $const = [
             self::CLASS_PREFIX . 'ERR_MSG_COMMON',
+            self::CLASS_PREFIX . 'EXPORT_PAGE_MIN',
+            self::CLASS_PREFIX . 'EXPORT_PAGE_LIGHT',
+            self::CLASS_PREFIX . 'EXPORT_PAGE_FULL',
         ];
         static::updateActualConsts($const);
 

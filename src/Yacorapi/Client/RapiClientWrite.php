@@ -240,7 +240,7 @@ class RapiClientWrite extends RapiClientRead implements IRapiClientWrite
         $currentPage = $this->readPageByPageId($pageId);
         if ($currentPage->checkStatus()) {
             $pageTitle = $currentPage->getValue(ResponseParameter::KEY_TITLE);
-            $pageBody = $currentPage->getValue(ResponseParameter::KEY_BODY)[ResponseParameter::KEY_STORAGE][ResponseParameter::KEY_VALUE];
+            $pageBody = $currentPage->getBody();
             $itemType = ItemTypeEnum::tryFrom($currentPage->getValue(ResponseParameter::KEY_TYPE));
             $versionData = $currentPage->getValue(ResponseParameter::KEY_VERSION, []);
             $currentVersion = intval(array_key_exists(ResponseParameter::KEY_NUMBER, $versionData) ?

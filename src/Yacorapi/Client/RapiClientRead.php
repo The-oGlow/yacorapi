@@ -111,7 +111,7 @@ class RapiClientRead extends RapiClientBase implements IRapiClientRead
         $pageId = IRapiClientBase::REQ_VAL_PAGE_ID_NO;
         $result = $this->readPagesByTitle($pageTitle, $spaceKey);
 
-        if ($result->checkStatus() && $result->isResultsAvailable()) {
+        if ($result->checkStatus() && $result->hasResults()) {
             $firstResult = $result->getResult(IRapiClientBase::RESP_VAL_RESULT_FIRST);
             $pageId = intval($firstResult[ResponseParameter::KEY_ID]);
             self::$logger->info(str_repeat(' ', IRapiClientBase::VAL_LOG_SPACE) . 'Found item', [$spaceKey, $itemType->value, $pageTitle, $pageId]);
@@ -212,7 +212,7 @@ class RapiClientRead extends RapiClientBase implements IRapiClientRead
         bool $withBody = IRapiClientBase::REQ_VAL_BODY_NO
     ): string {
         $searchLimit = $this->prepareSearchLimit($searchLimit);
-        
+
         $prepareUrl = sprintf('%s?cql=', $this->constData->c(ConstData::KEY_CONF_SEARCH_URL));
         $prepareUrl .= sprintf('siteSearch~%s', urlencode("\"{$searchTerm}\""));
         $prepareUrl .= sprintf('+AND+space.type=%s', urlencode(SpaceTypeEnum::SPACE_TYPE_GLOBAL->value));
@@ -231,14 +231,16 @@ class RapiClientRead extends RapiClientBase implements IRapiClientRead
     /**
      * If given searchLimit less than {@link IRapiClientBase::REQ_VAL_SEARCH_OVERALL_MIN}, then set to default.<br/)
      * If given searchLimit greater than {@link IRapiClientBase::REQ_VAL_SEARCH_LIMIT_END}, then set to default.<br/)
-     * Otherwise use the {@link $searchLimit}
-     * 
+     * Otherwise use the {@link $searchLimit}.
+     *
      * @param int $searchLimit The search limit
+     *
      * @return int The (corrected) search limit
-     * 
+     *
      * @see ConstData::KEY_SEARCH_LIMIT
      */
-    protected function prepareSearchLimit(int $searchLimit): int  {
+    protected function prepareSearchLimit(int $searchLimit): int
+    {
         // if given searchLimit less than minimum searchLimit, then set to default, otherwise use searchLimit
         switch (true) {
             case $searchLimit < IRapiClientBase::REQ_VAL_SEARCH_OVERALL_MIN:
@@ -250,6 +252,7 @@ class RapiClientRead extends RapiClientBase implements IRapiClientRead
             default:
                 break;
         }
+
         return intval($searchLimit);
     }
 

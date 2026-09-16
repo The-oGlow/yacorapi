@@ -200,7 +200,7 @@ trait ProjectdocTrait
     private function prepareCsvLinePdtProperty(IResponse $response, string $propertyName = ""): string
     {
         $line = "";
-        if ($response->isResultsAvailable() && $response->keyExists('name')) {
+        if ($response->hasResults() && $response->keyExists('name')) {
             $line .= $this->prepareCsvLine(
                 \oglow\tools\Addon\Projectdoc\Traits\CSV_LINE_PDT_PROPERTY,
                 $response->getValue('name'),

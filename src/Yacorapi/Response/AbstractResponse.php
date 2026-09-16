@@ -15,9 +15,12 @@ namespace oglow\tools\Yacorapi\Response;
 
 use Ds\Collection;
 use Ds\Map;
+use Ds\Sequence;
 use Ds\Vector;
 use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\IResponse;
+use oglow\tools\Yacorapi\Response\ResponseParameter as RP;
+use oglow\tools\Yacorapi\Space\SpaceInfoEnum as SIEnum;
 use ollily\Tools\String\ToStringTrait;
 use Psr\Log\LoggerInterface;
 
@@ -39,6 +42,12 @@ abstract class AbstractResponse implements IResponse
     /** @var Collection<mixed,mixed>
      * @phpstan-var Map<mixed,mixed> */
     private Collection $results;
+
+    /** @var Sequence<mixed>
+     * @phpstan-var Vector<mixed> */
+    private Sequence $labels;
+
+    private string $body;
 
     /**
      * Response constructor.
@@ -103,8 +112,8 @@ abstract class AbstractResponse implements IResponse
     public function checkStatus(): bool
     {
         $statusOk = false;
-        if ($this->keyExists(ResponseParameter::KEY_STATUS_CODE)) {
-            self::$logger->debug(ResponseParameter::ERR_MSG_COMMON, $this->getError()->toArray());
+        if ($this->keyExists(RP::KEY_STATUS_CODE)) {
+            self::$logger->debug(RP::ERR_MSG_COMMON, $this->getError()->toArray());
         } else {
             $statusOk = true;
         }
@@ -120,10 +129,10 @@ abstract class AbstractResponse implements IResponse
     public function getError(): Collection
     {
         $error = new Map();
-        if ($this->keyExists(ResponseParameter::KEY_STATUS_CODE)) {
-            $error->put(ResponseParameter::KEY_STATUS_CODE, $this->getValue(ResponseParameter::KEY_STATUS_CODE));
-            $error->put(ResponseParameter::KEY_REASON, $this->getValue(ResponseParameter::KEY_REASON));
-            $error->put(ResponseParameter::KEY_MESSAGE, $this->getValue(ResponseParameter::KEY_MESSAGE));
+        if ($this->keyExists(RP::KEY_STATUS_CODE)) {
+            $error->put(RP::KEY_STATUS_CODE, $this->getValue(RP::KEY_STATUS_CODE));
+            $error->put(RP::KEY_REASON, $this->getValue(RP::KEY_REASON));
+            $error->put(RP::KEY_MESSAGE, $this->getValue(RP::KEY_MESSAGE));
         }
 
         return $error;
@@ -135,15 +144,15 @@ abstract class AbstractResponse implements IResponse
     #[\Override]
     public function checkData(): bool
     {
-        if ($this->isResultsAvailable()) {
+        if ($this->hasResults()) {
             $hasData = $this->checkStatus();
             if ($hasData) {
-                if (!$this->keyExists(ResponseParameter::KEY_RESULTS) || $this->getValue(ResponseParameter::KEY_SIZE) <= 0) {
+                if (!$this->keyExists(RP::KEY_RESULTS) || $this->getValue(RP::KEY_SIZE) <= 0) {
                     self::$logger->debug('Response size <=', [0]);
                     $hasData = false;
                 } else {
                     self::$logger->debug('Response size =', [
-                        $this->keyExists(ResponseParameter::KEY_RESULTS), $this->getValue(ResponseParameter::KEY_SIZE)]);
+                        $this->keyExists(RP::KEY_RESULTS), $this->getValue(RP::KEY_SIZE)]);
                 }
             }
         } else {
@@ -160,17 +169,17 @@ abstract class AbstractResponse implements IResponse
      * @inheritDoc
      */
     #[\Override]
-    public function checkDataWrite(): mixed
+    public function checkDataWrite(): int|bool
     {
-        if ($this->isResultsAvailable()) {
+        if ($this->hasResults()) {
             $hasData = $this->checkStatus();
             if ($hasData) {
-                if (!$this->keyExists(ResponseParameter::KEY_KEY) || $this->getValue(ResponseParameter::KEY_KEY) <= 0) {
-                    self::$logger->info('No itemId found or is 0');
+                if (RP::VAL_PAGE_ID_NO == $this->getItemId()) {
+                    self::$logger->warning('No itemId set');
                     $hasData = false;
                 } else {
-                    $itemId = $this->getValue(ResponseParameter::KEY_KEY);
-                    self::$logger->notice('Write to itemId', [$itemId]);
+                    $itemId = $this->getItemId();
+                    self::$logger->debug('Will write to itemId', [$itemId]);
                     $hasData = $itemId;
                 }
             }
@@ -197,18 +206,10 @@ abstract class AbstractResponse implements IResponse
      * @inheritDoc
      */
     #[\Override]
-    public function getResultsCount(): int {
-        return $this->results->count();
-    }
-    
-    /**
-     * @inheritDoc
-     */
-    #[\Override]
     public function getResult(int $idx): mixed
     {
         $result = null;
-        if ($this->isResultsAvailable()) {
+        if ($this->hasResults()) {
             $result = $this->results->toArray()[$idx];
         }
 
@@ -219,7 +220,16 @@ abstract class AbstractResponse implements IResponse
      * @inheritDoc
      */
     #[\Override]
-    public function isResultsAvailable(): bool
+    public function getResultsCount(): int
+    {
+        return $this->results->count();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[\Override]
+    public function hasResults(): bool
     {
         return !$this->results->isEmpty();
     }
@@ -230,7 +240,61 @@ abstract class AbstractResponse implements IResponse
     #[\Override]
     public function getItemId(): int
     {
-        return intval($this->getValue(ResponseParameter::KEY_ID, ResponseParameter::VAL_PAGE_ID_NO));
+        return intval($this->getValue(RP::KEY_ID, RP::VAL_PAGE_ID_NO));
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[\Override]
+    public function getSpaceInfo(SIEnum $flags = SIEnum::SPACEINFO_ALL): mixed
+    {
+        $info = '';
+        if ($flags == SIEnum::SPACEINFO_ALL) {
+            $info = new Map();
+            $info->putAll($this->prepareSpaceInfo(SIEnum::SPACEINFO_ID)->toArray());
+            $info->putAll($this->prepareSpaceInfo(SIEnum::SPACEINFO_KEY)->toArray());
+            $info->putAll($this->prepareSpaceInfo(SIEnum::SPACEINFO_TITLE)->toArray());
+            $info->putAll($this->prepareSpaceInfo(SIEnum::SPACEINFO_TYPE)->toArray());
+        } else {
+            $info = $this->prepareSpaceInfo($flags)->first()->value;
+        }
+
+        return $info;
+    }
+
+    /**
+     * @param SIEnum $flags
+     *
+     * @return Collection<mixed,mixed>
+     */
+    protected function prepareSpaceInfo(SIEnum $flags): Collection
+    {
+        $space = $this->getValue(RP::KEY_SPACE);
+        switch (true) {
+            case (SIEnum::SPACEINFO_ID->value & $flags->value) == SIEnum::SPACEINFO_ID->value:
+                $tmpValue = intval(empty($space) ? RP::VAL_SPACE_ID_NO : $space[RP::KEY_ID]);
+                $tmpKey = RP::KEY_ID;
+                break;
+            case (SIEnum::SPACEINFO_KEY->value & $flags->value) == SIEnum::SPACEINFO_KEY->value:
+                $tmpValue = empty($space) ? RP::VAL_SPACE_KEY_NO : $space[RP::KEY_KEY];
+                $tmpKey = RP::KEY_KEY;
+                break;
+            case (SIEnum::SPACEINFO_TITLE->value & $flags->value) == SIEnum::SPACEINFO_TITLE->value:
+                $tmpValue = empty($space) ? RP::VAL_SPACE_TITLE_EMPTY : $space[RP::KEY_TITLE];
+                $tmpKey = RP::KEY_TITLE;
+                break;
+            case (SIEnum::SPACEINFO_TYPE->value & $flags->value) == SIEnum::SPACEINFO_TYPE->value:
+                $tmpValue = empty($space) ? RP::VAL_SPACE_TYPE_EMPTY : $space[RP::KEY_TYPE];
+                $tmpKey = RP::KEY_TYPE;
+                break;
+            default:
+                $tmpKey = '';
+                $tmpValue = '';
+                break;
+        }
+
+        return  new Map([$tmpKey => $tmpValue]);
     }
 
     /**
@@ -239,15 +303,25 @@ abstract class AbstractResponse implements IResponse
     #[\Override]
     public function getBody(): string
     {
-        $body = '';
-        $tmpBody = $this->getValue(ResponseParameter::KEY_BODY, []);
-        if (array_key_exists(ResponseParameter::KEY_STORAGE, $tmpBody)) { // NOSONAR: php:S1066
-            if (array_key_exists(ResponseParameter::KEY_VALUE, $tmpBody[ResponseParameter::KEY_STORAGE])) {
-                $body = $tmpBody[ResponseParameter::KEY_STORAGE][ResponseParameter::KEY_VALUE];
-            }
-        }
+        return $this->body;
+    }
 
-        return $body;
+    /**
+     * @inheritDoc
+     */
+    #[\Override]
+    public function getLabels(): Sequence
+    {
+        return $this->labels;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[\Override]
+    public function labelExists(string $labelName): bool
+    {
+        return $this->labels->contains($labelName);
     }
 
     /**
@@ -256,7 +330,7 @@ abstract class AbstractResponse implements IResponse
     #[\Override]
     public function getRestrictions(): array
     {
-        return $this->getValue(ResponseParameter::KEY_RESTRICTIONS, []);
+        return $this->getValue(RP::KEY_RESTRICTIONS, []);
     }
 
     /**
@@ -265,20 +339,45 @@ abstract class AbstractResponse implements IResponse
     #[\Override]
     protected function __toStringValues(): mixed
     {
-        return [ResponseParameter::KEY_RESPONSE => $this->rawData, ResponseParameter::KEY_RESULTS => $this->results];
+        return [RP::KEY_RESPONSE => $this->rawData, RP::KEY_RESULTS => $this->results];
     }
 
     /**
-     * @param array<mixed,mixed> $data
+     * @param array<mixed,mixed> $rawData
      */
-    private function prepareData(array $data = []): void
+    private function prepareData(array $rawData = []): void
     {
-        if (array_key_exists(ResponseParameter::KEY_RESULTS, $data)) {
-            $this->results = new Map($data[ResponseParameter::KEY_RESULTS]);
-            unset($data[ResponseParameter::KEY_RESULTS]);
+        // Separate results
+        if (array_key_exists(RP::KEY_RESULTS, $rawData)) {
+            $this->results = new Map($rawData[RP::KEY_RESULTS]);
+            unset($rawData[RP::KEY_RESULTS]);
         } else {
             $this->results = new Map([]);
         }
-        $this->rawData = new Map($data);
+
+        // Separate labels
+        $this->labels = new Vector();
+        if (array_key_exists(RP::KEY_METADATA, $rawData)) {
+            if (array_key_exists(RP::KEY_LABELS, $rawData[RP::KEY_METADATA])) {
+                if (array_key_exists(RP::KEY_RESULTS, $rawData[RP::KEY_METADATA][RP::KEY_LABELS])) {
+                    $this->labels = new Vector(array_column($rawData[RP::KEY_METADATA][RP::KEY_LABELS][RP::KEY_RESULTS], RP::KEY_NAME));
+                    unset($rawData[RP::KEY_METADATA][RP::KEY_LABELS][RP::KEY_RESULTS]);
+                }
+            }
+        }
+
+        // Separate body
+        $this->body = '';
+
+        if (array_key_exists(RP::KEY_BODY, $rawData)) {
+            if (array_key_exists(RP::KEY_STORAGE, $rawData[RP::KEY_BODY])) {
+                if (array_key_exists(RP::KEY_VALUE, $rawData[RP::KEY_BODY][RP::KEY_STORAGE])) {
+                    $this->body = $rawData[RP::KEY_BODY][RP::KEY_STORAGE][RP::KEY_VALUE];
+                    unset($rawData[RP::KEY_BODY][RP::KEY_STORAGE][RP::KEY_VALUE]);
+                }
+            }
+        }
+
+        $this->rawData = new Map($rawData);
     }
 }

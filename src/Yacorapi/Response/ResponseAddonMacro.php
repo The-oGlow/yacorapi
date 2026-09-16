@@ -38,8 +38,10 @@ class ResponseAddonMacro extends AbstractResponse
     {
         self::$logger = new ConsoleLogger(ResponseAddonMacro::class);
         self::$logger->debug('START');
+
         parent::__construct($data);
         $this->mode = $mode;
+
         self::$logger->debug('mode', [$this->getMode()]);
         self::$logger->debug('addons:', [ print_r($this->getRawData(), true)]);
         self::$logger->debug('END');

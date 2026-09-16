@@ -23,7 +23,6 @@ use oglow\tools\Yacorapi\Statistic\StatisticTypeEnum;
 use oglow\tools\Yacorapi\YacorapiTestData;
 use PHPUnit\Framework\EasyGoingTestCase;
 use Psr\Log\LoggerInterface;
-use oglow\tools\Yacorapi\Client\IRapiClientBase;
 
 class RapiClientStatisticTest extends EasyGoingTestCase
 {

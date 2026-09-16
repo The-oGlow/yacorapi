@@ -77,7 +77,7 @@ class RequestParameter extends AbstractSingleton
 
     /** @var int Last search result on a page */
     public const int VAL_SEARCH_LIMIT_END = 50;
-    
+
     /** @var int search has no starting result */
     public const int VAL_SEARCH_START_NO = -1;
 
@@ -98,7 +98,7 @@ class RequestParameter extends AbstractSingleton
 
     /** @var int Max count of search results overall pages */
     public const int VAL_SEARCH_OVERALL_MAX = self::VAL_SEARCH_LIMIT_END * self::VAL_SEARCH_PAGE_LIMIT_MAX;
-    
+
     // Page Consts
     public const int VAL_PARENT_ID_NO = 0;
 

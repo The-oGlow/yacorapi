@@ -19,7 +19,7 @@ class StoreParameterTest extends ConstantCheckTestCase
 {
     protected const string CLASS_PREFIX = StoreParameter::class . self::C_STATIC_SEP;
 
-    private const int EXPECTED_OTHER_COUNT = 4 + 11 + 10;
+    private const int EXPECTED_OTHER_COUNT = 4 + 12 + 10;
 
     protected const int EXPECTED_CONSTANT_COUNT = 1 + 1 + self::EXPECTED_OTHER_COUNT;
 

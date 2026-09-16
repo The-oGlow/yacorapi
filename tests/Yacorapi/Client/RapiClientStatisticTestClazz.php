@@ -19,7 +19,6 @@ use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\Data\ItemTypeEnum;
 use oglow\tools\Yacorapi\Space\SpaceTypeEnum;
 use Psr\Log\LoggerInterface;
-use oglow\tools\Yacorapi\Client\IRapiClientBase;
 
 class RapiClientStatisticTestClazz extends RapiClientStatistic implements IRapiClientStatistic
 {

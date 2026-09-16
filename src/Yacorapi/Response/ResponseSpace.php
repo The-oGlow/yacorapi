@@ -27,9 +27,9 @@ use Psr\Log\LoggerInterface;
  */
 class ResponseSpace extends AbstractResponse
 {
-    public const string SPACE_ARCH_FLAG1 = '[archived]';
+    protected const string SPACE_ARCH_FLAG1 = '[archived]';
 
-    public const string SPACE_ARCH_FLAG2 = '[archive]';
+    protected const string SPACE_ARCH_FLAG2 = '[archive]';
 
     private static LoggerInterface $logger;
 
@@ -114,7 +114,7 @@ class ResponseSpace extends AbstractResponse
      * @inheritDoc
      */
     #[\Override]
-    public function isResultsAvailable(): bool
+    public function hasResults(): bool
     {
         return !empty($this->spaces);
     }

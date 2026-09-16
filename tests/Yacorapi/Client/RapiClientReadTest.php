@@ -22,7 +22,6 @@ use oglow\tools\Yacorapi\YacorapiTestData;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\EasyGoingTestCase;
 use Psr\Log\LoggerInterface;
-use oglow\tools\Yacorapi\Client\IRapiClientBase;
 
 class RapiClientReadTest extends EasyGoingTestCase
 {

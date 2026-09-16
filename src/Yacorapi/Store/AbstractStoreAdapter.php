@@ -15,8 +15,8 @@ namespace oglow\tools\Yacorapi\Store;
 
 use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\ConstData;
-use Psr\Log\LoggerInterface;
 use oglow\tools\Yacorapi\Store\StoreParameter as SP;
+use Psr\Log\LoggerInterface;
 
 /**
  * Abstract implementation for a store adapter.
@@ -71,11 +71,11 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
             $finalPathToFile = $pathToFile;
         }
         $finalFileName = $this->prepareFileName($fileName, $filePrefix, $fileSuffix, $fileExt);
-        
+
         $finalPathToFile = str_replace([SP::C_DIR_SEP_WIN, SP::C_DIR_SEP_UNIX], DIRECTORY_SEPARATOR, $finalPathToFile);
         $finalFileName = str_replace([SP::C_DIR_SEP_WIN, SP::C_DIR_SEP_UNIX], DIRECTORY_SEPARATOR, $finalFileName);
 
-        self::$logger->info('Outputfile',[$finalPathToFile, $finalFileName]);
+        self::$logger->info('Outputfile', [$finalPathToFile, $finalFileName]);
         $this->storeItem = $this->invokeStoreItem($finalFileName, $finalPathToFile);
 
         self::$logger->debug('END');
@@ -110,7 +110,7 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
         } else {
             $finalFileName = $fileName;
         }
-        
+
         if (!empty($filePrefix)) {
             $finalFileName = sprintf('%s-%s', $filePrefix, $finalFileName);
         }
@@ -121,7 +121,7 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
             $finalFileName = str_replace('..', '.', sprintf('%s.%s', $finalFileName, $fileExt));
         }
 
-        self::$logger->debug('END',[$finalFileName]);
+        self::$logger->debug('END', [$finalFileName]);
 
         return $finalFileName;
     }
@@ -141,7 +141,7 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
         $sessionFolder = $this->prepareTargetFolder($fileName, $sessionFolder);
         $this->mkdir($sessionFolder);
 
-        self::$logger->debug('END',[$sessionFolder]);
+        self::$logger->debug('END', [$sessionFolder]);
 
         return $sessionFolder;
     }
@@ -236,7 +236,7 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
 
         $newClazz = FileStoreItem::prepareTargetFile($pathToFile, pathinfo($fileName, PATHINFO_FILENAME), pathinfo($fileName, PATHINFO_EXTENSION));
 
-        self::$logger->debug('END',[$newClazz]);
+        self::$logger->debug('END', [$newClazz]);
 
         return $newClazz;
     }
@@ -248,10 +248,8 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
      *
      * @return string The header as string
      */
-    protected function flattenDataHeader(string|array $dataHeader): string
+    protected static function flattenDataHeader(string|array $dataHeader): string
     {
-        self::$logger->debug("START");
-
         $header = "";
         if (!empty($dataHeader)) {
             if (!is_array($dataHeader)) {
@@ -259,8 +257,6 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
             }
             $header = implode(SP::DEFAULT_ITEM_SEP, $dataHeader);
         }
-
-        self::$logger->debug('END');
 
         return $header;
     }

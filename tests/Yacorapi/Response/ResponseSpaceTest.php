@@ -111,11 +111,11 @@ class ResponseSpaceTest extends EasyGoingTestCase
         $this->getCasto2t()->getResult(YacorapiTestData::KEY_NUM1);
     }
 
-    public function testIsResultsAvailable(): void
+    public function testhasResults(): void
     {
         $expected = false;
 
-        $actual = $this->getCasto2t()->isResultsAvailable();
+        $actual = $this->getCasto2t()->hasResults();
 
         self::assertEquals($expected, $actual);
     }

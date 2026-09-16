@@ -73,7 +73,7 @@ class ProjectDocToolboxHelper extends AbstractHelper
     public function modifyData(?IResponse $response, string $oldDoctype, string $newDoctype): bool
     {
         $modified = false;
-        if (!empty($response) && $response->isResultsAvailable()) {
+        if (!empty($response) && $response->hasResults()) {
             $idx     = 0;
             $results = $response->getResults();
             foreach ($results as $page) {

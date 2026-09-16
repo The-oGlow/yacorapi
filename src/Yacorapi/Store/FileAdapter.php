@@ -15,6 +15,7 @@ namespace oglow\tools\Yacorapi\Store;
 
 use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\ConstData;
+use oglow\tools\Yacorapi\Store\StoreParameter as SP;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -26,8 +27,8 @@ use Psr\Log\LoggerInterface;
  */
 class FileAdapter extends AbstractStoreAdapter
 {
-    /** @var string */
-    public const string DEFAULT_STORE_ITEM_SUFFIX = StoreParameter::C_FILE_EXT_TEXT;
+    /** @var string Standard file extension for this adapter */
+    public const string DEFAULT_FILE_EXT = SP::C_FILE_EXT_TEXT;
 
     private static LoggerInterface $logger;
 
@@ -35,12 +36,12 @@ class FileAdapter extends AbstractStoreAdapter
      * Constructor for a store adapter.
      *
      * @param string                                         $fileName   The filename, without suffix, of the output file
-     * @param string                                         $filePrefix Prefix of the output file (Default: {@link StoreParameter::DEFAULT_FILE_PREFIX})
-     * @param string                                         $fileSuffix Suffix of the output file (Default: {@link StoreParameter::DEFAULT_FILE_SUFFIX})
+     * @param string                                         $filePrefix Prefix of the output file (Default: {@link SP::DEFAULT_FILE_PREFIX})
+     * @param string                                         $fileSuffix Suffix of the output file (Default: {@link SP::DEFAULT_FILE_SUFFIX})
      * @param string                                         $fileExt    File extension of the output file
-     *                                                                   (Default: {@link StoreParameter::DEFAULT_FILE_EXT})
+     *                                                                   (Default: {@link SP::DEFAULT_FILE_EXT})
      * @param string                                         $pathToFile Folder where to store the output file
-     *                                                                   (Default: {@link StoreParameter::DEFAULT_FOLDER_NAME})
+     *                                                                   (Default: {@link SP::DEFAULT_FOLDER_NAME})
      * @param FileStoreStageEnum                             $staging    The stage where to store the file (Default {@link FileStoreStageEnum::BASE})
      * @param int|\Monolog\Level|\Psr\Log\LogLevel::*|string $level      The minimum logging level at which this handler will be triggered
      *                                                                   (Default: {@link self::LEVEL_DEFAULT})
@@ -49,10 +50,10 @@ class FileAdapter extends AbstractStoreAdapter
      */
     public function __construct(
         string $fileName,
-        string $filePrefix = StoreParameter::DEFAULT_FILE_PREFIX,
-        string $fileSuffix = StoreParameter::DEFAULT_FILE_SUFFIX,
-        string $fileExt = StoreParameter::DEFAULT_FILE_EXT,
-        string $pathToFile = StoreParameter::DEFAULT_FOLDER_NAME,
+        string $filePrefix = SP::DEFAULT_FILE_PREFIX,
+        string $fileSuffix = SP::DEFAULT_FILE_SUFFIX,
+        string $fileExt = SP::DEFAULT_FILE_EXT,
+        string $pathToFile = SP::DEFAULT_FOLDER_NAME,
         FileStoreStageEnum $staging = FileStoreStageEnum::BASE,
         mixed $level = self::LEVEL_DEFAULT
     ) {
@@ -60,7 +61,7 @@ class FileAdapter extends AbstractStoreAdapter
         self::$logger->debug("START", [$fileName, $filePrefix, $fileSuffix, $fileExt, $pathToFile, $staging->name]);
 
         if (empty($fileExt)) {
-            $finalFileExt = self::DEFAULT_STORE_ITEM_SUFFIX;
+            $finalFileExt = self::DEFAULT_FILE_EXT;
         } else {
             $finalFileExt = $fileExt;
         }
@@ -92,7 +93,7 @@ class FileAdapter extends AbstractStoreAdapter
         self::$logger->debug('START', [$this->storeItem]);
 
         if (!empty($dataHeader)) {
-            $this->writeData($this->storeItem, $this->flattenDataHeader($dataHeader));
+            $this->writeData($this->storeItem, self::flattenDataHeader($dataHeader));
         }
 
         self::$logger->debug('END');
@@ -107,10 +108,10 @@ class FileAdapter extends AbstractStoreAdapter
 
         $line = sprintf(
             '%s;%s%s;%s',
-            $resultsEntry[StoreParameter::KEY_KEY],
+            $resultsEntry[SP::KEY_KEY],
             $this->constData->c(ConstData::KEY_CONF_BASE_URL),
-            $resultsEntry[StoreParameter::KEY_LINKS][StoreParameter::KEY_TINYUI],
-            $resultsEntry[StoreParameter::KEY_TITLE]
+            $resultsEntry[SP::KEY_LINKS][SP::KEY_TINYUI],
+            $resultsEntry[SP::KEY_TITLE]
         );
         $this->writeData($this->storeItem, $line);
 

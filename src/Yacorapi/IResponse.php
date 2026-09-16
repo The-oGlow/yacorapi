@@ -15,7 +15,9 @@ namespace oglow\tools\Yacorapi;
 
 use Ds\Collection;
 use Ds\Map;
+use Ds\Sequence;
 use Ds\Vector;
+use oglow\tools\Yacorapi\Space\SpaceInfoEnum;
 use Stringable;
 
 /**
@@ -51,9 +53,11 @@ interface IResponse extends Stringable
     /**
      * Returns all keys at first level of the response.
      *
-     * @return Vector<mixed> All keys
+     * @return Sequence<mixed> All used keys
+     *
+     * @phpstan-return Vector<mixed>
      */
-    public function keys(): Vector;
+    public function keys(): Sequence;
 
     /**
      * Returns the value for the key (only from first level of the response) or a default value.
@@ -91,9 +95,9 @@ interface IResponse extends Stringable
     /**
      * Verifies if the data is valid to write.
      *
-     * @return mixed itemId=Data is valid, else FALSE
+     * @return bool|int item id=Data is valid, else FALSE
      */
-    public function checkDataWrite(): mixed;
+    public function checkDataWrite(): int|bool;
 
     /**
      * Returns the complete search result.
@@ -115,9 +119,17 @@ interface IResponse extends Stringable
 
     /**
      * Returns the number of results from the search.
-     * @return int The number of results from the search.
+     *
+     * @return int the number of results from the search
      */
     public function getResultsCount(): int;
+
+    /**
+     * Verifies if the search result has entries.
+     *
+     * @return bool TRUE=search result has at least one entry, else FALSE
+     */
+    public function hasResults(): bool;
 
     /**
      * Returns the id of the confluence item.
@@ -127,6 +139,17 @@ interface IResponse extends Stringable
     public function getItemId(): int;
 
     /**
+     * Returns information about the space this item is assigned to.
+     *
+     * @param SpaceInfoEnum $flags
+     *
+     * @return mixed
+     *
+     * @see SpaceInfoEnum
+     */
+    public function getSpaceInfo(SpaceInfoEnum $flags = SpaceInfoEnum::SPACEINFO_ALL): mixed;
+
+    /**
      * Returns the body of the item in storage format.
      *
      * @return string The body of the item
@@ -134,18 +157,29 @@ interface IResponse extends Stringable
     public function getBody(): string;
 
     /**
+     * Returns all labels set to this item.
+     *
+     * @return Sequence<mixed> List of labels or empty list
+     *
+     * @phpstan-return Vector<mixed>
+     */
+    public function getLabels(): Sequence;
+
+    /**
+     * Returns, if the item has the given label.
+     *
+     * @param string $labelName The name of the label
+     *
+     * @return bool TRUE=the label exists, else FALSE
+     */
+    public function labelExists(string $labelName): bool;
+
+    /**
      * Returns all item restrictions.
      *
      * @return array<mixed,mixed> All defined item restrictions
      */
     public function getRestrictions(): array;
-
-    /**
-     * Verifies if the search result has entries.
-     *
-     * @return bool TRUE=search result has at least one entry, else FALSE
-     */
-    public function isResultsAvailable(): bool;
 
     /**
      * @inheritDoc
