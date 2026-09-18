@@ -14,16 +14,19 @@ declare(strict_types=1);
 namespace oglow\tools\common;
 
 use Ds\Map;
-use oglow\tools\Yacorapi\YacorapiTestData;
+use oglow\tools\Yacorapi\YacorapiTestData as YTD;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\EasyGoingTestCase;
 
 class AbstractSingletonTest extends EasyGoingTestCase
 {
+    /**
+     * @inheritDoc
+     */
     #[\Override]
     protected static function prepareO2t(): AbstractSingletonTestDummyClazz
     {
-        return new AbstractSingletonTestDummyClazz();
+        return AbstractSingletonTestDummyClazz::i();
     }
 
     /**
@@ -52,28 +55,15 @@ class AbstractSingletonTest extends EasyGoingTestCase
     #[DataProvider('providerConstruct')]
     public function testConstruct(mixed $expected, string $key, bool $withLogger): void
     {
-        $actual = new AbstractSingletonTestDummyClazz($key, $withLogger);
+        $actual = AbstractSingletonTestDummyClazz::i($key, $withLogger);
 
         self::assertInstanceOf(AbstractSingletonTestDummyClazz::class, $actual);
         self::assertEquals($expected, $actual->getKey());
     }
 
-    /**
-     * @return array<mixed,mixed>
-     */
-    public static function providerConstruct(): array
-    {
-        return [
-            'emptyTrue' => [AbstractSingletonTestDummyClazz::class, YacorapiTestData::DATA_EMPTY, YacorapiTestData::DATA_BOOL_T],
-            'emptyFalse' => [AbstractSingletonTestDummyClazz::class, YacorapiTestData::DATA_EMPTY, YacorapiTestData::DATA_BOOL_F],
-            'keyTrue' => [YacorapiTestData::KEY_ALPHA1, YacorapiTestData::KEY_ALPHA1, YacorapiTestData::DATA_BOOL_T],
-            'keyFalse' => [YacorapiTestData::KEY_ALPHA1, YacorapiTestData::KEY_ALPHA1, YacorapiTestData::DATA_BOOL_F],
-        ];
-    }
-
     public function testPrepareShortOpts(): void
     {
-        $expected = YacorapiTestData::DATA_EMPTY;
+        $expected = YTD::DATA_EMPTY;
 
         $actual = $this->getCasto2t()->publicPrepareShortOpts();
 
@@ -82,7 +72,7 @@ class AbstractSingletonTest extends EasyGoingTestCase
 
     public function testPrepareLongOpts(): void
     {
-        $expected = YacorapiTestData::ARRAY_EMPTY;
+        $expected = YTD::ARRAY_EMPTY;
 
         $actual = $this->getCasto2t()->publicPrepareLongOpts();
 
@@ -91,9 +81,9 @@ class AbstractSingletonTest extends EasyGoingTestCase
 
     public function testParseBoolCollection(): void
     {
-        $expected = YacorapiTestData::DATA_EMPTY;
+        $expected = YTD::DATA_EMPTY;
 
-        $actual = $this->getCasto2t()->publicParseBoolCollection(new Map(), YacorapiTestData::KEY_ALPHA1);
+        $actual = $this->getCasto2t()->publicParseBoolCollection(new Map(), YTD::KEY_ALPHA1);
 
         self::assertEquals($expected, $actual);
     }
@@ -105,5 +95,20 @@ class AbstractSingletonTest extends EasyGoingTestCase
         $actual = $this->getCasto2t()->publicValidateSettings(new Map());
 
         self::assertEquals($expected, $actual);
+    }
+    
+    // Data provider
+    
+        /**
+     * @return array<mixed,mixed>
+     */
+    public static function providerConstruct(): array
+    {
+        return [
+            'emptyTrue' => [AbstractSingletonTestDummyClazz::class, YTD::DATA_EMPTY, YTD::DATA_BOOL_T],
+            'emptyFalse' => [AbstractSingletonTestDummyClazz::class, YTD::DATA_EMPTY, YTD::DATA_BOOL_F],
+            'keyTrue' => [YTD::KEY_ALPHA1, YTD::KEY_ALPHA1, YTD::DATA_BOOL_T],
+            'keyFalse' => [YTD::KEY_ALPHA1, YTD::KEY_ALPHA1, YTD::DATA_BOOL_F],
+        ];
     }
 }

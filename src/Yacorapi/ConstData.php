@@ -293,7 +293,7 @@ final class ConstData extends AbstractSingleton
     {
         self::$logger->debug('START');
 
-        $ovUseProd = static::parseBool($overrideParameters, self::KEY_USE_PROD);
+        $ovUseProd = self->parseBool($overrideParameters, self::KEY_USE_PROD);
 
         $this->definedConst = new Map();
 

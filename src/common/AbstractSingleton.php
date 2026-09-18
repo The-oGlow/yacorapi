@@ -18,31 +18,36 @@ use Ds\Map;
 use Monolog\ConsoleLogger;
 use Monolog\DoNothingLogger;
 use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 
 /**
  * Abstract implementation for a singleton.
  *
  * @author olliy
  *
- *  @phpstan-consistent-constructor
+ * @phpstan-consistent-constructor
  */
 abstract class AbstractSingleton implements ISingleton
 {
+    /** @var object the real instance of the singleton */
+    private static ?object $instance = null;
+    
     private static LoggerInterface $logger;
 
-    private string $key;
+    /** @var string identifier for the singleton */
+    private string $key = '';
 
     /**
      * Public constructor.
      *
      * @param string $key        Unique id of this singleton
      * @param bool   $withLogger TRUE=activate logging, else FALSE
+     * @param LogLevel::*|string|int $level      The minimum logging level at which this handler will be triggered (Default: {@link AbstractEasyGoingLogger::LEVEL_DEFAULT})
      */
-    public function __construct(string $key = '', bool $withLogger = true)
+    private function __construct(string $key, bool $withLogger = true, LogLevel|string|int $level = self::LEVEL_DEFAULT)
     {
         if ($withLogger) {
-            /** @phpstan-ignore argument.type */
-            self::$logger = new ConsoleLogger(AbstractSingleton::class, level: static::LEVEL_DEFAULT);
+            self::$logger = new ConsoleLogger(AbstractSingleton::class, level: $level);
         } else {
             self::$logger = new DoNothingLogger();
         }
@@ -64,9 +69,12 @@ abstract class AbstractSingleton implements ISingleton
      *
      * @return object This singleton
      */
-    public static function i(): object
-    {
-        return new static();
+    public static function i(string $key = '', bool $withLogger = true, int|string|Level $level = self::LEVEL_DEFAULT): object
+    {   
+        if (self::$instance==null) {
+            self::$instance = new static($key, $withLogger, $level);
+        }
+        return self::$instance;
     }
 
     /**
@@ -77,7 +85,7 @@ abstract class AbstractSingleton implements ISingleton
      *
      * @return mixed The boolean value of the parameter or ''
      */
-    protected static function parseBool(Collection $overrideParameters, string $keyName): mixed
+    protected function parseBool(Collection $overrideParameters, string $keyName): mixed
     {
         /** @var mixed */
         $foundBool = '';
@@ -154,5 +162,15 @@ abstract class AbstractSingleton implements ISingleton
     protected function prepareLongOpts(): array
     {
         return [];
+    }
+    
+    private function __clone()
+    {
+        // nothing to do here
+    }
+
+    private function __wakeup()
+    {
+        // nothing to do here
     }
 }

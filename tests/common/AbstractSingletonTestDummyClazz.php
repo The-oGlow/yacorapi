@@ -34,7 +34,7 @@ class AbstractSingletonTestDummyClazz extends AbstractSingleton
      */
     public function publicPrepareShortOpts(): string
     {
-        return parent::prepareShortOpts();
+        return $this->prepareShortOpts();
     }
 
     /**
@@ -42,7 +42,7 @@ class AbstractSingletonTestDummyClazz extends AbstractSingleton
      */
     public function publicPrepareLongOpts(): array
     {
-        return parent::prepareLongOpts();
+        return $this->prepareLongOpts();
     }
 
     /**
@@ -53,6 +53,6 @@ class AbstractSingletonTestDummyClazz extends AbstractSingleton
      */
     public function publicParseBoolCollection(Collection $overrideParameters, string $keyName): mixed
     {
-        return parent::parseBool($overrideParameters, $keyName);
+        return $this->parseBool($overrideParameters, $keyName);
     }
 }
