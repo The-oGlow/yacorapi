@@ -307,19 +307,19 @@ class YacorapiTestData extends TestData
 
     // Response
 
-    /** @var array<mixed,mixed> */
+    /** @var array<mixed> */
     private static array $RESP_HEAD_SEARCHPAGEID_01;
 
-    /** @var array<mixed,mixed> */
+    /** @var array<mixed> */
     private static array $RESP_BODY;
 
-    /** @var array<mixed,mixed> */
+    /** @var array<mixed> */
     private static array $RESP_CONTENTFILTER_RESULT;
 
-    /** @var array<mixed,mixed> */
+    /** @var array<mixed> */
     private static array $RESP_SEARCH_RESULT;
 
-    /** @var array<mixed,mixed> */
+    /** @var array<mixed> */
     private static array $RESP_SCAN_RESULT;
 
     public const array RESP_RESTRICTION = [
@@ -344,7 +344,7 @@ class YacorapiTestData extends TestData
     // Static functions
 
     /**
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     public static function RESP_HEAD_SEARCHPAGEID_01(): array // NOSONAR:  php:S116
     {
@@ -361,7 +361,7 @@ class YacorapiTestData extends TestData
     }
 
     /**
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     public static function RESP_BODY(): array // NOSONAR:  php:S116
     {
@@ -371,7 +371,7 @@ class YacorapiTestData extends TestData
     }
 
     /**
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     public static function RESP_CONTENTFILTER_RESULT(): array // NOSONAR:  php:S116
     {
@@ -381,7 +381,7 @@ class YacorapiTestData extends TestData
     }
 
     /**
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     public static function RESP_SCAN_RESULT(): array // NOSONAR:  php:S116
     {
@@ -391,7 +391,7 @@ class YacorapiTestData extends TestData
     }
 
     /**
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     public static function RESP_SEARCH_RESULT(): array // NOSONAR:  php:S116
     {
@@ -421,9 +421,9 @@ class YacorapiTestData extends TestData
     }
 
     /**
-     * @param array<mixed,mixed> $items
+     * @param array<mixed> $items
      *
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     public static function prepareResponseResults(array $items): array
     {
@@ -437,7 +437,7 @@ class YacorapiTestData extends TestData
      * @param string                  $text
      * @param Collection<mixed,mixed> $parameters
      *
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     public static function prepareResponseSpace(string $text, Collection $parameters): array
     {
@@ -460,7 +460,7 @@ class YacorapiTestData extends TestData
     /**
      * @param int $currentVersion
      *
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     public static function prepareResponseVersion(int $currentVersion = 1): array
     {
@@ -471,7 +471,7 @@ class YacorapiTestData extends TestData
      * @param mixed                   $text
      * @param Collection<mixed,mixed> $parameters
      *
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     public static function prepareResponseAncestor(mixed $text, Collection $parameters): array
     {
@@ -495,7 +495,7 @@ class YacorapiTestData extends TestData
      * @param string                  $text
      * @param Collection<mixed,mixed> $parameters
      *
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     public static function prepareResponseBody(string $text, Collection $parameters): array
     {

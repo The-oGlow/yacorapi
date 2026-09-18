@@ -15,7 +15,9 @@ namespace oglow\tools\Yacorapi;
 
 use Ds\Collection;
 use Ds\Map;
+use Ds\Sequence;
 use Ds\Vector;
+use oglow\tools\Yacorapi\Space\SpaceInfoEnum;
 use Stringable;
 
 /**
@@ -33,9 +35,7 @@ interface IResponse extends Stringable
     /**
      * Returns the raw data of the response as it was returnd from the REST API call.
      *
-     * @return Collection<mixed,mixed> The raw response
-     *
-     * @phpstan-return Map<mixed,mixed>
+     * @return Map<mixed,mixed> The raw response
      */
     public function getRawData(): Collection;
 
@@ -51,9 +51,9 @@ interface IResponse extends Stringable
     /**
      * Returns all keys at first level of the response.
      *
-     * @return Vector<mixed> All keys
+     * @return Vector<mixed> All used keys
      */
-    public function keys(): Vector;
+    public function keys(): Sequence;
 
     /**
      * Returns the value for the key (only from first level of the response) or a default value.
@@ -75,9 +75,7 @@ interface IResponse extends Stringable
     /**
      * Returns the information about the error which was produced by the last REST-API call.
      *
-     * @return Collection<mixed,mixed> Error information
-     *
-     * @phpstan-return Map<mixed,mixed>
+     * @return Map<mixed,mixed> Error information
      */
     public function getError(): Collection;
 
@@ -91,16 +89,14 @@ interface IResponse extends Stringable
     /**
      * Verifies if the data is valid to write.
      *
-     * @return mixed itemId=Data is valid, else FALSE
+     * @return bool|int item id=Data is valid, else FALSE
      */
-    public function checkDataWrite(): mixed;
+    public function checkDataWrite(): int|bool;
 
     /**
      * Returns the complete search result.
      *
-     * @return Collection<mixed,mixed> The complete search result
-     *
-     * @phpstan-return Map<mixed,mixed>
+     * @return Map<mixed,mixed> The complete search result
      */
     public function getResults(): Collection;
 
@@ -114,11 +110,36 @@ interface IResponse extends Stringable
     public function getResult(int $idx): mixed;
 
     /**
+     * Returns the number of results from the search.
+     *
+     * @return int the number of results from the search
+     */
+    public function getResultsCount(): int;
+
+    /**
+     * Verifies if the search result has entries.
+     *
+     * @return bool TRUE=search result has at least one entry, else FALSE
+     */
+    public function hasResults(): bool;
+
+    /**
      * Returns the id of the confluence item.
      *
      * @return int The itemId
      */
     public function getItemId(): int;
+
+    /**
+     * Returns information about the space this item is assigned to.
+     *
+     * @param SpaceInfoEnum $flags
+     *
+     * @return mixed
+     *
+     * @see SpaceInfoEnum
+     */
+    public function getSpaceInfo(SpaceInfoEnum $flags = SpaceInfoEnum::SPACEINFO_ALL): mixed;
 
     /**
      * Returns the body of the item in storage format.
@@ -128,18 +149,27 @@ interface IResponse extends Stringable
     public function getBody(): string;
 
     /**
-     * Returns all item restrictions.
+     * Returns all labels set to this item.
      *
-     * @return array<mixed,mixed> All defined item restrictions
+     * @return Vector<mixed> List of labels or empty list
      */
-    public function getRestrictions(): array;
+    public function getLabels(): Sequence;
 
     /**
-     * Verifies if the search result has entries.
+     * Returns, if the item has the given label.
      *
-     * @return bool TRUE=search result has at least one entry, else FALSE
+     * @param string $labelName The name of the label
+     *
+     * @return bool TRUE=the label exists, else FALSE
      */
-    public function isResultsAvailable(): bool;
+    public function labelExists(string $labelName): bool;
+
+    /**
+     * Returns all item restrictions.
+     *
+     * @return array<mixed> All defined item restrictions
+     */
+    public function getRestrictions(): array;
 
     /**
      * @inheritDoc

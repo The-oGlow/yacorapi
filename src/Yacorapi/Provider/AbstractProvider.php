@@ -41,7 +41,7 @@ abstract class AbstractProvider implements IConnectionProvider
     public function __construct(int|string $level = self::LEVEL_DEFAULT)
     {
         // Init Dynamic Consts
-        $this->constData = new ConstData(AbstractProvider::class);
+        $this->constData = ConstData::i();
         self::$logger = new ConsoleLogger(name:AbstractProvider::class, level: $level);
     }
 
@@ -78,7 +78,7 @@ abstract class AbstractProvider implements IConnectionProvider
     }
 
     /**
-     * @param null|array<mixed,mixed> $data
+     * @param null|array<mixed> $data
      *
      * @return IResponse
      */
@@ -103,7 +103,7 @@ abstract class AbstractProvider implements IConnectionProvider
      * @param string          $execUrl
      * @param RequestTypeEnum $reqType
      *
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     abstract protected function execInternal(string $execUrl, RequestTypeEnum $reqType): array;
 
@@ -112,7 +112,7 @@ abstract class AbstractProvider implements IConnectionProvider
      * @param Collection<mixed,mixed> $parameters
      * @param RequestTypeEnum         $reqType
      *
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     abstract protected function execPostInternal(string $execUrl, Collection $parameters, RequestTypeEnum $reqType): array;
 

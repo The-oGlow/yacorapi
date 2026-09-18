@@ -13,9 +13,13 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Response;
 
+use Ds\Collection;
 use Ds\Map;
 use Ds\Vector;
+use oglow\tools\Yacorapi\Response\ResponseParameter as RP;
+use oglow\tools\Yacorapi\Space\SpaceInfoEnum;
 use oglow\tools\Yacorapi\YacorapiTestData;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\EasyGoingTestCase;
 
 class ResponseTest extends EasyGoingTestCase
@@ -120,11 +124,20 @@ class ResponseTest extends EasyGoingTestCase
         self::assertNull($actual);
     }
 
-    public function testIsResultsAvailable(): void
+    public function testGetResultsCount(): void
+    {
+        $expectedCount = 0;
+
+        $actual = $this->getCasto2t()->getResultsCount();
+
+        self::assertEquals($expectedCount, $actual);
+    }
+
+    public function testHasResults(): void
     {
         $expected = false;
 
-        $actual = $this->getCasto2t()->isResultsAvailable();
+        $actual = $this->getCasto2t()->hasResults();
 
         self::assertEquals($expected, $actual);
     }
@@ -136,5 +149,86 @@ class ResponseTest extends EasyGoingTestCase
         $actual = $this->getCasto2t()->getBody();
 
         self::assertEquals($expected, $actual);
+    }
+
+    public function testGetItemId(): void
+    {
+        $expected = -1;
+
+        $actual = $this->getCasto2t()->getItemId();
+
+        self::assertEquals($expected, $actual);
+    }
+
+    public function testGetLabels(): void
+    {
+        $expected = Vector::class;
+        $expectedCount = 0;
+
+        $actual = $this->getCasto2t()->getLabels();
+
+        self::assertInstanceOf($expected, $actual);
+        self::assertCount($expectedCount, $actual);
+    }
+
+    public function testLabelExists(): void
+    {
+        $expected = false;
+        $labelName = YacorapiTestData::DATA_ALPHA1;
+
+        $actual = $this->getCasto2t()->labelExists($labelName);
+
+        self::assertEquals($expected, $actual);
+    }
+
+    public function testGetRestrictions(): void
+    {
+        $expectedCount = 0;
+
+        $actual = $this->getCasto2t()->getRestrictions();
+
+        self::assertIsArray($actual);
+        self::assertCount($expectedCount, $actual);
+    }
+
+    /**
+     * @param Collection<mixed,mixed>|int|string $expected
+     * @param bool                               $expectedPrimitive
+     * @param SpaceInfoEnum                      $flags
+     */
+    #[DataProvider('providerGetSpaceInfo')]
+    public function testGetSpaceInfo(Collection|string|int $expected, bool $expectedPrimitive, SpaceInfoEnum $flags): void
+    {
+        $actual = $this->getCasto2t()->getSpaceInfo($flags);
+
+        self::assertEquals($expectedPrimitive, self::isPrimitive($actual));
+        if ($actual instanceof Map && $expected instanceof Map) {
+            self::assertEqualsCanonicalizing($expected->keys()->toArray(), $actual->keys()->toArray());
+        } else {
+            self::assertEquals($expected, $actual);
+        }
+    }
+
+    /**
+     * @return array<mixed>
+     */
+    public static function providerGetSpaceInfo(): array
+    {
+        return [
+            'spaceId' => [RP::VAL_SPACE_ID_NO, true, SpaceInfoEnum::SPACEINFO_ID],
+            'spaceKey' => [RP::VAL_SPACE_KEY_NO, false, SpaceInfoEnum::SPACEINFO_KEY],
+            'spaceTitle' => [RP::VAL_SPACE_TITLE_EMPTY, false, SpaceInfoEnum::SPACEINFO_TITLE],
+            'spaceType' => [RP::VAL_SPACE_TYPE_EMPTY, false, SpaceInfoEnum::SPACEINFO_TYPE],
+            'ALL' => [
+                new Map([
+                    RP::KEY_KEY => RP::VAL_SPACE_ID_NO,
+                    RP::KEY_TITLE => RP::VAL_SPACE_TITLE_EMPTY,
+                    RP::KEY_TYPE => RP::VAL_SPACE_TYPE_EMPTY,
+                    RP::KEY_ID => RP::VAL_SPACE_KEY_NO,
+                        ]),
+                false,
+                SpaceInfoEnum::SPACEINFO_ALL,
+            ],
+        ];
     }
 }

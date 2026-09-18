@@ -17,6 +17,7 @@ use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\ConstData;
 use ollily\Tools\String\ToStringTrait;
 use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 
 /**
  * Abstract implementation for a container clazz.
@@ -27,9 +28,11 @@ abstract class AbstractContainer implements IContainer
 {
     use ToStringTrait;
 
+    private const int ITEM_MAX = 20;
+
     protected ConstData $constData;
 
-    /** @var array<mixed,mixed> Stored data */
+    /** @var array<mixed> Stored data */
     private array $data = [];
 
     /** @var int[]|string[] The modes how to access the data */
@@ -49,19 +52,27 @@ abstract class AbstractContainer implements IContainer
 
     /**
      * Public constructor.
+     *
+     * @param int|LogLevel::*|string $level The minimum logging level at which this handler will be triggered (Default: {@link IContainer::LEVEL_DEFAULT})
      */
-    public function __construct()
+    public function __construct(LogLevel|string|int $level = IContainer::LEVEL_DEFAULT)
     {
-        /** @phpstan-ignore argument.type */
-        self::$logger = new ConsoleLogger(AbstractContainer::class, level: static::LEVEL_DEFAULT);
+        /** @psalm-suppress ArgumentTypeCoercion
+         * @phpstan-ignore argument.type */
+        self::$logger = new ConsoleLogger(AbstractContainer::class, level: $level);
         self::$logger->debug('START');
+
         // Init Dynamic Consts
-        $this->constData =  new ConstData(AbstractContainer::class);
+        $this->constData =  ConstData::i(level: $level);
         $this->prepareModes();
         $this->prepareData();
+
         self::$logger->debug('END');
     }
 
+    /**
+     * @inheritDoc
+     */
     #[\Override]
     public function getAllData(): array
     {
@@ -71,25 +82,34 @@ abstract class AbstractContainer implements IContainer
     /**
      * Set the complete data.
      *
-     * @param array<mixed,mixed> $allData Array of stored data
+     * @param array<mixed> $allData Array of stored data
      */
     protected function setAllData(array $allData): void
     {
         $this->data = $allData;
     }
 
+    /**
+     * @inheritDoc
+     */
     #[\Override]
     public function getKeys(): array
     {
         return array_keys($this->getAllData());
     }
 
+    /**
+     * @inheritDoc
+     */
     #[\Override]
     public function keyExists(mixed $key): bool
     {
         return !empty($key) && array_key_exists($key, $this->getAllData());
     }
 
+    /**
+     * @inheritDoc
+     */
     #[\Override]
     public function getModes(): array
     {
@@ -106,14 +126,18 @@ abstract class AbstractContainer implements IContainer
         $this->modes = $modes;
     }
 
+    /**
+     * @inheritDoc
+     */
     #[\Override]
-    public function getDataByMode(int|string $mode): mixed
+    public function getDataByMode(string|int $mode): mixed
     {
         self::$logger->debug('START', [$mode]);
+
         $value = [];
         if ($this->keyExists($mode)) {
             $value = $this->getAllData()[$mode];
-            if (is_array($value) && count($value) > 20) {
+            if (is_array($value) && count($value) > self::ITEM_MAX) {
                 self::$logger->debug('count   :', [count($value)]);
             } else {
                 self::$logger->debug('elements:', [$value]);
@@ -121,11 +145,15 @@ abstract class AbstractContainer implements IContainer
         } else {
             self::$logger->warning('Mode not found', [$mode]);
         }
+
         self::$logger->debug('END');
 
         return $value;
     }
 
+    /**
+     * @inheritDoc
+     */
     #[\Override]
     protected function __toStringValues(): mixed
     {

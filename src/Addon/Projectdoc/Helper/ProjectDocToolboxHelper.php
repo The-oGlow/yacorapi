@@ -29,12 +29,17 @@ class ProjectDocToolboxHelper extends AbstractHelper
 {
     private static LoggerInterface $logger;
 
-    public function __construct()
+    /**
+     * Protected constructor.
+     *
+     * @param bool $withLogger TRUE=activate logging, else FALSE
+     */
+    protected function __construct(bool $withLogger = true)
     {
         self::$logger = new ConsoleLogger(ProjectDocToolboxHelper::class, level: self::LEVEL_DEFAULT);
         self::$logger->debug('START');
 
-        parent::__construct(ProjectDocToolboxHelper::class);
+        parent::__construct($withLogger, static::LEVEL_DEFAULT);
 
         self::$logger->debug('END');
     }
@@ -73,7 +78,7 @@ class ProjectDocToolboxHelper extends AbstractHelper
     public function modifyData(?IResponse $response, string $oldDoctype, string $newDoctype): bool
     {
         $modified = false;
-        if (!empty($response) && $response->isResultsAvailable()) {
+        if (!empty($response) && $response->hasResults()) {
             $idx     = 0;
             $results = $response->getResults();
             foreach ($results as $page) {

@@ -15,6 +15,7 @@ namespace oglow\tools\Yacorapi\Store;
 
 use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\ConstData;
+use oglow\tools\Yacorapi\Store\StoreParameter as SP;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -38,12 +39,12 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
      * Constructor for a store adapter.
      *
      * @param string                                         $fileName   The filename, without suffix, of the output file
-     * @param string                                         $filePrefix Prefix of the output file (Default: {@link StoreParameterData::DEFAULT_FILE_PREFIX})
-     * @param string                                         $fileSuffix Suffix of the output file (Default: {@link StoreParameterData::DEFAULT_FILE_SUFFIX})
+     * @param string                                         $filePrefix Prefix of the output file (Default: {@link SP::DEFAULT_FILE_PREFIX})
+     * @param string                                         $fileSuffix Suffix of the output file (Default: {@link SP::DEFAULT_FILE_SUFFIX})
      * @param string                                         $fileExt    File extension of the output file
-     *                                                                   (Default: {@link StoreParameterData::DEFAULT_FILE_EXT})
+     *                                                                   (Default: {@link SP::DEFAULT_FILE_EXT})
      * @param string                                         $pathToFile Folder where to store the output file
-     *                                                                   (Default: {@link StoreParameterData::DEFAULT_FOLDER_NAME})
+     *                                                                   (Default: {@link SP::DEFAULT_FOLDER_NAME})
      * @param FileStoreStageEnum                             $staging    The stage where to store the file (Default {@link FileStoreStageEnum::BASE})
      * @param int|\Monolog\Level|\Psr\Log\LogLevel::*|string $level      The minimum logging level at which this handler will be triggered
      *                                                                   (Default: {@link self::LEVEL_DEFAULT})
@@ -52,10 +53,10 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
      */
     public function __construct(
         string $fileName,
-        string $filePrefix = StoreParameter::DEFAULT_FILE_PREFIX,
-        string $fileSuffix = StoreParameter::DEFAULT_FILE_SUFFIX,
-        string $fileExt = StoreParameter::DEFAULT_FILE_EXT,
-        string $pathToFile = StoreParameter::DEFAULT_FOLDER_NAME,
+        string $filePrefix = SP::DEFAULT_FILE_PREFIX,
+        string $fileSuffix = SP::DEFAULT_FILE_SUFFIX,
+        string $fileExt = SP::DEFAULT_FILE_EXT,
+        string $pathToFile = SP::DEFAULT_FOLDER_NAME,
         FileStoreStageEnum $staging = FileStoreStageEnum::BASE,
         mixed $level = self::LEVEL_DEFAULT
     ) {
@@ -63,7 +64,7 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
         self::$logger->debug("START", [$fileName, $filePrefix, $fileSuffix, $fileExt, $pathToFile, $staging->name]);
 
         // Init Dynamic Consts
-        $this->constData = new ConstData(AbstractStoreAdapter::class);
+        $this->constData = ConstData::i();
         $this->sessionFolder = $this->prepareTargetFolderSession($fileName, $this->constData->c(ConstData::KEY_TARGET_DIR));
         $finalPathToFile = $this->prepareTargetFolderStaging($staging, $this->sessionFolder);
         if (!empty($pathToFile)) {
@@ -71,6 +72,10 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
         }
         $finalFileName = $this->prepareFileName($fileName, $filePrefix, $fileSuffix, $fileExt);
 
+        $finalPathToFile = str_replace([SP::C_DIR_SEP_WIN, SP::C_DIR_SEP_UNIX], DIRECTORY_SEPARATOR, $finalPathToFile);
+        $finalFileName = str_replace([SP::C_DIR_SEP_WIN, SP::C_DIR_SEP_UNIX], DIRECTORY_SEPARATOR, $finalFileName);
+
+        self::$logger->info('Outputfile', [$finalPathToFile, $finalFileName]);
         $this->storeItem = $this->invokeStoreItem($finalFileName, $finalPathToFile);
 
         self::$logger->debug('END');
@@ -97,7 +102,15 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
      */
     protected function prepareFileName(string $fileName, string $filePrefix, string $fileSuffix, string $fileExt): string
     {
-        $finalFileName = $fileName;
+        self::$logger->debug("START", [$fileName, $filePrefix, $fileSuffix, $fileExt]);
+
+        $fileName = str_replace([SP::C_DIR_SEP_WIN, SP::C_DIR_SEP_UNIX], DIRECTORY_SEPARATOR, $fileName);
+        if (str_contains($fileName, DIRECTORY_SEPARATOR)) {
+            $finalFileName = basename($fileName);
+        } else {
+            $finalFileName = $fileName;
+        }
+
         if (!empty($filePrefix)) {
             $finalFileName = sprintf('%s-%s', $filePrefix, $finalFileName);
         }
@@ -107,6 +120,8 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
         if (!empty($fileExt)) {
             $finalFileName = str_replace('..', '.', sprintf('%s.%s', $finalFileName, $fileExt));
         }
+
+        self::$logger->debug('END', [$finalFileName]);
 
         return $finalFileName;
     }
@@ -126,7 +141,7 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
         $sessionFolder = $this->prepareTargetFolder($fileName, $sessionFolder);
         $this->mkdir($sessionFolder);
 
-        self::$logger->debug('END');
+        self::$logger->debug('END', [$sessionFolder]);
 
         return $sessionFolder;
     }
@@ -201,7 +216,7 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
         $result = true;
         if (!file_exists($directory)) {
             self::$logger->debug('Create folder', [$directory]);
-            $result = mkdir($directory, StoreParameter::C_DIR_MASK, StoreParameter::C_DIR_RECURSIVE);
+            $result = mkdir($directory, SP::C_DIR_MASK, SP::C_DIR_RECURSIVE);
         }
 
         return $result;
@@ -221,7 +236,7 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
 
         $newClazz = FileStoreItem::prepareTargetFile($pathToFile, pathinfo($fileName, PATHINFO_FILENAME), pathinfo($fileName, PATHINFO_EXTENSION));
 
-        self::$logger->debug('END');
+        self::$logger->debug('END', [$newClazz]);
 
         return $newClazz;
     }
@@ -233,19 +248,15 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
      *
      * @return string The header as string
      */
-    protected function flattenDataHeader(string|array $dataHeader): string
+    protected static function flattenDataHeader(string|array $dataHeader): string
     {
-        self::$logger->debug("START");
-
         $header = "";
         if (!empty($dataHeader)) {
             if (!is_array($dataHeader)) {
                 $dataHeader = [$dataHeader];
             }
-            $header = implode(StoreParameter::DEFAULT_ITEM_SEP, $dataHeader);
+            $header = implode(SP::DEFAULT_ITEM_SEP, $dataHeader);
         }
-
-        self::$logger->debug('END');
 
         return $header;
     }
@@ -262,10 +273,10 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
 
         if (!is_null($anyData)) {
             $fileName = $storeItem->__toString();
-            self::$logger->debug("Ensure target folder exists", [dirname($fileName)]);
+            self::$logger->debug("Doublecheck: Ensure target folder exists", [dirname($fileName)]);
             $this->mkdir(dirname($fileName));
             file_put_contents($fileName, $anyData, FILE_APPEND);
-            file_put_contents($fileName, StoreParameter::C_FILE_EOL, FILE_APPEND);
+            file_put_contents($fileName, SP::C_FILE_EOL, FILE_APPEND);
         }
 
         self::$logger->debug('END');
@@ -274,7 +285,7 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
     /**
      * @param string $fileName The filename to read in
      *
-     * @return array<mixed,mixed> The content of the file
+     * @return array<mixed> The content of the file
      */
     protected function readResultFile(string $fileName): array
     {
@@ -282,22 +293,22 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
 
         $resultList = [];
         if (file_exists($fileName)) {
-            $fHandle = fopen($fileName, StoreParameter::C_FILE_READ);
+            $fHandle = fopen($fileName, SP::C_FILE_READ);
 
             if (!empty($fHandle)) {
-                while ($line = fgets($fHandle, StoreParameter::C_FILE_LINE_LEN)) {
-                    $convertedLine = mb_convert_encoding($line, StoreParameter::C_FILE_UTF8);
+                while ($line = fgets($fHandle, SP::C_FILE_LINE_LEN)) {
+                    $convertedLine = mb_convert_encoding($line, SP::C_FILE_UTF8);
                     if (is_string($convertedLine)) { // @phpstan-ignore function.alreadyNarrowedType
-                        $resultList[] = explode(StoreParameter::DEFAULT_ITEM_SEP, $convertedLine);
+                        $resultList[] = explode(SP::DEFAULT_ITEM_SEP, $convertedLine);
                     }
                 }
                 fclose($fHandle);
             }
         } else {
-            self::$logger->debug('+++ file does not exists! +++', [$fileName]);
+            self::$logger->warning('File does not exists', [$fileName]);
         }
 
-        self::$logger->debug('END', [$fileName]);
+        self::$logger->debug('END');
 
         return $resultList;
     }

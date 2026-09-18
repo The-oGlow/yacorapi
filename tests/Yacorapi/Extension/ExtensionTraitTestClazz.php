@@ -32,7 +32,7 @@ class ExtensionTraitTestClazz
     {
         self::$logger = new ConsoleLogger(ExtensionTraitTestClazz::class);
         self::$logger->debug('START');
-        $this->constData = new ConstData(ExtensionTraitTestClazz::class);
+        $this->constData = ConstData::i();
         self::$logger->debug('END');
     }
 
@@ -91,7 +91,7 @@ class ExtensionTraitTestClazz
      *
      * @phpstan-param Map<mixed,Vector<mixed>> $addons
      *
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     public function publicGetExtensionAddonMacrosArray(Collection $addons): array
     {

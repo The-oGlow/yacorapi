@@ -25,39 +25,33 @@ use Psr\Log\LogLevel;
  *
  * @author olliy
  *
- * @phpstan-consistent-constructor
+ * @psalm-consistent-constructor
  */
 abstract class AbstractSingleton implements ISingleton
 {
-    /** @var object the real instance of the singleton */
-    private static ?object $instance = null;
-    
+    /** @var array<object> the real instance of the singleton */
+    private static array $instance = [];
+
     private static LoggerInterface $logger;
 
-    /** @var string identifier for the singleton */
-    private string $key = '';
-
     /**
-     * Public constructor.
+     * Protected constructor.
      *
-     * @param string $key        Unique id of this singleton
-     * @param bool   $withLogger TRUE=activate logging, else FALSE
-     * @param LogLevel::*|string|int $level      The minimum logging level at which this handler will be triggered (Default: {@link AbstractEasyGoingLogger::LEVEL_DEFAULT})
+     * @param bool                   $withLogger TRUE=activate logging, else FALSE
+     * @param int|LogLevel::*|string $level      The minimum logging level at which this handler will be triggered (Default: {@link ISingleton::LEVEL_DEFAULT})
      */
-    private function __construct(string $key, bool $withLogger = true, LogLevel|string|int $level = self::LEVEL_DEFAULT)
+    protected function __construct(bool $withLogger = true, LogLevel|string|int $level = ISingleton::LEVEL_DEFAULT)
     {
         if ($withLogger) {
+            /** @psalm-suppress ArgumentTypeCoercion
+             * @phpstan-ignore argument.type */
             self::$logger = new ConsoleLogger(AbstractSingleton::class, level: $level);
         } else {
             self::$logger = new DoNothingLogger();
         }
         self::$logger->debug('START');
 
-        if (empty($key)) {
-            $key = static::class;
-        }
         $overrideParameters = self::parseArguments($this->prepareShortOpts(), $this->prepareLongOpts());
-        $this->key = $key;
         $this->prepareSettings($overrideParameters);
         $valid = $this->validateSettings($overrideParameters);
 
@@ -67,14 +61,31 @@ abstract class AbstractSingleton implements ISingleton
     /**
      * Returns static access on this singletion.
      *
+     * @param bool                   $withLogger TRUE=activate logging, else FALSE
+     * @param int|LogLevel::*|string $level      The minimum logging level at which this handler will be triggered (Default: {@link ISingleton::LEVEL_DEFAULT})
+     *
      * @return object This singleton
+     *
+     * @SuppressWarnings("PHPMD.ShortMethodName")
      */
-    public static function i(string $key = '', bool $withLogger = true, int|string|Level $level = self::LEVEL_DEFAULT): object
-    {   
-        if (self::$instance==null) {
-            self::$instance = new static($key, $withLogger, $level);
+    public static function i(bool $withLogger = true, LogLevel|string|int $level = ISingleton::LEVEL_DEFAULT): object
+    {
+        $key = static::class;
+        if (!array_key_exists($key, self::$instance)) {
+            self::$instance[$key] = new static($withLogger, $level);
         }
-        return self::$instance;
+
+        return self::$instance[$key];
+    }
+
+    /**
+     * Returns the unique id of this singleton.
+     *
+     * @return string The unique id of this singleton
+     */
+    public static function getKey(): string
+    {
+        return array_key_exists(static::class, self::$instance) ? static::class : '';
     }
 
     /**
@@ -102,30 +113,29 @@ abstract class AbstractSingleton implements ISingleton
     /**
      * Parse the given override parameters.
      *
-     * @param string             $shortOpts Override parameter as short version
-     * @param array<mixed,mixed> $longOpts  Override parameter as long version
+     * @param string       $shortOpts Override parameter as short version
+     * @param array<mixed> $longOpts  Override parameter as long version
      *
      * @return Collection<mixed, mixed> A collection of override parameter
      */
     private static function parseArguments(string $shortOpts, array $longOpts): Collection
     {
-        return new Map(getopt($shortOpts, $longOpts));
-    }
+        /** @var Map<mixed,mixed> */
+        $mapOpts = new Map();
+        $opts = getopt($shortOpts, $longOpts);
+        if (is_array($opts)) {
+            $mapOpts = new Map($opts);
+        }
 
-    /**
-     * Returns the unique id of this singleton.
-     *
-     * @return string The unique idd of this singleton
-     */
-    public function getKey(): string
-    {
-        return $this->key;
+        return $mapOpts;
     }
 
     /**
      * Initialize this singleton with the settings.
      *
      * @param Collection<mixed, mixed> $overrideParameters Override the settings with these parameters
+     *
+     * @SuppressWarnings("PHPMD.UnusedFormalParameter")
      */
     protected function prepareSettings(Collection $overrideParameters): void
     {
@@ -138,6 +148,8 @@ abstract class AbstractSingleton implements ISingleton
      * @param Collection<mixed, mixed> $overrideParameters Verify the settings with these parameters
      *
      * @return bool TRUE=settings are valid, else FALSE
+     *
+     * @SuppressWarnings("PHPMD.UnusedFormalParameter")
      */
     protected function validateSettings(Collection $overrideParameters): bool
     {
@@ -157,19 +169,14 @@ abstract class AbstractSingleton implements ISingleton
     /**
      * Define the valid log options.
      *
-     * @return array<mixed,mixed> Array of long options
+     * @return array<mixed> Array of long options
      */
     protected function prepareLongOpts(): array
     {
         return [];
     }
-    
-    private function __clone()
-    {
-        // nothing to do here
-    }
 
-    private function __wakeup()
+    private function __clone()
     {
         // nothing to do here
     }

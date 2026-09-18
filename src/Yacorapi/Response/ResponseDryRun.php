@@ -15,30 +15,34 @@ namespace oglow\tools\Yacorapi\Response;
 
 use Ds\Collection;
 use Ds\Map;
+use Ds\Sequence;
 use Ds\Vector;
 use oglow\tools\Yacorapi\IResponse;
+use oglow\tools\Yacorapi\Space\SpaceInfoEnum;
 use ollily\Tools\String\ImplodeTrait;
 
 /**
  * Response which is used as mock for a dry run.
  *
  * @author ollily
+ *
+ * @psalm-suppress InvalidArgument
  */
 class ResponseDryRun implements IResponse
 {
     use ImplodeTrait;
 
-    public const string DUMMY_BODY  = 'dummy-body';
+    public const string DUMMY_BODY = 'dummy-body';
 
     public const int DUMMY_ID = 9999;
 
-    public const string DUMMY_KEY   = 'dummy-key';
+    public const string DUMMY_KEY = 'dummy-key';
 
     public const string DUMMY_TITLE = 'dummy-title';
 
     public const string DUMMY_DESCR = 'dummy-description';
 
-    public const string DUMMY_TYPE  = 'dummy-type';
+    public const string DUMMY_TYPE = 'dummy-type';
 
     public const string DUMMY_STATUS = 'dummy-status';
 
@@ -53,7 +57,7 @@ class ResponseDryRun implements IResponse
     public const int VAL_RESULT_TOTAL_SIZE = 1;
 
     /**
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     protected static function dummyBody(): array
     {
@@ -64,7 +68,7 @@ class ResponseDryRun implements IResponse
      * @param bool $withBody
      * @param bool $isContentArray
      *
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     protected static function dummyResultEntry(bool $withBody = false, bool $isContentArray = false): array
     {
@@ -83,7 +87,7 @@ class ResponseDryRun implements IResponse
 
         $entry = [];
         if ($isContentArray) {
-            $entry[ResponseParameter::KEY_CONTENT]  = $item;
+            $entry[ResponseParameter::KEY_CONTENT] = $item;
         } else {
             $entry = $item;
         }
@@ -132,7 +136,7 @@ class ResponseDryRun implements IResponse
      * @inheritDoc
      */
     #[\Override]
-    public function keys(): Vector
+    public function keys(): Sequence
     {
         $map = new Map();
 
@@ -157,6 +161,9 @@ class ResponseDryRun implements IResponse
         return true;
     }
 
+    /**
+     * @inheritDoc
+     */
     #[\Override]
     public function getError(): Collection
     {
@@ -173,12 +180,21 @@ class ResponseDryRun implements IResponse
         $response->put(
             ResponseParameter::KEY_RESULTS,
             [
-                self::VAL_RESULT_START => self::dummyResultEntry(true),
-                (self::VAL_RESULT_START + 1) => self::dummyResultEntry(true),
-            ]
+                    self::VAL_RESULT_START => self::dummyResultEntry(true),
+                    (self::VAL_RESULT_START + 1) => self::dummyResultEntry(true),
+                ]
         );
 
         return $response;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[\Override]
+    public function getResultsCount(): int
+    {
+        return $this->getResults()->count();
     }
 
     /**
@@ -194,9 +210,27 @@ class ResponseDryRun implements IResponse
      * @inheritDoc
      */
     #[\Override]
-    public function isResultsAvailable(): bool // NOSONAR: php:S4144
+    public function hasResults(): bool
     {
         return true;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[\Override]
+    public function getLabels(): Sequence
+    {
+        return new Vector();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[\Override]
+    public function labelExists(string $labelName): bool
+    {
+        return false;
     }
 
     /**
@@ -213,9 +247,8 @@ class ResponseDryRun implements IResponse
      * @inheritDoc
      */
     #[\Override]
-    public function checkDataWrite(): mixed
+    public function checkDataWrite(): int|bool
     {
-        // TODO: Implement checkDataWrite() method.
         return false;
     }
 
@@ -231,7 +264,6 @@ class ResponseDryRun implements IResponse
     #[\Override]
     public function getBody(): string
     {
-        // TODO: Implement method.
         return '';
     }
 
@@ -241,8 +273,13 @@ class ResponseDryRun implements IResponse
     #[\Override]
     public function getRestrictions(): array
     {
-        // TODO: Implement method.
         return [];
+    }
+
+    #[\Override]
+    public function getSpaceInfo(SpaceInfoEnum $flags = SpaceInfoEnum::SPACEINFO_ALL): mixed
+    {
+        return '';
     }
 
     /**

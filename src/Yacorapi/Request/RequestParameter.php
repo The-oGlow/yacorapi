@@ -72,17 +72,32 @@ class RequestParameter extends AbstractSingleton
     public const string VAL_STATUS_TYPE_CURRENT = 'current';
 
     // Search Consts
+    /** @var int First search result on a page */
     public const int VAL_SEARCH_START = 0;
 
+    /** @var int Last search result on a page */
+    public const int VAL_SEARCH_LIMIT_END = 50;
+
+    /** @var int search has no starting result */
     public const int VAL_SEARCH_START_NO = -1;
 
+    /** @var int search returns 0 or 1 result */
     public const int VAL_SEARCH_LIMIT_1ENTRY = 1;
 
-    public const int VAL_SEARCH_LIMIT_MIN = 0;
-
-    public const int VAL_SEARCH_LIMIT_MAX = 100;
-
+    /** @var int search has no result limit */
     public const int VAL_SEARCH_LIMIT_NO = -1;
+
+    /** @var int First page of search results */
+    public const int VAL_SEARCH_PAGE_START = 0;
+
+    /** @var int Last page of search results */
+    public const int VAL_SEARCH_PAGE_LIMIT_MAX = 20;
+
+    /** @var int Min count of search results overall pages */
+    public const int VAL_SEARCH_OVERALL_MIN = 0;
+
+    /** @var int Max count of search results overall pages */
+    public const int VAL_SEARCH_OVERALL_MAX = self::VAL_SEARCH_LIMIT_END * self::VAL_SEARCH_PAGE_LIMIT_MAX;
 
     // Page Consts
     public const int VAL_PARENT_ID_NO = 0;

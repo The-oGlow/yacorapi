@@ -118,7 +118,7 @@ class RapiClientStatisticTest extends EasyGoingTestCase
     {
         $expected1 = ConstData::C_RAPI_SPACE;
         $expected2 = SpaceTypeEnum::SPACE_TYPE_GLOBAL->value;
-        $expected3 = '' . ConstData::PAGE_LIMIT;
+        $expected3 = '' . IRapiClientBase::REQ_VAL_SEARCH_LIMIT_END;
 
         $actual    = $this->getCasto2t()->publicPrepareSpaceListUrl();
 

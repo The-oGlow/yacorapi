@@ -22,6 +22,7 @@ use oglow\tools\Yacorapi\Request\RequestParameter;
 use ollily\Tools\Emergency;
 use ollily\Tools\EnvironmentHelper;
 use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 
 /**
  * Main settings clazz for the application.
@@ -36,19 +37,6 @@ final class ConstData extends AbstractSingleton
 
     /** @var string Name of this application */
     public const string VAL_APP_USER = 'yacorapi';
-
-    // Page Consts
-    /** @var int First line on a page */
-    public const int PAGE_START = 0;
-
-    /** @var int Last line on a page */
-    public const int PAGE_LIMIT = 50;
-
-    /** @var int Max count of pages */
-    public const int PAGE_MAX_PAGES = 20;
-
-    /** @var int Max count of lines */
-    public const int PAGE_MAX_RESULTS = 50 * 20;
 
     // Instance Consts
     /** @var string Key: URL of the confluence instance */
@@ -154,7 +142,7 @@ final class ConstData extends AbstractSingleton
     /** @var string Key: Authorisation token for test instance */
     private const string KEY_CONF_PAT_TEST = 'CONF_PAT_TEST';
 
-    /** @var array<mixed,mixed> List of options (long) */
+    /** @var array<mixed> List of options (long) */
     private const array CLI_LONG_OPTS = [self::KEY_USE_PROD . ':'];
 
     private static LoggerInterface $logger;
@@ -171,16 +159,18 @@ final class ConstData extends AbstractSingleton
     private object $userAuth;
 
     /**
-     * Public constructor.
+     * Protected constructor.
      *
-     * @param string $key        Unique id of this singleton
-     * @param bool   $withLogger TRUE=activate logging, else FALSE
+     * @param bool                   $withLogger TRUE=activate logging, else FALSE
+     * @param int|LogLevel::*|string $level      The minimum logging level at which this handler will be triggered (Default: {@link ISingleton::LEVEL_DEFAULT})
      */
-    public function __construct(string $key = '', bool $withLogger = true)
+    protected function __construct(bool $withLogger = false, LogLevel|string|int $level = self::LEVEL_DEFAULT)
     {
         // Init logger at first
         if ($withLogger) {
-            self::$logger = new ConsoleLogger(ConstData::class, level: self::LEVEL_DEFAULT);
+            /** @psalm-suppress ArgumentTypeCoercion
+             * @phpstan-ignore argument.type */
+            self::$logger = new ConsoleLogger(ConstData::class, level: $level);
         } else {
             self::$logger = new DoNothingLogger();
         }
@@ -188,7 +178,7 @@ final class ConstData extends AbstractSingleton
 
         // Init static vars
         self::initTsNow();
-        parent::__construct($key, $withLogger);
+        parent::__construct($withLogger, $level);
 
         self::$logger->debug('END');
     }
@@ -270,7 +260,7 @@ final class ConstData extends AbstractSingleton
     public function isDefined(string $constKey): bool
     {
         $found = $this->definedConst->hasKey($constKey);
-        self::$logger->info('Const is defined', [$constKey, $found]);
+        self::$logger->debug('Const is defined', [$constKey, $found]);
 
         return $found;
     }
@@ -293,7 +283,7 @@ final class ConstData extends AbstractSingleton
     {
         self::$logger->debug('START');
 
-        $ovUseProd = self->parseBool($overrideParameters, self::KEY_USE_PROD);
+        $ovUseProd = $this->parseBool($overrideParameters, self::KEY_USE_PROD);
 
         $this->definedConst = new Map();
 
@@ -324,8 +314,8 @@ final class ConstData extends AbstractSingleton
     {
         self::$logger->debug('START');
 
-        $valid1 = self::validateMandatory();
-        $valid2 = self::validateForProductionUse();
+        $valid1 = $this->validateMandatory();
+        $valid2 = $this->validateForProductionUse();
 
         self::$logger->debug('END - Is valid', [$valid1, $valid2]);
 
@@ -464,7 +454,7 @@ final class ConstData extends AbstractSingleton
             Emergency::breakSystem(ExitCodes::ERR_CODE_NO_URL_SET, 'No URL for confluence is set');
         }
         if (!$this->isDefined(self::KEY_SEARCH_LIMIT)) {
-            $this->putConst(self::KEY_SEARCH_LIMIT, ((string) RequestParameter::VAL_SEARCH_LIMIT_MAX));
+            $this->putConst(self::KEY_SEARCH_LIMIT, ((string) RequestParameter::VAL_SEARCH_LIMIT_END));
         }
 
         self::$logger->debug('END - Is valid', [$validated]);

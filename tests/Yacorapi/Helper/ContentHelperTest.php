@@ -119,7 +119,7 @@ class ContentHelperTest extends EasyGoingTestCase
     // Dataprovider
 
     /**
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     public static function providerPreparePlainBody(): array
     {
@@ -130,7 +130,7 @@ class ContentHelperTest extends EasyGoingTestCase
     }
 
     /**
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     public static function providerPrepareRichBody(): array
     {
@@ -141,7 +141,7 @@ class ContentHelperTest extends EasyGoingTestCase
     }
 
     /**
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     public static function providerMacroName(): array
     {
@@ -155,7 +155,7 @@ class ContentHelperTest extends EasyGoingTestCase
     }
 
     /**
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     public static function providerChooseMacroBody(): array
     {
@@ -170,7 +170,7 @@ class ContentHelperTest extends EasyGoingTestCase
     }
 
     /**
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     public static function providerPrepareMacroParameter(): array
     {
@@ -198,7 +198,7 @@ class ContentHelperTest extends EasyGoingTestCase
     }
 
     /**
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     public static function providerPrepareMacroBody(): array
     {
@@ -225,7 +225,7 @@ class ContentHelperTest extends EasyGoingTestCase
     }
 
     /**
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     public static function providerPrepareMacro(): array
     {

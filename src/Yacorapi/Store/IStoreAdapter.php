@@ -33,7 +33,7 @@ interface IStoreAdapter
     /**
      * Store header data with the adapter.
      *
-     * @param array<mixed,string>|string $dataHeader A header which will be stored
+     * @param array<mixed>|string $dataHeader A header which will be stored
      */
     public function storeDataHeader(string|array $dataHeader): void;
 

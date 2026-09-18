@@ -17,6 +17,7 @@ use Ds\Collection;
 use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\Macro\HasMacroBodyEnum;
 use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 
 /**
  * Helper clazz for generating content for a confluence page.
@@ -56,20 +57,19 @@ class ContentHelper extends AbstractHelper
     private static LoggerInterface $logger;
 
     /**
-     * Public constructor.
+     * Protected constructor.
      *
-     * @param string $key        Unique id of this singleton
-     * @param bool   $withLogger TRUE=activate logging, else FALSE
-     *
-     * @phpstan-ignore constructor.unusedParameter,constructor.unusedParameter
+     * @param bool                   $withLogger TRUE=activate logging, else FALSE
+     * @param int|LogLevel::*|string $level      The minimum logging level at which this handler will be triggered (Default: {@link self::LEVEL_DEFAULT})
      */
-    public function __construct(string $key = '', bool $withLogger = true)
+    protected function __construct(bool $withLogger = true, LogLevel|string|int $level = self::LEVEL_DEFAULT)
     {
-        /** @phpstan-ignore argument.type */
-        self::$logger = new ConsoleLogger(ContentHelper::class, level: static::LEVEL_DEFAULT);
+        /** @psalm-suppress ArgumentTypeCoercion
+         * @phpstan-ignore argument.type */
+        self::$logger = new ConsoleLogger(ContentHelper::class, level: $level);
         self::$logger->debug('START');
 
-        parent::__construct(ContentHelper::class);
+        parent::__construct($withLogger, $level);
 
         self::$logger->debug('END');
     }

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace oglow\tools\common;
 
+use Psr\Log\LogLevel;
 use Stringable;
 
 /**
@@ -23,19 +24,19 @@ use Stringable;
 interface IContainer extends Stringable
 {
     /** @var string Default output level */
-    public const string LEVEL_DEFAULT = 'info';
+    public const string LEVEL_DEFAULT = LogLevel::INFO;
 
     /**
      * Returns all store data in the container.
      *
-     * @return array<mixed,mixed> Array of stored data
+     * @return array<mixed> Array of stored data
      */
     public function getAllData(): array;
 
     /**
      * Returns all keys used in the container.
      *
-     * @return array<mixed,mixed> Array of keys
+     * @return array<mixed> Array of keys
      */
     public function getKeys(): array;
 
@@ -62,7 +63,7 @@ interface IContainer extends Stringable
      *
      * @return mixed The assigned data or null
      */
-    public function getDataByMode(int|string $mode): mixed;
+    public function getDataByMode(string|int $mode): mixed;
 
     /**
      * @inheritDoc

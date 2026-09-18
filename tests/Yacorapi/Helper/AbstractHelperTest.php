@@ -23,7 +23,7 @@ class AbstractHelperTest extends EasyGoingTestCase
     #[\Override]
     protected static function prepareO2t(): AbstractHelperTestDummyClazz
     {
-        return new AbstractHelperTestDummyClazz(AbstractHelperTest::class);
+        return AbstractHelperTestDummyClazz::i();
     }
 
     /**
@@ -36,29 +36,26 @@ class AbstractHelperTest extends EasyGoingTestCase
     }
 
     /**
-     * @param mixed  $expected
-     * @param string $key
-     * @param bool   $withLogger
+     * @param mixed $expected
+     * @param bool  $withLogger
      */
     #[DataProvider('providerConstruct')]
-    public function testConstruct(mixed $expected, string $key, bool $withLogger): void
+    public function testConstruct(mixed $expected, bool $withLogger): void
     {
-        $actual = new AbstractHelperTestDummyClazz($key, $withLogger);
+        $actual = AbstractHelperTestDummyClazz::i($withLogger);
 
         self::assertInstanceOf(AbstractHelperTestDummyClazz::class, $actual);
-        self::assertEquals($expected, $actual->getKey());
+        self::assertEquals($expected, $actual::getKey());
     }
 
     /**
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     public static function providerConstruct(): array
     {
         return [
-            'emptyTrue' => [AbstractHelperTestDummyClazz::class, YacorapiTestData::DATA_EMPTY, YacorapiTestData::DATA_BOOL_T],
-            'emptyFalse' => [AbstractHelperTestDummyClazz::class, YacorapiTestData::DATA_EMPTY, YacorapiTestData::DATA_BOOL_F],
-            'keyTrue' => [YacorapiTestData::KEY_ALPHA1, YacorapiTestData::KEY_ALPHA1, YacorapiTestData::DATA_BOOL_T],
-            'keyFalse' => [YacorapiTestData::KEY_ALPHA1, YacorapiTestData::KEY_ALPHA1, YacorapiTestData::DATA_BOOL_F],
+            'keyTrue' => [AbstractHelperTestDummyClazz::class, YacorapiTestData::DATA_BOOL_T],
+            'keyFalse' => [AbstractHelperTestDummyClazz::class,  YacorapiTestData::DATA_BOOL_F],
         ];
     }
 

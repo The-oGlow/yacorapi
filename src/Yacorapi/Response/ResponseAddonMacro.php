@@ -31,15 +31,17 @@ class ResponseAddonMacro extends AbstractResponse
     /**
      * ResponseAddonMacro constructor.
      *
-     * @param AddonTypeEnum      $mode
-     * @param array<mixed,mixed> $data
+     * @param AddonTypeEnum $mode
+     * @param array<mixed>  $data
      */
     public function __construct(AddonTypeEnum $mode, array $data = [])
     {
         self::$logger = new ConsoleLogger(ResponseAddonMacro::class);
         self::$logger->debug('START');
+
         parent::__construct($data);
         $this->mode = $mode;
+
         self::$logger->debug('mode', [$this->getMode()]);
         self::$logger->debug('addons:', [ print_r($this->getRawData(), true)]);
         self::$logger->debug('END');

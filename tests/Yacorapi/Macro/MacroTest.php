@@ -33,7 +33,7 @@ class MacroTest extends TestCase
     {
         if ($withConstData) {
             /** @var IAddon $newInstance */
-            $newInstance = new $macroClazz(new ConstData());
+            $newInstance = new $macroClazz(ConstData::i());
         } else {
             /** @var IAddon $newInstance */
             $newInstance = new $macroClazz();

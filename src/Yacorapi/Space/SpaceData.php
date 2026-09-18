@@ -47,7 +47,7 @@ class SpaceData extends AbstractContainer
     }
 
     /**
-     * @param array<mixed,mixed> $spaces
+     * @param array<mixed> $spaces
      *
      * @return string
      */

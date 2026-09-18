@@ -19,9 +19,9 @@ class RequestParameterTest extends ConstantCheckTestCase
 {
     protected const string CLASS_PREFIX = RequestParameter::class . self::C_STATIC_SEP;
 
-    private const int EXPECTED_OTHER_COUNT = 19 + 19;
+    private const int EXPECTED_OTHER_COUNT = 19 + 22;
 
-    protected const int EXPECTED_CONSTANT_COUNT = 1 + 38;
+    protected const int EXPECTED_CONSTANT_COUNT = 1 + self::EXPECTED_OTHER_COUNT;
 
     protected const bool WITH_CONST_CROSSCHECK = true;
 

@@ -68,7 +68,7 @@ class AddonMacroData extends AbstractContainer
      * @param AddonTypeEnum $mode
      * @param string        $addon
      *
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     public function getMacroNamesByAddon(AddonTypeEnum $mode, string $addon): array
     {
@@ -96,7 +96,7 @@ class AddonMacroData extends AbstractContainer
     /**
      * @param AddonTypeEnum $mode
      *
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     public function getMacroNamesByMode(AddonTypeEnum $mode = AddonTypeEnum::ADDON_SINGLE): array
     {

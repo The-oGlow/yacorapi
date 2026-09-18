@@ -57,7 +57,7 @@ abstract class AbstractRapiClient
         self::$logger->debug('START');
 
         // Init Dynamic Consts
-        $this->constData = new ConstData(get_class($this));
+        $this->constData = ConstData::i();
         // Init Modules
         if (empty($addons)) {
             $this->addons = new AddonMacroData();

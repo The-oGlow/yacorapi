@@ -14,19 +14,20 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi;
 
 use PHPUnit\Framework\ConstantCheckTestCase;
+use Psr\Log\LogLevel;
 
 class ConstDataTest extends ConstantCheckTestCase
 {
     public const string  CLASS_PREFIX = ConstData::class . self::C_STATIC_SEP;
 
-    protected const int EXPECTED_CONSTANT_COUNT = 39;
+    protected const int EXPECTED_CONSTANT_COUNT = 35;
 
     protected const bool WITH_CONST_CROSSCHECK = true;
 
     #[\Override]
     protected static function prepareO2t(): ConstData
     {
-        return new ConstData(ConstDataTest::class);
+        return ConstData::i(true, LogLevel::DEBUG);
     }
 
     /**
@@ -109,10 +110,6 @@ class ConstDataTest extends ConstantCheckTestCase
             self::CLASS_PREFIX . 'KEY_CONF_SPACE_URL',
             self::CLASS_PREFIX . 'KEY_WEB_SHOW_PAGEID',
             self::CLASS_PREFIX . 'KEY_SEARCH_LIMIT',
-            self::CLASS_PREFIX . 'PAGE_START',
-            self::CLASS_PREFIX . 'PAGE_LIMIT',
-            self::CLASS_PREFIX . 'PAGE_MAX_PAGES',
-            self::CLASS_PREFIX . 'PAGE_MAX_RESULTS',
         ];
         static::updateActualConsts($const);
 

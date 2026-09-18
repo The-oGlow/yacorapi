@@ -26,8 +26,7 @@ abstract class AbstractAddon implements IAddon
 {
     private static LoggerInterface $logger;
 
-    /** @var Collection<mixed,Vector<mixed>>
-     * @phpstan-var Map<mixed,Vector<mixed>>  */
+    /** @var Map<mixed,Vector<mixed>> */
     protected Collection $addonsMacros;
 
     public function __construct()
@@ -46,6 +45,7 @@ abstract class AbstractAddon implements IAddon
         if (file_exists($file)) {
             try {
                 $jsonData = JsonHelper::loadJson($file);
+                /** @var Map<mixed,mixed> */
                 $map = new Map();
                 foreach ($jsonData as $key => $value) {
                     $map->put($key, new Vector($value));

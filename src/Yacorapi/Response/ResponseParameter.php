@@ -44,6 +44,8 @@ class ResponseParameter extends AbstractSingleton
 
     public const string KEY_ID = 'id';
 
+    public const string KEY_LABELS = 'labels';
+
     public const string KEY_LIMIT = 'limit';
 
     public const string KEY_LINKS = '_links';
@@ -51,6 +53,8 @@ class ResponseParameter extends AbstractSingleton
     public const string KEY_MAX_RESULT = 'max-result';
 
     public const string KEY_MESSAGE = 'message';
+
+    public const string KEY_METADATA = 'metadata';
 
     public const string KEY_NAME = 'name';
 
@@ -131,4 +135,23 @@ class ResponseParameter extends AbstractSingleton
     public const string VAL_REPRESENTATION_TYPE_STORAGE = 'storage';
 
     public const string VAL_STATUS_TYPE_CURRENT = 'current';
+
+    public const int VAL_SPACE_ID_NO = -1;
+
+    public const VAL_SPACE_KEY_NO = "";
+
+    public const string VAL_SPACE_TITLE_EMPTY = "";
+
+    public const string VAL_SPACE_TYPE_EMPTY = "";
+
+    // Others
+
+    /** @var array<mixed> The minimal column list for an export of pages */
+    public const array EXPORT_PAGE_MIN = [self::KEY_ID];
+
+    /** @var array<mixed> The column list for an export of pages */
+    public const array EXPORT_PAGE_LIGHT = [self::KEY_ID, self::KEY_SPACE, self::KEY_TITLE, self::KEY_LABELS];
+
+    /** @var array<mixed> The full column list for an export of pages (with body) */
+    public const array EXPORT_PAGE_FULL = [self::KEY_ID, self::KEY_SPACE, self::KEY_TITLE, self::KEY_LABELS, self::KEY_BODY];
 }

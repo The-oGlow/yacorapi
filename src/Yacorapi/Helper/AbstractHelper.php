@@ -18,6 +18,7 @@ use Monolog\DoNothingLogger;
 use oglow\tools\common\AbstractSingleton;
 use oglow\tools\Yacorapi\ConstData;
 use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 
 /**
  * Abstract implementation for a helper clazz.
@@ -33,23 +34,26 @@ abstract class AbstractHelper extends AbstractSingleton implements IHelper
     private static LoggerInterface $logger;
 
     /**
-     * Public constructor.
+     * Protected constructor.
      *
-     * @param string $key        Unique id of this singleton
-     * @param bool   $withLogger TRUE=activate logging, else FALSE
+     * @param bool                   $withLogger TRUE=activate logging, else FALSE
+     * @param int|LogLevel::*|string $level      The minimum logging level at which this handler will be triggered (Default: {@link self::LEVEL_DEFAULT})
      */
-    public function __construct(string $key = '', bool $withLogger = true)
+    protected function __construct(bool $withLogger = true, LogLevel|string|int $level = self::LEVEL_DEFAULT)
     {
         if ($withLogger) {
-            /** @phpstan-ignore argument.type */
-            self::$logger = new ConsoleLogger(AbstractHelper::class, level: static::LEVEL_DEFAULT);
+            /** @psalm-suppress ArgumentTypeCoercion
+             * @phpstan-ignore argument.type */
+            self::$logger = new ConsoleLogger(AbstractHelper::class, level: $level);
         } else {
             self::$logger = new DoNothingLogger();
         }
         self::$logger->debug('START');
-        parent::__construct($key, $withLogger);
+
+        parent::__construct($withLogger, $level);
         // Init Dynamic Consts
-        $this->constData = new ConstData($key);
+        $this->constData = ConstData::i();
+
         self::$logger->debug('END');
     }
 }

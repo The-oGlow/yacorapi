@@ -31,9 +31,9 @@ interface IRapiClientPermission extends IRapiClientWrite
      * Set page restrictions (read/write) for the confluence page.
      * REFACTOR: API-Function doesn't work or description is wrong.
      *
-     * @param int                $pageId            The id of the confluence page
-     * @param array<mixed,mixed> $writeRestrictions Write restrictions for the page
-     * @param array<mixed,mixed> $readRestrictions  Read restrictions for the page
+     * @param int          $pageId            The id of the confluence page
+     * @param array<mixed> $writeRestrictions Write restrictions for the page
+     * @param array<mixed> $readRestrictions  Read restrictions for the page
      *
      * @return bool TRUE=Restrictions are set properly, else FALSE
      */

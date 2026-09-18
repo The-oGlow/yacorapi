@@ -120,11 +120,11 @@ class ResponseDryRunTest extends EasyGoingTestCase
         self::assertNotEmpty($actual);
     }
 
-    public function testIsResultsAvailable(): void
+    public function testhasResults(): void
     {
         $expected = true;
 
-        $actual = $this->getCasto2t()->isResultsAvailable();
+        $actual = $this->getCasto2t()->hasResults();
 
         self::assertEquals($expected, $actual);
     }

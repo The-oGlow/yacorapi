@@ -28,7 +28,7 @@ class ProjectdocTraitTestClazz
 
     public function __construct()
     {
-        $this->constData = new ConstData(ProjectdocTraitTestClazz::class);
+        $this->constData = ConstData::i();
         $this->provider  = new MockProvider();
     }
 

@@ -34,7 +34,7 @@ class RapiClientPermissionTestClazz extends RapiClientPermission implements IRap
 
         parent::__construct(connectionProvider: new MockProvider());
 
-        $this->constData = new ConstData(RapiClientPermissionTestClazz::class);
+        $this->constData = ConstData::i();
         $this->connectionProvider = new MockProvider();
 
         self::$logger->debug('END');
@@ -51,9 +51,9 @@ class RapiClientPermissionTestClazz extends RapiClientPermission implements IRap
     }
 
     /**
-     * @param int                $pageId
-     * @param array<mixed,mixed> $writeRestrictions
-     * @param array<mixed,mixed> $readRestrictions
+     * @param int          $pageId
+     * @param array<mixed> $writeRestrictions
+     * @param array<mixed> $readRestrictions
      *
      * @return bool
      */
@@ -63,9 +63,9 @@ class RapiClientPermissionTestClazz extends RapiClientPermission implements IRap
     }
 
     /**
-     * @param array<mixed,mixed> $readRestrictions
+     * @param array<mixed> $readRestrictions
      *
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     public function publicAddRestrictionForGroup(array $readRestrictions): array
     {
@@ -73,9 +73,9 @@ class RapiClientPermissionTestClazz extends RapiClientPermission implements IRap
     }
 
     /**
-     * @param array<mixed,mixed> $readRestrictions
+     * @param array<mixed> $readRestrictions
      *
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     public function publicAddRestrictionForUser(array $readRestrictions): array
     {

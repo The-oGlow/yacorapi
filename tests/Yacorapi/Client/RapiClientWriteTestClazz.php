@@ -31,7 +31,7 @@ class RapiClientWriteTestClazz extends RapiClientWrite implements IRapiClientWri
 
         parent::__construct(connectionProvider: new MockProvider());
 
-        $this->constData = new ConstData(RapiClientWriteTestClazz::class);
+        $this->constData = ConstData::i();
 
         self::$logger->debug('END');
     }

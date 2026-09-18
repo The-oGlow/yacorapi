@@ -149,13 +149,13 @@ class CurlProvider extends AbstractProvider
      * @param string           $execUrl
      * @param bool             $dryRun
      *
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     private function execCurl($execSession, string $execUrl, bool $dryRun = false): array
     {
         self::$logger->debug('START - execUrl,dryRun', [$execUrl, $dryRun]);
 
-        /** @var array<mixed,mixed> */
+        /** @var array<mixed> */
         $rawData = [];
         if ($dryRun) {
             self::$logger->notice('DRYRUN is activated');

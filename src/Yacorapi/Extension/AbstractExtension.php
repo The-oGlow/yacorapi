@@ -33,7 +33,7 @@ abstract class AbstractExtension implements IExtension
         self::$logger = new ConsoleLogger(AbstractExtension::class);
         self::$logger->debug('START');
 
-        $this->constData = new ConstData(get_class($this));
+        $this->constData = ConstData::i();
         $this->init();
 
         self::$logger->debug('END');

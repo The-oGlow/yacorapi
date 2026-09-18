@@ -15,9 +15,20 @@ namespace oglow\tools\common;
 
 use Ds\Collection;
 
+/**
+ * @author olliy
+ */
 class AbstractSingletonTestDummyClazz extends AbstractSingleton
 {
     // Change visibility
+
+    /**
+     * @param Collection<mixed,mixed> $overrideParameters
+     */
+    public function publicPrepareSettings(Collection $overrideParameters): void
+    {
+        $this->prepareSettings($overrideParameters);
+    }
 
     /**
      * @param Collection<mixed,mixed> $overrideParameters
@@ -38,7 +49,7 @@ class AbstractSingletonTestDummyClazz extends AbstractSingleton
     }
 
     /**
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     public function publicPrepareLongOpts(): array
     {

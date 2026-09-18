@@ -56,13 +56,17 @@ interface IRapiClientBase
 
     public const int REQ_VAL_PARENT_ID_NO = RequestParameter::VAL_PARENT_ID_NO;
 
-    public const int REQ_VAL_SEARCH_LIMIT_MIN = RequestParameter::VAL_SEARCH_LIMIT_MIN;
+    public const int REQ_VAL_SEARCH_OVERALL_MIN = RequestParameter::VAL_SEARCH_OVERALL_MIN;
+
+    public const int REQ_VAL_SEARCH_OVERALL_MAX = RequestParameter::VAL_SEARCH_OVERALL_MAX;
 
     public const int REQ_VAL_SEARCH_LIMIT_1ENTRY = RequestParameter::VAL_SEARCH_LIMIT_1ENTRY;
 
     public const int REQ_VAL_SEARCH_LIMIT_NO = RequestParameter::VAL_SEARCH_LIMIT_NO;
 
     public const int REQ_VAL_SEARCH_START = RequestParameter::VAL_SEARCH_START;
+
+    public const int REQ_VAL_SEARCH_LIMIT_END = RequestParameter::VAL_SEARCH_LIMIT_END;
 
     public const int REQ_VAL_SEARCH_START_NO = RequestParameter::VAL_SEARCH_START_NO;
 
@@ -71,6 +75,8 @@ interface IRapiClientBase
     public const string REQ_VAL_SPACE_EMPTY = RequestParameter::VAL_SPACE_EMPTY;
 
     public const int REQ_VAL_VERSION_FIRST = RequestParameter::VAL_VERSION_FIRST;
+
+    public const string REQ_VAL_USER_TYPE_KNOWN = RequestParameter::VAL_USER_TYPE_KNOWN;
 
     // Response Parameter
     public const string RESP_VAL_BODY_EMPTY = ResponseParameter::VAL_BODY_EMPTY;
