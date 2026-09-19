@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Extension;
 
-use PHPUnit\Framework\Attributes\DataProvider;
+
 use PHPUnit\Framework\EasyGoingTestCase;
 
 class IExtensionTest extends EasyGoingTestCase
@@ -39,7 +39,7 @@ class IExtensionTest extends EasyGoingTestCase
     /**
      * @param ExtensionEnum $extension
      */
-    #[DataProvider('providerExtensions')]
+    #[\PHPUnit\Framework\Attributes\DataProvider('providerExtensions')]
     public function testExtension(ExtensionEnum $extension): void
     {
         /** @var IExtension $newInstance */

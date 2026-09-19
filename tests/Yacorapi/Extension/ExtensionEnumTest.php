@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Extension;
 
-use PHPUnit\Framework\Attributes\DataProvider;
+
 use PHPUnit\Framework\TestCase;
 
 class ExtensionEnumTest extends TestCase
 {
-    #[DataProvider('providerIsIn')]
+    #[\PHPUnit\Framework\Attributes\DataProvider('providerIsIn')]
     public function testIsIn(bool $expected, ExtensionEnum $expectedExtension, ExtensionEnum $actualExtension): void
     {
         $actual = $expectedExtension->isIn($actualExtension);

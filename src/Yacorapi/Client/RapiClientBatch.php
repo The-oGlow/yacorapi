@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Client;
 
 use Monolog\ConsoleLogger;
-use oglow\tools\common\IContainer;
+use ollily\Common\IContainer;
 use oglow\tools\Yacorapi\Extension\ExtensionEnum;
 use oglow\tools\Yacorapi\IConnectionProvider;
 use ollily\Tools\Batch\ITaskItem;

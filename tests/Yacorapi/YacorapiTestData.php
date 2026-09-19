@@ -23,7 +23,7 @@ use oglow\tools\Yacorapi\Extension\RapiClientExtension;
 use oglow\tools\Yacorapi\Request\RequestParameter;
 use oglow\tools\Yacorapi\Response\ResponseParameter;
 use oglow\tools\Yacorapi\Space\SpaceTypeEnum;
-use ollily\Tools\Test\TestData;
+use ollily\Tools\Test\TestData as TeDa;
 
 // @phpcs:ignoreFile PSR1.Methods.CamelCapsMethodName.NotCamelCaps
 class YacorapiTestData extends TestData

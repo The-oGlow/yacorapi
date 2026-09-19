@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi;
 
-use oglow\tools\common\AbstractSingleton;
+use ollily\Common\AbstractSingleton;
 
 /**
  * All possible exits for this application.

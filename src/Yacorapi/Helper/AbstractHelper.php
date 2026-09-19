@@ -15,7 +15,7 @@ namespace oglow\tools\Yacorapi\Helper;
 
 use Monolog\ConsoleLogger;
 use Monolog\DoNothingLogger;
-use oglow\tools\common\AbstractSingleton;
+use ollily\Common\AbstractSingleton;
 use oglow\tools\Yacorapi\ConstData;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;

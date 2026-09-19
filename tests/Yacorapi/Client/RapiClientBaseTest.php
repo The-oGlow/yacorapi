@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Client;
 
 use Ds\Set;
-use oglow\tools\common\MockProvider;
+use ollily\Common\MockProvider;
 use PHPUnit\Framework\EasyGoingTestCase;
 use Psr\Log\LogLevel;
 

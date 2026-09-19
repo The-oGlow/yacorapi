@@ -16,7 +16,7 @@ namespace oglow\tools\Yacorapi\Helper;
 use Ds\Map;
 use oglow\tools\Yacorapi\Macro\HasMacroBodyEnum;
 use oglow\tools\Yacorapi\YacorapiTestData;
-use PHPUnit\Framework\Attributes\DataProvider;
+
 use PHPUnit\Framework\EasyGoingTestCase;
 
 class ContentHelperTest extends EasyGoingTestCase
@@ -47,7 +47,7 @@ class ContentHelperTest extends EasyGoingTestCase
      * @param Map<mixed,mixed> $parameters
      * @param string           $body
      */
-    #[DataProvider('providerPrepareMacro')]
+    #[\PHPUnit\Framework\Attributes\DataProvider('providerPrepareMacro')]
     public function testPrepareMacro(string $expected, string $macroName, Map $parameters, string $body): void
     {
         $actual = $this->getCasto2t()::prepareMacro($macroName, $parameters, $body);
@@ -59,7 +59,7 @@ class ContentHelperTest extends EasyGoingTestCase
      * @param string           $expected
      * @param Map<mixed,mixed> $parameters
      */
-    #[DataProvider('providerPrepareMacroParameter')]
+    #[\PHPUnit\Framework\Attributes\DataProvider('providerPrepareMacroParameter')]
     public function testPrepareMacroParameter(string $expected, Map $parameters): void
     {
         $actual = $this->getCasto2t()::prepareMacroParameter($parameters);
@@ -71,7 +71,7 @@ class ContentHelperTest extends EasyGoingTestCase
      * @param string $expected
      * @param string $body
      */
-    #[DataProvider('providerPreparePlainBody')]
+    #[\PHPUnit\Framework\Attributes\DataProvider('providerPreparePlainBody')]
     public function testPreparePlainBody(string $expected, string $body): void
     {
         $actual = $this->getCasto2t()::preparePlainBody($body);
@@ -83,7 +83,7 @@ class ContentHelperTest extends EasyGoingTestCase
      * @param string $expected
      * @param string $body
      */
-    #[DataProvider('providerPrepareRichBody')]
+    #[\PHPUnit\Framework\Attributes\DataProvider('providerPrepareRichBody')]
     public function testPrepareRichTextBody(string $expected, string $body): void
     {
         $actual = $this->getCasto2t()::prepareRichTextBody($body);
@@ -95,7 +95,7 @@ class ContentHelperTest extends EasyGoingTestCase
      * @param HasMacroBodyEnum $expected
      * @param string           $macroName
      */
-    #[DataProvider('providerChooseMacroBody')]
+    #[\PHPUnit\Framework\Attributes\DataProvider('providerChooseMacroBody')]
     public function testChooseMacroBody(HasMacroBodyEnum $expected, string $macroName): void
     {
         $actual = $this->getCasto2t()::chooseMacroBody($macroName);
@@ -108,7 +108,7 @@ class ContentHelperTest extends EasyGoingTestCase
      * @param string $macroName
      * @param string $body
      */
-    #[DataProvider('providerPrepareMacroBody')]
+    #[\PHPUnit\Framework\Attributes\DataProvider('providerPrepareMacroBody')]
     public function testPrepareMacroBody(string $expected, string $macroName, string $body): void
     {
         $actual = $this->getCasto2t()::prepareMacroBody($macroName, $body);

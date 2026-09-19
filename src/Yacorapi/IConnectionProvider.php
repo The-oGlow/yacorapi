@@ -17,7 +17,7 @@ use Ds\Collection;
 use oglow\tools\Yacorapi\Request\RequestTypeEnum;
 
 /**
- * @author olliy
+ * @author ollily
  */
 interface IConnectionProvider
 {

@@ -19,7 +19,7 @@ use Ds\Vector;
 use oglow\tools\Yacorapi\Response\ResponseParameter as RP;
 use oglow\tools\Yacorapi\Space\SpaceInfoEnum;
 use oglow\tools\Yacorapi\YacorapiTestData;
-use PHPUnit\Framework\Attributes\DataProvider;
+
 use PHPUnit\Framework\EasyGoingTestCase;
 
 class ResponseTest extends EasyGoingTestCase
@@ -196,7 +196,7 @@ class ResponseTest extends EasyGoingTestCase
      * @param bool                               $expectedPrimitive
      * @param SpaceInfoEnum                      $flags
      */
-    #[DataProvider('providerGetSpaceInfo')]
+    #[\PHPUnit\Framework\Attributes\DataProvider('providerGetSpaceInfo')]
     public function testGetSpaceInfo(Collection|string|int $expected, bool $expectedPrimitive, SpaceInfoEnum $flags): void
     {
         $actual = $this->getCasto2t()->getSpaceInfo($flags);

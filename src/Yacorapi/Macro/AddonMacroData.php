@@ -16,7 +16,7 @@ namespace oglow\tools\Yacorapi\Macro;
 use Ds\Collection;
 use Exception;
 use Monolog\ConsoleLogger;
-use oglow\tools\common\AbstractContainer;
+use ollily\Common\AbstractContainer;
 use oglow\tools\Yacorapi\ExitCodes;
 use oglow\tools\Yacorapi\Extension\ExtensionTrait;
 use ollily\Tools\Emergency;

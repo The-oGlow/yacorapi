@@ -13,16 +13,16 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Statistic;
 
-use ollily\Tools\Test\TestData;
+use ollily\Tools\Test\TestData as TeDa;
 use PHPUnit\Framework\EasyGoingTestCase;
 
 class AbstractStatisticTest extends EasyGoingTestCase
 {
     private const StatisticTypeEnum STATISTIC_TYPE = StatisticTypeEnum::SPACE;
 
-    private const string EXPORT_NAME = TestData::DATA_ALPHA2 . self::STATISTIC_TYPE->value;
+    private const string EXPORT_NAME = TeDa::DATA_ALPHA2 . self::STATISTIC_TYPE->value;
 
-    private const string STATISTIC_NAME = TestData::DATA_ALPHA1;
+    private const string STATISTIC_NAME = TeDa::DATA_ALPHA1;
 
     #[\Override]
     protected function getCasto2t(): AbstractStatisticTestDummyClazz
@@ -45,26 +45,26 @@ class AbstractStatisticTest extends EasyGoingTestCase
 
     public function testKeyExists(): void
     {
-        $actual = $this->getCasto2t()->keyExists(TestData::NOTEXIST_NAME);
+        $actual = $this->getCasto2t()->keyExists(TeDa::NOTEXIST_NAME);
 
         self::assertFalse($actual);
     }
 
     public function testGetItem(): void
     {
-        $actual = $this->getCasto2t()->getItem(TestData::NOTEXIST_NAME);
+        $actual = $this->getCasto2t()->getItem(TeDa::NOTEXIST_NAME);
 
         self::assertNull($actual);
     }
 
     public function testAddItem(): void
     {
-        $actual = $this->getCasto2t()->getItem(TestData::KEY_ALPHA1);
+        $actual = $this->getCasto2t()->getItem(TeDa::KEY_ALPHA1);
         self::assertNull($actual);
 
         $item = $this->prepareSimpleStatistic();
-        $this->getCasto2t()->addItem(TestData::KEY_ALPHA1, $item);
-        $actual = $this->getCasto2t()->getItem(TestData::KEY_ALPHA1);
+        $this->getCasto2t()->addItem(TeDa::KEY_ALPHA1, $item);
+        $actual = $this->getCasto2t()->getItem(TeDa::KEY_ALPHA1);
 
         self::assertNotNull($actual);
         self::assertEquals($item, $actual);
@@ -109,7 +109,7 @@ class AbstractStatisticTest extends EasyGoingTestCase
     public function testToString(): void
     {
         $item = $this->prepareSimpleStatistic();
-        $this->getCasto2t()->addItem(TestData::KEY_ALPHA1, $item);
+        $this->getCasto2t()->addItem(TeDa::KEY_ALPHA1, $item);
 
         $expected = sprintf(
             "%s:[%s,{{%s}}]",

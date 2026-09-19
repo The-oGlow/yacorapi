@@ -19,7 +19,7 @@ use oglow\tools\Yacorapi\Macro\AddonTypeEnum;
 use oglow\tools\Yacorapi\Response\Response;
 use oglow\tools\Yacorapi\Response\ResponseParameter;
 use oglow\tools\Yacorapi\YacorapiTestData;
-use PHPUnit\Framework\Attributes\DataProvider;
+
 use PHPUnit\Framework\EasyGoingTestCase;
 use Psr\Log\LoggerInterface;
 
@@ -55,7 +55,7 @@ class RapiClientReadTest extends EasyGoingTestCase
      * @param string $expected
      * @param int    $pageId
      */
-    #[DataProvider('providerReadPageByPageId')]
+    #[\PHPUnit\Framework\Attributes\DataProvider('providerReadPageByPageId')]
     public function testReadPageByPageId(string $expected, int $pageId): void
     {
         self::$logger->info('START');
@@ -262,7 +262,7 @@ class RapiClientReadTest extends EasyGoingTestCase
      * @param int           $expected
      * @param AddonTypeEnum $mode
      */
-    #[DataProvider('providerPrepareAddonSet')]
+    #[\PHPUnit\Framework\Attributes\DataProvider('providerPrepareAddonSet')]
     public function testPrepareAddonSet(int $expected, AddonTypeEnum $mode): void
     {
         self::$logger->info('START');
@@ -282,7 +282,7 @@ class RapiClientReadTest extends EasyGoingTestCase
      * @param int    $expected
      * @param string $spaceKey
      */
-    #[DataProvider('providerSpaceHomepage')]
+    #[\PHPUnit\Framework\Attributes\DataProvider('providerSpaceHomepage')]
     public function testSpaceHomepage(int $expected, string $spaceKey): void
     {
         $actual = $this->getCasto2t()->spaceHomepage($spaceKey);

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Client;
 
-use oglow\tools\common\MockProvider;
+use ollily\Common\MockProvider;
 use oglow\tools\Yacorapi\IRapiClient;
 use PHPUnit\Framework\EasyGoingTestCase;
 use Psr\Log\LogLevel;

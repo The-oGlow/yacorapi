@@ -16,7 +16,7 @@ namespace oglow\tools\Addon\Projectdoc\Helper;
 use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Response\Response;
 use oglow\tools\Yacorapi\YacorapiTestData;
-use PHPUnit\Framework\Attributes\DataProvider;
+
 use PHPUnit\Framework\EasyGoingTestCase;
 
 class ProjectDocToolboxHelperTest extends EasyGoingTestCase
@@ -48,7 +48,7 @@ class ProjectDocToolboxHelperTest extends EasyGoingTestCase
      * @param string    $newDoctype
      * @param bool      $expected
      */
-    #[DataProvider('providerModifyData')]
+    #[\PHPUnit\Framework\Attributes\DataProvider('providerModifyData')]
     public function testModifyData(IResponse $response, string $oldDoctype, string $newDoctype, bool $expected): void
     {
         $actual = $this->getCasto2t()->modifyData($response, $oldDoctype, $newDoctype);
@@ -73,7 +73,7 @@ class ProjectDocToolboxHelperTest extends EasyGoingTestCase
      * @param string $newDoctype
      * @param bool   $expected
      */
-    #[DataProvider('providerReplaceAndStoreDoctype')]
+    #[\PHPUnit\Framework\Attributes\DataProvider('providerReplaceAndStoreDoctype')]
     public function testReplaceAndStoreDoctype(string $fileName, string $body, string $oldDoctype, string $newDoctype, bool $expected): void
     {
         $this->cleanupFile = $fileName;
@@ -125,7 +125,7 @@ class ProjectDocToolboxHelperTest extends EasyGoingTestCase
      * @param string $newDoctype
      * @param bool   $isContains
      */
-    #[DataProvider('providerReplaceDoctype')]
+    #[\PHPUnit\Framework\Attributes\DataProvider('providerReplaceDoctype')]
     public function testReplaceDoctype(string $body, string $oldDoctype, string $newDoctype, bool $isContains): void
     {
         $actual = $this->getCasto2t()->replaceDoctype($body, $oldDoctype, $newDoctype);

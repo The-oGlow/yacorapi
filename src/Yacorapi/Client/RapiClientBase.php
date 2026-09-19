@@ -15,7 +15,7 @@ namespace oglow\tools\Yacorapi\Client;
 
 use Ds\Set;
 use Monolog\ConsoleLogger;
-use oglow\tools\common\IContainer;
+use ollily\Common\IContainer;
 use oglow\tools\Yacorapi\Extension\ExtensionEnum;
 use oglow\tools\Yacorapi\Extension\ExtensionTrait;
 use oglow\tools\Yacorapi\IConnectionProvider;

@@ -18,7 +18,7 @@ use Ds\Map;
 use Ds\Vector;
 use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\YacorapiTestData;
-use PHPUnit\Framework\Attributes\DataProvider;
+
 use PHPUnit\Framework\EasyGoingTestCase;
 use Psr\Log\LoggerInterface;
 
@@ -142,7 +142,7 @@ class ExtensionTraitTest extends EasyGoingTestCase
         }
     }
 
-    #[DataProvider('providerGetExtension')]
+    #[\PHPUnit\Framework\Attributes\DataProvider('providerGetExtension')]
     public function testGetExtension(bool $expected, ExtensionEnum $extension): void
     {
         $modeExtension = ExtensionEnum::EXTENSION_ALL;

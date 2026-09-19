@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Helper;
 
-use oglow\tools\common\ISingleton;
+use ollily\Common\ISingleton;
 
 /**
  * Interface for a helper clazz.

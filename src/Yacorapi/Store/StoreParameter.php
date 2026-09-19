@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Store;
 
-use oglow\tools\common\AbstractSingleton;
+use ollily\Common\AbstractSingleton;
 
 /**
  * Description of StoreParameter.

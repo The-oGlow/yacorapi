@@ -11,7 +11,7 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace oglow\tools\common;
+namespace oglow\tools\Yacorapi\Provider;
 
 use PHPUnit\Framework\EasyGoingTestCase;
 

@@ -17,7 +17,7 @@ use Ds\Collection;
 use Ds\Map;
 use Monolog\ConsoleLogger;
 use Monolog\DoNothingLogger;
-use oglow\tools\common\AbstractSingleton;
+use ollily\Common\AbstractSingleton;
 use oglow\tools\Yacorapi\Request\RequestParameter;
 use ollily\Tools\Emergency;
 use ollily\Tools\EnvironmentHelper;

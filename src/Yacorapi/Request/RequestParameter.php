@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Request;
 
-use oglow\tools\common\AbstractSingleton;
+use ollily\Common\AbstractSingleton;
 
 /**
  * Constants clazz for the individual keys of the request structure and their values.

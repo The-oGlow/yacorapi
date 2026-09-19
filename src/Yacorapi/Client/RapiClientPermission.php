@@ -15,7 +15,7 @@ namespace oglow\tools\Yacorapi\Client;
 
 use Ds\Map;
 use Monolog\ConsoleLogger;
-use oglow\tools\common\IContainer;
+use ollily\Common\IContainer;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\Data\QueryExtensionEnum;
 use oglow\tools\Yacorapi\Extension\ExtensionEnum;

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Space;
 
 use Monolog\ConsoleLogger;
-use oglow\tools\common\AbstractContainer;
+use ollily\Common\AbstractContainer;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\ExitCodes;
 use oglow\tools\Yacorapi\Response\ResponseParameter;

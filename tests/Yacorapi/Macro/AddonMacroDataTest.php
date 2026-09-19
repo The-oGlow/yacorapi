@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Macro;
 
 use oglow\tools\Yacorapi\YacorapiTestData;
-use PHPUnit\Framework\Attributes\DataProvider;
+
 use PHPUnit\Framework\EasyGoingTestCase;
 
 class AddonMacroDataTest extends EasyGoingTestCase
@@ -38,7 +38,7 @@ class AddonMacroDataTest extends EasyGoingTestCase
      * @param int                $expected
      * @param null|AddonTypeEnum $mode
      */
-    #[DataProvider('providerGetMacro')]
+    #[\PHPUnit\Framework\Attributes\DataProvider('providerGetMacro')]
     public function testGetMacros(int $expected, AddonTypeEnum|null $mode): void
     {
         if (is_null($mode)) {
@@ -54,7 +54,7 @@ class AddonMacroDataTest extends EasyGoingTestCase
      * @param int                $expected
      * @param null|AddonTypeEnum $mode
      */
-    #[DataProvider('providerGetMacro')]
+    #[\PHPUnit\Framework\Attributes\DataProvider('providerGetMacro')]
     public function testGetMacroNamesByMode(int $expected, AddonTypeEnum|null $mode): void
     {
         if (is_null($mode)) {
@@ -71,7 +71,7 @@ class AddonMacroDataTest extends EasyGoingTestCase
      * @param AddonTypeEnum $mode
      * @param string        $addon
      */
-    #[DataProvider('providerGetMacroNamesByAddon')]
+    #[\PHPUnit\Framework\Attributes\DataProvider('providerGetMacroNamesByAddon')]
     public function testgetMacroNamesByAddon(int $expected, AddonTypeEnum $mode, string $addon): void
     {
         $actual = $this->getCasto2t()->getMacroNamesByAddon($mode, $addon);

@@ -17,7 +17,7 @@ use DOMDocument;
 use DOMNode;
 use Ds\Vector;
 use oglow\tools\Yacorapi\YacorapiTestData as YTD;
-use PHPUnit\Framework\Attributes\DataProvider;
+
 use PHPUnit\Framework\EasyGoingTestCase;
 
 /**
@@ -43,7 +43,7 @@ class TagHelperTest extends EasyGoingTestCase
      * @param string      $tagName
      * @param DOMDocument $domDoc
      */
-    #[DataProvider('providerGetTagFindTag')]
+    #[\PHPUnit\Framework\Attributes\DataProvider('providerGetTagFindTag')]
     public function testGetTag(int $expectedCount, string $expectedTagName, string $tagName, DOMDocument $domDoc): void
     {
         try {
@@ -60,7 +60,7 @@ class TagHelperTest extends EasyGoingTestCase
      * @param string      $tagName
      * @param DOMDocument $domDoc
      */
-    #[DataProvider('providerGetTagFindTag')]
+    #[\PHPUnit\Framework\Attributes\DataProvider('providerGetTagFindTag')]
     public function testfindTag(int $expectedCount, string $expectedTagName, string $tagName, DOMDocument $domDoc): void
     {
         try {
@@ -77,7 +77,7 @@ class TagHelperTest extends EasyGoingTestCase
      * @param DOMDocument $domDoc
      * @param bool        $allTags
      */
-    #[DataProvider('providerDeleteTag')]
+    #[\PHPUnit\Framework\Attributes\DataProvider('providerDeleteTag')]
     public function testDeleteTag(int $expectedCount, string $tagName, DOMDocument $domDoc, bool $allTags): void
     {
         $occurenceBefore = 0;
@@ -124,7 +124,7 @@ class TagHelperTest extends EasyGoingTestCase
      * @param DOMNode|string $tagNameReplace
      * @param DOMDocument    $domDoc
      */
-    #[DataProvider('providerReplaceTags')]
+    #[\PHPUnit\Framework\Attributes\DataProvider('providerReplaceTags')]
     public function testReplaceTags(int $expectedCount, string $tagNameSearch, string|DOMNode $tagNameReplace, DOMDocument $domDoc): void
     {
         $actual = $this->getCasto2t()::replaceTags($tagNameSearch, $tagNameReplace, $domDoc);

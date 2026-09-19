@@ -17,7 +17,7 @@ use Ds\Collection;
 use Ds\Map;
 use InvalidArgumentException;
 use Monolog\ConsoleLogger;
-use oglow\tools\common\IContainer;
+use ollily\Common\IContainer;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\Data\ItemTypeEnum;
 use oglow\tools\Yacorapi\Extension\ExtensionEnum;

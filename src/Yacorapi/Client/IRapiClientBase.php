@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Client;
 
 use Ds\Set;
-use oglow\tools\common\IContainer;
+use ollily\Common\IContainer;
 use oglow\tools\Yacorapi\Data\ItemTypeEnum;
 use oglow\tools\Yacorapi\Extension\ExtensionEnum;
 use oglow\tools\Yacorapi\IConnectionProvider;
@@ -25,7 +25,7 @@ use oglow\tools\Yacorapi\Response\ResponseParameter;
 use Psr\Log\LogLevel;
 
 /**
- * @author olliy
+ * @author ollily
  */
 interface IRapiClientBase
 {

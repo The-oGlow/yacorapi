@@ -32,7 +32,6 @@
         "ext-curl": "*",
         "ext-json": "*",
         "ext-ds": "^1.0",
-        "php-ds/php-ds": "^1.0",
         "ollily/ezkoding": "^8.4",
         "ollily/ezlogging": "^8.4"
     },
@@ -41,6 +40,7 @@
     "suggest": {
     },
     "require-dev": {
+        "php-ds/php-ds": "^1.0",
         "phpunit/phpunit": "^13.1",
         "phpstan/phpstan": "^2.1",
         "phpstan/phpstan-strict-rules": "^2.0",
@@ -78,7 +78,6 @@
     },
     "autoload": {
         "psr-4": {
-            "oglow\\tools\\common\\": "src/common",
             "oglow\\tools\\Addon\\": "src/Addon",
             "oglow\\tools\\Yacorapi\\": "src/Yacorapi",
             "foo\\": "src/foo"
@@ -86,7 +85,6 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "oglow\\tools\\common\\": "tests/common",
             "oglow\\tools\\Addon\\": "tests/Addon",
             "oglow\\tools\\Yacorapi\\": "tests/Yacorapi",
             "foo\\": "tests/foo"

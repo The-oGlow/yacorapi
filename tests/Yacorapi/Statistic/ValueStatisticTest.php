@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Statistic;
 
 use Ds\Vector;
-use ollily\Tools\Test\TestData;
+use ollily\Tools\Test\TestData as TeDa;
 use PHPUnit\Framework\EasyGoingTestCase;
 
 class ValueStatisticTest extends EasyGoingTestCase
@@ -28,7 +28,7 @@ class ValueStatisticTest extends EasyGoingTestCase
     #[\Override]
     protected static function prepareO2t(): ValueStatistic
     {
-        return new ValueStatistic(ValueStatistic::EMPTY_STRING, TestData::DATA_NULL);
+        return new ValueStatistic(ValueStatistic::EMPTY_STRING, TeDa::DATA_NULL);
     }
 
     public function testKeys(): void
@@ -55,7 +55,7 @@ class ValueStatisticTest extends EasyGoingTestCase
 
     public function testAddItem(): void
     {
-        $value = TestData::DATA_NUM1;
+        $value = TeDa::DATA_NUM1;
 
         $actual = $this->getCasto2t()->getItem(ValueStatistic::EMPTY_STRING);
         self::assertNull($actual);
@@ -78,7 +78,7 @@ class ValueStatisticTest extends EasyGoingTestCase
 
     public function testToString(): void
     {
-        $value = TestData::DATA_NUM2;
+        $value = TeDa::DATA_NUM2;
         $this->getCasto2t()->addItem(ValueStatistic::EMPTY_STRING, $value);
 
         $expected = sprintf(

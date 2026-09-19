@@ -15,7 +15,7 @@ namespace oglow\tools\Addon\Projectdoc\Traits;
 
 use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Response\Response;
-use PHPUnit\Framework\Attributes\DataProvider;
+
 use PHPUnit\Framework\EasyGoingTestCase;
 
 class ProjectdocTraitTest extends EasyGoingTestCase
@@ -39,7 +39,7 @@ class ProjectdocTraitTest extends EasyGoingTestCase
      * @param bool      $expected
      * @param IResponse $response
      */
-    #[DataProvider('providerResponse')]
+    #[\PHPUnit\Framework\Attributes\DataProvider('providerResponse')]
     public function testCheckDataPdtDocument(bool $expected, IResponse $response): void
     {
         $actual = $this->getCasto2t()->checkDataPdtDocument($response);
@@ -51,7 +51,7 @@ class ProjectdocTraitTest extends EasyGoingTestCase
      * @param bool      $expected
      * @param IResponse $response
      */
-    #[DataProvider('providerResponse')]
+    #[\PHPUnit\Framework\Attributes\DataProvider('providerResponse')]
     public function testCheckDataPdtProperty(bool $expected, IResponse $response): void
     {
         $actual = $this->getCasto2t()->checkDataPdtProperty($response);
@@ -64,7 +64,7 @@ class ProjectdocTraitTest extends EasyGoingTestCase
      * @param IResponse $response
      * @param string    $propertyName
      */
-    #[DataProvider('providerPropertyName')]
+    #[\PHPUnit\Framework\Attributes\DataProvider('providerPropertyName')]
     public function testshowResultsPdt(string $expected, IResponse $response, string $propertyName): void
     {
         $actual = $this->getCasto2t()->showResultsPdt($response, $propertyName);
@@ -77,7 +77,7 @@ class ProjectdocTraitTest extends EasyGoingTestCase
      * @param int       $pageId
      * @param string    $propertyName
      */
-    #[DataProvider('providerPdtReadProperty')]
+    #[\PHPUnit\Framework\Attributes\DataProvider('providerPdtReadProperty')]
     public function testPdtReadProperty(IResponse $expected, int $pageId, string $propertyName): void
     {
         $actual = $this->getCasto2t()->pdtReadProperty($pageId, $propertyName);
@@ -91,7 +91,7 @@ class ProjectdocTraitTest extends EasyGoingTestCase
      * @param string       $spaceKey
      * @param string       $where
      */
-    #[DataProvider('providerPdtReadDocument')]
+    #[\PHPUnit\Framework\Attributes\DataProvider('providerPdtReadDocument')]
     public function testPdtReadDocument(
         IResponse $expected,
         array $propertyNames,
