@@ -23,5 +23,5 @@ use Psr\Log\LogLevel;
 interface ISingleton
 {
     /** @var string Default output level */
-    public const string LEVEL_DEFAULT = LogLevel::DEBUG;
+    public const string LEVEL_DEFAULT = LogLevel::INFO;
 }

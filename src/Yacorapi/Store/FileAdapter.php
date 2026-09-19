@@ -43,8 +43,7 @@ class FileAdapter extends AbstractStoreAdapter
      * @param string                                         $pathToFile Folder where to store the output file
      *                                                                   (Default: {@link SP::DEFAULT_FOLDER_NAME})
      * @param FileStoreStageEnum                             $staging    The stage where to store the file (Default {@link FileStoreStageEnum::BASE})
-     * @param int|\Monolog\Level|\Psr\Log\LogLevel::*|string $level      The minimum logging level at which this handler will be triggered
-     *                                                                   (Default: {@link self::LEVEL_DEFAULT})
+     * @param int|LogLevel::*|string $level      The minimum logging level at which this handler will be triggered (Default: {@link self::LEVEL_DEFAULT})
      *
      * @phpstan-param LoggingLevel $level
      */
@@ -88,7 +87,7 @@ class FileAdapter extends AbstractStoreAdapter
      * @inheritDoc
      */
     #[\Override]
-    public function storeDataHeader(string|array $dataHeader): void
+    public function storeDataHeader(array|string $dataHeader): void
     {
         self::$logger->debug('START', [$this->storeItem]);
 

@@ -17,6 +17,7 @@ use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\Store\StoreParameter as SP;
 use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 
 /**
  * Abstract implementation for a store adapter.
@@ -46,8 +47,7 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
      * @param string                                         $pathToFile Folder where to store the output file
      *                                                                   (Default: {@link SP::DEFAULT_FOLDER_NAME})
      * @param FileStoreStageEnum                             $staging    The stage where to store the file (Default {@link FileStoreStageEnum::BASE})
-     * @param int|\Monolog\Level|\Psr\Log\LogLevel::*|string $level      The minimum logging level at which this handler will be triggered
-     *                                                                   (Default: {@link self::LEVEL_DEFAULT})
+     * @param int|LogLevel::*|string $level      The minimum logging level at which this handler will be triggered (Default: {@link self::LEVEL_DEFAULT})
      *
      * @phpstan-param LoggingLevel $level
      */
@@ -85,9 +85,9 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
      * @inheritDoc
      */
     #[\Override]
-    public function getStoreItem(): string
+    public function getFileName(): string
     {
-        return $this->storeItem->__toString();
+        return $this->storeItem->getStoreName();
     }
 
     /**
@@ -244,11 +244,11 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
     /**
      * The header for the file will be flatten from array to string.
      *
-     * @param string|string[] $dataHeader The header which will be flatten
+     * @param array<mixed>|string $dataHeader The header which will be flatten
      *
      * @return string The header as string
      */
-    protected static function flattenDataHeader(string|array $dataHeader): string
+    protected static function flattenDataHeader(array|string $dataHeader): string
     {
         $header = "";
         if (!empty($dataHeader)) {
@@ -287,7 +287,7 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
      *
      * @return array<mixed> The content of the file
      */
-    protected function readResultFile(string $fileName): array
+    public static function readResultFile(string $fileName): array
     {
         self::$logger->debug('START', [$fileName]);
 

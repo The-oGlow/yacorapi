@@ -38,9 +38,9 @@ interface IStoreAdapter
     public function storeDataHeader(string|array $dataHeader): void;
 
     /**
-     * Returns the item which stores the data.
+     * Returns the full filename of the output file.
      *
-     * @return string The item which is stored
+     * @return string The full filename
      */
-    public function getStoreItem(): string;
+    public function getFileName(): string;
 }

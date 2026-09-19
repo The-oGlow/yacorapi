@@ -60,8 +60,7 @@ class CsvFileAdapter extends FileAdapter
      * @param string                                         $pathToFile Folder where to store the output file
      *                                                                   (Default: {@link SP::DEFAULT_FOLDER_NAME})
      * @param FileStoreStageEnum                             $staging    The stage where to store the file (Default {@link FileStoreStageEnum::BASE})
-     * @param int|\Monolog\Level|\Psr\Log\LogLevel::*|string $level      The minimum logging level at which this handler will be triggered
-     *                                                                   (Default: {@link self::LEVEL_DEFAULT})
+     * @param int|LogLevel::*|string $level      The minimum logging level at which this handler will be triggered (Default: {@link self::LEVEL_DEFAULT})
      *
      * @phpstan-param LoggingLevel $level
      */
@@ -110,7 +109,7 @@ class CsvFileAdapter extends FileAdapter
      * @inheritDoc
      */
     #[\Override]
-    protected static function flattenDataHeader(string|array $dataHeader): string
+    protected static function flattenDataHeader(array|string $dataHeader): string
     {
         if (is_array($dataHeader)) {
             $headerCount = count($dataHeader);
@@ -127,7 +126,7 @@ class CsvFileAdapter extends FileAdapter
      *
      * @return string
      */
-    protected function prepareCsvLine(string|array $param): string
+    protected function prepareCsvLine(array|string $param): string
     {
         if (!is_array($param)) {
             $param = [$param];

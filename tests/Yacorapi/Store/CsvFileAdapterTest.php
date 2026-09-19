@@ -60,7 +60,7 @@ class CsvFileAdapterTest extends EasyGoingTestCase
     {
         self::$fileName = YacorapiTestData::FILE_FILENAME . '-' . microtime(true);
         $this->o2t = self::prepareO2t();
-        self::$logger->info($this->getCasto2t()->getStoreItem());
+        self::$logger->info($this->getCasto2t()->getFileName());
     }
 
     public function testStoreDataHeader(): void
@@ -74,7 +74,7 @@ class CsvFileAdapterTest extends EasyGoingTestCase
 
         $this->getCasto2t()->storeDataHeader($dataHeader);
 
-        $testFileName = $this->getCasto2t()->getStoreItem();
+        $testFileName = $this->getCasto2t()->getFileName();
         self::assertFileExists($testFileName);
         self::assertEquals($expected, filesize($testFileName), "Filesize is not as expected for '$testFileName'");
     }
@@ -89,7 +89,7 @@ class CsvFileAdapterTest extends EasyGoingTestCase
 
         $this->getCasto2t()->storeData($dataContent);
 
-        $testFileName = $this->getCasto2t()->getStoreItem();
+        $testFileName = $this->getCasto2t()->getFileName();
         self::assertFileExists($testFileName);
         self::assertEquals($expected, filesize($testFileName), "Filesize is not as expected for '$testFileName'");
     }

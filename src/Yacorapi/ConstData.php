@@ -162,7 +162,7 @@ final class ConstData extends AbstractSingleton
      * Protected constructor.
      *
      * @param bool                   $withLogger TRUE=activate logging, else FALSE
-     * @param int|LogLevel::*|string $level      The minimum logging level at which this handler will be triggered (Default: {@link ISingleton::LEVEL_DEFAULT})
+     * @param int|LogLevel::*|string $level      The minimum logging level at which this handler will be triggered (Default: {@link self::LEVEL_DEFAULT})
      */
     protected function __construct(bool $withLogger = false, LogLevel|string|int $level = self::LEVEL_DEFAULT)
     {
