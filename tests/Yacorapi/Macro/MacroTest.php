@@ -17,7 +17,6 @@ use Ds\Map;
 use Ds\Vector;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\YacorapiTestData;
-
 use PHPUnit\Framework\TestCase;
 
 class MacroTest extends TestCase

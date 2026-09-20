@@ -138,7 +138,7 @@ class ResponseParameter extends AbstractSingleton
 
     public const int VAL_SPACE_ID_NO = -1;
 
-    public const VAL_SPACE_KEY_NO = "";
+    public const string VAL_SPACE_KEY_NO = "";
 
     public const string VAL_SPACE_TITLE_EMPTY = "";
 

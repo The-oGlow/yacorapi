@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Extension;
 
-
 use PHPUnit\Framework\TestCase;
 
 class ExtensionEnumTest extends TestCase

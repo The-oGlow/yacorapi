@@ -16,7 +16,6 @@ namespace oglow\tools\Addon\Projectdoc\Helper;
 use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Response\Response;
 use oglow\tools\Yacorapi\YacorapiTestData;
-
 use PHPUnit\Framework\EasyGoingTestCase;
 
 class ProjectDocToolboxHelperTest extends EasyGoingTestCase

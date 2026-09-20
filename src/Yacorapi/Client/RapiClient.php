@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Client;
 
 use Monolog\ConsoleLogger;
-use ollily\Common\IContainer;
 use oglow\tools\Yacorapi\Extension\ExtensionEnum;
 use oglow\tools\Yacorapi\Extension\ExtensionTrait;
 use oglow\tools\Yacorapi\IConnectionProvider;
 use oglow\tools\Yacorapi\IRapiClient;
+use ollily\Common\IContainer;
 use Psr\Log\LoggerInterface;
 
 class RapiClient extends RapiClientBatch implements IRapiClient

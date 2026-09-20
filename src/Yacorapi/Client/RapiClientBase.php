@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Client;
 
-use Ds\Set;
+use Ds\Sequence;
 use Monolog\ConsoleLogger;
-use ollily\Common\IContainer;
 use oglow\tools\Yacorapi\Extension\ExtensionEnum;
 use oglow\tools\Yacorapi\Extension\ExtensionTrait;
 use oglow\tools\Yacorapi\IConnectionProvider;
 use oglow\tools\Yacorapi\IRapiClient;
+use ollily\Common\IContainer;
 use Psr\Log\LoggerInterface;
 
 class RapiClientBase extends AbstractRapiClient implements IRapiClientBase
@@ -47,7 +47,7 @@ class RapiClientBase extends AbstractRapiClient implements IRapiClientBase
      * @inheritDoc
      */
     #[\Override]
-    public static function taskitemMethods(): Set
+    public static function taskitemMethods(): Sequence
     {
         return self::existingMethodNames();
     }

@@ -19,7 +19,6 @@ use oglow\tools\Yacorapi\Macro\AddonTypeEnum;
 use oglow\tools\Yacorapi\Response\Response;
 use oglow\tools\Yacorapi\Response\ResponseParameter;
 use oglow\tools\Yacorapi\YacorapiTestData;
-
 use PHPUnit\Framework\EasyGoingTestCase;
 use Psr\Log\LoggerInterface;
 

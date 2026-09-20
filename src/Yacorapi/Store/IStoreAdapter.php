@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Store;
 
+use Psr\Log\LogLevel;
+
 /**
  * Interface for the store adapter.
  *
@@ -21,7 +23,7 @@ namespace oglow\tools\Yacorapi\Store;
 interface IStoreAdapter
 {
     /** @var string Default output level */
-    public const string LEVEL_DEFAULT = 'info';
+    public const string LEVEL_DEFAULT = LogLevel::INFO;
 
     /**
      * Store any data with the adapter.

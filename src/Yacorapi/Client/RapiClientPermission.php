@@ -15,7 +15,6 @@ namespace oglow\tools\Yacorapi\Client;
 
 use Ds\Map;
 use Monolog\ConsoleLogger;
-use ollily\Common\IContainer;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\Data\QueryExtensionEnum;
 use oglow\tools\Yacorapi\Extension\ExtensionEnum;
@@ -23,6 +22,7 @@ use oglow\tools\Yacorapi\IConnectionProvider;
 use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Request\RequestParameter;
 use oglow\tools\Yacorapi\Request\RequestTypeEnum;
+use ollily\Common\IContainer;
 use Psr\Log\LoggerInterface;
 
 class RapiClientPermission extends RapiClientWrite implements IRapiClientPermission

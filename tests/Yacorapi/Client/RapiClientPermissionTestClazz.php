@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Client;
 
 use Monolog\ConsoleLogger;
-use ollily\Common\MockProvider;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\IConnectionProvider;
+use oglow\tools\Yacorapi\Provider\MockProvider;
 use Psr\Log\LoggerInterface;
 
 class RapiClientPermissionTestClazz extends RapiClientPermission implements IRapiClientPermission

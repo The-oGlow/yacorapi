@@ -15,13 +15,13 @@ namespace oglow\tools\Yacorapi\Client;
 
 use Ds\Collection;
 use Monolog\ConsoleLogger;
-use ollily\Common\IContainer;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\IConnectionProvider;
 use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Macro\AddonMacroData;
 use oglow\tools\Yacorapi\Provider\CurlProvider;
 use oglow\tools\Yacorapi\Request\RequestTypeEnum;
+use ollily\Common\IContainer;
 use ollily\Tools\Reflection\MagicPublicFunctionTrait;
 use Psr\Log\LoggerInterface;
 

@@ -17,6 +17,7 @@ use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\Store\StoreParameter as SP;
 use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 
 /**
  * Implementation for a standarf file adapter.
@@ -35,17 +36,15 @@ class FileAdapter extends AbstractStoreAdapter
     /**
      * Constructor for a store adapter.
      *
-     * @param string                                         $fileName   The filename, without suffix, of the output file
-     * @param string                                         $filePrefix Prefix of the output file (Default: {@link SP::DEFAULT_FILE_PREFIX})
-     * @param string                                         $fileSuffix Suffix of the output file (Default: {@link SP::DEFAULT_FILE_SUFFIX})
-     * @param string                                         $fileExt    File extension of the output file
-     *                                                                   (Default: {@link SP::DEFAULT_FILE_EXT})
-     * @param string                                         $pathToFile Folder where to store the output file
-     *                                                                   (Default: {@link SP::DEFAULT_FOLDER_NAME})
-     * @param FileStoreStageEnum                             $staging    The stage where to store the file (Default {@link FileStoreStageEnum::BASE})
+     * @param string                 $fileName   The filename, without suffix, of the output file
+     * @param string                 $filePrefix Prefix of the output file (Default: {@link SP::DEFAULT_FILE_PREFIX})
+     * @param string                 $fileSuffix Suffix of the output file (Default: {@link SP::DEFAULT_FILE_SUFFIX})
+     * @param string                 $fileExt    File extension of the output file
+     *                                           (Default: {@link SP::DEFAULT_FILE_EXT})
+     * @param string                 $pathToFile Folder where to store the output file
+     *                                           (Default: {@link SP::DEFAULT_FOLDER_NAME})
+     * @param FileStoreStageEnum     $staging    The stage where to store the file (Default {@link FileStoreStageEnum::BASE})
      * @param int|LogLevel::*|string $level      The minimum logging level at which this handler will be triggered (Default: {@link self::LEVEL_DEFAULT})
-     *
-     * @phpstan-param LoggingLevel $level
      */
     public function __construct(
         string $fileName,
@@ -56,6 +55,8 @@ class FileAdapter extends AbstractStoreAdapter
         FileStoreStageEnum $staging = FileStoreStageEnum::BASE,
         mixed $level = self::LEVEL_DEFAULT
     ) {
+        /** @psalm-suppress ArgumentTypeCoercion
+         * @phpstan-ignore argument.type */
         self::$logger    = new ConsoleLogger(FileAdapter::class, level: $level);
         self::$logger->debug("START", [$fileName, $filePrefix, $fileSuffix, $fileExt, $pathToFile, $staging->name]);
 
@@ -105,10 +106,11 @@ class FileAdapter extends AbstractStoreAdapter
     {
         self::$logger->debug('START', [$this->storeItem]);
 
+        /** @psalm-suppress MixedMethodCall */
         $line = sprintf(
             '%s;%s%s;%s',
             $resultsEntry[SP::KEY_KEY],
-            $this->constData->c(ConstData::KEY_CONF_BASE_URL),
+            ConstData::i()->c(ConstData::KEY_CONF_BASE_URL),
             $resultsEntry[SP::KEY_LINKS][SP::KEY_TINYUI],
             $resultsEntry[SP::KEY_TITLE]
         );

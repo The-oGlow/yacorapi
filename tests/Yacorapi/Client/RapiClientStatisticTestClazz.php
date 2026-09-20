@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Client;
 
 use Monolog\ConsoleLogger;
-use ollily\Common\MockProvider;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\Data\ItemTypeEnum;
+use oglow\tools\Yacorapi\Provider\MockProvider;
 use oglow\tools\Yacorapi\Space\SpaceTypeEnum;
 use Psr\Log\LoggerInterface;
 

@@ -17,7 +17,6 @@ use DOMDocument;
 use DOMNode;
 use Ds\Vector;
 use oglow\tools\Yacorapi\YacorapiTestData as YTD;
-
 use PHPUnit\Framework\EasyGoingTestCase;
 
 /**

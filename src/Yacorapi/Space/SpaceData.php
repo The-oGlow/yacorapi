@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Space;
 
 use Monolog\ConsoleLogger;
-use ollily\Common\AbstractContainer;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\ExitCodes;
 use oglow\tools\Yacorapi\Response\ResponseParameter;
+use ollily\Common\AbstractContainer;
 use ollily\Tools\Emergency;
 use Psr\Log\LoggerInterface;
 
@@ -112,7 +112,8 @@ class SpaceData extends AbstractContainer
     #[\Override]
     protected function prepareData(): void
     {
-        $this->mySpaceFileDefault = ((string) $this->constData->c(ConstData::KEY_MY_DIR)) . DIRECTORY_SEPARATOR . self::VAL_SPACES_FILE;
+        /** @psalm-suppress MixedMethodCall */
+        $this->mySpaceFileDefault = strval(ConstData::i()->c(ConstData::KEY_MY_DIR)) . DIRECTORY_SEPARATOR . self::VAL_SPACES_FILE;
 
         $allData = [];
         $allData[SpaceTypeEnum::SPACE_SINGLE->value] = $this->prepareSpaces(SpaceTypeEnum::SPACE_SINGLE->method(), $this->mySpaceFileDefault);

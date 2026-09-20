@@ -16,7 +16,6 @@ namespace oglow\tools\Yacorapi\Client;
 use Ds\Collection;
 use Ds\Vector;
 use Monolog\ConsoleLogger;
-use ollily\Common\IContainer;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\Data\ItemTypeEnum;
 use oglow\tools\Yacorapi\Data\QueryExtensionEnum;
@@ -32,6 +31,7 @@ use oglow\tools\Yacorapi\Statistic\IStatistic;
 use oglow\tools\Yacorapi\Statistic\StatisticStatistic;
 use oglow\tools\Yacorapi\Statistic\StatisticTypeEnum;
 use oglow\tools\Yacorapi\Statistic\ValueStatistic;
+use ollily\Common\IContainer;
 use Psr\Log\LoggerInterface;
 
 class RapiClientStatistic extends RapiClientPermission implements IRapiClientStatistic

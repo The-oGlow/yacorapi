@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Extension;
 
-
 use PHPUnit\Framework\EasyGoingTestCase;
 
 class IExtensionTest extends EasyGoingTestCase

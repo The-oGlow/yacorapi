@@ -23,14 +23,10 @@ use Psr\Log\LogLevel;
  * Abstract implementation for a store adapter.
  *
  * @author ollily
- *
- * @phpstan-import-type LoggingLevel from \Monolog\AbstractEasyGoingLogger
  */
 abstract class AbstractStoreAdapter implements IStoreAdapter
 {
     private static LoggerInterface $logger;
-
-    protected ConstData $constData;
 
     protected IStoreItem $storeItem;
 
@@ -39,17 +35,15 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
     /**
      * Constructor for a store adapter.
      *
-     * @param string                                         $fileName   The filename, without suffix, of the output file
-     * @param string                                         $filePrefix Prefix of the output file (Default: {@link SP::DEFAULT_FILE_PREFIX})
-     * @param string                                         $fileSuffix Suffix of the output file (Default: {@link SP::DEFAULT_FILE_SUFFIX})
-     * @param string                                         $fileExt    File extension of the output file
-     *                                                                   (Default: {@link SP::DEFAULT_FILE_EXT})
-     * @param string                                         $pathToFile Folder where to store the output file
-     *                                                                   (Default: {@link SP::DEFAULT_FOLDER_NAME})
-     * @param FileStoreStageEnum                             $staging    The stage where to store the file (Default {@link FileStoreStageEnum::BASE})
+     * @param string                 $fileName   The filename, without suffix, of the output file
+     * @param string                 $filePrefix Prefix of the output file (Default: {@link SP::DEFAULT_FILE_PREFIX})
+     * @param string                 $fileSuffix Suffix of the output file (Default: {@link SP::DEFAULT_FILE_SUFFIX})
+     * @param string                 $fileExt    File extension of the output file
+     *                                           (Default: {@link SP::DEFAULT_FILE_EXT})
+     * @param string                 $pathToFile Folder where to store the output file
+     *                                           (Default: {@link SP::DEFAULT_FOLDER_NAME})
+     * @param FileStoreStageEnum     $staging    The stage where to store the file (Default {@link FileStoreStageEnum::BASE})
      * @param int|LogLevel::*|string $level      The minimum logging level at which this handler will be triggered (Default: {@link self::LEVEL_DEFAULT})
-     *
-     * @phpstan-param LoggingLevel $level
      */
     public function __construct(
         string $fileName,
@@ -60,12 +54,14 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
         FileStoreStageEnum $staging = FileStoreStageEnum::BASE,
         mixed $level = self::LEVEL_DEFAULT
     ) {
+        /** @psalm-suppress ArgumentTypeCoercion
+         * @phpstan-ignore argument.type */
         self::$logger = new ConsoleLogger(AbstractStoreAdapter::class, level: $level);
         self::$logger->debug("START", [$fileName, $filePrefix, $fileSuffix, $fileExt, $pathToFile, $staging->name]);
 
         // Init Dynamic Consts
-        $this->constData = ConstData::i();
-        $this->sessionFolder = $this->prepareTargetFolderSession($fileName, $this->constData->c(ConstData::KEY_TARGET_DIR));
+        /** @psalm-suppress MixedMethodCall */
+        $this->sessionFolder = $this->prepareTargetFolderSession($fileName, ConstData::i()->c(ConstData::KEY_TARGET_DIR));
         $finalPathToFile = $this->prepareTargetFolderStaging($staging, $this->sessionFolder);
         if (!empty($pathToFile)) {
             $finalPathToFile = $pathToFile;

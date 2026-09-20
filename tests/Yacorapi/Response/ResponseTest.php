@@ -19,7 +19,6 @@ use Ds\Vector;
 use oglow\tools\Yacorapi\Response\ResponseParameter as RP;
 use oglow\tools\Yacorapi\Space\SpaceInfoEnum;
 use oglow\tools\Yacorapi\YacorapiTestData;
-
 use PHPUnit\Framework\EasyGoingTestCase;
 
 class ResponseTest extends EasyGoingTestCase

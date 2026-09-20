@@ -16,7 +16,6 @@ namespace oglow\tools\Yacorapi\Helper;
 use Ds\Map;
 use oglow\tools\Yacorapi\Macro\HasMacroBodyEnum;
 use oglow\tools\Yacorapi\YacorapiTestData;
-
 use PHPUnit\Framework\EasyGoingTestCase;
 
 class ContentHelperTest extends EasyGoingTestCase

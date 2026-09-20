@@ -13,15 +13,10 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Helper;
 
-use DOMDocument;
-use DOMElement;
-use DOMNameSpaceNode;
-use DOMNode;
-use DOMNodeList;
-use DOMXPath;
 use Ds\Sequence;
 use Ds\Vector;
 use Monolog\ConsoleLogger;
+use ollily\Common\AbstractHelper;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 
@@ -57,15 +52,15 @@ class TagHelper extends AbstractHelper
     /**
      * Returns all tags with a specific tag name.
      *
-     * @param string      $tagName The tag name
-     * @param DOMDocument $domDoc  The dom structure to search in
+     * @param string       $tagName The tag name
+     * @param \DOMDocument $domDoc  The dom structure to search in
      *
      * @return Sequence<mixed> All found tags
      */
-    public static function getTag(string $tagName, DOMDocument $domDoc): Sequence
+    public static function getTag(string $tagName, \DOMDocument $domDoc): Sequence
     {
         /** @psalm-suppress TooManyTemplateParams
-         *  @var bool|DOMNodeList<DOMNameSpaceNode|DOMNode> */
+         *  @var bool|\DOMNodeList<\DOMNameSpaceNode|\DOMNode> */
         $result = false;
         if (!empty($tagName)) {
             $result = $domDoc->getElementsByTagName($tagName);
@@ -80,21 +75,21 @@ class TagHelper extends AbstractHelper
     }
 
     /**
-     * Returns all tags with a specific tag name using {@link \DOMXPath}.
+     * Returns all tags with a specific tag name using {@link \\DOMXPath}.
      *
-     * @param string      $tagName The tag name
-     * @param DOMDocument $domDoc  The dom structure to search in
+     * @param string       $tagName The tag name
+     * @param \DOMDocument $domDoc  The dom structure to search in
      *
      * @return Sequence<mixed> All found tags
      */
-    public static function findTag(string $tagName, DOMDocument $domDoc): Sequence
+    public static function findTag(string $tagName, \DOMDocument $domDoc): Sequence
     {
         /** @psalm-suppress TooManyTemplateParams
-         *  @var bool|DOMNodeList<DOMNameSpaceNode|DOMNode> */
+         *  @var bool|\DOMNodeList<\DOMNameSpaceNode|\DOMNode> */
         $result = false;
         if (!empty($tagName)) {
             try {
-                $xpath = new DOMXPath($domDoc);
+                $xpath = new \DOMXPath($domDoc);
                 $result = $xpath->query($tagName);
             } catch (\Throwable $error) {
                 self::$logger->notice($error->getMessage(), [$error::class]);
@@ -113,22 +108,22 @@ class TagHelper extends AbstractHelper
      * Removes the first found or all tags with a specific tag name.
      *
      * @param string          $tagName     The tag name
-     * @param DOMDocument     $domDoc      The dom structure to remove in
+     * @param \DOMDocument    $domDoc      The dom structure to remove in
      * @param Sequence<mixed> $deletedTags All deleted tags
      * @param bool            $allTags     TRUE=remove all found tags, FALSE=remove the first found tag
      *
-     * @return DOMDocument The new dom structure
+     * @return \DOMDocument The new dom structure
      */
-    public static function deleteTag(string $tagName, DOMDocument $domDoc, Sequence &$deletedTags, bool $allTags = false): DOMDocument
+    public static function deleteTag(string $tagName, \DOMDocument $domDoc, Sequence &$deletedTags, bool $allTags = false): \DOMDocument
     {
         /** @psalm-suppress TooManyTemplateParams
-         *  @var bool|DOMNodeList<DOMNameSpaceNode|DOMNode> */
+         *  @var bool|\DOMNodeList<\DOMNameSpaceNode|\DOMNode> */
         $result = false;
         if (!empty($tagName)) {
             $foundTags = self::getTag($tagName, $domDoc);
             if ($allTags) {
                 $result = [];
-                /** @var DOMElement $foundTag */
+                /** @var \DOMElement $foundTag */
                 foreach ($foundTags as $foundTag) {
                     try {
                         if (!is_null($foundTag->parentNode)) {
@@ -140,7 +135,7 @@ class TagHelper extends AbstractHelper
                 }
             } else {
                 if ($foundTags->count() > 0) {
-                    /** @var DOMElement $foundTag */
+                    /** @var \DOMElement $foundTag */
                     $foundTag = $foundTags->first();
 
                     try {
@@ -163,23 +158,23 @@ class TagHelper extends AbstractHelper
     }
 
     /**
-     * @param string         $tagNameSearch  The tag name to search for
-     * @param DOMNode|string $tagNameReplace The tag name to replace with or the new DOMNode
-     * @param DOMDocument    $domDoc         The dom structure to replace in
+     * @param string          $tagNameSearch  The tag name to search for
+     * @param \DOMNode|string $tagNameReplace The tag name to replace with or the new \DOMNode
+     * @param \DOMDocument    $domDoc         The dom structure to replace in
      *
-     * @return DOMDocument The new dom structure
+     * @return \DOMDocument The new dom structure
      */
-    public static function replaceTags(string $tagNameSearch, DOMNode|string $tagNameReplace, DOMDocument $domDoc): DOMDocument
+    public static function replaceTags(string $tagNameSearch, \DOMNode|string $tagNameReplace, \DOMDocument $domDoc): \DOMDocument
     {
         /** @psalm-suppress TooManyTemplateParams
-         *  @var bool|DOMNodeList<DOMNameSpaceNode|DOMNode> */
+         *  @var bool|\DOMNodeList<\DOMNameSpaceNode|\DOMNode> */
         $result = false;
         if (!empty($tagNameSearch)) {
             $foundTags = self::getTag($tagNameSearch, $domDoc);
             $result = [];
             $posIdx = $foundTags->count() - 1;
             while ($posIdx > -1) {
-                /** @var DOMElement $foundTag */
+                /** @var \DOMElement $foundTag */
                 $foundTag = $foundTags->get($posIdx);
 
                 try {
@@ -188,12 +183,12 @@ class TagHelper extends AbstractHelper
                         $newTag = $domDoc->createTextNode($tagNameReplace);
                     } elseif (is_string($tagNameReplace)) {
                         $newTag = $domDoc->createElement($tagNameReplace);
-                    } elseif ($tagNameReplace instanceof DOMNode) { // @phpstan-ignore instanceof.alwaysTrue
+                    } elseif ($tagNameReplace instanceof \DOMNode) { // @phpstan-ignore instanceof.alwaysTrue
                         $newTag = $tagNameReplace;
                     } else {
                         $newTag = '';
                     }
-                    if (!is_null($foundTag->parentNode) && $newTag instanceof DOMNode) {
+                    if (!is_null($foundTag->parentNode) && $newTag instanceof \DOMNode) {
                         $result[] = $foundTag->parentNode->replaceChild($newTag, $foundTag);
                     }
                 } catch (\Throwable $error) {

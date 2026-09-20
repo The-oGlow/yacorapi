@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Client;
 
 use Monolog\ConsoleLogger;
-use ollily\Common\IContainer;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\Data\ItemTypeEnum;
 use oglow\tools\Yacorapi\Data\QueryExtensionEnum;
@@ -25,6 +24,7 @@ use oglow\tools\Yacorapi\Macro\AddonTypeEnum;
 use oglow\tools\Yacorapi\Response\ResponseAddonMacro;
 use oglow\tools\Yacorapi\Response\ResponseParameter;
 use oglow\tools\Yacorapi\Space\SpaceTypeEnum;
+use ollily\Common\IContainer;
 use Psr\Log\LoggerInterface;
 
 class RapiClientRead extends RapiClientBase implements IRapiClientRead

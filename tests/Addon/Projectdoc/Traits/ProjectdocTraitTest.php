@@ -15,7 +15,6 @@ namespace oglow\tools\Addon\Projectdoc\Traits;
 
 use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Response\Response;
-
 use PHPUnit\Framework\EasyGoingTestCase;
 
 class ProjectdocTraitTest extends EasyGoingTestCase

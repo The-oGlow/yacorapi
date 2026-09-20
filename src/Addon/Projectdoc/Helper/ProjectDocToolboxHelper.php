@@ -15,11 +15,11 @@ namespace oglow\tools\Addon\Projectdoc\Helper;
 
 use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\ConstData;
-use oglow\tools\Yacorapi\Helper\AbstractHelper;
 use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Response\ResponseParameter;
 use oglow\tools\Yacorapi\Store\FileAdapter;
 use oglow\tools\Yacorapi\Store\IStoreAdapter;
+use ollily\Common\AbstractHelper;
 use Psr\Log\LoggerInterface;
 
 /**

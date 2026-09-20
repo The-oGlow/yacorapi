@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi;
 
-use DOMDocument;
-use DOMElement;
 use Ds\Collection;
 use Ds\Map;
 use oglow\tools\Addon\Atlassian\Extension\AtlassianExtension;
@@ -23,7 +21,7 @@ use oglow\tools\Yacorapi\Extension\RapiClientExtension;
 use oglow\tools\Yacorapi\Request\RequestParameter;
 use oglow\tools\Yacorapi\Response\ResponseParameter;
 use oglow\tools\Yacorapi\Space\SpaceTypeEnum;
-use ollily\Tools\Test\TestData as TeDa;
+use ollily\Tools\Test\TestData;
 
 // @phpcs:ignoreFile PSR1.Methods.CamelCapsMethodName.NotCamelCaps
 class YacorapiTestData extends TestData
@@ -518,9 +516,9 @@ class YacorapiTestData extends TestData
 
     // Tag Specific
 
-    public static function prepareDOMDocument(string $content): DOMDocument
+    public static function prepareDOMDocument(string $content): \DOMDocument
     {
-        $newDom = new DOMDocument();
+        $newDom = new \DOMDocument();
         if (!empty($content)) {
             $newDom->loadXML($content);
         }
@@ -528,11 +526,11 @@ class YacorapiTestData extends TestData
         return $newDom;
     }
 
-    public static function prepareDOMElement(string $tagName): DOMElement|false
+    public static function prepareDOMElement(string $tagName): \DOMElement|false
     {
         $newElement = false;
         if (!empty($tagName)) {
-            $tmpDom = new DOMDocument();
+            $tmpDom = new \DOMDocument();
             $newElement = $tmpDom->createElement($tagName);
         }
 

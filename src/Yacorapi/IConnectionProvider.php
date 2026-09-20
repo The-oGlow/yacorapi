@@ -15,6 +15,7 @@ namespace oglow\tools\Yacorapi;
 
 use Ds\Collection;
 use oglow\tools\Yacorapi\Request\RequestTypeEnum;
+use Psr\Log\LogLevel;
 
 /**
  * @author ollily
@@ -22,7 +23,7 @@ use oglow\tools\Yacorapi\Request\RequestTypeEnum;
 interface IConnectionProvider
 {
     /** @var string Default output level */
-    public const string LEVEL_DEFAULT = 'info';
+    public const string LEVEL_DEFAULT = LogLevel::INFO;
 
     public const string MSG_FOUND_NO_RESULTS = 'Found no results';
 

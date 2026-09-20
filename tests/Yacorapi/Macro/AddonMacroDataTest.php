@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Macro;
 
 use oglow\tools\Yacorapi\YacorapiTestData;
-
 use PHPUnit\Framework\EasyGoingTestCase;
 
 class AddonMacroDataTest extends EasyGoingTestCase

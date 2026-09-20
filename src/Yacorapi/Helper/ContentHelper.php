@@ -16,6 +16,7 @@ namespace oglow\tools\Yacorapi\Helper;
 use Ds\Collection;
 use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\Macro\HasMacroBodyEnum;
+use ollily\Common\AbstractHelper;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 

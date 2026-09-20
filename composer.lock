@@ -4,7 +4,7 @@
     "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
     "This file is @generated automatically"
   ],
-  "content-hash": "720c853f4dd915e4c6969abd5fd17786",
+  "content-hash": "cf2e3fe45c9b2d6eaafc5ddc8e7cc428",
   "packages": [
     {
       "name": "composer/ca-bundle",
@@ -867,26 +867,22 @@
     },
     {
       "name": "ollily/ezkoding",
-      "version": "8.4.003",
-      "source": {
-        "type": "git",
-        "url": "https://github.com/The-oGlow/ezkoding.git",
-        "reference": "895f476415df6f94ccc1b1dfc751697f52dbb68b"
-      },
+      "version": "8.999.999",
       "dist": {
-        "type": "zip",
-        "url": "https://api.github.com/repos/The-oGlow/ezkoding/zipball/895f476415df6f94ccc1b1dfc751697f52dbb68b",
-        "reference": "895f476415df6f94ccc1b1dfc751697f52dbb68b",
-        "shasum": ""
+        "type": "path",
+        "url": "../ezkoding/target/staging/ollily-ezkoding",
+        "reference": "301d9d123709fec55fcd7bcb4e5255a7aaf932a0"
       },
       "require": {
         "composer/composer": "^2.0",
+        "ext-ds": "^1.0",
         "php": ">=8.4.1",
-        "php-ds/php-ds": "^1.0",
-        "psr/log": "^2.0||^3.0"
+        "psr/log": "^2.0||^3.0",
+        "twig/twig": "^3.27"
       },
       "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.0",
+        "php-ds/php-ds": "^1.0",
         "phpmd/phpmd": "^2.0",
         "phpstan/phpstan": "^2.1",
         "phpstan/phpstan-strict-rules": "^2.0",
@@ -899,11 +895,85 @@
       "autoload": {
         "psr-4": {
           "Monolog\\": "src/Monolog",
-          "PHPUnit\\": "src/PHPUnit",
-          "ollily\\Tools\\": "src/Tools"
+          "ollily\\Common\\": "src/Common",
+          "ollily\\Tools\\": "src/Tools",
+          "PHPUnit\\": "src/PHPUnit"
         }
       },
-      "notification-url": "https://packagist.org/downloads/",
+      "autoload-dev": {
+        "psr-4": {
+          "Monolog\\": "tests/Monolog",
+          "ollily\\Common\\": "tests/Common",
+          "ollily\\Tools\\": "tests/Tools",
+          "PHPUnit\\": "tests/PHPUnit"
+        }
+      },
+      "archive": {
+        "exclude": [
+          "/target",
+          "/nbproject/private"
+        ]
+      },
+      "scripts": {
+        "c-all": [
+          "composer c-check",
+          "composer c-test",
+          "composer c-format"
+        ],
+        "c-check": [
+          "composer c-phpstan",
+          "composer c-psalm",
+          "composer c-phpmd"
+        ],
+        "c-da": [
+          "@composer dump-autoload"
+        ],
+        "c-dry-fix": [
+          "@php vendor/bin/php-cs-fixer check --allow-unsupported-php-version=yes --allow-risky=yes --format txt"
+        ],
+        "c-fix": [
+          "@php vendor/bin/php-cs-fixer fix --allow-unsupported-php-version=yes --allow-risky=yes"
+        ],
+        "c-format": [
+          "composer c-fix",
+          "composer c-phpcbf",
+          "composer c-phpcs"
+        ],
+        "c-package": [
+          "@composer archive --format=zip --dir=target/staging"
+        ],
+        "c-phpcs": [
+          "@php bin/composer/phpcs.php"
+        ],
+        "c-phpcbf": [
+          "@php bin/composer/phpbf.php"
+        ],
+        "c-phpdoc": [
+          "phpDocumentor run"
+        ],
+        "c-phpmd": [
+          "@php bin/composer/phpmd.php"
+        ],
+        "c-phpstan": [
+          "@php vendor/bin/phpstan analyse"
+        ],
+        "c-psalm": [
+          "@php vendor/bin/psalm --report=target/analysis/psalm/psalm-report.txt"
+        ],
+        "c-dry-psalter": [
+          "@php vendor/bin/psalter --dry-run --issues=MissingReturnType,MissingClosureReturnType,MissingParamType,MissingPropertyType,PossiblyUndefinedVariable,PossiblyUndefinedGlobalVariable,ParamNameMismatch"
+        ],
+        "c-psalter": [
+          "@php vendor/bin/psalter --issues=MissingReturnType,MissingClosureReturnType,MissingParamType,MissingPropertyType,PossiblyUndefinedVariable,PossiblyUndefinedGlobalVariable,ParamNameMismatch"
+        ],
+        "c-sonar": [
+          "composer c-test",
+          "@php -Dproject.settings=sonar-project.properties vendor/bin/sonar-scanner"
+        ],
+        "c-test": [
+          "@php -d xdebug.mode=coverage vendor/bin/phpunit -c phpunit.xml.cov"
+        ]
+      },
       "license": [
         "Apache-2.0"
       ],
@@ -925,34 +995,30 @@
         "testcase"
       ],
       "support": {
-        "issues": "https://github.com/ollily/ezkoding/issues",
-        "source": "https://github.com/The-oGlow/ezkoding/tree/8.4.003"
+        "issues": "https://github.com/ollily/ezkoding/issues"
       },
-      "time": "2026-06-14T13:10:35+00:00"
+      "transport-options": {
+        "relative": true
+      }
     },
     {
       "name": "ollily/ezlogging",
-      "version": "8.4.002",
-      "source": {
-        "type": "git",
-        "url": "https://github.com/The-oGlow/ezlogging.git",
-        "reference": "b0ab89e62081937109b34c423d3b6b6c4f50a2db"
-      },
+      "version": "8.999.999",
       "dist": {
-        "type": "zip",
-        "url": "https://api.github.com/repos/The-oGlow/ezlogging/zipball/b0ab89e62081937109b34c423d3b6b6c4f50a2db",
-        "reference": "b0ab89e62081937109b34c423d3b6b6c4f50a2db",
-        "shasum": ""
+        "type": "path",
+        "url": "../ezlogging/target/staging/ollily-ezlogging",
+        "reference": "b3976602cb771ceb8535293e238dab1498584a15"
       },
       "require": {
+        "ext-ds": "^1.0",
         "monolog/monolog": "^3.0",
         "ollily/ezkoding": "^8.4",
         "php": ">=8.4.1",
-        "php-ds/php-ds": "^1.0",
         "psr/log": "^2.0||^3.0"
       },
       "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.0",
+        "php-ds/php-ds": "^1.0",
         "phpmd/phpmd": "^2.0",
         "phpstan/phpstan": "^2.1",
         "phpstan/phpstan-strict-rules": "^2.0",
@@ -967,7 +1033,77 @@
           "Monolog\\": "src/Monolog"
         }
       },
-      "notification-url": "https://packagist.org/downloads/",
+      "autoload-dev": {
+        "psr-4": {
+          "Monolog\\": "tests/Monolog"
+        }
+      },
+      "archive": {
+        "exclude": [
+          "/target",
+          "/nbproject/private"
+        ]
+      },
+      "scripts": {
+        "c-all": [
+          "composer c-check",
+          "composer c-test",
+          "composer c-format"
+        ],
+        "c-check": [
+          "composer c-phpstan",
+          "composer c-psalm",
+          "composer c-phpmd"
+        ],
+        "c-da": [
+          "@composer dump-autoload"
+        ],
+        "c-dry-fix": [
+          "@php vendor/bin/php-cs-fixer check --allow-unsupported-php-version=yes --allow-risky=yes --format txt"
+        ],
+        "c-fix": [
+          "@php vendor/bin/php-cs-fixer fix --allow-unsupported-php-version=yes --allow-risky=yes"
+        ],
+        "c-format": [
+          "composer c-fix",
+          "composer c-phpcbf",
+          "composer c-phpcs"
+        ],
+        "c-package": [
+          "@composer archive --format=zip --dir=target/staging"
+        ],
+        "c-phpcs": [
+          "@php bin/composer/phpcs.php"
+        ],
+        "c-phpcbf": [
+          "@php bin/composer/phpbf.php"
+        ],
+        "c-phpdoc": [
+          "phpDocumentor run"
+        ],
+        "c-phpmd": [
+          "@php bin/composer/phpmd.php"
+        ],
+        "c-phpstan": [
+          "@php vendor/bin/phpstan analyse"
+        ],
+        "c-psalm": [
+          "@php vendor/bin/psalm --report=target/analysis/psalm/psalm-report.txt"
+        ],
+        "c-dry-psalter": [
+          "@php vendor/bin/psalter --dry-run --issues=MissingReturnType,MissingClosureReturnType,MissingParamType,MissingPropertyType,PossiblyUndefinedVariable,PossiblyUndefinedGlobalVariable,ParamNameMismatch"
+        ],
+        "c-psalter": [
+          "@php vendor/bin/psalter --issues=MissingReturnType,MissingClosureReturnType,MissingParamType,MissingPropertyType,PossiblyUndefinedVariable,PossiblyUndefinedGlobalVariable,ParamNameMismatch"
+        ],
+        "c-sonar": [
+          "composer c-test",
+          "@php -Dproject.settings=sonar-project.properties vendor/bin/sonar-scanner"
+        ],
+        "c-test": [
+          "@php -d xdebug.mode=coverage vendor/bin/phpunit -c phpunit.xml.cov"
+        ]
+      },
       "license": [
         "Apache-2.0"
       ],
@@ -988,10 +1124,11 @@
         "php"
       ],
       "support": {
-        "issues": "https://github.com/ollily/ezlogging/issues",
-        "source": "https://github.com/The-oGlow/ezlogging/tree/8.4.002"
+        "issues": "https://github.com/ollily/ezlogging/issues"
       },
-      "time": "2026-08-25T11:13:11+00:00"
+      "transport-options": {
+        "relative": true
+      }
     },
     {
       "name": "php-ds/php-ds",
@@ -2596,6 +2733,86 @@
         }
       ],
       "time": "2026-09-11T14:51:16+00:00"
+    },
+    {
+      "name": "twig/twig",
+      "version": "v3.29.0",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/twigphp/Twig.git",
+        "reference": "45a3c6e9224c3377a39c7b150bb29d5d97d2c75d"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/twigphp/Twig/zipball/45a3c6e9224c3377a39c7b150bb29d5d97d2c75d",
+        "reference": "45a3c6e9224c3377a39c7b150bb29d5d97d2c75d",
+        "shasum": ""
+      },
+      "require": {
+        "php": ">=8.1.0",
+        "symfony/deprecation-contracts": "^2.5|^3",
+        "symfony/polyfill-ctype": "^1.8",
+        "symfony/polyfill-mbstring": "^1.3"
+      },
+      "require-dev": {
+        "php-cs-fixer/shim": "^3.0@stable",
+        "phpstan/phpstan": "^2.0@stable",
+        "psr/container": "^1.0|^2.0",
+        "symfony/phpunit-bridge": "^5.4.9|^6.4|^7.0"
+      },
+      "type": "library",
+      "autoload": {
+        "files": [
+          "src/Resources/core.php",
+          "src/Resources/debug.php",
+          "src/Resources/escaper.php",
+          "src/Resources/string_loader.php"
+        ],
+        "psr-4": {
+          "Twig\\": "src/"
+        }
+      },
+      "notification-url": "https://packagist.org/downloads/",
+      "license": [
+        "BSD-3-Clause"
+      ],
+      "authors": [
+        {
+          "name": "Fabien Potencier",
+          "email": "fabien@symfony.com",
+          "homepage": "http://fabien.potencier.org",
+          "role": "Lead Developer"
+        },
+        {
+          "name": "Twig Team",
+          "role": "Contributors"
+        },
+        {
+          "name": "Armin Ronacher",
+          "email": "armin.ronacher@active-4.com",
+          "role": "Project Founder"
+        }
+      ],
+      "description": "Twig, the flexible, fast, and secure template language for PHP",
+      "homepage": "https://twig.symfony.com",
+      "keywords": [
+        "templating"
+      ],
+      "support": {
+        "issues": "https://github.com/twigphp/Twig/issues",
+        "source": "https://github.com/twigphp/Twig/tree/v3.29.0"
+      },
+      "funding": [
+        {
+          "url": "https://github.com/fabpot",
+          "type": "github"
+        },
+        {
+          "url": "https://tidelift.com/funding/github/packagist/twig/twig",
+          "type": "tidelift"
+        }
+      ],
+      "time": "2026-09-18T09:10:14+00:00"
     }
   ],
   "packages-dev": [

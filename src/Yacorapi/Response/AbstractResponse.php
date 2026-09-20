@@ -381,7 +381,6 @@ abstract class AbstractResponse implements IResponse
             }
         }
 
-        /** @psalm-suppress InvalidPropertyAssignmentValue */
         $this->rawData = new Map($rawData);
     }
 }

@@ -23,13 +23,12 @@ use oglow\tools\Yacorapi\Space\SpaceInfoEnum;
 use oglow\tools\Yacorapi\Store\StoreParameter as SP;
 use ollily\Tools\String\ImplodeTrait;
 use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 
 /**
  * Implementation for a file adapter creating csv-files.
  *
  * @author ollly
- *
- * @phpstan-import-type LoggingLevel from \Monolog\AbstractEasyGoingLogger
  */
 class CsvFileAdapter extends FileAdapter
 {
@@ -52,17 +51,15 @@ class CsvFileAdapter extends FileAdapter
     /**
      * Constructor for a store adapter.
      *
-     * @param string                                         $fileName   The filename, without suffix, of the output file
-     * @param string                                         $filePrefix Prefix of the output file (Default: {@link SP::DEFAULT_FILE_PREFIX})
-     * @param string                                         $fileSuffix Suffix of the output file (Default: {@link SP::DEFAULT_FILE_SUFFIX})
-     * @param string                                         $fileExt    File extension of the output file
-     *                                                                   (Default: {@link SP::DEFAULT_FILE_EXT})
-     * @param string                                         $pathToFile Folder where to store the output file
-     *                                                                   (Default: {@link SP::DEFAULT_FOLDER_NAME})
-     * @param FileStoreStageEnum                             $staging    The stage where to store the file (Default {@link FileStoreStageEnum::BASE})
+     * @param string                 $fileName   The filename, without suffix, of the output file
+     * @param string                 $filePrefix Prefix of the output file (Default: {@link SP::DEFAULT_FILE_PREFIX})
+     * @param string                 $fileSuffix Suffix of the output file (Default: {@link SP::DEFAULT_FILE_SUFFIX})
+     * @param string                 $fileExt    File extension of the output file
+     *                                           (Default: {@link SP::DEFAULT_FILE_EXT})
+     * @param string                 $pathToFile Folder where to store the output file
+     *                                           (Default: {@link SP::DEFAULT_FOLDER_NAME})
+     * @param FileStoreStageEnum     $staging    The stage where to store the file (Default {@link FileStoreStageEnum::BASE})
      * @param int|LogLevel::*|string $level      The minimum logging level at which this handler will be triggered (Default: {@link self::LEVEL_DEFAULT})
-     *
-     * @phpstan-param LoggingLevel $level
      */
     public function __construct(
         string $fileName,
@@ -73,6 +70,8 @@ class CsvFileAdapter extends FileAdapter
         FileStoreStageEnum $staging = FileStoreStageEnum::BASE,
         mixed $level = self::LEVEL_DEFAULT
     ) {
+        /** @psalm-suppress ArgumentTypeCoercion
+         * @phpstan-ignore argument.type */
         self::$logger = new ConsoleLogger(CsvFileAdapter::class, level: $level);
         self::$logger->debug("START", [$fileName, $filePrefix, $fileSuffix, $fileExt, $pathToFile, $staging->name]);
 
@@ -114,7 +113,7 @@ class CsvFileAdapter extends FileAdapter
         if (is_array($dataHeader)) {
             $headerCount = count($dataHeader);
             for ($idx = 0; $idx < $headerCount; $idx++) {
-                $dataHeader[$idx] = SP::DEFAULT_COLUMN_TEXT_SEP . $dataHeader[$idx] . SP::DEFAULT_COLUMN_TEXT_SEP;
+                $dataHeader[$idx] = SP::DEFAULT_COLUMN_TEXT_SEP . strval($dataHeader[$idx]) . SP::DEFAULT_COLUMN_TEXT_SEP;
             }
         }
 
@@ -138,11 +137,9 @@ class CsvFileAdapter extends FileAdapter
     /**
      * Generates a full csv line for the output.
      *
-     * @param IResponse       $response      The response
-     * @param Sequence<mixed> $exportColumns List of column names to add to the line
-     * @param bool            $header        TRUE=generate the file header, else FALSE
-     *
-     * @phpstan-param Vector<mixed> $exportColumns
+     * @param IResponse     $response      The response
+     * @param Vector<mixed> $exportColumns List of column names to add to the line
+     * @param bool          $header        TRUE=generate the file header, else FALSE
      *
      * @return string The full csv line
      */

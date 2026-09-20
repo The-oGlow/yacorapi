@@ -13,8 +13,9 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Client;
 
-use Ds\Set;
-use ollily\Common\MockProvider;
+use Ds\Sequence;
+use Ds\Vector;
+use oglow\tools\Yacorapi\Provider\MockProvider;
 use PHPUnit\Framework\EasyGoingTestCase;
 use Psr\Log\LogLevel;
 
@@ -40,17 +41,16 @@ class RapiClientBaseTest extends EasyGoingTestCase
 
     public function testRapiMethods(): void
     {
-        $expected = new Set(self::AVAILABLE_METHODS);
+        $expected = new Vector(self::AVAILABLE_METHODS);
 
-        /** @var Set<non-empty-string> */
         $actual = $this->getCasto2t()::taskitemMethods();
 
-        self::assertInstanceOf(Set::class, $actual);
+        self::assertInstanceOf(Sequence::class, $actual);
         foreach ($actual->getIterator() as $item) {
             if ($expected->contains($item)) {
-                $expected->remove($item);
+                $expected->remove($expected->find($item)); // @phpstan-ignore argument.type
             } else {
-                $expected->add($item);
+                $expected->push($item);
             }
         }
         self::assertTrue($expected->isEmpty(), sprintf("Forgotten: '%s'", join('()\',\'', $expected->toArray())));

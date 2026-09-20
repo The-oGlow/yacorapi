@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace oglow\tools\Addon\Projectdoc\Traits;
 
-use ollily\Common\MockProvider;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\IConnectionProvider;
 use oglow\tools\Yacorapi\IResponse;
+use oglow\tools\Yacorapi\Provider\MockProvider;
 
 class ProjectdocTraitTestClazz
 {

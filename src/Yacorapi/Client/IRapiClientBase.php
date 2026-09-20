@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Client;
 
-use Ds\Set;
-use ollily\Common\IContainer;
+use Ds\Sequence;
 use oglow\tools\Yacorapi\Data\ItemTypeEnum;
 use oglow\tools\Yacorapi\Extension\ExtensionEnum;
 use oglow\tools\Yacorapi\IConnectionProvider;
@@ -22,6 +21,7 @@ use oglow\tools\Yacorapi\IRapiClient;
 use oglow\tools\Yacorapi\Macro\AddonTypeEnum;
 use oglow\tools\Yacorapi\Request\RequestParameter;
 use oglow\tools\Yacorapi\Response\ResponseParameter;
+use ollily\Common\IContainer;
 use Psr\Log\LogLevel;
 
 /**
@@ -30,7 +30,7 @@ use Psr\Log\LogLevel;
 interface IRapiClientBase
 {
     /** @var string Default output level */
-    public const string LEVEL_DEFAULT = 'info';
+    public const string LEVEL_DEFAULT = LogLevel::INFO;
 
     // Common Parameter
     public const AddonTypeEnum ADDON_DEFAULT = AddonTypeEnum::ADDON_ALL;
@@ -107,9 +107,7 @@ interface IRapiClientBase
     ): IRapiClient;
 
     /**
-     * @return Set<string> All available REST-API methods
-     *
-     * @phpstan-return Set<non-empty-string>
+     * @return Sequence<string> All available REST-API methods
      */
-    public static function taskitemMethods(): Set;
+    public static function taskitemMethods(): Sequence;
 }
