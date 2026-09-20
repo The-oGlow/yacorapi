@@ -71,7 +71,7 @@ class RapiClientPermission extends RapiClientWrite implements IRapiClientPermiss
     {
         return sprintf(
             '%s/%s' . ConstData::C_RAPI_RESTRICTION_BYOP . '?%s',
-            $this->constData->c(ConstData::KEY_CONF_CONTENT_URL),
+            ConstData::i()->c(ConstData::KEY_CONF_CONTENT_URL),
             $pageId,
             QueryExtensionEnum::REQP_RESTRICTIONS_FULL->value
         );
@@ -81,7 +81,7 @@ class RapiClientPermission extends RapiClientWrite implements IRapiClientPermiss
     {
         return sprintf(
             '%s/%s' . ConstData::C_RAPI_RESTRICTION,
-            $this->constData->c(ConstData::KEY_CONF_CONTENT_URL),
+            ConstData::i()->c(ConstData::KEY_CONF_CONTENT_URL),
             $pageId
         );
     }

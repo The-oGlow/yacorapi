@@ -266,7 +266,7 @@ class RapiClientStatistic extends RapiClientPermission implements IRapiClientSta
     ): string {
         return sprintf(
             '%s/%s/content/%s?start=%s&limit=%s&%s',
-            $this->constData->c(ConstData::KEY_CONF_SPACE_URL),
+            ConstData::i()->c(ConstData::KEY_CONF_SPACE_URL),
             $space,
             $pageType->value,
             $start,
@@ -281,7 +281,7 @@ class RapiClientStatistic extends RapiClientPermission implements IRapiClientSta
     ): string {
         return sprintf(
             '%s?%s&type=%s&limit=%s',
-            $this->constData->c(ConstData::KEY_CONF_SPACE_URL),
+            ConstData::i()->c(ConstData::KEY_CONF_SPACE_URL),
             QueryExtensionEnum::REQP_SPACE_LIST->value,
             $spaceType->value,
             $limit
@@ -290,6 +290,6 @@ class RapiClientStatistic extends RapiClientPermission implements IRapiClientSta
 
     protected function prepareCountItemsUrl(ItemTypeEnum $itemType, string $spaceKey): string
     {
-        return ((string) $this->constData->c(ConstData::KEY_CONF_SEARCH_URL)) . "?cql=type+in+(" . $itemType->value . ")+AND+space=$spaceKey";
+        return ((string) ConstData::i()->c(ConstData::KEY_CONF_SEARCH_URL)) . "?cql=type+in+(" . $itemType->value . ")+AND+space=$spaceKey";
     }
 }

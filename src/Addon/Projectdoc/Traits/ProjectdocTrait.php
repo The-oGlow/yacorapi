@@ -44,7 +44,7 @@ trait ProjectdocTrait
             define(__NAMESPACE__ . '\PDT_RESULT_PAGE_SIZE', 10);
             define(__NAMESPACE__ . '\PDT_RESULT_MAX_SIZE', 20);
 
-            define(__NAMESPACE__ . '\PDT_DOCUMENT_URL', $this->constData->c(ConstData::KEY_CONF_BASE_URL) . '/rest/projectdoc/1/document');
+            define(__NAMESPACE__ . '\PDT_DOCUMENT_URL', ConstData::i()->c(ConstData::KEY_CONF_BASE_URL) . '/rest/projectdoc/1/document');
             define(__NAMESPACE__ . '\PDT_PROPERTY_URL', \oglow\tools\Addon\Projectdoc\Traits\PDT_DOCUMENT_URL . '/%s/property');
 
             define(__NAMESPACE__ . '\PDT_PROP_DOCTYPE', 'Doctype');

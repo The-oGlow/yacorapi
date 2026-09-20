@@ -212,12 +212,12 @@ class RapiClientWrite extends RapiClientRead implements IRapiClientWrite
 
     protected function prepareUpdateURL(int $pageId): string
     {
-        return sprintf('%s/%s', $this->constData->c(ConstData::KEY_CONF_CONTENT_URL), $pageId);
+        return sprintf('%s/%s', ConstData::i()->c(ConstData::KEY_CONF_CONTENT_URL), $pageId);
     }
 
     protected function prepareCreatePage(): string
     {
-        return sprintf('%s/', $this->constData->c(ConstData::KEY_CONF_CONTENT_URL));
+        return sprintf('%s/', ConstData::i()->c(ConstData::KEY_CONF_CONTENT_URL));
     }
 
     /**

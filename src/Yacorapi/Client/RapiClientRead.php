@@ -150,7 +150,7 @@ class RapiClientRead extends RapiClientBase implements IRapiClientRead
             'START - filterTerm,spaceKey,searchFromPos,searchLimit,itemType',
             [$filterTerm, $spaceKey, $searchFromPos, $searchLimit, $itemType]
         );
-        $searchLimit = intval($searchLimit < IRapiClientBase::REQ_VAL_SEARCH_LIMIT_1ENTRY ? $this->constData->c(ConstData::KEY_SEARCH_LIMIT) : $searchLimit);
+        $searchLimit = intval($searchLimit < IRapiClientBase::REQ_VAL_SEARCH_LIMIT_1ENTRY ? ConstData::i()->c(ConstData::KEY_SEARCH_LIMIT) : $searchLimit);
         $prepareUrl = $this->prepareSearchUrlExt($filterTerm, $spaceKey, $searchFromPos, $searchLimit, $itemType);
 
         return $this->exec($prepareUrl);
@@ -213,7 +213,7 @@ class RapiClientRead extends RapiClientBase implements IRapiClientRead
     ): string {
         $searchLimit = $this->prepareSearchLimit($searchLimit);
 
-        $prepareUrl = sprintf('%s?cql=', $this->constData->c(ConstData::KEY_CONF_SEARCH_URL));
+        $prepareUrl = sprintf('%s?cql=', ConstData::i()->c(ConstData::KEY_CONF_SEARCH_URL));
         $prepareUrl .= sprintf('siteSearch~%s', urlencode("\"{$searchTerm}\""));
         $prepareUrl .= sprintf('+AND+space.type=%s', urlencode(SpaceTypeEnum::SPACE_TYPE_GLOBAL->value));
         $prepareUrl .= sprintf('+AND+type=%s', urlencode("\"{$pageType->value}\""));
@@ -244,10 +244,10 @@ class RapiClientRead extends RapiClientBase implements IRapiClientRead
         // if given searchLimit less than minimum searchLimit, then set to default, otherwise use searchLimit
         switch (true) {
             case $searchLimit < IRapiClientBase::REQ_VAL_SEARCH_OVERALL_MIN:
-                $searchLimit = $this->constData->c(ConstData::KEY_SEARCH_LIMIT);
+                $searchLimit = ConstData::i()->c(ConstData::KEY_SEARCH_LIMIT);
                 break;
             case $searchLimit > IRapiClientBase::REQ_VAL_SEARCH_OVERALL_MAX:
-                $searchLimit = $this->constData->c(ConstData::KEY_SEARCH_LIMIT);
+                $searchLimit = ConstData::i()->c(ConstData::KEY_SEARCH_LIMIT);
                 break;
             default:
                 break;
@@ -258,31 +258,31 @@ class RapiClientRead extends RapiClientBase implements IRapiClientRead
 
     protected function prepareBrowseUrl(string $pageTitle, string $spaceKey = IRapiClientBase::REQ_VAL_SPACE_EMPTY): string
     {
-        $prepareUrl = sprintf('%s?title=%s&%s', $this->constData->c(ConstData::KEY_CONF_CONTENT_URL), urlencode($pageTitle), QueryExtensionEnum::REQP_LIGHT->value);
+        $prepareUrl = sprintf('%s?title=%s&%s', ConstData::i()->c(ConstData::KEY_CONF_CONTENT_URL), urlencode($pageTitle), QueryExtensionEnum::REQP_LIGHT->value);
 
         return $this->addSpaceFilter($spaceKey, $prepareUrl);
     }
 
     protected function prepareScanUrl(string $spaceKey = IRapiClientBase::REQ_VAL_SPACE_EMPTY): string
     {
-        $prepareUrl = sprintf('%s/scan?%s', $this->constData->c(ConstData::KEY_CONF_CONTENT_URL), QueryExtensionEnum::REQP_LIGHT->value);
+        $prepareUrl = sprintf('%s/scan?%s', ConstData::i()->c(ConstData::KEY_CONF_CONTENT_URL), QueryExtensionEnum::REQP_LIGHT->value);
 
         return $this->addSpaceFilter($spaceKey, $prepareUrl);
     }
 
     protected function prepareApiByPageIdUrl(int $pageId): string
     {
-        return sprintf('%s/%s?%s', $this->constData->c(ConstData::KEY_CONF_CONTENT_URL), $pageId, QueryExtensionEnum::REQP_LIGHT->value);
+        return sprintf('%s/%s?%s', ConstData::i()->c(ConstData::KEY_CONF_CONTENT_URL), $pageId, QueryExtensionEnum::REQP_LIGHT->value);
     }
 
     protected function prepareLoadUrl(int $pageId): string
     {
-        return sprintf('%s/%s?%s', $this->constData->c(ConstData::KEY_CONF_CONTENT_URL), $pageId, QueryExtensionEnum::REQP_FULL->value);
+        return sprintf('%s/%s?%s', ConstData::i()->c(ConstData::KEY_CONF_CONTENT_URL), $pageId, QueryExtensionEnum::REQP_FULL->value);
     }
 
     protected function prepareSpaceUrl(string $spaceKey): string
     {
-        return sprintf('%s/%s?%s', $this->constData->c(ConstData::KEY_CONF_SPACE_URL), $spaceKey, QueryExtensionEnum::REQP_SPACE_LIST->value);
+        return sprintf('%s/%s?%s', ConstData::i()->c(ConstData::KEY_CONF_SPACE_URL), $spaceKey, QueryExtensionEnum::REQP_SPACE_LIST->value);
     }
 
     /**

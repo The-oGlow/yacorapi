@@ -204,10 +204,10 @@ class CurlProvider extends AbstractProvider
         self::$logger->debug('START');
 
         if ($execSession instanceof CurlHandle) {
-            if (file_exists($this->constData->c(ConstData::KEY_MY_CERT_CA))) {
-                curl_setopt($execSession, CURLOPT_CAINFO, $this->constData->c(ConstData::KEY_MY_CERT_CA));
+            if (file_exists(ConstData::i()->c(ConstData::KEY_MY_CERT_CA))) {
+                curl_setopt($execSession, CURLOPT_CAINFO, ConstData::i()->c(ConstData::KEY_MY_CERT_CA));
             } else {
-                self::$logger->warning('CA certificate not found', [$this->constData->c(ConstData::KEY_MY_CERT_CA)]);
+                self::$logger->warning('CA certificate not found', [ConstData::i()->c(ConstData::KEY_MY_CERT_CA)]);
                 curl_setopt($execSession, CURLOPT_SSL_VERIFYPEER, false); // NOSONAR: php:S4830
             }
         }
