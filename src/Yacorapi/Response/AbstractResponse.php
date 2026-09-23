@@ -350,18 +350,12 @@ abstract class AbstractResponse implements IResponse
      */
     private function prepareData(array $rawData = []): void
     {
-        // Separate results
-        if (array_key_exists(RP::KEY_RESULTS, $rawData)) {
-            $this->results = new Map($rawData[RP::KEY_RESULTS]);
-            unset($rawData[RP::KEY_RESULTS]);
-        } else {
-            $this->results = new Map([]);
-        }
-
         // Separate labels
         $this->labels = new Vector();
         if (array_key_exists(RP::KEY_METADATA, $rawData)) {
+            self::$logger->debug('Separate metdata');
             if (array_key_exists(RP::KEY_LABELS, $rawData[RP::KEY_METADATA])) {
+                self::$logger->debug('Separate labels');
                 if (array_key_exists(RP::KEY_RESULTS, $rawData[RP::KEY_METADATA][RP::KEY_LABELS])) {
                     $this->labels = new Vector(array_column($rawData[RP::KEY_METADATA][RP::KEY_LABELS][RP::KEY_RESULTS], RP::KEY_NAME));
                     unset($rawData[RP::KEY_METADATA][RP::KEY_LABELS][RP::KEY_RESULTS]);
@@ -369,16 +363,28 @@ abstract class AbstractResponse implements IResponse
             }
         }
 
+
         // Separate body
         $this->body = '';
 
         if (array_key_exists(RP::KEY_BODY, $rawData)) {
+            self::$logger->debug('Separate body step 1');
             if (array_key_exists(RP::KEY_STORAGE, $rawData[RP::KEY_BODY])) {
                 if (array_key_exists(RP::KEY_VALUE, $rawData[RP::KEY_BODY][RP::KEY_STORAGE])) {
+                    self::$logger->debug('Separate body step 2');
                     $this->body = $rawData[RP::KEY_BODY][RP::KEY_STORAGE][RP::KEY_VALUE];
                     unset($rawData[RP::KEY_BODY][RP::KEY_STORAGE][RP::KEY_VALUE]);
                 }
             }
+        }
+
+        // Separate results, must always be the last step!
+        if (array_key_exists(RP::KEY_RESULTS, $rawData)) {
+            self::$logger->debug('Separate results');
+            $this->results = new Map($rawData[RP::KEY_RESULTS]);
+            unset($rawData[RP::KEY_RESULTS]);
+        } else {
+            $this->results = new Map([]);
         }
 
         $this->rawData = new Map($rawData);

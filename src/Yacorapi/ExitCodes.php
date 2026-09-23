@@ -43,4 +43,6 @@ class ExitCodes extends AbstractSingleton
     public const int ERR_CODE_CURL_INIT = 30;
 
     public const int ERR_CODE_RESPONSE_INVALID_OR_NULL = 31;
+    
+    public const int ERR_CODE_STORE_ADAPTER_COLUMN_DATA_MISMATCH = 40;
 }

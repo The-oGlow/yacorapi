@@ -13,9 +13,13 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Store;
 
+use Ds\Sequence;
+use Ds\Vector;
 use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\ConstData;
+use oglow\tools\Yacorapi\ExitCodes;
 use oglow\tools\Yacorapi\Store\StoreParameter as SP;
+use ollily\Tools\Emergency;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 
@@ -75,6 +79,70 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
         $this->storeItem = $this->invokeStoreItem($finalFileName, $finalPathToFile);
 
         self::$logger->debug('END');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[\Override]
+    public static function readData(string $fileName, bool $withHeader = false): Sequence {
+        self::$logger->debug('START', [$fileName, $withHeader]);
+
+        /** @var Sequence<mixed> */
+        $resultList = new Vector();
+        if (file_exists($fileName)) {
+            $fHandle = fopen($fileName, SP::C_FILE_READ);
+
+            if (!empty($fHandle)) {
+                $columnHeader = new Vector();
+                if ($withHeader) {
+                    $columnHeader = self::prepareLineAsColumns(fgets($fHandle, SP::C_FILE_LINE_LEN));
+                }
+                while ($line = fgets($fHandle, SP::C_FILE_LINE_LEN)) {
+                    if (is_string($line)) { // @phpstan-ignore function.alreadyNarrowedType
+                        if (empty($columnHeader)) {
+                            $resultList->push(self::prepareLineAsColumns($line));
+                        } else {
+                            $tmpLine = self::prepareLineAsColumns($line);
+                            if ($columnHeader->count()==count($tmpLine)) {
+                                $resultList->push(array_combine($columnHeader->toArray(), $tmpLine->toArray()));
+                            } else {
+                                Emergency::breakSystem(
+                                        ExitCodes::ERR_CODE_STORE_ADAPTER_COLUMN_DATA_MISMATCH, 
+                                        'Column header and column data do not have same size'
+                                        );
+                            }
+                        }
+                    }
+                }
+                fclose($fHandle);
+            }
+        } else {
+            self::$logger->warning('File does not exists', [$fileName]);
+        }
+
+        self::$logger->debug('END');
+        return $resultList;
+    }
+
+    /**
+     * Extract the column header from string to array.
+     * 
+     * @param type $lineHeader The column header as string
+     * @return Sequence<mixed> The column header as sequence
+     */ 
+    protected static function prepareLineAsColumns(string $lineHeader): Sequence {
+        $lineHeader = str_replace(SP::C_FILE_EOL_ALL, '', $lineHeader);
+        $convertedHeader = mb_convert_encoding($lineHeader, SP::C_FILE_UTF8);
+
+        $columnHeader = new Vector();
+        if (is_string($convertedHeader)) { // @phpstan-ignore function.alreadyNarrowedType
+            $columnHeader = new Vector(explode(SP::DEFAULT_ITEM_SEP, $convertedHeader));
+        } 
+        foreach ($columnHeader as $index => $column) {
+            $columnHeader->set($index, str_replace(SP::C_ILLEGAL_KEY_CHARS, '', $column));
+        }
+        return $columnHeader;
     }
 
     /**
@@ -258,7 +326,8 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
     }
 
     /**
-     * Store any data into the store item.
+     * Store any data into the store item. If the store item does not exist, it will be created, including all necessary folders.<br/>
+     * If the store item exists, the data will be append at the end.
      *
      * @param IStoreItem $storeItem The item in which the data will be stored
      * @param mixed      $anyData   The data to store
@@ -272,40 +341,10 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
             self::$logger->debug("Doublecheck: Ensure target folder exists", [dirname($fileName)]);
             $this->mkdir(dirname($fileName));
             file_put_contents($fileName, $anyData, FILE_APPEND);
-            file_put_contents($fileName, SP::C_FILE_EOL, FILE_APPEND);
+            file_put_contents($fileName, SP::C_FILE_EOL_N, FILE_APPEND);
         }
 
         self::$logger->debug('END');
     }
 
-    /**
-     * @param string $fileName The filename to read in
-     *
-     * @return array<mixed> The content of the file
-     */
-    public static function readResultFile(string $fileName): array
-    {
-        self::$logger->debug('START', [$fileName]);
-
-        $resultList = [];
-        if (file_exists($fileName)) {
-            $fHandle = fopen($fileName, SP::C_FILE_READ);
-
-            if (!empty($fHandle)) {
-                while ($line = fgets($fHandle, SP::C_FILE_LINE_LEN)) {
-                    $convertedLine = mb_convert_encoding($line, SP::C_FILE_UTF8);
-                    if (is_string($convertedLine)) { // @phpstan-ignore function.alreadyNarrowedType
-                        $resultList[] = explode(SP::DEFAULT_ITEM_SEP, $convertedLine);
-                    }
-                }
-                fclose($fHandle);
-            }
-        } else {
-            self::$logger->warning('File does not exists', [$fileName]);
-        }
-
-        self::$logger->debug('END');
-
-        return $resultList;
-    }
 }

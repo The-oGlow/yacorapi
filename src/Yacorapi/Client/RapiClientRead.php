@@ -80,11 +80,18 @@ class RapiClientRead extends RapiClientBase implements IRapiClientRead
      * @inheritDoc
      */
     #[\Override]
-    public function readPageByPageId(int $pageId): IResponse
+    public function readPageByPageId(int|string $pageId): IResponse
     {
         self::$logger->debug('START - pageId', [$pageId]);
 
+        if (is_string($pageId) && is_numeric($pageId)) {
+            $pageId=intval($pageId);
+        } else {
+            $pageId = IRapiClientBase::REQ_VAL_PAGE_ID_NO;
+        }
+
         $prepareUrl = $this->prepareLoadUrl($pageId);
+
 
         return $this->exec($prepareUrl);
     }

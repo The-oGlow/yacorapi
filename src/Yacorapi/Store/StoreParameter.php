@@ -38,11 +38,13 @@ class StoreParameter extends AbstractSingleton
 
     public const int C_FILE_LINE_LEN = 1000;
 
-    public const string C_FILE_READ = 'r';
+    public const string C_FILE_READ = 'rt';
 
     public const string C_FILE_SEP = '.';
 
-    public const string C_FILE_EOL = "\n";
+    public const string C_FILE_EOL_N = "\n";
+    public const string C_FILE_EOL_R = "\r";
+    public const array C_FILE_EOL_ALL = [self::C_FILE_EOL_N, self::C_FILE_EOL_R];
 
     public const string C_FILE_EXT_TEXT = 'txt';
 
@@ -63,6 +65,8 @@ class StoreParameter extends AbstractSingleton
     /** @var string text separator */
     public const string DEFAULT_COLUMN_TEXT_SEP = '"';
 
+    public const string DEFAULT_FILE_NAME = '';
+    
     public const string DEFAULT_FILE_PREFIX = '';
 
     public const string DEFAULT_FILE_SUFFIX = '';
@@ -78,4 +82,7 @@ class StoreParameter extends AbstractSingleton
     public const string DEFAULT_SQUARE_BRACK_OPEN = '[';
 
     public const string DEFAULT_SQUARE_BRACK_CLOSE = ']';
+    
+    /** @var array<mixed> Illegal chars for an array key */
+    public const array C_ILLEGAL_KEY_CHARS = [self::DEFAULT_COLUMN_TEXT_SEP, self::DEFAULT_ITEM_SEP, self::C_FILE_EOL_N, self::C_FILE_EOL_R, "\t"];
 }

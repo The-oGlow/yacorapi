@@ -34,11 +34,11 @@ interface IRapiClientRead extends IRapiClientBase
     /**
      * Loads a confluence page by its page id.
      *
-     * @param int $pageId The id of the confluence page
+     * @param int|string $pageId The id of the confluence page
      *
      * @return IResponse The found page or empty response
      */
-    public function readPageByPageId(int $pageId): IResponse;
+    public function readPageByPageId(int|string $pageId): IResponse;
 
     /**
      * Searchs for confluence pages by page title.
