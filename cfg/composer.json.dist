@@ -152,4 +152,5 @@
         "c-sonar": "CUSTOM: Sonarcloud verifies your code",
         "c-test": "CUSTOM: PHPUnit executes all unit tests"
     }
-}
+    #ph#
+}    
