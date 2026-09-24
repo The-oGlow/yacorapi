@@ -15,13 +15,13 @@ namespace foo;
 
 /**
  * Class FooClazz.
+ * All code checks are deactivated.
  *
  * @SuppressWarnings("PHPMD")
  */
 class FooClazz
 {
-    /** @var string */
-    private $privateFoo = 'privateFooValue'; // NOSONAR
+    private string $privateFoo = 'privateFooValue'; // NOSONAR
 
     protected function protectedFoo(): string
     {

@@ -13,68 +13,83 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Statistic;
 
-use Ds\Set;
+use Ds\Vector;
 
 interface IStatistic extends \Stringable
 {
-    public const ITEM_SEP = ';';
-
-    public const KEY_COUNT = 'count';
+    public const string ITEM_SEP = ';';
 
     /**
-     * @return Set<string>
+     * @return Vector<mixed>
      */
-    public function keys(): Set;
+    public function keys(): Vector;
 
     /**
-     * @param string $key
+     * @param mixed $key
      *
      * @return bool
      */
-    public function keyExists($key): bool;
+    public function keyExists(mixed $key): bool;
 
     /**
-     * @param string $key
+     * @param mixed $key
      *
-     * @return null|IStatistic
+     * @return mixed
      */
-    public function getItem($key);
+    public function getItem(mixed $key): mixed;
 
     /**
-     * @param string     $key
-     * @param IStatistic $item
+     * @param mixed $key
+     * @param mixed $item
      */
-    public function addItem($key, $item): void;
+    public function addItem(mixed $key, mixed $item): void;
 
     /**
-     * @return string
-     */
-    public function getStatisticName(): string;
-
-    /**
+     * Returns the column name for an export.
+     *
      * @return string
      */
     public function getExportName(): string;
 
     /**
-     * @param bool $displayKeys
+     * Returns the name of this statistic element.
      *
      * @return string
+     */
+    public function getStatisticName(): string;
+
+    /**
+     * Implode this object and its subitems to a single string with separator.
+     *
+     * @param bool $displayKeys the items will have their keyname shown
+     *
+     * @return string
+     *
+     * @see IStatistic::ITEM_SEP
      */
     public function flatten(bool $displayKeys = true): string;
 
     /**
+     * Give the column names for this object and its subitems as array.
+     *
      * @return array<string>
+     *
+     * @see IStatistic::flattenHeader()
      */
     public function header(): array;
 
-    //    /**
-    //     * @return string
-    //     */
-    //    public function flattenHeader(): string;
+    /**
+     * The header will be imploded to a single string.
+     *
+     * @return string
+     *
+     * @see IStatistic::header()
+     */
+    public function flattenHeader(): string;
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
-    public function __toString();
+    #[\Override]
+    public function __toString(): string;
 }

@@ -18,13 +18,14 @@ use oglow\tools\Yacorapi\YacorapiTestData;
 
 class AbstractAddonTestClazz extends AbstractAddon
 {
+    #[\Override]
     protected function init(): void
     {
         parent::init();
         $this->addonsMacros->putAll(
             [
                 YacorapiTestData::ADDON_1 => new Vector(YacorapiTestData::ADDON_1_ORDER),
-                YacorapiTestData::ADDON_2 => new Vector(YacorapiTestData::ADDON_2_ORDER)
+                YacorapiTestData::ADDON_2 => new Vector(YacorapiTestData::ADDON_2_ORDER),
             ]
         );
     }

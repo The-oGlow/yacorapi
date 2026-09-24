@@ -13,239 +13,338 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Store;
 
+use Ds\Sequence;
+use Ds\Vector;
 use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\ConstData;
+use oglow\tools\Yacorapi\ExitCodes;
+use oglow\tools\Yacorapi\Store\StoreParameter as SP;
 use ollily\Tools\Emergency;
 use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 
+/**
+ * Abstract implementation for a store adapter.
+ *
+ * @author ollily
+ */
 abstract class AbstractStoreAdapter implements IStoreAdapter
 {
-    public const ERR_NOT_INVOKED = 30;
+    private static LoggerInterface $logger;
 
-    /** Field Separator */
-    public const            C_ITEM_SEP = ';';
+    protected IStoreItem $storeItem;
 
-    protected const         C_DIR_REK = true;
+    private string $sessionFolder;
 
-    protected const         C_CODE_UTF8 = 'UTF-8';
-
-    protected const         C_CHAR_LENGTH = 1000;
-
-    protected const         C_FILE_READ = 'r';
-
-    protected const         C_DIR_MASK = 0777;
-
-    /** @var ConstData */
-    protected $constData;
-
-    /** @var LoggerInterface */
-    private static $logger;
-
-    /** @var string */
-    private $sessionTargetDir;
-
-    /** @var IStoreItem */
-    protected $storeItem;
-
-    public function __construct(string $outputFileName, string $fileSuffix = '', string $customTargetDir = '')
-    {
-        self::$logger = new ConsoleLogger(AbstractStoreAdapter::class);
-        self::$logger->debug("START", [$outputFileName, $fileSuffix, $customTargetDir]);
-        self::$logger->debug("START");
+    /**
+     * Constructor for a store adapter.
+     *
+     * @param string                 $fileName   The filename, without suffix, of the output file
+     * @param string                 $filePrefix Prefix of the output file (Default: {@link SP::DEFAULT_FILE_PREFIX})
+     * @param string                 $fileSuffix Suffix of the output file (Default: {@link SP::DEFAULT_FILE_SUFFIX})
+     * @param string                 $fileExt    File extension of the output file
+     *                                           (Default: {@link SP::DEFAULT_FILE_EXT})
+     * @param string                 $pathToFile Folder where to store the output file
+     *                                           (Default: {@link SP::DEFAULT_FOLDER_NAME})
+     * @param FileStoreStageEnum     $staging    The stage where to store the file (Default {@link FileStoreStageEnum::BASE})
+     * @param int|LogLevel::*|string $level      The minimum logging level at which this handler will be triggered (Default: {@link self::LEVEL_DEFAULT})
+     */
+    public function __construct(
+        string $fileName,
+        string $filePrefix = SP::DEFAULT_FILE_PREFIX,
+        string $fileSuffix = SP::DEFAULT_FILE_SUFFIX,
+        string $fileExt = SP::DEFAULT_FILE_EXT,
+        string $pathToFile = SP::DEFAULT_FOLDER_NAME,
+        FileStoreStageEnum $staging = FileStoreStageEnum::BASE,
+        mixed $level = self::LEVEL_DEFAULT
+    ) {
+        /** @psalm-suppress ArgumentTypeCoercion
+         * @phpstan-ignore argument.type */
+        self::$logger = new ConsoleLogger(AbstractStoreAdapter::class, level: $level);
+        self::$logger->debug("START", [$fileName, $filePrefix, $fileSuffix, $fileExt, $pathToFile, $staging->name]);
 
         // Init Dynamic Consts
-        $this->constData        = new ConstData(AbstractStoreAdapter::class);
-        $this->sessionTargetDir = $this->prepareTargetFolder(
-            $outputFileName,
-            $this->constData->c(ConstData::KEY_TARGET_ROOTDIR),
-            $this->constData->c(ConstData::KEY_TARGET_DIR)
-        );
-        $this->prepareTargetFolderSpecial($this->sessionTargetDir, ConstData::TARGET_ORGDIR, ConstData::TARGET_MODDIR);
-        $this->storeItem = $this->prepareStoreItem($outputFileName, $fileSuffix, $customTargetDir);
-
-        self::$logger->debug('END');
-    }
-
-    public function getStoreItem(): string
-    {
-        return $this->storeItem->__toString();
-    }
-
-    protected function prepareTargetFolder(string $outputFileName, string $targetRootDir, string $targetDir): string
-    {
-        self::$logger->debug('START');
-
-        $sessionDir = $this->constData->prepareFinalTarget($targetDir, $outputFileName);
-
-        self::$logger->debug('create TARGET_ROOT', [$targetRootDir]);
-        $this->mkdir($targetRootDir);
-        self::$logger->debug('create session folder in TARGET_DIR', [$sessionDir]);
-        $this->mkdir($sessionDir);
-
-        self::$logger->debug('END');
-
-        return $sessionDir;
-    }
-
-    protected function prepareTargetFolderSpecial(string $sessionDir, string $orgDir, string $modDir): void
-    {
-        self::$logger->debug('START');
-
-        if (file_exists($sessionDir)) {
-            $targetOrgDir = $this->constData->prepareFinalTarget($sessionDir, $orgDir);
-            $targetModDir = $this->constData->prepareFinalTarget($sessionDir, $modDir);
-
-            self::$logger->debug('create TARGET_ORG_DIR & TARGET_MOD_DIR', [$targetOrgDir, $targetModDir]);
-            $this->mkdir($targetOrgDir);
-            $this->mkdir($targetModDir);
-        } else {
-            self::$logger->warning('session folder does not exists!', [$sessionDir]);
+        /** @psalm-suppress MixedMethodCall */
+        $this->sessionFolder = $this->prepareTargetFolderSession($fileName, ConstData::i()->c(ConstData::KEY_TARGET_DIR));
+        $finalPathToFile = $this->prepareTargetFolderStaging($staging, $this->sessionFolder);
+        if (!empty($pathToFile)) {
+            $finalPathToFile = $pathToFile;
         }
+        $finalFileName = $this->prepareFileName($fileName, $filePrefix, $fileSuffix, $fileExt);
 
-        self::$logger->debug('END');
-    }
+        $finalPathToFile = str_replace([SP::C_DIR_SEP_WIN, SP::C_DIR_SEP_UNIX], DIRECTORY_SEPARATOR, $finalPathToFile);
+        $finalFileName = str_replace([SP::C_DIR_SEP_WIN, SP::C_DIR_SEP_UNIX], DIRECTORY_SEPARATOR, $finalFileName);
 
-    protected function prepareStoreItem(string $outputFileName, string $fileSuffix, string $customTargetDir): IStoreItem
-    {
-        return $this->invokeStoreItem($customTargetDir, $this->extendNameWithSuffix($outputFileName, $fileSuffix));
-    }
-
-    protected function extendNameWithSuffix(string $outputFileName, string $suffix = ''): string
-    {
-        self::$logger->debug("START");
-
-        $fileName = basename($outputFileName);
-        if (!empty($suffix)) {
-            $fileName .= '-' . $suffix;
-        }
-
-        return $fileName;
-    }
-
-    protected function mkdir(string $folder): bool
-    {
-        if (!file_exists($folder)) {
-            return mkdir($folder, self::C_DIR_MASK, self::C_DIR_REK);
-        } else {
-            return true;
-        }
-    }
-
-    /**
-     * @param string|string[] $dataHeader
-     *
-     * @return string
-     */
-    protected function flattenDataHeader($dataHeader): string
-    {
-        self::$logger->debug("START");
-
-        $header = "";
-        if (!empty($dataHeader)) {
-            if (!is_array($dataHeader)) {
-                $dataHeader = [$dataHeader];
-            }
-            $header = implode(self::C_ITEM_SEP, $dataHeader);
-        }
-
-        self::$logger->debug('END');
-
-        return $header;
-    }
-
-    /**
-     * @param IStoreItem $targetFile
-     * @param mixed      $anyData
-     */
-    final protected function writeData(IStoreItem $targetFile, $anyData): void
-    {
-        self::$logger->debug("START - targetFile", [$targetFile]);
-
-        if (!is_null($anyData)) {
-            $targetFolder = dirname($targetFile->__toString());
-            $this->mkdir($targetFolder);
-            file_put_contents($targetFile->__toString(), $anyData, FILE_APPEND);
-            file_put_contents($targetFile->__toString(), "\n", FILE_APPEND);
-        }
+        self::$logger->info('Outputfile', [$finalPathToFile, $finalFileName]);
+        $this->storeItem = $this->invokeStoreItem($finalFileName, $finalPathToFile);
 
         self::$logger->debug('END');
     }
 
     /**
-     * @param string $customTargetDir
-     * @param string $outputFileName
-     * @param string $fileExtension
-     * @param string $storeItemClazz
-     * @param string $methodName
-     *
-     * @return IStoreItem
+     * @inheritDoc
      */
-    protected function invokeStoreItem(
-        string $customTargetDir,
-        string $outputFileName,
-        string $fileExtension = IStoreItem::EXT_TEXT,
-        string $storeItemClazz = FileStoreItem::class,
-        string $methodName = 'prepareTargetFile'
-    ): IStoreItem {
-        self::$logger->debug("START");
+    #[\Override]
+    public static function readData(string $fileName, bool $withHeader = false): Sequence {
+        self::$logger->debug('START', [$fileName, $withHeader]);
 
-        if (empty($customTargetDir)) {
-            $customTargetDir = $this->sessionTargetDir;
-        }
-        $params = [$customTargetDir, $outputFileName, $fileExtension];
-
-        try {
-            /**
-             * @var IStoreItem
-             *
-             * @phpstan-ignore staticMethod.dynamicName
-             */
-            $newClazz = $storeItemClazz::$methodName(...$params);
-        } catch (\Exception $e) {
-            Emergency::breakSystem(self::ERR_NOT_INVOKED, $e->getMessage());
-        }
-
-        self::$logger->debug('END');
-
-        /**
-         * @psalm-suppress PossiblyUndefinedVariable
-         * @phpstan-ignore variable.undefined
-         */
-        return $newClazz;
-    }
-
-    /**
-     * REFACTOR: no usage so far.
-     *
-     * @param string $fileName
-     *
-     * @return mixed[]
-     *
-     * @SuppressWarnings("PHPMD.UnusedPrivateMethod")
-     */
-    private function readResultFile(string $fileName)
-    {
-        self::$logger->debug('START', [$fileName]);
-
-        $resultList = [];
+        /** @var Sequence<mixed> */
+        $resultList = new Vector();
         if (file_exists($fileName)) {
-            $fHandle = fopen($fileName, self::C_FILE_READ);
+            $fHandle = fopen($fileName, SP::C_FILE_READ);
 
             if (!empty($fHandle)) {
-                while ($line = fgets($fHandle, self::C_CHAR_LENGTH)) {
-                    $convertedLine = mb_convert_encoding($line, self::C_CODE_UTF8);
-                    if (is_string($convertedLine)) {
-                        $resultList[] = explode(self::C_ITEM_SEP, $convertedLine);
+                $columnHeader = new Vector();
+                if ($withHeader) {
+                    $columnHeader = self::prepareLineAsColumns(fgets($fHandle, SP::C_FILE_LINE_LEN));
+                }
+                while ($line = fgets($fHandle, SP::C_FILE_LINE_LEN)) {
+                    if (is_string($line)) { // @phpstan-ignore function.alreadyNarrowedType
+                        if (empty($columnHeader)) {
+                            $resultList->push(self::prepareLineAsColumns($line));
+                        } else {
+                            $tmpLine = self::prepareLineAsColumns($line);
+                            if ($columnHeader->count()==count($tmpLine)) {
+                                $resultList->push(array_combine($columnHeader->toArray(), $tmpLine->toArray()));
+                            } else {
+                                Emergency::breakSystem(
+                                        ExitCodes::ERR_CODE_STORE_ADAPTER_COLUMN_DATA_MISMATCH, 
+                                        'Column header and column data do not have same size'
+                                        );
+                            }
+                        }
                     }
                 }
                 fclose($fHandle);
             }
         } else {
-            self::$logger->debug('+++ file does not exists! +++', [$fileName]);
+            self::$logger->warning('File does not exists', [$fileName]);
         }
 
-        self::$logger->debug('END', [$fileName]);
-
+        self::$logger->debug('END');
         return $resultList;
     }
+
+    /**
+     * Extract the column header from string to array.
+     * 
+     * @param type $lineHeader The column header as string
+     * @return Sequence<mixed> The column header as sequence
+     */ 
+    protected static function prepareLineAsColumns(string $lineHeader): Sequence {
+        $lineHeader = str_replace(SP::C_FILE_EOL_ALL, '', $lineHeader);
+        $convertedHeader = mb_convert_encoding($lineHeader, SP::C_FILE_UTF8);
+
+        $columnHeader = new Vector();
+        if (is_string($convertedHeader)) { // @phpstan-ignore function.alreadyNarrowedType
+            $columnHeader = new Vector(explode(SP::DEFAULT_ITEM_SEP, $convertedHeader));
+        } 
+        foreach ($columnHeader as $index => $column) {
+            $columnHeader->set($index, str_replace(SP::C_ILLEGAL_KEY_CHARS, '', $column));
+        }
+        return $columnHeader;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[\Override]
+    public function getFileName(): string
+    {
+        return $this->storeItem->getStoreName();
+    }
+
+    /**
+     * Returns the final file name.
+     *
+     * @param string $fileName
+     * @param string $filePrefix
+     * @param string $fileSuffix
+     * @param string $fileExt
+     *
+     * @return string
+     */
+    protected function prepareFileName(string $fileName, string $filePrefix, string $fileSuffix, string $fileExt): string
+    {
+        self::$logger->debug("START", [$fileName, $filePrefix, $fileSuffix, $fileExt]);
+
+        $fileName = str_replace([SP::C_DIR_SEP_WIN, SP::C_DIR_SEP_UNIX], DIRECTORY_SEPARATOR, $fileName);
+        if (str_contains($fileName, DIRECTORY_SEPARATOR)) {
+            $finalFileName = basename($fileName);
+        } else {
+            $finalFileName = $fileName;
+        }
+
+        if (!empty($filePrefix)) {
+            $finalFileName = sprintf('%s-%s', $filePrefix, $finalFileName);
+        }
+        if (!empty($fileSuffix)) {
+            $finalFileName = sprintf('%s-%s', $finalFileName, $fileSuffix);
+        }
+        if (!empty($fileExt)) {
+            $finalFileName = str_replace('..', '.', sprintf('%s.%s', $finalFileName, $fileExt));
+        }
+
+        self::$logger->debug('END', [$finalFileName]);
+
+        return $finalFileName;
+    }
+
+    /**
+     * Returns the target folder for this session.
+     *
+     * @param string $fileName      The filename, without suffix, of the output file
+     * @param string $sessionFolder The current used folder for this session
+     *
+     * @return string The final full target folder
+     */
+    protected function prepareTargetFolderSession(string $fileName, string $sessionFolder): string
+    {
+        self::$logger->debug("START", [$fileName, $sessionFolder]);
+
+        $sessionFolder = $this->prepareTargetFolder($fileName, $sessionFolder);
+        $this->mkdir($sessionFolder);
+
+        self::$logger->debug('END', [$sessionFolder]);
+
+        return $sessionFolder;
+    }
+
+    /**
+     * Returns the output file including the full output path<br/>
+     * <pre>
+     * finalTargetFolder = $pathToFile + filename of $fileName
+     * </pre>.
+     *
+     * @param string $fileName   The file for output
+     * @param string $pathToFile Folder where to store the output file
+     *
+     * @return string The complete output folder
+     */
+    protected function prepareTargetFolder(string $fileName, string $pathToFile): string
+    {
+        self::$logger->debug('START', [$pathToFile, $fileName]);
+
+        $finalTargetFolder = $pathToFile . DIRECTORY_SEPARATOR . $fileName;
+
+        self::$logger->debug('END', [$finalTargetFolder]);
+
+        return $finalTargetFolder;
+    }
+
+    /**
+     * Returns the target folder based on the staging.
+     *
+     * @param FileStoreStageEnum $staging    The stage where to store the file
+     * @param string             $sessionDir The current used folder for this session
+     *
+     * @return string A stage specifix path for the outputfile
+     */
+    protected function prepareTargetFolderStaging(FileStoreStageEnum $staging, string $sessionDir): string
+    {
+        self::$logger->debug("START", [$staging->name, $sessionDir]);
+
+        $specialPath = $sessionDir;
+        if (!$staging->isDefault()) {
+            if (file_exists($sessionDir)) {
+                switch ($staging) {
+                    case FileStoreStageEnum::ORIGINAL:
+                        $specialPath = $this->prepareTargetFolder(ConstData::TARGET_ORGDIR, $sessionDir);
+                        $this->mkdir($specialPath);
+                        break;
+                    case FileStoreStageEnum::MODIFIED:
+                        $specialPath = $this->prepareTargetFolder(ConstData::TARGET_MODDIR, $sessionDir);
+                        $this->mkdir($specialPath);
+                        break;
+                    default:
+                        break;
+                }
+            } else {
+                self::$logger->warning('Session folder does not exists', [$sessionDir]);
+            }
+        }
+        self::$logger->debug('END', [$specialPath]);
+
+        return $specialPath;
+    }
+
+    /**
+     * Creates the folder where to store the file.
+     *
+     * @param string $directory The folder to create
+     *
+     * @return bool TRUE=The folder was created, else FALSE
+     */
+    protected function mkdir(string $directory): bool
+    {
+        $result = true;
+        if (!file_exists($directory)) {
+            self::$logger->debug('Create folder', [$directory]);
+            $result = mkdir($directory, SP::C_DIR_MASK, SP::C_DIR_RECURSIVE);
+        }
+
+        return $result;
+    }
+
+    /**
+     * Creates the store item.
+     *
+     * @param string $fileName   The filename, without suffix, of the output file
+     * @param string $pathToFile The folder where to store the output file
+     *
+     * @return IStoreItem A newly created store item
+     */
+    protected function invokeStoreItem(string $fileName, string $pathToFile): IStoreItem
+    {
+        self::$logger->debug("START", [$fileName, $pathToFile]);
+
+        $newClazz = FileStoreItem::prepareTargetFile($pathToFile, pathinfo($fileName, PATHINFO_FILENAME), pathinfo($fileName, PATHINFO_EXTENSION));
+
+        self::$logger->debug('END', [$newClazz]);
+
+        return $newClazz;
+    }
+
+    /**
+     * The header for the file will be flatten from array to string.
+     *
+     * @param array<mixed>|string $dataHeader The header which will be flatten
+     *
+     * @return string The header as string
+     */
+    protected static function flattenDataHeader(array|string $dataHeader): string
+    {
+        $header = "";
+        if (!empty($dataHeader)) {
+            if (!is_array($dataHeader)) {
+                $dataHeader = [$dataHeader];
+            }
+            $header = implode(SP::DEFAULT_ITEM_SEP, $dataHeader);
+        }
+
+        return $header;
+    }
+
+    /**
+     * Store any data into the store item. If the store item does not exist, it will be created, including all necessary folders.<br/>
+     * If the store item exists, the data will be append at the end.
+     *
+     * @param IStoreItem $storeItem The item in which the data will be stored
+     * @param mixed      $anyData   The data to store
+     */
+    protected function writeData(IStoreItem $storeItem, mixed $anyData): void
+    {
+        self::$logger->debug("START");
+
+        if (!is_null($anyData)) {
+            $fileName = $storeItem->__toString();
+            self::$logger->debug("Doublecheck: Ensure target folder exists", [dirname($fileName)]);
+            $this->mkdir(dirname($fileName));
+            file_put_contents($fileName, $anyData, FILE_APPEND);
+            file_put_contents($fileName, SP::C_FILE_EOL_N, FILE_APPEND);
+        }
+
+        self::$logger->debug('END');
+    }
+
 }

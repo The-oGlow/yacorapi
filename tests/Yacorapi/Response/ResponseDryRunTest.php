@@ -14,24 +14,23 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Response;
 
 use Ds\Map;
-use Ds\Set;
-use PHPUnit\Framework\EasyGoingTestCase;
+use Ds\Vector;
 use oglow\tools\Yacorapi\YacorapiTestData;
+use PHPUnit\Framework\EasyGoingTestCase;
 
 class ResponseDryRunTest extends EasyGoingTestCase
 {
-    /**
-     * @return ResponseDryRun
-     */
-    protected static function prepareO2t()
+    #[\Override]
+    protected static function prepareO2t(): ResponseDryRun
     {
         return new ResponseDryRun();
     }
 
     /**
-     * @return ResponseDryRun
+     * @inheritDoc
      */
-    protected function getCasto2t()
+    #[\Override]
+    protected function getCasto2t(): ResponseDryRun
     {
         return $this->o2t;
     }
@@ -53,12 +52,12 @@ class ResponseDryRunTest extends EasyGoingTestCase
         self::assertEquals($actual->count(), $actual2->count());
     }
 
-    public function testGetResponse(): void
+    public function testGetRawData(): void
     {
         $expected = Map::class;
         $expectedCount = 5;
 
-        $actual = $this->getCasto2t()->getResponse();
+        $actual = $this->getCasto2t()->getRawData();
 
         self::assertInstanceOf($expected, $actual);
         self::assertCount($expectedCount, $actual);
@@ -75,7 +74,7 @@ class ResponseDryRunTest extends EasyGoingTestCase
 
     public function testKeys(): void
     {
-        $expected = Set::class;
+        $expected = Vector::class;
         $expectedCount = 0;
 
         $actual = $this->getCasto2t()->keys();
@@ -121,11 +120,11 @@ class ResponseDryRunTest extends EasyGoingTestCase
         self::assertNotEmpty($actual);
     }
 
-    public function testIsResultsAvailable(): void
+    public function testhasResults(): void
     {
         $expected = true;
 
-        $actual = $this->getCasto2t()->isResultsAvailable();
+        $actual = $this->getCasto2t()->hasResults();
 
         self::assertEquals($expected, $actual);
     }

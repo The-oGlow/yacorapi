@@ -13,120 +13,57 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi;
 
+use Ds\Collection;
 use Ds\Map;
-use Ds\Set;
+use Ds\Sequence;
+use Ds\Vector;
+use oglow\tools\Yacorapi\Space\SpaceInfoEnum;
+use Stringable;
 
-interface IResponse extends \Stringable
+/**
+ * Structure for holding the data which comes from a REST-API call.
+ * This can be
+ * <ul>
+ * <li>The data of a confluence item (eg. page)</li>
+ * <li>The result of search call</li>
+ * <ul>.
+ *
+ * @author ollily
+ */
+interface IResponse extends Stringable
 {
-    public const KEY_ANCESTORS = 'ancestors';
-
-    public const KEY_ARCHIVED = 'archived';
-
-    public const KEY_BASE = 'base';
-
-    public const KEY_BODY = 'body';
-
-    public const KEY_CONTENT = 'content';
-
-    public const KEY_COUNT = 'count';
-
-    public const KEY_DESCRIPTION = 'description';
-
-    public const KEY_GROUP = 'group';
-
-    public const KEY_KEY = 'key';
-
-    public const KEY_ID = 'id';
-
-    public const KEY_LIMIT = 'limit';
-
-    public const KEY_LINKS = '_links';
-
-    public const KEY_MAX_RESULT = 'max-result';
-
-    public const KEY_MESSAGE = 'message';
-
-    public const KEY_NAME = 'name';
-
-    public const KEY_OPERATION = 'operation';
-
-    public const KEY_PLAIN = 'plain';
-
-    public const KEY_READ = 'read';
-
-    public const KEY_REASON = 'reason';
-
-    public const KEY_RESPONSE = 'response';
-
-    public const KEY_RESTRICTIONS = 'restrictions';
-
-    public const KEY_RESULTS = 'results';
-
-    public const KEY_SIZE = 'size';
-
-    public const KEY_SPACE = 'space';
-
-    public const KEY_SPACES = 'spaces';
-
-    public const KEY_START = 'start';
-
-    public const KEY_START_INDEX = 'start-index';
-
-    public const KEY_STATUS = 'status';
-
-    public const KEY_STATUS_CODE = 'statusCode';
-
-    public const KEY_STORAGE = 'storage';
-
-    public const KEY_TITLE = 'title';
-
-    public const KEY_TOTAL = 'total';
-
-    public const KEY_TOTAL_SIZE = 'totalSize';
-
-    public const KEY_TYPE = 'type';
-
-    public const KEY_UPDATE = 'update';
-
-    public const KEY_URL = 'url';
-
-    public const KEY_USER = 'user';
-
-    public const KEY_VALUE = 'value';
-
-    public const KEY_WEBUI = 'webui';
-
-    // Messages
-    public const MSG_ERROR = 'Error with Status';
-
-    public const VAL_TRUE = 'true';
-
-    public const VAL_FALSE = 'false';
-
     /**
-     * @return Map<mixed,mixed>
-     */
-    public function getResponse(): Map;
-
-    /**
-     * @param mixed $key
+     * Returns the raw data of the response as it was returnd from the REST API call.
      *
-     * @return bool
+     * @return Map<mixed,mixed> The raw response
      */
-    public function keyExists($key): bool;
+    public function getRawData(): Collection;
 
     /**
-     * @return Set<mixed>
-     */
-    public function keys(): Set;
-
-    /**
-     * @param mixed $key
-     * @param mixed $default
+     * Verifies, if the key does exists at the first level of the response.
      *
-     * @return mixed
+     * @param mixed $key The key to check for
+     *
+     * @return bool TRUE=true key exists, else FALSE
      */
-    public function getValue($key, $default = '');
+    public function keyExists(mixed $key): bool;
+
+    /**
+     * Returns all keys at first level of the response.
+     *
+     * @return Vector<mixed> All used keys
+     */
+    public function keys(): Sequence;
+
+    /**
+     * Returns the value for the key (only from first level of the response) or a default value.
+     *
+     * @param mixed $key     The key to check for
+     * @param mixed $default A default value (Default: ''=
+     *
+     * @return mixed The found value or {@link $default}
+     */
+    public function getValue(mixed $key, mixed $default = ''): mixed;
 
     /**
      * Response is correct or has an error.
@@ -136,50 +73,107 @@ interface IResponse extends \Stringable
     public function checkStatus(): bool;
 
     /**
-     * Response has data.
+     * Returns the information about the error which was produced by the last REST-API call.
+     *
+     * @return Map<mixed,mixed> Error information
+     */
+    public function getError(): Collection;
+
+    /**
+     * Verifies if the response has data.
      *
      * @return bool TRUE=response has data, else FALSE
      */
     public function checkData(): bool;
 
     /**
-     * Data for Writing is valid.
+     * Verifies if the data is valid to write.
      *
-     * @return mixed pageId=Data is valid, else FALSE
+     * @return bool|int item id=Data is valid, else FALSE
      */
-    public function checkDataWrite();
+    public function checkDataWrite(): int|bool;
 
     /**
-     * @return Map<mixed,mixed>
+     * Returns the complete search result.
+     *
+     * @return Map<mixed,mixed> The complete search result
      */
-    public function getResults(): Map;
+    public function getResults(): Collection;
 
     /**
-     * @param int $idx
+     * Returns a single result from the given position.
+     *
+     * @param int $idx The position in the result
+     *
+     * @return mixed The search result at position {@link $idx} or null
+     */
+    public function getResult(int $idx): mixed;
+
+    /**
+     * Returns the number of results from the search.
+     *
+     * @return int the number of results from the search
+     */
+    public function getResultsCount(): int;
+
+    /**
+     * Verifies if the search result has entries.
+     *
+     * @return bool TRUE=search result has at least one entry, else FALSE
+     */
+    public function hasResults(): bool;
+
+    /**
+     * Returns the id of the confluence item.
+     *
+     * @return int The itemId
+     */
+    public function getItemId(): int;
+
+    /**
+     * Returns information about the space this item is assigned to.
+     *
+     * @param SpaceInfoEnum $flags
      *
      * @return mixed
+     *
+     * @see SpaceInfoEnum
      */
-    public function getResult(int $idx);
+    public function getSpaceInfo(SpaceInfoEnum $flags = SpaceInfoEnum::SPACEINFO_ALL): mixed;
 
     /**
-     * @return string
+     * Returns the body of the item in storage format.
+     *
+     * @return string The body of the item
      */
     public function getBody(): string;
 
     /**
-     * @return array<mixed,mixed>
+     * Returns all labels set to this item.
+     *
+     * @return Vector<mixed> List of labels or empty list
+     */
+    public function getLabels(): Sequence;
+
+    /**
+     * Returns, if the item has the given label.
+     *
+     * @param string $labelName The name of the label
+     *
+     * @return bool TRUE=the label exists, else FALSE
+     */
+    public function labelExists(string $labelName): bool;
+
+    /**
+     * Returns all item restrictions.
+     *
+     * @return array<mixed> All defined item restrictions
      */
     public function getRestrictions(): array;
 
     /**
-     * Response has results.
-     *
-     * @return bool TRUE=has results, else FALSE
+     * @inheritDoc
      */
-    public function isResultsAvailable(): bool;
-
-    /**
-     * @inheritdoc
-     */
-    public function __toString();
+    #[\Override]
+    public function __toString(): string;
 }

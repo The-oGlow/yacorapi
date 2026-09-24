@@ -17,17 +17,29 @@ use Ds\Map;
 use Monolog\ConsoleLogger;
 use Psr\Log\LoggerInterface;
 
+/**
+ * Abstract implementation for a store item.
+ *
+ * @author ollily
+ *
+ * @phpstan-import-type LoggingLevel from \Monolog\AbstractEasyGoingLogger
+ */
 abstract class AbstractStoreItem implements IStoreItem
 {
     /** @var Map<mixed,mixed> */
-    protected $storeItems;
+    protected Map $storeItems;
 
-    /** @var LoggerInterface */
-    private static $logger;
+    private static LoggerInterface $logger;
 
-    protected function __construct()
+    /**
+     * @param int|\Monolog\Level|\Psr\Log\LogLevel::*|string $level The minimum logging level at which this handler will be triggered
+     *                                                              (Default: {@link AbstractStoreItem::LEVEL_DEFAULT})
+     *
+     * @phpstan-param LoggingLevel $level
+     */
+    protected function __construct(mixed $level = AbstractStoreItem::LEVEL_DEFAULT)
     {
-        self::$logger = new ConsoleLogger(AbstractStoreItem::class);
+        self::$logger = new ConsoleLogger(AbstractStoreItem::class, level: $level);
         self::$logger->debug("START");
 
         $this->storeItems = new Map();

@@ -13,31 +13,36 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi;
 
-use Ds\Map;
-use oglow\tools\Yacorapi\Request\RequestType;
+use Ds\Collection;
+use oglow\tools\Yacorapi\Request\RequestTypeEnum;
+use Psr\Log\LogLevel;
 
+/**
+ * @author ollily
+ */
 interface IConnectionProvider
 {
-    /** @var string */
-    public const MSG_FOUND_NO_RESULTS = 'Found no results!';
+    /** @var string Default output level */
+    public const string LEVEL_DEFAULT = LogLevel::INFO;
 
-    /** @var string */
-    public const MSG_NOT_IMPLEMENTED  = 'Not implemented so far!';
+    public const string MSG_FOUND_NO_RESULTS = 'Found no results';
+
+    public const string MSG_NOT_IMPLEMENTED  = 'Not implemented so far';
 
     /**
-     * @param string $execUrl
-     * @param int    $reqType
+     * @param string          $execUrl
+     * @param RequestTypeEnum $reqType
      *
      * @return IResponse
      */
-    public function exec(string $execUrl, int $reqType = RequestType::REQ_TYP_GET): IResponse;
+    public function exec(string $execUrl, RequestTypeEnum $reqType = RequestTypeEnum::GET): IResponse;
 
     /**
-     * @param string            $execUrl
-     * @param Map<mixed, mixed> $parameters
-     * @param int               $reqType
+     * @param string                   $execUrl
+     * @param Collection<mixed, mixed> $parameters
+     * @param RequestTypeEnum          $reqType
      *
      * @return IResponse
      */
-    public function execPost(string $execUrl, Map $parameters, int $reqType): IResponse;
+    public function execPost(string $execUrl, Collection $parameters, RequestTypeEnum $reqType): IResponse;
 }

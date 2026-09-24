@@ -16,80 +16,136 @@ namespace oglow\tools\Yacorapi\Store;
 use Monolog\ConsoleLogger;
 use Psr\Log\LoggerInterface;
 
+/**
+ * Default implementation for a store item.
+ *
+ * @author ollily
+ *
+ * @phpstan-import-type LoggingLevel from \Monolog\AbstractEasyGoingLogger
+ */
 class FileStoreItem extends AbstractStoreItem
 {
-    public const DIR  = 'DIR';
+    public const string KEY_DIR  = 'DIR';
 
-    public const FILE = 'FILE';
+    public const string KEY_FILE = 'FILE';
 
-    public const EXT  = 'EXT';
+    public const string KEY_EXT  = 'EXT';
 
-    /** @var LoggerInterface */
-    private static $logger;
+    private static LoggerInterface $logger;
 
     /**
-     * @param string $dir
-     * @param string $file
-     * @param string $ext
+     * @param string $dir  The folder of this store item
+     * @param string $file The filename of this store item
+     * @param string $ext  The suffix of the filename of this store item
      *
-     * @return IStoreItem
+     * @return IStoreItem A newly created store item
      */
-    public static function prepareTargetFile(string $dir, string $file, string $ext = IStoreItem::EXT_TEXT): IStoreItem
+    public static function prepareTargetFile(string $dir, string $file, string $ext = StoreParameter::C_FILE_EXT_TEXT): IStoreItem
     {
         return new self($dir, $file, $ext);
     }
 
-    protected function __construct(string $dir, string $file, string $ext = self::EXT_TEXT)
-    {
-        self::$logger = new ConsoleLogger(FileStoreItem::class);
+    /**
+     * @param string                                         $dir   The folder of this store item
+     * @param string                                         $file  The filename of this store item
+     * @param string                                         $ext   The suffix of the filename of this store item
+     * @param int|\Monolog\Level|\Psr\Log\LogLevel::*|string $level The minimum logging level at which this handler will be triggered
+     *                                                              (Default: {@link self::LEVEL_DEFAULT})
+     *
+     * @phpstan-param LoggingLevel $level
+     */
+    protected function __construct(
+        string $dir,
+        string $file,
+        string $ext = StoreParameter::C_FILE_EXT_TEXT,
+        mixed $level = self::LEVEL_DEFAULT
+    ) {
+        self::$logger = new ConsoleLogger(FileStoreItem::class, level: $level);
         self::$logger->debug("START");
 
-        parent::__construct();
-        $this->storeItems->put(self::DIR, $dir);
-        $this->storeItems->put(self::FILE, $file);
-        $this->storeItems->put(self::EXT, $ext);
+        parent::__construct(level: $level);
+
+        $this->storeItems->put(self::KEY_DIR, $dir);
+        $this->storeItems->put(self::KEY_FILE, $file);
+        $ext = str_replace(StoreParameter::C_FILE_SEP, '', $ext);
+        $this->storeItems->put(self::KEY_EXT, $ext);
 
         self::$logger->debug("END");
     }
 
+    /**
+     * @inheritDoc
+     */
+    #[\Override]
     public function setDir(string $dir): IStoreItem
     {
-        $this->storeItems->put(self::DIR, $dir);
+        $this->storeItems->put(self::KEY_DIR, $dir);
 
         return $this;
     }
 
+    /**
+     * @inheritDoc
+     */
+    #[\Override]
     public function getDir(): string
     {
-        return $this->storeItems->get(self::DIR, '');
+        return $this->storeItems->get(self::KEY_DIR, '');
     }
 
+    /**
+     * @inheritDoc
+     */
+    #[\Override]
     public function setFile(string $file): IStoreItem
     {
-        $this->storeItems->put(self::FILE, $file);
+        $this->storeItems->put(self::KEY_FILE, $file);
 
         return $this;
     }
 
+    /**
+     * @inheritDoc
+     */
+    #[\Override]
     public function getFile(): string
     {
-        return $this->storeItems->get(self::FILE, '');
+        return $this->storeItems->get(self::KEY_FILE, '');
     }
 
-    public function setExt(string $ext = self::EXT_TEXT): IStoreItem
+    /**
+     * @inheritDoc
+     */
+    #[\Override]
+    public function setExt(string $ext = StoreParameter::C_FILE_EXT_TEXT): IStoreItem
     {
-        $this->storeItems->put(self::EXT, $ext);
+        $ext = str_replace(StoreParameter::C_FILE_SEP, '', $ext);
+        $this->storeItems->put(self::KEY_EXT, $ext);
 
         return $this;
     }
 
+    /**
+     * @inheritDoc
+     */
+    #[\Override]
     public function getExt(): string
     {
-        return $this->storeItems->get(self::EXT, self::EXT_TEXT);
+        return $this->storeItems->get(self::KEY_EXT, StoreParameter::C_FILE_EXT_TEXT);
     }
 
-    public function __toString()
+    #[\Override]
+    public function getStoreName(): string
     {
-        return $this->getDir() . self::C_PATH_SEP . $this->getFile() . self::C_FILE_SEP . $this->getExt();
+        return $this->__toString();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[\Override]
+    public function __toString(): string
+    {
+        return $this->getDir() . DIRECTORY_SEPARATOR . $this->getFile() .  StoreParameter::C_FILE_SEP . $this->getExt();
     }
 }

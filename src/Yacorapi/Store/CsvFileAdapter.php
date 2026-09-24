@@ -13,93 +13,91 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Store;
 
+use Ds\Collection;
+use Ds\Sequence;
+use Ds\Vector;
 use Monolog\ConsoleLogger;
+use oglow\tools\Yacorapi\IResponse;
+use oglow\tools\Yacorapi\Response\ResponseParameter as RP;
+use oglow\tools\Yacorapi\Space\SpaceInfoEnum;
+use oglow\tools\Yacorapi\Store\StoreParameter as SP;
 use ollily\Tools\String\ImplodeTrait;
 use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 
+/**
+ * Implementation for a file adapter creating csv-files.
+ *
+ * @author ollly
+ */
 class CsvFileAdapter extends FileAdapter
 {
     use ImplodeTrait;
 
-    /** @var LoggerInterface */
-    private static $logger;
+    /** @var string Standard file extension for this adapter */
+    public const string DEFAULT_FILE_EXT = SP::C_FILE_EXT_CSV;
 
-    public function __construct(string $outputFileName, string $fileSuffix = '', string $customTargetDir = '')
-    {
-        self::$logger = new ConsoleLogger(CsvFileAdapter::class);
-        self::$logger->debug("START");
+    /** @var array<mixed> Chars to clean */
+    private const array STORDATA_CLEAN = [SP::DEFAULT_SQUARE_BRACK_OPEN, SP::DEFAULT_SQUARE_BRACK_CLOSE];
 
-        parent::__construct($outputFileName, $fileSuffix, $customTargetDir);
+    /** Looking for ";[" */
+    private const string STOREDATA_SEARCH = SP::DEFAULT_ITEM_SEP . SP::DEFAULT_SQUARE_BRACK_OPEN;
+
+    /** Replacing ";\n[" */
+    private const string STOREDATA_REPL = SP::DEFAULT_ITEM_SEP . SP::C_FILE_EOL_N . SP::DEFAULT_SQUARE_BRACK_OPEN;
+
+    private static LoggerInterface $logger;
+
+    /**
+     * Constructor for a store adapter.
+     *
+     * @param string                 $fileName   The filename, without suffix, of the output file
+     * @param string                 $filePrefix Prefix of the output file (Default: {@link SP::DEFAULT_FILE_PREFIX})
+     * @param string                 $fileSuffix Suffix of the output file (Default: {@link SP::DEFAULT_FILE_SUFFIX})
+     * @param string                 $fileExt    File extension of the output file
+     *                                           (Default: {@link SP::DEFAULT_FILE_EXT})
+     * @param string                 $pathToFile Folder where to store the output file
+     *                                           (Default: {@link SP::DEFAULT_FOLDER_NAME})
+     * @param FileStoreStageEnum     $staging    The stage where to store the file (Default {@link FileStoreStageEnum::BASE})
+     * @param int|LogLevel::*|string $level      The minimum logging level at which this handler will be triggered (Default: {@link self::LEVEL_DEFAULT})
+     */
+    public function __construct(
+        string $fileName,
+        string $filePrefix = SP::DEFAULT_FILE_PREFIX,
+        string $fileSuffix = SP::DEFAULT_FILE_SUFFIX,
+        string $fileExt = SP::DEFAULT_FILE_EXT,
+        string $pathToFile = SP::DEFAULT_FOLDER_NAME,
+        FileStoreStageEnum $staging = FileStoreStageEnum::BASE,
+        mixed $level = self::LEVEL_DEFAULT
+    ) {
+        /** @psalm-suppress ArgumentTypeCoercion
+         * @phpstan-ignore argument.type */
+        self::$logger = new ConsoleLogger(CsvFileAdapter::class, level: $level);
+        self::$logger->debug("START", [$fileName, $filePrefix, $fileSuffix, $fileExt, $pathToFile, $staging->name]);
+
+        if (empty($fileExt)) {
+            $finalFileExt = self::DEFAULT_FILE_EXT;
+        } else {
+            $finalFileExt = $fileExt;
+        }
+
+        parent::__construct($fileName, $filePrefix, $fileSuffix, $finalFileExt, $pathToFile, $staging, $level);
 
         self::$logger->debug('END');
     }
 
-    protected function flattenDataHeader($dataHeader): string
-    {
-        self::$logger->debug("START");
-
-        if (is_array($dataHeader)) {
-            $headerCount = count($dataHeader);
-            for ($idx = 0; $idx < $headerCount; $idx++) {
-                $dataHeader[$idx] = '"' . $dataHeader[$idx] . '"';
-            }
-        }
-
-        return parent::flattenDataHeader($dataHeader);
-    }
-
     /**
-     * @param mixed[]|string $param
-     *
-     * @return string
+     * @inheritDoc
      */
-    protected function prepareCsvLine($param): string
-    {
-        self::$logger->debug("START");
-
-        if (!is_array($param)) {
-            $param = [$param];
-        }
-
-        return implode(self::C_ITEM_SEP, $param);
-    }
-
-    /**
-     * @param string $customTargetDir
-     * @param string $outputFileName
-     * @param string $fileExtension
-     * @param string $storeItemClazz
-     * @param string $methodName
-     *
-     * @return IStoreItem
-     */
-    protected function invokeStoreItem(
-        string $customTargetDir,
-        string $outputFileName,
-        string $fileExtension = IStoreItem::EXT_CSV,
-        string $storeItemClazz = FileStoreItem::class,
-        string $methodName = 'prepareTargetFile'
-    ): IStoreItem {
-        self::$logger->debug("START");
-
-        if (!str_ends_with($fileExtension, IStoreItem::EXT_CSV)) {
-            $fileExtension = $fileExtension . '.' . IStoreItem::EXT_CSV;
-        }
-
-        return parent::invokeStoreItem($customTargetDir, $outputFileName, $fileExtension, $storeItemClazz, $methodName);
-    }
-
-    /**
-     * @param mixed $dataContent
-     */
-    public function storeData($dataContent): void
+    #[\Override]
+    public function storeData(mixed $dataContent): void
     {
         self::$logger->debug('START');
-        self::$logger->debug('dataContent', [$dataContent]);
 
         if (!is_null($dataContent)) {
-            $csvLine = $this->implode_recursive(self::C_ITEM_SEP, $dataContent, false, false);
-            $csvLine = str_replace(self::C_ITEM_SEP . '[', self::C_ITEM_SEP . "\n[", $csvLine);
+            $csvLine = self::implode_recursive(SP::DEFAULT_ITEM_SEP, $dataContent, false, false);
+            $csvLine = str_replace(self::STOREDATA_SEARCH, self::STOREDATA_REPL, $csvLine);
+            $csvLine = str_replace(self::STORDATA_CLEAN, '', $csvLine);
             $this->writeData($this->storeItem, $csvLine);
         }
 
@@ -107,16 +105,91 @@ class CsvFileAdapter extends FileAdapter
     }
 
     /**
-     * @param string|string[] $dataHeader
+     * @inheritDoc
      */
-    public function storeDataHeader($dataHeader): void
+    #[\Override]
+    protected static function flattenDataHeader(array|string $dataHeader): string
     {
-        self::$logger->debug("START");
-
-        if (!empty($dataHeader)) {
-            $this->writeData($this->storeItem, $this->flattenDataHeader($dataHeader));
+        if (is_array($dataHeader)) {
+            $headerCount = count($dataHeader);
+            for ($idx = 0; $idx < $headerCount; $idx++) {
+                $dataHeader[$idx] = SP::DEFAULT_COLUMN_TEXT_SEP . strval($dataHeader[$idx]) . SP::DEFAULT_COLUMN_TEXT_SEP;
+            }
         }
 
-        self::$logger->debug('END');
+        return parent::flattenDataHeader($dataHeader);
+    }
+
+    /**
+     * @param array<mixed>|string $param
+     *
+     * @return string
+     */
+    protected function prepareCsvLine(array|string $param): string
+    {
+        if (!is_array($param)) {
+            $param = [$param];
+        }
+
+        return implode(SP::DEFAULT_ITEM_SEP, $param);
+    }
+
+    /**
+     * Generates a full csv line for the output.
+     *
+     * @param IResponse     $response      The response
+     * @param Vector<mixed> $exportColumns List of column names to add to the line
+     * @param bool          $header        TRUE=generate the file header, else FALSE
+     *
+     * @return string The full csv line
+     */
+    public static function prepareExportLine(IResponse $response, Sequence $exportColumns, bool $header = false): string
+    {
+        $textSep = SP::DEFAULT_COLUMN_TEXT_SEP;
+        $sepChar = SP::DEFAULT_ITEM_SEP;
+
+        $line = '';
+        if ($exportColumns->count() > 0) {
+            if ($header) {
+                $line = static::flattenDataHeader($exportColumns->toArray());
+            } else {
+                foreach ($exportColumns as $exportColumn) {
+                    switch ($exportColumn) {
+                        case RP::KEY_ID:
+                            $line .= $response->getItemId() . $sepChar;
+                            break;
+                        case RP::KEY_BODY:
+                            $line .= $textSep . addslashes($response->getBody()) . $textSep . $sepChar;
+                            break;
+                        case RP::KEY_SPACE:
+                            $line .= $textSep . strval($response->getSpaceInfo(SpaceInfoEnum::SPACEINFO_KEY)) . $textSep . $sepChar;
+                            break;
+                        case RP::KEY_LABELS:
+                            $outLabels = $response->getLabels()->join(self::DEFAULT_GLUE);
+                            $line .= $textSep . $outLabels . $textSep . $sepChar;
+                            break;
+                        default:
+                            $outValue = $response->getValue($exportColumn);
+                            if (is_array($outValue)) {
+                                $outValue = self::implode_recursive(self::DEFAULT_GLUE, $outValue);
+                            } elseif (is_object($outValue)) {
+                                switch (true) {
+                                    case $outValue instanceof Sequence:
+                                    case $outValue instanceof Collection:
+                                        $outValue = $outValue->toArray();
+                                        break;
+                                }
+                            }
+                            $line .= $textSep . strval($outValue) . $textSep . $sepChar;
+                            break;
+                    }
+                }
+            }
+            if (str_ends_with($line, $sepChar)) {
+                $line = substr($line, 0, strlen($sepChar) * -1);
+            }
+        }
+
+        return $line;
     }
 }

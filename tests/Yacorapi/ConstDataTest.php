@@ -14,71 +14,41 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi;
 
 use PHPUnit\Framework\ConstantCheckTestCase;
+use Psr\Log\LogLevel;
 
 class ConstDataTest extends ConstantCheckTestCase
 {
-    public const  CLASS_PREFIX = ConstData::class . self::C_STATIC_SEP;
+    public const string  CLASS_PREFIX = ConstData::class . self::C_STATIC_SEP;
 
-    /** @var int */
-    protected const EXPECTED_CONSTANT_COUNT = 34;
+    protected const int EXPECTED_CONSTANT_COUNT = 35;
 
-    /** @var bool */
-    protected const WITH_CONST_CROSSCHECK = true;
+    protected const bool WITH_CONST_CROSSCHECK = true;
 
-    /**
-     * @return ConstData
-     */
-    protected static function prepareO2t()
+    #[\Override]
+    protected static function prepareO2t(): ConstData
     {
-        return new ConstData();
+        return ConstData::i(true, LogLevel::DEBUG);
     }
 
     /**
-     * @return ConstData
+     * @inheritDoc
      */
-    protected function getCasto2t()
+    #[\Override]
+    protected function getCasto2t(): ConstData
     {
         return $this->o2t;
     }
 
+    #[\Override]
     public static function setUpBeforeClass(bool $withConstCrossCheck = self::WITH_CONST_CROSSCHECK, int $expectedConstsCount = self::EXPECTED_CONSTANT_COUNT): void
     {
         parent::setUpBeforeClass($withConstCrossCheck, $expectedConstsCount);
     }
 
-    public function testGlobalConstsExists(): void
+    public function testInheritedConstsExists(): void
     {
-        $const              = [
-            self::CLASS_PREFIX . 'KEY_MY_DIR',
-        ];
-        static::updateActualConsts($const);
-
-        $this->verifyConstAllExists($const);
-    }
-
-    public function testPathConstsExists(): void
-    {
-        $const              = [
-            self::CLASS_PREFIX . 'KEY_PROJECT_ROOT',
-            self::CLASS_PREFIX . 'KEY_TARGET_ROOTDIR',
-            self::CLASS_PREFIX . 'KEY_TARGET_DIR',
-            self::CLASS_PREFIX . 'TARGET_ORGDIR',
-            self::CLASS_PREFIX . 'TARGET_MODDIR',
-            self::CLASS_PREFIX . 'KEY_INPUT_ROOTDIR',
-            self::CLASS_PREFIX . 'KEY_INPUT_DIR',
-        ];
-        static::updateActualConsts($const);
-
-        $this->verifyConstAllExists($const);
-    }
-
-    public function testClassConstsExists(): void
-    {
-        $const              = [
-            self::CLASS_PREFIX . 'PAGE_START',
-            self::CLASS_PREFIX . 'PAGE_LIMIT',
-            self::CLASS_PREFIX . 'PAGE_MAX_PAGES',
-            self::CLASS_PREFIX . 'PAGE_MAX_RESULTS',
+        $const = [
+            self::CLASS_PREFIX . 'LEVEL_DEFAULT',
         ];
         static::updateActualConsts($const);
 
@@ -87,7 +57,7 @@ class ConstDataTest extends ConstantCheckTestCase
 
     public function testCliParameterSize(): void
     {
-        $const              = [
+        $const = [
             self::CLASS_PREFIX . 'CLI_LONG_OPTS' => 1,
         ];
         static::updateActualConsts(array_keys($const));
@@ -95,15 +65,43 @@ class ConstDataTest extends ConstantCheckTestCase
         $this->verifyConstArrayAllExists($const);
     }
 
+    public function testGlobalConstsExists(): void
+    {
+        $const              = [
+            self::CLASS_PREFIX . 'KEY_MY_DIR',
+            self::CLASS_PREFIX . 'VAL_APP_USER',
+            self::CLASS_PREFIX . 'KEY_PROJECT_ROOT',
+            self::CLASS_PREFIX . 'KEY_TARGET_ROOTDIR',
+            self::CLASS_PREFIX . 'KEY_TARGET_DIR',
+            self::CLASS_PREFIX . 'KEY_INPUT_ROOTDIR',
+            self::CLASS_PREFIX . 'KEY_INPUT_DIR',
+            self::CLASS_PREFIX . 'TARGET_ORGDIR',
+            self::CLASS_PREFIX . 'TARGET_MODDIR',
+        ];
+        static::updateActualConsts($const);
+
+        $this->verifyConstAllExists($const);
+    }
+
     public function testConfigConstsExists(): void
     {
         $const              = [
-            self::CLASS_PREFIX . 'CONF_PAT_PROD',
-            self::CLASS_PREFIX . 'CONF_PAT_TEST',
+            self::CLASS_PREFIX . 'C_RAPI_CONTENT',
+            self::CLASS_PREFIX . 'C_RAPI_SCAN',
+            self::CLASS_PREFIX . 'C_RAPI_SEARCH',
+            self::CLASS_PREFIX . 'C_RAPI_SPACE',
+            self::CLASS_PREFIX . 'C_RAPI_VIEWPAGE',
+            self::CLASS_PREFIX . 'C_RAPI_RESTRICTION_BYOP',
+            self::CLASS_PREFIX . 'C_RAPI_RESTRICTION',
             self::CLASS_PREFIX . 'CONF_USERCERTFILE',
             self::CLASS_PREFIX . 'CONF_USERAUTHFILE',
             self::CLASS_PREFIX . 'CONF_USERFOLDER',
+            self::CLASS_PREFIX . 'CONF_AUTH_CLAZZ',
+            self::CLASS_PREFIX . 'KEY_CONF_PAT_PROD',
+            self::CLASS_PREFIX . 'KEY_CONF_PAT_TEST',
             self::CLASS_PREFIX . 'KEY_USE_PROD',
+            self::CLASS_PREFIX . 'KEY_TEST_URL',
+            self::CLASS_PREFIX . 'KEY_PROD_URL',
             self::CLASS_PREFIX . 'KEY_CONF_BASE_URL',
             self::CLASS_PREFIX . 'KEY_AUTH_TOKEN_NAME',
             self::CLASS_PREFIX . 'KEY_MY_CERT_CA',
@@ -112,13 +110,6 @@ class ConstDataTest extends ConstantCheckTestCase
             self::CLASS_PREFIX . 'KEY_CONF_SPACE_URL',
             self::CLASS_PREFIX . 'KEY_WEB_SHOW_PAGEID',
             self::CLASS_PREFIX . 'KEY_SEARCH_LIMIT',
-            self::CLASS_PREFIX . 'C_RAPI_CONTENT',
-            self::CLASS_PREFIX . 'C_RAPI_SCAN',
-            self::CLASS_PREFIX . 'C_RAPI_SEARCH',
-            self::CLASS_PREFIX . 'C_RAPI_SPACE',
-            self::CLASS_PREFIX . 'C_RAPI_VIEWPAGE',
-            self::CLASS_PREFIX . 'C_RAPI_RESTRICTION_BYOP',
-            self::CLASS_PREFIX . 'C_RAPI_RESTRICTION',
         ];
         static::updateActualConsts($const);
 

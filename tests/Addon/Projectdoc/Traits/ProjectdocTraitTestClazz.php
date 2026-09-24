@@ -13,24 +13,22 @@ declare(strict_types=1);
 
 namespace oglow\tools\Addon\Projectdoc\Traits;
 
-use oglow\tools\common\MockProvider;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\IConnectionProvider;
 use oglow\tools\Yacorapi\IResponse;
+use oglow\tools\Yacorapi\Provider\MockProvider;
 
 class ProjectdocTraitTestClazz
 {
     use ProjectdocTrait;
 
-    /** @var ConstData */
-    protected $constData;
+    protected ConstData $constData;
 
-    /** @var IConnectionProvider */
-    protected $provider;
+    protected IConnectionProvider $provider;
 
     public function __construct()
     {
-        $this->constData = new ConstData(ProjectdocTraitTestClazz::class);
+        $this->constData = ConstData::i();
         $this->provider  = new MockProvider();
     }
 

@@ -13,39 +13,36 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi;
 
-use Ds\Map;
-use oglow\tools\common\AbstractSingleton;
+use ollily\Common\AbstractSingleton;
 
+/**
+ * All possible exits for this application.
+ *
+ * @author ollily
+ *
+ * @see \ollily\Tools\Emergency::breakSystem($errorCode)
+ */
 class ExitCodes extends AbstractSingleton
 {
-    public const ERR_CODE_NO_URL_SET               = 1;
+    public const int ERR_CODE_NO_URL_SET               = 1;
 
-    public const ERR_CODE_AUTH_CLASS_NOT_EXISTS    = 12;
+    public const int ERR_CODE_AUTH_CLASS_NOT_EXISTS    = 12;
 
-    public const ERR_CODE_AUTHFILE_NOT_EXISTS      = 11;
+    public const int ERR_CODE_AUTHFILE_NOT_EXISTS      = 11;
 
-    public const ERR_CODE_EXTENSION_NOT_LOADED     = 13;
+    public const int ERR_CODE_EXTENSION_NOT_LOADED     = 13;
 
-    public const ERR_CODE_MYSPACES_FILE_NOT_EXISTS = 20;
+    public const int ERR_CODE_MYSPACES_FILE_NOT_EXISTS = 20;
 
-    public const ERR_CODE_BLOCKER_ADDON_NOT_INIT   = 26;
+    public const int ERR_CODE_BLOCKER_ADDON_NOT_INIT   = 26;
 
-    public const ERR_CODE_SINGLEADDON_NOT_INIT     = 25;
+    public const int ERR_CODE_SINGLEADDON_NOT_INIT     = 25;
 
-    public const ERR_CODE_ALLADDON_NOT_INIT        = 27;
+    public const int ERR_CODE_ALLADDON_NOT_INIT        = 27;
 
-    protected function prepareSettings(): void
-    {
-        // Nothing2Do
-    }
+    public const int ERR_CODE_CURL_INIT = 30;
 
-    /**
-     * @param Map<mixed, mixed> $overrideParameters
-     *
-     * @return bool
-     */
-    protected function validateSettings(Map $overrideParameters): bool
-    {
-        return true;
-    }
+    public const int ERR_CODE_RESPONSE_INVALID_OR_NULL = 31;
+    
+    public const int ERR_CODE_STORE_ADAPTER_COLUMN_DATA_MISMATCH = 40;
 }

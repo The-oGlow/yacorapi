@@ -52,7 +52,7 @@ interface IAddon
     /**
      * Returns the macros without any addons as array.
      *
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      *
      * @see getAddons()
      * @see getMacros()

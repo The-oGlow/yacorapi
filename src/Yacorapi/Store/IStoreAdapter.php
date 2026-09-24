@@ -13,26 +13,48 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Store;
 
+use Ds\Sequence;
+use Psr\Log\LogLevel;
+
 /**
- * Interface IStoreAdapter.
+ * Interface for the store adapter.
+ *
+ * @author ollily
  */
 interface IStoreAdapter
 {
-    public const KEY_KEY    = 'key';
-
-    public const KEY_LINKS  = '_links';
-
-    public const KEY_TINYUI = 'tinyui';
-
-    public const KEY_TITLE  = 'title';
+    /** @var string Default output level */
+    public const string LEVEL_DEFAULT = LogLevel::INFO;
 
     /**
-     * @param mixed $dataContent
+     * Store any data with the adapter.
+     *
+     * @param mixed $dataContent The content which will be stored
      */
-    public function storeData($dataContent): void;
+    public function storeData(mixed $dataContent): void;
 
     /**
-     * @param string|string[] $dataHeader
+     * Store header data with the adapter.
+     *
+     * @param array<mixed>|string $dataHeader A header which will be stored
      */
-    public function storeDataHeader($dataHeader): void;
+    public function storeDataHeader(string|array $dataHeader): void;
+
+    /**
+     * Returns the full filename of the output file.
+     *
+     * @return string The full filename
+     */
+    public function getFileName(): string;
+    
+    /**
+     * Loads the data, from an input file.
+     * 
+     * @param string $fileName The filename to read in
+     * @param bool $withHeader TRUE=the file has a column header at line 1, else FALSE
+     *
+     * @return Sequence<mixed> The content of the file as sequence
+     */
+    public static function readData(string $fileName, bool $withHeader = false): Sequence;
+
 }

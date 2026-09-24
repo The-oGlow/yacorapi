@@ -13,18 +13,21 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Macro;
 
+use Ds\Collection;
 use Ds\Map;
 use Ds\Vector;
+use Exception;
 use Monolog\ConsoleLogger;
+use ollily\Tools\JsonHelper;
+use ollily\Tools\Reflection\ClazzHelper;
 use Psr\Log\LoggerInterface;
 
 abstract class AbstractAddon implements IAddon
 {
-    /** @var LoggerInterface */
-    private static $logger;
+    private static LoggerInterface $logger;
 
     /** @var Map<mixed,Vector<mixed>> */
-    protected $addonsMacros;
+    protected Collection $addonsMacros;
 
     public function __construct()
     {
@@ -38,27 +41,46 @@ abstract class AbstractAddon implements IAddon
     protected function init(): void
     {
         $this->addonsMacros = new Map();
+        $file = ClazzHelper::getClazzPath(static::class) . DIRECTORY_SEPARATOR . ClazzHelper::getClazzFilename(static::class) .  JsonHelper::FILE_EXT_JSON;
+        if (file_exists($file)) {
+            try {
+                $jsonData = JsonHelper::loadJson($file);
+                /** @var Map<mixed,mixed> */
+                $map = new Map();
+                foreach ($jsonData as $key => $value) {
+                    $map->put($key, new Vector($value));
+                }
+                $this->addonsMacros = $map;
+            } catch (Exception $exception) {
+                self::$logger->error($exception->getMessage());
+            }
+        } else {
+            self::$logger->debug('No addon datafile to load', [$file]);
+        }
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
+    #[\Override]
     public function getAddons(): Map
     {
         return $this->addonsMacros;
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
+    #[\Override]
     public function getAddonNames(): Vector
     {
         return new Vector($this->addonsMacros->keys());
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
+    #[\Override]
     public function getMacros(): Vector
     {
         $macros = new Vector();
@@ -74,8 +96,9 @@ abstract class AbstractAddon implements IAddon
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
+    #[\Override]
     public function getMacrosArray(): array
     {
         return $this->getMacros()->toArray();

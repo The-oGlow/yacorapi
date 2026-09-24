@@ -13,19 +13,17 @@ declare(strict_types=1);
 
 namespace oglow\tools\Addon\Projectdoc\Extension;
 
-use oglow\tools\Yacorapi\ConstData;
 use PHPUnit\Framework\TestCase;
 
 class ProjectdocExtensionTest extends TestCase
 {
-    public const CLAZZNAME = '\oglow\tools\Addon\Projectdoc\Extension\ProjectdocExtension';
+    /** @var class-string */
+    public const string CLAZZNAME = '\oglow\tools\Addon\Projectdoc\Extension\ProjectdocExtension';
 
     public function testClazzExist(): void
     {
-        $clazz = static::CLAZZNAME;
-
         try {
-            $actual = new $clazz(new ConstData());
+            $actual = new ProjectdocExtension();
             self::assertInstanceOf(static::CLAZZNAME, $actual);
         } catch (\Exception $e) {
             self::fail('Should not raise any exection: ' . $e->getMessage());

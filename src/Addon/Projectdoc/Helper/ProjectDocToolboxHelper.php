@@ -13,53 +13,43 @@ declare(strict_types=1);
 
 namespace oglow\tools\Addon\Projectdoc\Helper;
 
-use Ds\Map;
 use Monolog\ConsoleLogger;
-use Monolog\DoNothingLogger;
 use oglow\tools\Yacorapi\ConstData;
-use oglow\tools\Yacorapi\Helper\AbstractHelper;
 use oglow\tools\Yacorapi\IResponse;
+use oglow\tools\Yacorapi\Response\ResponseParameter;
 use oglow\tools\Yacorapi\Store\FileAdapter;
 use oglow\tools\Yacorapi\Store\IStoreAdapter;
+use ollily\Common\AbstractHelper;
 use Psr\Log\LoggerInterface;
 
+/**
+ * @author ollily
+ */
 class ProjectDocToolboxHelper extends AbstractHelper
 {
-    /** @var LoggerInterface */
-    private static $logger;
+    private static LoggerInterface $logger;
 
-    public function __construct(bool $withLogger = true)
+    /**
+     * Protected constructor.
+     *
+     * @param bool $withLogger TRUE=activate logging, else FALSE
+     */
+    protected function __construct(bool $withLogger = true)
     {
-        if ($withLogger) {
-            self::$logger = new ConsoleLogger(ProjectDocToolboxHelper::class);
-        } else {
-            self::$logger = new DoNothingLogger();
-        }
+        self::$logger = new ConsoleLogger(ProjectDocToolboxHelper::class, level: self::LEVEL_DEFAULT);
         self::$logger->debug('START');
 
-        parent::__construct(ProjectDocToolboxHelper::class, $withLogger);
+        parent::__construct($withLogger, static::LEVEL_DEFAULT);
 
         self::$logger->debug('END');
     }
 
-    private function prepareStoreAdapter(string $fileName): IStoreAdapter
-    {
-        return new FileAdapter($fileName, 'html', $this->constData->c(ConstData::KEY_TARGET_DIR));
-    }
-
-    /**
-     * @param string $body
-     * @param string $oldDoctype
-     * @param string $newDoctype
-     *
-     * @return null|string
-     */
-    public function replaceDoctype(string $body, string $oldDoctype, string $newDoctype): ?string
+    public function replaceDoctype(string $body, string $oldDoctype, string $newDoctype): string
     {
         $newBody = $body;
         if (!empty($oldDoctype)) {
             $pattern =
-                "/(ac:name=.projectdoc-properties-marker.\sac:schema-version=.1.><ac:parameter\sac:name=.doctype.>)(" . $oldDoctype . ")(<\/ac:parameter>)/";
+            "/(ac:name=.projectdoc-properties-marker.\sac:schema-version=.1.><ac:parameter\sac:name=.doctype.>)(" . $oldDoctype . ")(<\/ac:parameter>)/";
             self::$logger->debug('Search pattern', [$oldDoctype,$newDoctype,$pattern]);
             $newBody = preg_replace($pattern, "$1" . $newDoctype . "$3", $body);
         }
@@ -88,13 +78,13 @@ class ProjectDocToolboxHelper extends AbstractHelper
     public function modifyData(?IResponse $response, string $oldDoctype, string $newDoctype): bool
     {
         $modified = false;
-        if (!empty($response) && $response->isResultsAvailable()) {
+        if (!empty($response) && $response->hasResults()) {
             $idx     = 0;
             $results = $response->getResults();
             foreach ($results as $page) {
-                $pageId    = $page[IResponse::KEY_KEY];
-                $pageTitle = $page[IResponse::KEY_TITLE];
-                $pageBody  = $page[IResponse::KEY_BODY][IResponse::KEY_STORAGE][IResponse::KEY_VALUE];
+                $pageId    = $page[ResponseParameter::KEY_KEY];
+                $pageTitle = $page[ResponseParameter::KEY_TITLE];
+                $pageBody  = $page[ResponseParameter::KEY_BODY][ResponseParameter::KEY_STORAGE][ResponseParameter::KEY_VALUE];
                 self::$logger->debug(sprintf("%s. %s\t%s", $idx, $pageTitle, $pageId));
                 $fileName     = "$pageId";
                 $storeAdapter = $this->prepareStoreAdapter($fileName);
@@ -114,18 +104,8 @@ class ProjectDocToolboxHelper extends AbstractHelper
         return $modified;
     }
 
-    protected function prepareSettings(): void
+    private function prepareStoreAdapter(string $fileName): IStoreAdapter
     {
-        // NothingToDo
-    }
-
-    /**
-     * @param Map <mixed, mixed> $overrideParameters
-     *
-     * @return bool
-     */
-    final protected function validateSettings(Map $overrideParameters): bool
-    {
-        return true;
+        return new FileAdapter($fileName, 'html', ConstData::i()->c(ConstData::KEY_TARGET_DIR));
     }
 }

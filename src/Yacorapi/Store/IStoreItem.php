@@ -13,56 +13,62 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Store;
 
+use Psr\Log\LogLevel;
+
+/**
+ * Interface for the store item.
+ *
+ * @author ollily
+ */
 interface IStoreItem extends \Stringable
 {
-    /** @var string */
-    public const EXT_TEXT = 'txt';
-
-    /** @var string */
-    public const EXT_CSV = 'csv';
-
-    public const C_FILE_SEP = '.';
-
-    public const C_PATH_SEP = DIRECTORY_SEPARATOR;
+    /** @var string Default output level */
+    public const string LEVEL_DEFAULT = LogLevel::INFO;
 
     /**
-     * @param string $dir
+     * @param string $dir The new folder of the store item
      *
-     * @return IStoreItem
+     * @return IStoreItem The store item
      */
     public function setDir(string $dir): IStoreItem;
 
     /**
-     * @return string
+     * @return string The folder of the store item
      */
     public function getDir(): string;
 
     /**
-     * @param string $file
+     * @param string $file The new filename of the store item
      *
-     * @return IStoreItem
+     * @return IStoreItem The store item
      */
     public function setFile(string $file): IStoreItem;
 
     /**
-     * @return string
+     * @return string The filename of the store item
      */
     public function getFile(): string;
 
     /**
-     * @param string $ext
+     * @param string $ext The new suffix of the filename of the store item
      *
-     * @return IStoreItem
+     * @return IStoreItem The store item
      */
     public function setExt(string $ext): IStoreItem;
 
     /**
-     * @return string
+     * @return string The suffix of the filename of the store item
      */
     public function getExt(): string;
 
     /**
-     * @return string
+     * @return string The full filename of the store item
      */
-    public function __toString();
+    public function getStoreName(): string;
+
+    /**
+     * @return string The full filename of the store item
+     */
+    #[\Override]
+    public function __toString(): string;
 }

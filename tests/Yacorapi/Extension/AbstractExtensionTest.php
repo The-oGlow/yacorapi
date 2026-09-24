@@ -20,18 +20,17 @@ use PHPUnit\Framework\EasyGoingTestCase;
 
 class AbstractExtensionTest extends EasyGoingTestCase
 {
-    /**
-     * @return AbstractExtensionTestClazz
-     */
-    protected static function prepareO2t()
+    #[\Override]
+    protected static function prepareO2t(): AbstractExtensionTestClazz
     {
         return new AbstractExtensionTestClazz();
     }
 
     /**
-     * @return AbstractExtensionTestClazz
+     * @inheritDoc
      */
-    protected function getCasto2t()
+    #[\Override]
+    protected function getCasto2t(): AbstractExtensionTestClazz
     {
         return $this->o2t;
     }

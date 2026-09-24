@@ -1,0 +1,304 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of ezlogging
+ *
+ * (c) 2024 Oliver Glowa, coding.glowa.com
+ *
+ * This source file is subject to the Apache-2.0 license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+namespace oglow\tools\Yacorapi\Client;
+
+use Monolog\ConsoleLogger;
+use oglow\tools\Yacorapi\ConstData;
+use oglow\tools\Yacorapi\Data\ItemTypeEnum;
+use oglow\tools\Yacorapi\Data\QueryExtensionEnum;
+use oglow\tools\Yacorapi\Extension\ExtensionEnum;
+use oglow\tools\Yacorapi\IConnectionProvider;
+use oglow\tools\Yacorapi\IResponse;
+use oglow\tools\Yacorapi\Macro\AddonTypeEnum;
+use oglow\tools\Yacorapi\Response\ResponseAddonMacro;
+use oglow\tools\Yacorapi\Response\ResponseParameter;
+use oglow\tools\Yacorapi\Space\SpaceTypeEnum;
+use ollily\Common\IContainer;
+use Psr\Log\LoggerInterface;
+
+class RapiClientRead extends RapiClientBase implements IRapiClientRead
+{
+    private static LoggerInterface $logger;
+
+    /**
+     * Constructor.
+     *
+     * @param null|ExtensionEnum              $modeExtension      (Default: {@link IRapiClientBase::EXTENSION_DEFAULT})
+     * @param null|IConnectionProvider        $connectionProvider
+     * @param null|IContainer                 $addons
+     * @param int|\Psr\Log\LogLevel::*|string $level              The minimum logging level at which this handler will be triggered
+     *                                                            (Default: {@link IRapiClientBase::LEVEL_DEFAULT})
+     */
+    protected function __construct(
+        ?ExtensionEnum $modeExtension = IRapiClientBase::EXTENSION_DEFAULT,
+        ?IConnectionProvider $connectionProvider = null,
+        ?IContainer $addons = null,
+        mixed $level = IRapiClientBase::LEVEL_DEFAULT
+    ) {
+        /** @psalm-suppress ArgumentTypeCoercion
+         * @phpstan-ignore argument.type */
+        self::$logger = new ConsoleLogger(name: RapiClientRead::class, level: $level);
+        self::$logger->debug('START');
+
+        parent::__construct($modeExtension, $connectionProvider, $addons, $level);
+
+        self::$logger->debug('END');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[\Override]
+    public function prepareAddonSet(AddonTypeEnum $addonMode = IRapiClientBase::ADDON_DEFAULT): ResponseAddonMacro
+    {
+        self::$logger->debug('START - mode', [$addonMode]);
+
+        $data = $this->addons->getDataByMode($addonMode->value);
+        if (!empty($data)) {
+            /** @psalm-suppress MixedMethodCall */
+            $addonSet = new ResponseAddonMacro($addonMode, $data->toArray());
+        } else {
+            $addonSet = new ResponseAddonMacro($addonMode);
+        }
+        self::$logger->debug('END');
+
+        return $addonSet;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[\Override]
+    public function readPageByPageId(int|string $pageId): IResponse
+    {
+        self::$logger->debug('START - pageId', [$pageId]);
+
+        if (is_string($pageId) && is_numeric($pageId)) {
+            $pageId=intval($pageId);
+        } else {
+            $pageId = IRapiClientBase::REQ_VAL_PAGE_ID_NO;
+        }
+
+        $prepareUrl = $this->prepareLoadUrl($pageId);
+
+
+        return $this->exec($prepareUrl);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[\Override]
+    public function readPagesByTitle(string $pageTitle, string $spaceKey = IRapiClientBase::REQ_VAL_SPACE_EMPTY): IResponse
+    {
+        self::$logger->debug('START - pageTitle,spaceKey', [$pageTitle, $spaceKey]);
+
+        $prepareUrl = $this->prepareBrowseUrl($pageTitle, $spaceKey);
+
+        return $this->exec($prepareUrl);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[\Override]
+    public function checkPageExists(string $spaceKey, string $pageTitle, ItemTypeEnum $itemType = IRapiClientBase::REQ_VAL_ITEM_TYPE_PAGE): int
+    {
+        $pageId = IRapiClientBase::REQ_VAL_PAGE_ID_NO;
+        $result = $this->readPagesByTitle($pageTitle, $spaceKey);
+
+        if ($result->checkStatus() && $result->hasResults()) {
+            $firstResult = $result->getResult(IRapiClientBase::RESP_VAL_RESULT_FIRST);
+            $pageId = intval($firstResult[ResponseParameter::KEY_ID]);
+            self::$logger->info(str_repeat(' ', IRapiClientBase::VAL_LOG_SPACE) . 'Found item', [$spaceKey, $itemType->value, $pageTitle, $pageId]);
+        } else {
+            self::$logger->info(str_repeat(' ', IRapiClientBase::VAL_LOG_SPACE) . 'Not found item', [$spaceKey, $itemType->value, $pageTitle]);
+        }
+
+        return $pageId;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[\Override]
+    public function scanPages(string $spaceKey = IRapiClientBase::REQ_VAL_SPACE_EMPTY): IResponse
+    {
+        self::$logger->debug('START - spaceKey', [$spaceKey]);
+
+        $prepareUrl = $this->prepareScanUrl($spaceKey);
+
+        return $this->exec($prepareUrl);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[\Override]
+    public function searchPagesWithFilter(
+        string $filterTerm,
+        string $spaceKey,
+        int $searchFromPos = IRapiClientBase::REQ_VAL_SEARCH_START,
+        int $searchLimit = IRapiClientBase::REQ_VAL_SEARCH_OVERALL_MIN,
+        ItemTypeEnum $itemType = IRapiClientBase::REQ_VAL_ITEM_TYPE_PAGE
+    ): IResponse {
+        self::$logger->debug(
+            'START - filterTerm,spaceKey,searchFromPos,searchLimit,itemType',
+            [$filterTerm, $spaceKey, $searchFromPos, $searchLimit, $itemType]
+        );
+        $searchLimit = intval($searchLimit < IRapiClientBase::REQ_VAL_SEARCH_LIMIT_1ENTRY ? ConstData::i()->c(ConstData::KEY_SEARCH_LIMIT) : $searchLimit);
+        $prepareUrl = $this->prepareSearchUrlExt($filterTerm, $spaceKey, $searchFromPos, $searchLimit, $itemType);
+
+        return $this->exec($prepareUrl);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[\Override]
+    public function spaceHomepage(string $spaceKey): int
+    {
+        self::$logger->debug('START - spaceKey', [$spaceKey]);
+
+        $pageId = IRapiClientBase::RESP_VAL_PAGE_ID_NO;
+        if (!empty($spaceKey)) {
+            $prepareUrl = $this->prepareSpaceUrl($spaceKey);
+            /** @var IResponse $result */
+            $result = $this->exec($prepareUrl);
+            if ($result->checkStatus()) {
+                $pageId = $result->getValue(ResponseParameter::KEY_HOMEPAGE, IRapiClientBase::RESP_VAL_PAGE_ID_NO);
+                if (is_array($pageId)) {
+                    $pageId = $pageId[ResponseParameter::KEY_ID];
+                }
+            }
+        }
+
+        return intval($pageId);
+    }
+
+    protected function addSpaceFilter(string $spaceKey, string $prepareUrl): string
+    {
+        if (!empty($spaceKey)) {
+            $prepareUrl .= sprintf('&spaceKey=%s', $spaceKey);
+        }
+
+        return $prepareUrl;
+    }
+
+    protected function prepareSearchUrl(
+        string $searchTerm,
+        string $spaceKey = IRapiClientBase::REQ_VAL_SPACE_EMPTY,
+        ItemTypeEnum $pageType = IRapiClientBase::REQ_VAL_ITEM_TYPE_PAGE,
+        bool $withBody = IRapiClientBase::REQ_VAL_BODY_NO
+    ): string {
+        $result = '';
+        if (function_exists('_prepareSearchUrl')) {
+            $result = _prepareSearchUrl($searchTerm, $spaceKey, null, null, $pageType, $withBody);
+        }
+
+        return $result;
+    }
+
+    protected function prepareSearchUrlExt(
+        string $searchTerm,
+        string $spaceKey,
+        int $searchFromPos = IRapiClientBase::REQ_VAL_SEARCH_START_NO,
+        int $searchLimit = IRapiClientBase::REQ_VAL_SEARCH_LIMIT_NO,
+        ItemTypeEnum $pageType = IRapiClientBase::REQ_VAL_ITEM_TYPE_PAGE,
+        bool $withBody = IRapiClientBase::REQ_VAL_BODY_NO
+    ): string {
+        $searchLimit = $this->prepareSearchLimit($searchLimit);
+
+        $prepareUrl = sprintf('%s?cql=', ConstData::i()->c(ConstData::KEY_CONF_SEARCH_URL));
+        $prepareUrl .= sprintf('siteSearch~%s', urlencode("\"{$searchTerm}\""));
+        $prepareUrl .= sprintf('+AND+space.type=%s', urlencode(SpaceTypeEnum::SPACE_TYPE_GLOBAL->value));
+        $prepareUrl .= sprintf('+AND+type=%s', urlencode("\"{$pageType->value}\""));
+        if (!empty($spaceKey)) {
+            $prepareUrl .= sprintf('+AND+space=%s', urlencode("\"{$spaceKey}\""));
+        }
+        if ($searchFromPos >= IRapiClientBase::REQ_VAL_SEARCH_START_NO) {
+            $prepareUrl .= sprintf('&start=%s&limit=%s', $searchFromPos, $searchLimit);
+        }
+        $prepareUrl .= sprintf('&%s', ($withBody ? QueryExtensionEnum::REQP_SEARCH_FULL->value : QueryExtensionEnum::REQP_SEARCH_LIGHT->value));
+
+        return $prepareUrl;
+    }
+
+    /**
+     * If given searchLimit less than {@link IRapiClientBase::REQ_VAL_SEARCH_OVERALL_MIN}, then set to default.<br/)
+     * If given searchLimit greater than {@link IRapiClientBase::REQ_VAL_SEARCH_LIMIT_END}, then set to default.<br/)
+     * Otherwise use the {@link $searchLimit}.
+     *
+     * @param int $searchLimit The search limit
+     *
+     * @return int The (corrected) search limit
+     *
+     * @see ConstData::KEY_SEARCH_LIMIT
+     */
+    protected function prepareSearchLimit(int $searchLimit): int
+    {
+        // if given searchLimit less than minimum searchLimit, then set to default, otherwise use searchLimit
+        switch (true) {
+            case $searchLimit < IRapiClientBase::REQ_VAL_SEARCH_OVERALL_MIN:
+                $searchLimit = ConstData::i()->c(ConstData::KEY_SEARCH_LIMIT);
+                break;
+            case $searchLimit > IRapiClientBase::REQ_VAL_SEARCH_OVERALL_MAX:
+                $searchLimit = ConstData::i()->c(ConstData::KEY_SEARCH_LIMIT);
+                break;
+            default:
+                break;
+        }
+
+        return intval($searchLimit);
+    }
+
+    protected function prepareBrowseUrl(string $pageTitle, string $spaceKey = IRapiClientBase::REQ_VAL_SPACE_EMPTY): string
+    {
+        $prepareUrl = sprintf('%s?title=%s&%s', ConstData::i()->c(ConstData::KEY_CONF_CONTENT_URL), urlencode($pageTitle), QueryExtensionEnum::REQP_LIGHT->value);
+
+        return $this->addSpaceFilter($spaceKey, $prepareUrl);
+    }
+
+    protected function prepareScanUrl(string $spaceKey = IRapiClientBase::REQ_VAL_SPACE_EMPTY): string
+    {
+        $prepareUrl = sprintf('%s/scan?%s', ConstData::i()->c(ConstData::KEY_CONF_CONTENT_URL), QueryExtensionEnum::REQP_LIGHT->value);
+
+        return $this->addSpaceFilter($spaceKey, $prepareUrl);
+    }
+
+    protected function prepareApiByPageIdUrl(int $pageId): string
+    {
+        return sprintf('%s/%s?%s', ConstData::i()->c(ConstData::KEY_CONF_CONTENT_URL), $pageId, QueryExtensionEnum::REQP_LIGHT->value);
+    }
+
+    protected function prepareLoadUrl(int $pageId): string
+    {
+        return sprintf('%s/%s?%s', ConstData::i()->c(ConstData::KEY_CONF_CONTENT_URL), $pageId, QueryExtensionEnum::REQP_FULL->value);
+    }
+
+    protected function prepareSpaceUrl(string $spaceKey): string
+    {
+        return sprintf('%s/%s?%s', ConstData::i()->c(ConstData::KEY_CONF_SPACE_URL), $spaceKey, QueryExtensionEnum::REQP_SPACE_LIST->value);
+    }
+
+    /**
+     * @param IResponse $response
+     *
+     * @return int
+     */
+    protected function analyzeResponse(IResponse $response): int
+    {
+        return intval($response->getValue(ResponseParameter::KEY_TOTAL_SIZE, 0));
+    }
+}

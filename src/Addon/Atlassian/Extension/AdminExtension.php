@@ -13,33 +13,28 @@ declare(strict_types=1);
 
 namespace oglow\tools\Addon\Atlassian\Extension;
 
+use oglow\tools\Addon\Atlassian\Macro\AdminAddon;
 use oglow\tools\Yacorapi\Extension\AbstractExtension;
-use oglow\tools\Yacorapi\Traits\PrepPermissionTrait;
-use oglow\tools\Yacorapi\IConnectionProvider;
-use Psr\Log\LoggerInterface;
+use oglow\tools\Yacorapi\Extension\ExtensionEnum;
 
-/**
- * @SuppressWarnings("PHPMD.UnusedPrivateField")
- */
 class AdminExtension extends AbstractExtension
 {
-    use PrepPermissionTrait;
+    #[\Override]
+    protected function init(): void
+    {
+        parent::init();
+        $this->addons = new AdminAddon();
+    }
 
-    /** @var IConnectionProvider
-     *  @psalm-suppress PropertyNotSetInConstructor
-     */
-    protected $connectionProvider;
-
-    /** @var LoggerInterface */
-    private static $logger;
-
+    #[\Override]
     public static function getName(): string
     {
         return 'Atlassian Admin Extension';
     }
 
+    #[\Override]
     public static function getId(): int
     {
-        return 4;
+        return ExtensionEnum::EXTENSION_ATLASSIAN_ADMIN->value;
     }
 }

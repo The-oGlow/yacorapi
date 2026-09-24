@@ -13,21 +13,16 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi;
 
+use Ds\Collection;
 use Ds\Map;
-use oglow\tools\Addon\Atlassian\Extension\AdminExtension;
 use oglow\tools\Addon\Atlassian\Extension\AtlassianExtension;
-use oglow\tools\Addon\Projectdoc\Extension\ProjectdocExtension;
-use oglow\tools\Addon\ThirdParty\Extension\ThirdPartyExtension;
-use oglow\tools\Addon\UserMacro\Extension\UserMacroExtension;
-use oglow\tools\Yacorapi\Data\RequestParameterData;
-use oglow\tools\Yacorapi\Extension\IExtension;
+use oglow\tools\Yacorapi\Data\ItemTypeEnum;
 use oglow\tools\Yacorapi\Extension\RapiClientExtension;
+use oglow\tools\Yacorapi\Request\RequestParameter;
+use oglow\tools\Yacorapi\Response\ResponseParameter;
+use oglow\tools\Yacorapi\Space\SpaceTypeEnum;
 use ollily\Tools\Test\TestData;
 
-/**
- * @SuppressWarnings("PHPMD.CamelCaseMethodName")
- * @SuppressWarnings("PHPMD.CamelCasePropertyName")
- */
 // @phpcs:ignoreFile PSR1.Methods.CamelCapsMethodName.NotCamelCaps
 class YacorapiTestData extends TestData
 {
@@ -35,48 +30,38 @@ class YacorapiTestData extends TestData
 
       /** All extensions */
 
-    public const EXTENSIONS_COUNT_TOTAL = 6;
-
-    /** Definition of all extensions */
-    public const EXTENSIONS_NAMES = [
-        IExtension::EXTENSION_RAPI_CLIENT => RapiClientExtension::class,
-        IExtension::EXTENSION_ATLASSIAN => AtlassianExtension::class,
-        IExtension::EXTENSION_ATLASSIAN_ADMIN => AdminExtension::class,
-        IExtension::EXTENSION_ATLASSIAN_USER_MACRO => UserMacroExtension::class,
-        IExtension::EXTENSION_THIRD_PARTY => ThirdPartyExtension::class,
-        IExtension::EXTENSION_PROJECTDOC_TOOLBOX => ProjectdocExtension::class
-    ];
+    public const int EXTENSIONS_COUNT_TOTAL = 6;
 
     /** Array of extensions which will be verified */
-    public const EXTENSIONS_VERIFY = [RapiClientExtension::class, AtlassianExtension::class];
+    public const array EXTENSIONS_VERIFY = [RapiClientExtension::class, AtlassianExtension::class];
 
     /** Single extension which will be verified */
-    public const EXTENSION_VERIFY = [RapiClientExtension::class];
+    public const array EXTENSION_VERIFY = [RapiClientExtension::class];
 
-    public const EXT_USER_MACRO_MACRO = 3;
+    public const int EXT_USER_MACRO_MACRO = 3;
 
-    public const EXT_USER_MACRO_ADDON = 1;
+    public const int EXT_USER_MACRO_ADDON = 1;
 
-    public const EXT_ATLASSIAN_ADDON = 2;
+    public const int EXT_ATLASSIAN_ADDON = 2;
 
-    public const EXT_PDT_ADDON = 4;
+    public const int EXT_PDT_ADDON = 4;
 
-    public const EXT_3PARTY_MACRO = 69;
+    public const int EXT_3PARTY_MACRO = 69;
 
-    public const EXT_ATLASSIAN_MACRO = 60;
+    public const int EXT_ATLASSIAN_MACRO = 60;
 
-    public const EXT_PDT_MACRO = 87;
+    public const int EXT_PDT_MACRO = 87;
 
-    public const EXT_3PARTY_ADDON = 11;
+    public const int EXT_3PARTY_ADDON = 11;
 
     // Atlassian Addon
 
     /** All addons from all extensions */
-    public const ADDONS_COUNT_TOTAL = 18;
+    public const int ADDONS_COUNT_TOTAL = 18;
 
     /** Names of one addon from each extension */
-    public const ADDONS_NAMES = [
-        'Atlassian Confluence Macros Addon',
+    public const array ADDONS_NAMES = [
+        'Atlassian Confluence Macros',
         'Confluence HTML Macros',
         'Confluence User Macros',
         'Advanced Roadmaps for Jira in Confluence',
@@ -93,252 +78,300 @@ class YacorapiTestData extends TestData
         'projectdoc Core Doctypes',
         'projectdoc for Agile Planning',
         'projectdoc for Software Development',
-        'projectdoc Toolbox for Confluence',
+        'projectdoc Toolbox',
     ];
 
-    public const CLAZZ_ALL_ADDON = '\oglow\tools\Yacorapi\Macro\AllAddon';
+    public const string CLAZZ_ALL_ADDON = '\oglow\tools\Yacorapi\Macro\AllAddon';
 
-    public const CLAZZ_SINGLE_ADDON = '\oglow\tools\Yacorapi\Macro\SingleAddon';
+    public const string CLAZZ_SINGLE_ADDON = '\oglow\tools\Yacorapi\Macro\SingleAddon';
 
-    public const CLAZZ_PDT = '\oglow\tools\Addon\Projectdoc\Macro\ProjectdocAddon';
+    public const string CLAZZ_PDT = '\oglow\tools\Addon\Projectdoc\Macro\ProjectdocAddon';
 
-    public const CLAZZ_3PARTY = '\oglow\tools\Addon\ThirdParty\Macro\ThirdPartyAddon';
+    public const string CLAZZ_3PARTY = '\oglow\tools\Addon\ThirdParty\Macro\ThirdPartyAddon';
 
-    public const CLAZZ_BLOCKER_ADDON = '\oglow\tools\Yacorapi\Macro\BlockerAddon';
+    public const string CLAZZ_BLOCKER_ADDON = '\oglow\tools\Yacorapi\Macro\BlockerAddon';
 
-    public const CLAZZ_ATLASSIAN_ADDON = '\oglow\tools\Addon\Atlassian\Macro\AtlassianAddon';
+    public const string CLAZZ_ATLASSIAN_ADDON = '\oglow\tools\Addon\Atlassian\Macro\AtlassianAddon';
 
-    public const CLAZZ_USER_MACRO_ADDON = '\oglow\tools\Addon\UserMacro\Macro\UserMacroAddon';
+    public const string CLAZZ_USER_MACRO_ADDON = '\oglow\tools\Addon\UserMacro\Macro\UserMacroAddon';
 
     /** The name of an addon which does not exists in the system */
-    public const ADDONS_NAME_NOTEXIST = 'NOTEXIST-ADDON';
+    public const string ADDONS_NAME_NOTEXIST = 'NOTEXIST-ADDON';
 
     /** Array of specific addons which will be checked */
-    public const ADDONS_VERIFY = ['Atlassian Confluence Macros Addon', 'Confluence User Macros'];
+    public const array ADDONS_VERIFY = ['Atlassian Confluence Macros', 'Confluence User Macros'];
 
     /** Single addon which will be verified */
-    public const ADDON_VERIFY = 'Atlassian Confluence Macros Addon';
+    public const string ADDON_VERIFY = 'Atlassian Confluence Macros';
 
     // (Addon-) Mode
-    public const MODE_NOTEXIST = 'NOTEXIST-MODE';
+    public const string MODE_NOTEXIST = 'NOTEXIST-MODE';
 
-    public const MODE_SINGLE_ADDON_COUNT_TOTAL = 1;
+    public const int MODE_SINGLE_ADDON_COUNT_TOTAL = 1;
 
-    public const MODE_SINGLE_MACRO_COUNT_TOTAL = 5;
+    public const int MODE_SINGLE_MACRO_COUNT_TOTAL = 5;
 
-    public const MODE_SINGLE_ADDON_NAME = 'single-addon';
+    public const string MODE_SINGLE_ADDON_NAME = 'single-addon';
 
-    public const MODE_SINGLE_ADDON_NAME_MACRO_COUNT = 5;
+    public const int MODE_SINGLE_ADDON_NAME_MACRO_COUNT = 5;
 
-    public const MODE_SINGLE_ADDON_NAME_NOTEXIST = self::ADDONS_NAME_NOTEXIST;
+    public const string MODE_SINGLE_ADDON_NAME_NOTEXIST = self::ADDONS_NAME_NOTEXIST;
 
-    public const MODE_SINGLE_ADDON_NAME_NOTEXIST_MACRO_COUNT = 0;
+    public const int MODE_SINGLE_ADDON_NAME_NOTEXIST_MACRO_COUNT = 0;
 
-    public const MODE_BLOCKER_ADDON_COUNT_TOTAL = 11;
+    public const int MODE_BLOCKER_ADDON_COUNT_TOTAL = 11;
 
-    public const MODE_BLOCKER_MACRO_COUNT_TOTAL = 87;
+    public const int MODE_BLOCKER_MACRO_COUNT_TOTAL = 87;
 
-    public const MODE_BLOCKER_ADDON_NAME = 'Scroll Runtime for Confluence';
+    public const string MODE_BLOCKER_ADDON_NAME = 'Scroll Runtime for Confluence';
 
-    public const MODE_BLOCKER_ADDON_NAME_MACRO_COUNT = 7;
+    public const int MODE_BLOCKER_ADDON_NAME_MACRO_COUNT = 7;
 
-    public const MODE_BLOCKER_ADDON_NAME_NOTEXISTS = self::ADDONS_NAME_NOTEXIST;
+    public const string MODE_BLOCKER_ADDON_NAME_NOTEXISTS = self::ADDONS_NAME_NOTEXIST;
 
-    public const MODE_BLOCKER_ADDON_NAME_NOTEXISTS_MACRO_COUNT = 0;
+    public const int MODE_BLOCKER_ADDON_NAME_NOTEXISTS_MACRO_COUNT = 0;
 
-    public const MODE_ALL_ADDON_COUNT_TOTAL = 18;
+    public const int MODE_ALL_ADDON_COUNT_TOTAL = 18;
 
-    public const MODE_ALL_MACRO_COUNT_TOTAL = 219;
+    public const int MODE_ALL_MACRO_COUNT_TOTAL = 219;
 
-    public const MODE_ALL_ADDON_NAME = 'Scroll Documents for Confluence';
+    public const string MODE_ALL_ADDON_NAME = 'Scroll Documents for Confluence';
 
-    public const MODE_ALL_ADDON_NAME_MACRO_COUNT = 1;
+    public const int MODE_ALL_ADDON_NAME_MACRO_COUNT = 1;
 
-    public const MODE_ALL_ADDON_NAME_NOTEXIST = self::ADDONS_NAME_NOTEXIST;
+    public const string MODE_ALL_ADDON_NAME_NOTEXIST = self::ADDONS_NAME_NOTEXIST;
 
-    public const MODE_ALL_ADDON_NAME_NOTEXIST_MACRO_COUNT = 0;
+    public const int MODE_ALL_ADDON_NAME_NOTEXIST_MACRO_COUNT = 0;
 
     // Atlassian Macro
 
     /** All macros from all addons */
-    public const MACROS_COUNT_TOTAL = 219;
+    public const int MACROS_COUNT_TOTAL = 219;
 
     /** Array of specific macros which will be checked */
-    public const MACROS_VERIFY = ['children', 'code', 'create-from-template', 'section', 'toc'];
+    public const array MACROS_VERIFY = ['children', 'code', 'create-from-template', 'section', 'toc'];
 
     /** Single macro which will be checked */
-    public const MACRO_VERIFY = 'create-from-template';
+    public const string MACRO_VERIFY = 'create-from-template';
 
     // Unspecific test data
-    public const ADDON_1 = 'MyAddon';
+    public const string ADDON_1 = 'MyAddon';
 
-    public const ADDON_1_A = 'macro1';
+    public const string ADDON_1_A = 'macro1';
 
-    public const ADDON_1_B = 'macro3';
+    public const string ADDON_1_B = 'macro3';
 
-    public const ADDON_1_C = 'macro5';
+    public const string ADDON_1_C = 'macro5';
 
-    public const ADDON_1_ORDER = [YacorapiTestData::ADDON_1_A, YacorapiTestData::ADDON_1_B, YacorapiTestData::ADDON_1_C];
+    public const array ADDON_1_ORDER = [YacorapiTestData::ADDON_1_A, YacorapiTestData::ADDON_1_B, YacorapiTestData::ADDON_1_C];
 
-    public const ADDON_2 = 'OtherAddon';
+    public const string ADDON_2 = 'OtherAddon';
 
-    public const ADDON_2_A = 'macro2';
+    public const string ADDON_2_A = 'macro2';
 
-    public const ADDON_2_C = 'macro6';
+    public const string ADDON_2_C = 'macro6';
 
-    public const ADDON_2_B = 'macro4';
+    public const string ADDON_2_B = 'macro4';
 
-    public const ADDON_2_ORDER = [YacorapiTestData::ADDON_2_A, YacorapiTestData::ADDON_2_B, YacorapiTestData::ADDON_2_C];
+    public const array ADDON_2_ORDER = [YacorapiTestData::ADDON_2_A, YacorapiTestData::ADDON_2_B, YacorapiTestData::ADDON_2_C];
 
-    public const C_RESPONSE_SIZE_EMPTY = 0;
+    public const int C_RESPONSE_SIZE_EMPTY = 0;
 
-    public const C_PAGEID_NOTEXIST = 0;
+    public const int C_PAGEID_NOTEXIST = -1;
 
-    public const C_PAGEID_EXIST = 2;
+    public const int C_PAGEID_EXIST = 123;
 
-    public const C_PAGEID_NEW = 11;
+    public const int C_PAGEID_NEW = 11;
 
-    public const C_SPACE_EMPTY = '';
+    public const string C_PAGE_TITLE_1 = 'Title of a page';
 
-    public const C_SPACE_EXIST_KEY = 'SPCEX';
+    public const string C_PAGE_TITLE_2 = 'Another title of a page';
 
-    public const C_SPACE_EXIST_ID = 12345;
+    public const string C_PAGE_BODY_1 = 'Content of a <i>page body</i>.';
 
-    public const C_SPACE_EXIST_NAME = 'Existing Space';
+    public const string C_PAGE_BODY_2 = ' Totally different content of a <b>page body</b>.';
 
-    public const C_SPACE_EXIST_DESCRIPTION = 'A space which exists.';
+    public const string C_PAGE_EXIST_STATUS = ResponseParameter::VAL_STATUS_TYPE_CURRENT;
 
-    public const C_SPACE_EXIST_STATUS = RequestParameterData::STATUS_TYPE_CURRENT;
+    public const int C_PAGE_POSITION_HOMEPAGE = -1;
 
-    public const C_SPACE_EXIST_TYPE = RequestParameterData::SPACE_TYPE_GLOBAL;
+    public const ItemTypeEnum C_ITEM_TYPE_PAGE = ItemTypeEnum::PAGE;
 
-    public const C_FILTERTERM_01 = 'filter=1';
+    public const string C_SPACE_EMPTY_KEY = '';
 
-    public const C_PREPURL_01 = 'title~Test';
+    public const string C_SPACE_EXIST_KEY = 'SPCEX';
 
-    public const C_SEARCHTERM_EMPTY = '';
+    public const int C_SPACE_EXIST_ID = 12345;
 
-    public const C_SEARCHTERM_01 = 'searchtext';
+    public const string C_SPACE_EXIST_NAME = 'Existing Space';
 
-    public const C_SEARCHPAGEID_01 = 532951146;
+    public const string C_SPACE_EXIST_DESCRIPTION = 'A space which exists.';
 
-    public const C_SEARCHPAGETITLE_01 = 'SEARCHPAGETITLE_01';
+    public const string C_SPACE_EXIST_STATUS = RequestParameter::VAL_STATUS_TYPE_CURRENT;
 
-    public const C_SEARCHPAGESPACE_01 = self::C_SPACE_EXIST_KEY;
+    public const SpaceTypeEnum C_SPACE_EXIST_TYPE = SpaceTypeEnum::SPACE_TYPE_GLOBAL;
 
-    public const C_SEARCHPAGESPARENT_01 = self::C_PAGEID_EXIST;
+    public const int C_SPACE_EXIST_HOMEPAGE_ID = 567890;
 
-    public const HTML_PAGE = '<!DOCTYPE html><html><head><title>#pagetitle#</title></head><body></body></html>';
+    public const string C_SPACE_EXIST_HOMEPAGE_TITLE = 'Existing Space Homepage';
+
+    public const string C_FILTERTERM_01 = 'filter=1';
+
+    public const string C_PREPURL_01 = 'title~Test';
+
+    public const string C_SEARCHTERM_EMPTY = '';
+
+    public const string C_SEARCHTERM_01 = 'searchtext';
+
+    public const int C_SEARCHPAGEID_01 = 532951146;
+
+    public const string C_SEARCHPAGETITLE_01 = 'SEARCHPAGETITLE_01';
+
+    public const string C_SEARCHPAGESPACE_01 = self::C_SPACE_EXIST_KEY;
+
+    public const int C_SEARCHPAGESPARENT_01 = self::C_PAGEID_EXIST;
+
+    public const string HTML_PAGE = '<!DOCTYPE html><html><head><title>#pagetitle#</title></head><body></body></html>';
 
     // Macro Code
-    public const MACR_PH = '#ph#';
+    public const string MACR_PH = '#ph#';
 
-    public const MACR_MACRO_ID = '12345678-1234-1234-1234-123456789012';
+    public const string MACR_MACRO_ID = '12345678-1234-1234-1234-123456789012';
 
-    public const MACR_MACRO_TAG_START = '<ac:structured-macro ac:macro-id="' .
+    public const string MACR_MACRO_TAG_START = '<ac:structured-macro ac:macro-id="' .
         self::MACR_MACRO_ID .
         '" ac:name="' .
         self::MACR_PH .
         '" ac:schema-version="1">';
 
-    public const MACR_MACRO_TAG_END = '</ac:structured-macro>';
+    public const string MACR_MACRO_TAG_END = '</ac:structured-macro>';
 
-    public const MACR_BODY_EMPTY = '';
+    public const string MACR_BODY_EMPTY = '';
 
-    public const MACR_BODY_SIMPLE = '<body></body>';
+    public const string MACR_BODY_SIMPLE = '<body></body>';
 
-    public const MACR_BODY_INVALID = 'invalidBody';
+    public const string MACR_BODY_INVALID = 'invalidBody';
+
+    public const string MACR_BODY_CONTENT = 'Content of the macro body';
 
     // Macro Doctype
-    public const MACR_DOCTYPE_NEW = 'newDT';
+    public const string MACR_DOCTYPE_NEW = 'newDT';
 
-    public const MACR_DOCTYPE_OLD = 'oldDT';
+    public const string MACR_DOCTYPE_OLD = 'oldDT';
 
-    public const MACR_DOCTYPE_WRONG = self::NOTEXIST_NAME;
+    public const string MACR_DOCTYPE_WRONG = self::NOTEXIST_NAME;
 
-    public const MACR_DOCTYPE_EMPTY = '';
+    public const string MACR_DOCTYPE_EMPTY = '';
     // Macro Code Name
 
-    public const MACR_PROJECTDOC_PROPERTIES_MARKER = 'projectdoc-properties-marker';
+    public const string MACR_PROJECTDOC_PROPERTIES_MARKER = 'projectdoc-properties-marker';
 
-    public const MACR_PDT_PROPERTIES_MARKER_01 = '<ac:parameter ac:name="doctype">';
+    public const string MACR_PDT_PROPERTIES_MARKER_01 = '<ac:parameter ac:name="doctype">';
 
-    public const MACR_PDT_PROPERTIES_MARKER_02 = '</ac:parameter>';
+    public const string MACR_PDT_PROPERTIES_MARKER_02 = '</ac:parameter>';
+
+    // Tag
+    public const ?string TAG_NULL = null;
+
+    public const string TAG_EMPTY = '';
+
+    public const string TAG_ROOT_NAME = 'roottag';
+
+    public const string TAG_WRONG_NAME = 'tagwrong';
+
+    public const string TAG_EXIST_NAME = 'tagexist';
+
+    public const string TAG_BODY_NAME = 'tagbody';
+
+    public const string TAG_PARM_NAME = 'tagparam';
+
+    public const string TAG_CONTAINER_NAME = 'tagcontainer';
+
+    public const string TAG_ROOT = '<roottag %s>%s</roottag>';
+
+    public const string TAG_WRONG = '<tagwrong></tagwrong>';
+
+    public const string TAG_EXIST = '<tagexist></tagexist>';
+
+    public const string TAG_EXIST_SHORT = '<tagexist/>';
+
+    public const string TAG_BODY_CONTENT = 'Content of the tag body';
+
+    public const string TAG_CONTAINER = '<tagcontainer>%s</tagcontainer>';
+
+    public const string TAG_WITH_BODY = '<tagbody>' . self::TAG_BODY_CONTENT . '</tagbody>';
+
+    public const string TAG_WITH_PARAM = '<tagparam name="' . self::KEY_ALPHA1 . '">' . self::TAG_BODY_CONTENT . '</tagparam>';
 
     // Response
 
-    /** @var array<mixed,mixed> */
-    private static $RESP_HEAD_SEARCHPAGEID_01;
+    /** @var array<mixed> */
+    private static array $RESP_HEAD_SEARCHPAGEID_01;
 
-    /** @var array<mixed,mixed> */
-    private static $RESP_BODY;
+    /** @var array<mixed> */
+    private static array $RESP_BODY;
 
-    /** @var array<mixed,mixed> */
-    private static $RESP_CONTENTFILTER_RESULT;
+    /** @var array<mixed> */
+    private static array $RESP_CONTENTFILTER_RESULT;
 
-    /** @var array<mixed,mixed> */
-    private static $RESP_SEARCH_RESULT;
+    /** @var array<mixed> */
+    private static array $RESP_SEARCH_RESULT;
 
-    /** @var array<mixed,mixed> */
-    private static $RESP_SCAN_RESULT;
+    /** @var array<mixed> */
+    private static array $RESP_SCAN_RESULT;
 
-    public const RESP_RESTRICTION = [
-        IResponse::KEY_RESTRICTIONS => [
-            IResponse::KEY_READ => [
-                IResponse::KEY_OPERATION => IResponse::KEY_READ,
-                IResponse::KEY_RESTRICTIONS => [
-                    IResponse::KEY_USER => [],
-                    IResponse::KEY_GROUP => [],
-                ]
+    public const array RESP_RESTRICTION = [
+        ResponseParameter::KEY_RESTRICTIONS => [
+            ResponseParameter::KEY_READ => [
+                ResponseParameter::KEY_OPERATION => ResponseParameter::KEY_READ,
+                ResponseParameter::KEY_RESTRICTIONS => [
+                    ResponseParameter::KEY_USER => [],
+                    ResponseParameter::KEY_GROUP => [],
+                ],
             ],
-            IResponse::KEY_UPDATE => [
-                IResponse::KEY_OPERATION => IResponse::KEY_UPDATE,
-                IResponse::KEY_RESTRICTIONS => [
-                    IResponse::KEY_USER => [],
-                    IResponse::KEY_GROUP => [],
-                ]
+            ResponseParameter::KEY_UPDATE => [
+                ResponseParameter::KEY_OPERATION => ResponseParameter::KEY_UPDATE,
+                ResponseParameter::KEY_RESTRICTIONS => [
+                    ResponseParameter::KEY_USER => [],
+                    ResponseParameter::KEY_GROUP => [],
+                ],
             ],
-        ]
+        ],
     ];
-
-    // Misc Constants
-
-    private function __construct()
-    {
-        // Hide the public constructor
-    }
 
     // Static functions
 
     /**
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
-    public static function RESP_HEAD_SEARCHPAGEID_01(): array
+    public static function RESP_HEAD_SEARCHPAGEID_01(): array // NOSONAR:  php:S116
     {
         self::$RESP_HEAD_SEARCHPAGEID_01 = [
-            IResponse::KEY_ID => self::C_SEARCHPAGEID_01,
-            IResponse::KEY_TITLE => self::C_SEARCHPAGETITLE_01,
+            ResponseParameter::KEY_ID => self::C_SEARCHPAGEID_01,
+            ResponseParameter::KEY_TITLE => self::C_SEARCHPAGETITLE_01,
+            ResponseParameter::KEY_TYPE => self::C_ITEM_TYPE_PAGE->value,
         ];
-        self::$RESP_HEAD_SEARCHPAGEID_01 = array_merge(self::$RESP_HEAD_SEARCHPAGEID_01, self::prepareResponseSpace(self::C_SEARCHPAGESPACE_01));
-        self::$RESP_HEAD_SEARCHPAGEID_01 = array_merge(self::$RESP_HEAD_SEARCHPAGEID_01, self::prepareResponseAncestor(self::C_SEARCHPAGESPARENT_01));
+        self::$RESP_HEAD_SEARCHPAGEID_01 = array_merge(self::$RESP_HEAD_SEARCHPAGEID_01, self::prepareResponseVersion());
+        self::$RESP_HEAD_SEARCHPAGEID_01 = array_merge(self::$RESP_HEAD_SEARCHPAGEID_01, self::prepareResponseSpace(self::C_SEARCHPAGESPACE_01, new Map()));
+        self::$RESP_HEAD_SEARCHPAGEID_01 = array_merge(self::$RESP_HEAD_SEARCHPAGEID_01, self::prepareResponseAncestor(self::C_SEARCHPAGESPARENT_01, new Map()));
 
         return self::$RESP_HEAD_SEARCHPAGEID_01;
     }
 
     /**
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
-    public static function RESP_BODY(): array
+    public static function RESP_BODY(): array // NOSONAR:  php:S116
     {
-        self::$RESP_BODY =             self::prepareResponseBody(YacorapiTestData::HTML_PAGE)        ;
+        self::$RESP_BODY = self::prepareResponseBody(YacorapiTestData::C_PAGE_BODY_1, new Map());
 
         return self::$RESP_BODY;
     }
 
     /**
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
-    public static function RESP_CONTENTFILTER_RESULT(): array
+    public static function RESP_CONTENTFILTER_RESULT(): array // NOSONAR:  php:S116
     {
         self::$RESP_CONTENTFILTER_RESULT = self::prepareResponseResults([self::RESP_HEAD_SEARCHPAGEID_01()]);
 
@@ -346,9 +379,9 @@ class YacorapiTestData extends TestData
     }
 
     /**
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
-    public static function RESP_SCAN_RESULT(): array
+    public static function RESP_SCAN_RESULT(): array // NOSONAR:  php:S116
     {
         self::$RESP_SCAN_RESULT = self::prepareResponseResults([self::RESP_HEAD_SEARCHPAGEID_01()]);
 
@@ -356,9 +389,9 @@ class YacorapiTestData extends TestData
     }
 
     /**
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
-    public static function RESP_SEARCH_RESULT(): array
+    public static function RESP_SEARCH_RESULT(): array // NOSONAR:  php:S116
     {
         self::$RESP_SEARCH_RESULT = self::prepareResponseResults([self::RESP_HEAD_SEARCHPAGEID_01()]);
 
@@ -386,71 +419,122 @@ class YacorapiTestData extends TestData
     }
 
     /**
-     * @param array<mixed,mixed> $items
+     * @param array<mixed> $items
      *
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     public static function prepareResponseResults(array $items): array
     {
         return [
-            IResponse::KEY_TOTAL_SIZE => count($items),
-            IResponse::KEY_RESULTS => $items,
+            ResponseParameter::KEY_TOTAL_SIZE => count($items),
+            ResponseParameter::KEY_RESULTS => $items,
         ];
     }
 
     /**
-     * @param string                $text
-     * @param null|Map<mixed,mixed> $parameters
+     * @param string                  $text
+     * @param Collection<mixed,mixed> $parameters
      *
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
-    public static function prepareResponseSpace(string $text = '', ?Map $parameters = null): array
+    public static function prepareResponseSpace(string $text, Collection $parameters): array
     {
-        if (!is_null($parameters)) {
-            $text = $parameters->get(RequestParameterData::PROP_SPACE)[RequestParameterData::PROP_KEY];
+        /** @var Map<mixed,mixed> */
+        $mapParameters = $parameters;
+
+        if (!$mapParameters->isEmpty()) {
+            $value = $mapParameters->get(RequestParameter::PROP_SPACE);
+            if (is_array($value) && count($value) > 0) {
+                $text = $value[RequestParameter::PROP_KEY];
+            }
         }
 
         return [
-            IResponse::KEY_SPACE => [
-                IResponse::KEY_KEY => $text
-            ]];
+            ResponseParameter::KEY_SPACE => [
+                ResponseParameter::KEY_KEY => $text,
+        ]];
     }
 
     /**
-     * @param mixed                 $text
-     * @param null|Map<mixed,mixed> $parameters
+     * @param int $currentVersion
      *
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
-    public static function prepareResponseAncestor($text = '', ?Map $parameters = null): array
+    public static function prepareResponseVersion(int $currentVersion = 1): array
     {
-        if (!is_null($parameters)) {
-            $text = $parameters->get(RequestParameterData::PROP_ANCESTORS)[RequestParameterData::PROP_KEY];
-        }
-
-        return [
-            IResponse::KEY_ANCESTORS => [
-                IResponse::KEY_ID => $text
-            ]];
+        return [ResponseParameter::KEY_VERSION => [ResponseParameter::KEY_NUMBER => $currentVersion]];
     }
 
     /**
-     * @param string                $text
-     * @param null|Map<mixed,mixed> $parameters
+     * @param mixed                   $text
+     * @param Collection<mixed,mixed> $parameters
      *
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
-    public static function prepareResponseBody(string $text = '', ?Map $parameters = null): array
+    public static function prepareResponseAncestor(mixed $text, Collection $parameters): array
     {
-        if (!is_null($parameters)) {
-            $text = $parameters->get(RequestParameterData::PROP_BODY)[RequestParameterData::PROP_STORAGE][RequestParameterData::PROP_VALUE];
+        /** @var Map<mixed,mixed> */
+        $mapParameters = $parameters;
+
+        if (!$mapParameters->isEmpty()) {
+            $value = $mapParameters->get(RequestParameter::PROP_ANCESTORS);
+            if (is_array($value) && count($value) > 0) {
+                $text = $value[0][RequestParameter::PROP_ID];
+            }
         }
 
         return [
-            IResponse::KEY_BODY => [
-                IResponse::KEY_STORAGE => [
-                    IResponse::KEY_VALUE => $text
-                ]]];
+            ResponseParameter::KEY_ANCESTORS => [
+                ResponseParameter::KEY_ID => $text,
+        ]];
+    }
+
+    /**
+     * @param string                  $text
+     * @param Collection<mixed,mixed> $parameters
+     *
+     * @return array<mixed>
+     */
+    public static function prepareResponseBody(string $text, Collection $parameters): array
+    {
+        /** @var Map<mixed,mixed> */
+        $mapParameters = $parameters;
+
+        if (!$mapParameters->isEmpty()) {
+            $value = $mapParameters->get(RequestParameter::PROP_BODY);
+            if (is_array($value) && count($value) > 0) {
+                $text = $value[RequestParameter::PROP_STORAGE][RequestParameter::PROP_VALUE];
+            }
+        }
+
+        return [
+            ResponseParameter::KEY_BODY => [
+                ResponseParameter::KEY_STORAGE => [
+                    ResponseParameter::KEY_VALUE => $text,
+        ]]];
+    }
+
+    // Tag Specific
+
+    public static function prepareDOMDocument(string $content): \DOMDocument
+    {
+        $newDom = new \DOMDocument();
+        if (!empty($content)) {
+            $newDom->loadXML($content);
+        }
+
+        return $newDom;
+    }
+
+    public static function prepareDOMElement(string $tagName): \DOMElement|false
+    {
+        $newElement = false;
+        if (!empty($tagName)) {
+            $tmpDom = new \DOMDocument();
+            $newElement = $tmpDom->createElement($tagName);
+        }
+
+        return $newElement;
     }
 
     // Macro Code Specific

@@ -13,137 +13,75 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Client;
 
-use Ds\Map;
-use Ds\Vector;
+use Ds\Collection;
 use Monolog\ConsoleLogger;
-use oglow\tools\Addon\Atlassian\Extension\AdminExtension;
-use oglow\tools\Addon\Atlassian\Extension\AtlassianExtension;
-use oglow\tools\Addon\Projectdoc\Extension\ProjectdocExtension;
-use oglow\tools\Addon\ThirdParty\Extension\ThirdPartyExtension;
-use oglow\tools\Addon\UserMacro\Extension\UserMacroExtension;
 use oglow\tools\Yacorapi\ConstData;
-use oglow\tools\Yacorapi\Data\AddonMacroData;
-use oglow\tools\Yacorapi\Data\RequestParameterData;
-use oglow\tools\Yacorapi\ExitCodes;
-use oglow\tools\Yacorapi\Extension\IExtension;
-use oglow\tools\Yacorapi\Extension\RapiClientExtension;
 use oglow\tools\Yacorapi\IConnectionProvider;
-use oglow\tools\Yacorapi\IRapiClient;
 use oglow\tools\Yacorapi\IResponse;
+use oglow\tools\Yacorapi\Macro\AddonMacroData;
 use oglow\tools\Yacorapi\Provider\CurlProvider;
-use oglow\tools\Yacorapi\Request\RequestType;
-use oglow\tools\Yacorapi\Response\ResponseDryRun;
-use oglow\tools\Yacorapi\Statistic\AddonStatistic;
-use oglow\tools\Yacorapi\Statistic\IStatistic;
-use oglow\tools\Yacorapi\Statistic\MacroStatistic;
-use oglow\tools\Yacorapi\Statistic\SpaceStatistic;
-use oglow\tools\Yacorapi\Statistic\ValueStatistic;
-use oglow\tools\Yacorapi\Traits\ExtensionTrait;
-use ollily\Tools\Emergency;
+use oglow\tools\Yacorapi\Request\RequestTypeEnum;
+use ollily\Common\IContainer;
+use ollily\Tools\Reflection\MagicPublicFunctionTrait;
 use Psr\Log\LoggerInterface;
 
-/**
- * @psalm-suppress PropertyNotSetInConstructor
- */
-abstract class AbstractRapiClient implements IRapiClient
+abstract class AbstractRapiClient
 {
-    use ExtensionTrait;
+    use MagicPublicFunctionTrait;
 
-    public const MSG_PARENT_ID_MUST_BE_NUMERIC = 'parentId must be numeric!';
+    private static LoggerInterface $logger;
 
-    public const MSG_MOVED_TO_NEW_PARENT = 'Page moved to new parent ';
+    protected ConstData $constData;
 
-    public const MSG_SPACE_IS_EMPTY = 'spaceKey is empty!';
+    protected IContainer $addons;
 
-    public const MSG_UPDATE_PAGE_WITHOUT_CHANGES = 'Update page without changes';
-
-    /** @var ConstData */
-    protected $constData;
-
-    /** @var AddonMacroData */
-    protected $addons;
-
-    /** @var RapiClientExtension */
-    protected $commonExtension;
-
-    /** @var AdminExtension */
-    protected $adminExtension;
-
-    /** @var AtlassianExtension */
-    protected $atlassianExtension;
-
-    /** @var UserMacroExtension */
-    protected $userMacroExtension;
-
-    /** @var ThirdPartyExtension */
-    protected $thirdPartyExtension;
-
-    /** @var ProjectdocExtension */
-    protected $projectdocExtension;
-
-    /** @var IConnectionProvider */
-    protected $connectionProvider;
-
-    /** @var LoggerInterface */
-    private static $logger;
-
-    /**
-     * Create new RapiClient.
-     *
-     * @param null|int                 $modeExtension
-     * @param null|IConnectionProvider $connectionProvider
-     * @param null|AddonMacroData      $addons
-     *
-     * @return IRapiClient
-     */
-    abstract public static function newClient(
-        ?int $modeExtension = null,
-        ?IConnectionProvider $connectionProvider = null,
-        ?AddonMacroData $addons = null
-    ): IRapiClient;
+    protected IConnectionProvider $connectionProvider;
 
     /**
      * RapiClient constructor.
      *
-     * @param null|int                 $modeExtension
-     * @param null|IConnectionProvider $connectionProvider
-     * @param null|AddonMacroData      $addons
+     * @param null|IConnectionProvider        $connectionProvider
+     * @param null|IContainer                 $addons
+     * @param int|\Psr\Log\LogLevel::*|string $level              The minimum logging level at which this handler will be triggered
+     *                                                            (Default: {@link IRapiClientBase::LEVEL_DEFAULT})
      */
-    protected function __construct(?int $modeExtension = null, ?IConnectionProvider $connectionProvider = null, ?AddonMacroData $addons = null)
-    {
+    protected function __construct(
+        ?IConnectionProvider $connectionProvider = null,
+        ?IContainer $addons = null,
+        mixed $level = IRapiClientBase::LEVEL_DEFAULT
+    ) {
         // Init Logger
-        self::$logger = new ConsoleLogger(AbstractRapiClient::class);
+        /** @psalm-suppress ArgumentTypeCoercion
+         * @phpstan-ignore argument.type */
+        self::$logger = new ConsoleLogger(name:AbstractRapiClient::class, level:$level);
         self::$logger->debug('START');
 
         // Init Dynamic Consts
-        $this->constData = new ConstData(get_class($this));
+        $this->constData = ConstData::i();
         // Init Modules
-        if (is_null($modeExtension)) {
-            $modeExtension = IExtension::EXTENSION_ALL;
-        }
         if (empty($addons)) {
             $this->addons = new AddonMacroData();
         } else {
             $this->addons = $addons;
         }
         if (empty($connectionProvider)) {
-            $this->connectionProvider = new CurlProvider(new ResponseDryRun());
+            /** @psalm-suppress ArgumentTypeCoercion
+             * @phpstan-ignore argument.type */
+            $this->connectionProvider = new CurlProvider($level);
         } else {
             $this->connectionProvider = $connectionProvider;
         }
-        // Init Extensions
-        $this->loadExtensions($modeExtension);
 
         self::$logger->debug('END');
     }
 
     /**
-     * @param string $prepareUrl
-     * @param int    $reqType
+     * @param string          $prepareUrl
+     * @param RequestTypeEnum $reqType
      *
      * @return IResponse
      */
-    protected function exec(string $prepareUrl, int $reqType = RequestType::REQ_TYP_GET): IResponse
+    protected function exec(string $prepareUrl, RequestTypeEnum $reqType = RequestTypeEnum::GET): IResponse
     {
         self::$logger->debug('START', [$prepareUrl, $reqType]);
 
@@ -155,13 +93,13 @@ abstract class AbstractRapiClient implements IRapiClient
     }
 
     /**
-     * @param string            $prepareUrl
-     * @param Map <mixed,mixed> $parameters
-     * @param int               $reqType
+     * @param string                  $prepareUrl
+     * @param Collection<mixed,mixed> $parameters
+     * @param RequestTypeEnum         $reqType
      *
      * @return IResponse
      */
-    protected function execPost(string $prepareUrl, Map $parameters, int $reqType): IResponse
+    protected function execPost(string $prepareUrl, Collection $parameters, RequestTypeEnum $reqType): IResponse
     {
         self::$logger->debug('START - prepareUrl,parameters,reqType', [$prepareUrl, $parameters, $reqType]);
 
@@ -173,172 +111,23 @@ abstract class AbstractRapiClient implements IRapiClient
     }
 
     /**
-     * @param mixed[] $page
+     * @param string $comment
+     * @param string $userId  Additional userId (Default {@link self::APP_USER}
      *
-     * @return string
-     */
-    protected function getSpaceKeyFromResult(array $page = []): string
-    {
-        return isset($page[RequestParameterData::PROP_CONTENT][RequestParameterData::PROP_SPACE][RequestParameterData::PROP_KEY]) ?
-            $page[RequestParameterData::PROP_CONTENT][RequestParameterData::PROP_SPACE][RequestParameterData::PROP_KEY] :
-            $page[RequestParameterData::PROP_SPACE][RequestParameterData::PROP_KEY];
-    }
-
-    /**
-     * @param null|IStatistic $spaceResult
-     * @param string          $spaceKey
-     * @param string          $addon
-     * @param string          $macroName
-     * @param int             $macroCount
+     * @return string A cleaned comment
      *
-     * @return IStatistic
+     * @see self::APP_USER
      */
-    protected function prepareMatrix(?IStatistic $spaceResult, string $spaceKey, string $addon, string $macroName, int $macroCount): IStatistic
+    protected function validateComment(string $comment, string $userId = ConstData::VAL_APP_USER): string
     {
-        self::$logger->debug('START - spaceResult,spaceKey,addon,macroName,macroCount', [$spaceResult, $spaceKey, $addon, $macroName, $macroCount]);
-
-        if (empty($spaceResult)) {
-            $spaceResult = new SpaceStatistic($spaceKey);
-        }
-
-        $addonResult = $spaceResult->getItem($addon);
-        if (empty($addonResult)) {
-            $addonResult = new AddonStatistic($addon);
-        }
-
-        $macroResult = $addonResult->getItem($macroName);
-        if (empty($macroResult)) {
-            $macroResult = new MacroStatistic($macroName);
-        }
-
-        /** @var null|ValueStatistic $valueResult */
-        $valueResult = $macroResult->getItem(IResponse::KEY_COUNT);
-        if (empty($valueResult)) {
-            $valueResult = new ValueStatistic(IResponse::KEY_COUNT);
-        }
-        $valueResult->addValue($macroCount + (int) $valueResult->getValue());
-
-        $macroResult->addItem(IResponse::KEY_COUNT, $valueResult);
-        $addonResult->addItem($macroName, $macroResult);
-        $spaceResult->addItem($addon, $addonResult);
-
-        self::$logger->debug('END');
-
-        return $spaceResult;
-    }
-
-    /**
-     * @param string          $spaceKey
-     * @param string          $addOn
-     * @param Vector<string>  $macroNames
-     * @param null|IStatistic $outputMatrix
-     *
-     * @return IStatistic
-     */
-    protected function loopAddonMacros(string $spaceKey, string $addOn, Vector $macroNames, ?IStatistic $outputMatrix): IStatistic
-    {
-        self::$logger->debug('START - spaceKey,addOn,macroNames', [$spaceKey, $addOn, $macroNames]);
-
-        foreach ($macroNames as $macroName) {
-            self::$logger->debug('Checking Space with Macro - START', [$spaceKey, $addOn, $macroName]);
-
-            $searchTerm = "macroName:$macroName";
-            $prepareUrl = $this->commonExtension->prepareSearchUrlExt(
-                $searchTerm,
-                $spaceKey,
-                RequestParameterData::SEARCH_START,
-                RequestParameterData::SEARCH_LIMIT_1ENTRY
-            );
-            $response = $this->exec($prepareUrl);
-            $countMacros = $this->commonExtension->analyzeResponse($response);
-
-            $outputMatrix = $this->prepareMatrix($outputMatrix, $spaceKey, $addOn, $macroName, $countMacros);
-            self::$logger->debug('Found', [$spaceKey, $addOn, $macroName, $countMacros]);
-
-            self::$logger->debug('Checking Space with Macro - END');
-        }
-        if (empty($outputMatrix)) {
-            $outputMatrix = new SpaceStatistic($spaceKey);
-        }
-
-        self::$logger->debug('END');
-
-        return $outputMatrix;
-    }
-
-    /**
-     * @param string            $spaceKey
-     * @param int               $mode
-     * @param Map<mixed, mixed> $mapAddons
-     * @param null|IStatistic   $outputMatrix
-     *
-     * @return IStatistic
-     */
-    protected function loopAddons(string $spaceKey, int $mode, Map $mapAddons, ?IStatistic $outputMatrix): IStatistic
-    {
-        self::$logger->debug('START - spaceKey,mode,addons', [$spaceKey, $mode, $mapAddons]);
-
-        foreach ($mapAddons as $addOnKey => $addonValue) {
-            self::$logger->debug('Checking Addon - START', [$spaceKey, $addOnKey]);
-            if (!is_array($addonValue)) {
-                $macroNames = $this->addons->getMacroNamesByAddon($mode, $addOnKey);
-                $addonName = $addOnKey;
-            } else {
-                $macroNames = $addonValue;
-                $addonName = $addOnKey;
-            }
-            self::$logger->debug('Found :', [$addonName, $macroNames]);
-
-            $outputMatrix = $this->loopAddonMacros($spaceKey, $addonName, new Vector($macroNames), $outputMatrix);
-
-            self::$logger->debug('Checking Addon - END');
-        }
-        if (empty($outputMatrix)) {
-            $outputMatrix = new SpaceStatistic($spaceKey);
-        }
-        self::$logger->debug('END');
-
-        return $outputMatrix;
-    }
-
-    /**
-     * @param int $modeExtension
-     *
-     * @psalm-suppress PropertyTypeCoercion
-     */
-    protected function loadExtensions(int $modeExtension): void
-    {
-        self::$logger->debug('START', [$modeExtension]);
-
-        $extensions = $this->initExtensions($modeExtension);
-
-        /** @var IExtension $extension */
-        foreach ($extensions as $key => $extension) {
-            self::$logger->debug('Key,Ext', [$key]);
-
-            switch (true) {
-                case IExtension::EXTENSION_RAPI_CLIENT == $key:
-                    $this->commonExtension = $extension;
-                    break;
-                case IExtension::EXTENSION_ATLASSIAN == $key:
-                    $this->atlassianExtension = $extension;
-                    break;
-                case IExtension::EXTENSION_ATLASSIAN_ADMIN == $key:
-                    $this->adminExtension = $extension;
-                    break;
-                case IExtension::EXTENSION_ATLASSIAN_USER_MACRO == $key:
-                    $this->userMacroExtension = $extension;
-                    break;
-                case IExtension::EXTENSION_THIRD_PARTY == $key:
-                    $this->thirdPartyExtension = $extension;
-                    break;
-                case IExtension::EXTENSION_PROJECTDOC_TOOLBOX == $key:
-                    $this->projectdocExtension = $extension;
-                    break;
-                default:
-                    Emergency::breakSystem(ExitCodes::ERR_CODE_EXTENSION_NOT_LOADED, sprintf('Extension not loaded: %s, %s ', $key, print_r($extension, true)));
+        $cleanComment = '';
+        if (!empty($comment)) {
+            $cleanComment = substr($comment, 0, IRapiClientBase::VAL_COMMENT_MAXLEN);
+            if (!str_contains($cleanComment, ConstData::VAL_APP_USER)) {
+                $cleanComment = sprintf('%s (%s)', $cleanComment, $userId);
             }
         }
-        self::$logger->debug('END');
+
+        return $cleanComment;
     }
 }

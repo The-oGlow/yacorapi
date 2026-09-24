@@ -15,7 +15,7 @@ namespace oglow\tools\Yacorapi\Statistic;
 
 use Ds\Map;
 use Ds\Pair;
-use Ds\Set;
+use Ds\Vector;
 use Monolog\ConsoleLogger;
 use ollily\Tools\String\ToStringTrait;
 use Psr\Log\LoggerInterface;
@@ -24,124 +24,148 @@ abstract class AbstractStatistic implements IStatistic
 {
     use ToStringTrait;
 
-    /** @var string Defines the column name when exporting */
-    protected const EXPORT_NAME = '';
+    /** The column name when {@link EXPORT_NAME} is not set */
+    public const string UDF = 'undefined';
 
-    /** @var string The column name when {@link EXPORT_NAME} is not set */
-    protected const UDF = 'undefined';
+    /** Use this key to use the default export name */
+    public const string EMPTY_STRING = '';
 
-    /** @var Map<string,IStatistic> */
-    private $items;
+    private static LoggerInterface $logger;
 
-    /** @var string */
-    private $statisticName;
+    /** @var Map<mixed,mixed> All chuld statistic elements on this element */
+    private Map $items;
 
-    /** @var string */
-    private $exportName;
+    /** The name of the statistic element */
+    private string $statisticName;
 
-    /** @var LoggerInterface */
-    private static $logger;
+    /** Defines the column name when exporting */
+    private string $exportName = '';
+
+    /** Defines the type of statistic element.
+     * @phpstan-ignore property.onlyWritten
+     */
+    private StatisticTypeEnum $statisticType;
 
     /**
-     * @param string $statisticName
+     * @param string            $statisticName The name of the statistic element
+     * @param string            $exportName    The column name for an export
+     * @param StatisticTypeEnum $statisticType The type of the statistic
      */
-    public function __construct(string $statisticName)
+    public function __construct(string $statisticName, string $exportName, StatisticTypeEnum $statisticType)
     {
         self::$logger = new ConsoleLogger(AbstractStatistic::class);
         self::$logger->debug('START');
 
         $this->items = new Map([]);
 
-        $this->statisticName = $statisticName;
-        $this->exportName    = $this->statisticName;
-        if (!empty(static::EXPORT_NAME)) {
-            $this->exportName = static::EXPORT_NAME;
+        $this->statisticType = $statisticType;
+        if (!empty($exportName)) {
+            $this->exportName = $exportName;
         }
+        $this->statisticName = $statisticName;
+        if (empty($this->statisticName)) {
+            $this->statisticName = self::UDF;
+        }
+        if (empty($this->exportName)) {
+            $this->exportName = self::UDF;
+        }
+
         self::$logger->debug('END');
     }
 
     /**
-     * @return Set<string>
+     * @inheritDoc
      */
-    public function keys(): Set
+    #[\Override]
+    public function keys(): Vector
     {
-        return $this->items->keys();
+        return new Vector($this->items->keys());
     }
 
     /**
-     * @param string $key
-     *
-     * @return bool
+     * @inheritDoc
      */
-    public function keyExists($key): bool
+    #[\Override]
+    public function keyExists(mixed $key): bool
     {
         return !empty($key) && $this->items->hasKey($key);
     }
 
     /**
-     * @param string $key
-     *
-     * @return null|IStatistic
+     * @inheritDoc
      */
-    public function getItem($key)
+    #[\Override]
+    public function getItem(mixed $key): mixed
     {
         $item = null;
-        if ($this->keyExists($key)) {
-            $item = $this->items[$key];
+        if (!is_null($key)) {
+            if ($this->keyExists($key)) {
+                $item = $this->items->get($key);
+            }
+        } else {
+            throw new \InvalidArgumentException('Key must not be null');
         }
 
         return $item;
     }
 
     /**
-     * @param string     $key
-     * @param IStatistic $item
+     * @inheritDoc
      */
-    public function addItem($key, $item): void
+    #[\Override]
+    public function addItem(mixed $key, mixed $item): void
     {
-        $this->items[$key] = $item;
+        if (!is_null($key)) {
+            $this->items->put($key, $item);
+        } else {
+            throw new \InvalidArgumentException('Key must not be null');
+        }
     }
 
     /**
-     * @return string
+     * @inheritDoc
      */
+    #[\Override]
     public function getStatisticName(): string
     {
         return $this->statisticName;
     }
 
     /**
-     * @return string
+     * @inheritDoc
      */
+    #[\Override]
     public function getExportName(): string
     {
         return $this->exportName;
     }
 
     /**
-     * Implode this object and its subitems to a single string with separator.
-     *
-     * @param bool $displayKeys the items will have their keyname shown
-     *
-     * @return string
-     *
-     * @see IStatistic::ITEM_SEP
+     * @inheritDoc
      */
+    #[\Override]
     public function flatten(bool $displayKeys = true): string
     {
-        $flatData = $this->implode_recursive(static::ITEM_SEP, $this->items, false, $displayKeys);
-        $flatData = str_replace('\\"', 'x', $flatData);
-
-        self::$logger->debug('', [$flatData]);
+        $flatData = self::implode_recursive(static::ITEM_SEP, $this->items, false, $displayKeys);
+        // FIXME: Refactor the output of the ValueStatistic->__toString()
+        $flatData = preg_replace("/^\{.+\:\[(.+)\]\}$/", "$1", $flatData);
+        if (!is_null($flatData)) {
+            $flatData = str_replace('\\"', 'x', $flatData);
+        }
+        if (!is_null($flatData)) {
+            $flatData = str_replace('count,value,', '', $flatData);
+        }
+        if (is_null($flatData)) {
+            $flatData = '';
+        }
 
         return $flatData;
     }
 
     /**
-     * Give the column names for this object and its subitems as array.
-     *
-     * @return array<string>
+     * @inheritDoc
      */
+    #[\Override]
     public function header(): array
     {
         $header   = [];
@@ -150,56 +174,40 @@ abstract class AbstractStatistic implements IStatistic
         if (!$this->items->isEmpty()) {
             /** @var Pair<string,mixed> $firstItem */
             $firstItem = $this->items->first();
-            /** @var null|IStatistic $value */
+            /** @var mixed $value */
             $value = $firstItem->value;
-            if (!empty($value)) {
+            if (!empty($value) && $value instanceof IStatistic) {
                 $header = array_merge($header, $value->header());
-            } else {
-                array_push($header, self::UDF);
             }
         }
 
         return $header;
     }
 
-    //    /**
-    //     * @return string
-    //     */
-    //    public function flattenHeader(): string
-    //    {
-    //        //        $header = $this->getExportName() . static::C_ITEM_SEP;
-    //        //        if (!(empty($this->items))) {
-    //        //            $firstItem = $this->items[array_key_first($this->items)];
-    //        //            if ($firstItem instanceof IStatistic) {
-    //        //                $header .= $firstItem->flattenHeader() . static::C_ITEM_SEP;
-    //        //            } else {
-    //        //                $header .= $this->customerHeader() . static::C_ITEM_SEP;
-    //        //            }
-    //        //        }
-    //        $flatten = '';
-    //        $header = $this->header();
-    //        if (!empty($header)) {
-    //            $flatten = $this->implode_recursive(static::C_ITEM_SEP, $header);
-    //            //            $header = str_replace(str_repeat(static::C_ITEM_SEP, 2), static::C_ITEM_SEP, $header);
-    //            //            if (str_ends_with($header, static::C_ITEM_SEP)) {
-    //            //                $header = substr($header, 0, strlen($header) - 1);
-    //            //            }
-    //        }
-    //
-    //        return $flatten;
-    //    }
+    /**
+     * @inheritDoc
+     */
+    #[\Override]
+    public function flattenHeader(): string
+    {
+        $flatten = '';
+        $header = $this->header();
+        if (!empty($header)) {
+            $flatten = self::implode_recursive(static::ITEM_SEP, $header);
+        }
+
+        return $flatten;
+    }
 
     /**
-     * @return array<mixed,mixed>
-     *
-     * @SuppressWarnings("PHPMD.CamelCaseMethodName")
+     * @inheritDoc
      */
-    protected function __toStringValues(): array
+    #[\Override]
+    protected function __toStringValues(): mixed
     {
         return [
-            'statisticName' => $this->statisticName,
             'exportName'    => $this->exportName,
-            'items'         => $this->items
+            'items'         => $this->items,
         ];
     }
 }

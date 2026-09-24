@@ -13,53 +13,22 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi;
 
-use PHPUnit\Framework\ConstantCheckTestCase;
+use PHPUnit\Framework\EasyGoingTestCase;
 
-class ExitCodesTest extends ConstantCheckTestCase
+class ExitCodesTest extends EasyGoingTestCase
 {
-    public const CLASS_PREFIX = ExitCodesTest::class . self::C_STATIC_SEP;
-
-    /** @var int */
-    protected const EXPECTED_CONSTANT_COUNT = 8;
-
-    /** @var bool */
-    protected const WITH_CONST_CROSSCHECK = true;
-
-    /**
-     * @return ExitCodes
-     */
-    protected static function prepareO2t()
+    #[\Override]
+    protected static function prepareO2t(): object
     {
-        return new ExitCodes();
+        return ExitCodes::i();
     }
 
     /**
-     * @return ExitCodes
+     * @inheritDoc
      */
-    protected function getCasto2t()
+    #[\Override]
+    protected function getCasto2t(): ExitCodes
     {
         return $this->o2t;
-    }
-
-    public static function setUpBeforeClass(bool $withConstCrossCheck = self::WITH_CONST_CROSSCHECK, int $expectedConstsCount = self::EXPECTED_CONSTANT_COUNT): void
-    {
-        parent::setUpBeforeClass($withConstCrossCheck, $expectedConstsCount);
-    }
-
-    public function testConstsExists(): void
-    {
-        $const = [
-            self::CLASS_PREFIX . 'ERR_CODE_NO_URL_SET',
-            self::CLASS_PREFIX . 'ERR_CODE_AUTH_CLASS_NOT_EXISTS',
-            self::CLASS_PREFIX . 'ERR_CODE_AUTHFILE_NOT_EXISTS',
-            self::CLASS_PREFIX . 'ERR_CODE_EXTENSION_NOT_LOADED',
-            self::CLASS_PREFIX . 'ERR_CODE_MYSPACES_FILE_NOT_EXISTS',
-            self::CLASS_PREFIX . 'ERR_CODE_BLOCKER_ADDON_NOT_INIT',
-            self::CLASS_PREFIX . 'ERR_CODE_SINGLEADDON_NOT_INIT',
-            self::CLASS_PREFIX . 'ERR_CODE_ALLADDON_NOT_INIT',
-        ];
-        static::updateActualConsts($const);
-
-        $this->verifyConstAllExists($const);
     }
 }

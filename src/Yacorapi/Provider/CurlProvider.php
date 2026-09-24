@@ -13,40 +13,54 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Provider;
 
-use Ds\Map;
+use CurlHandle;
+use Ds\Collection;
 use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\ConstData;
+use oglow\tools\Yacorapi\ExitCodes;
 use oglow\tools\Yacorapi\IResponse;
-use oglow\tools\Yacorapi\Request\RequestType;
+use oglow\tools\Yacorapi\Request\RequestTypeEnum;
+use oglow\tools\Yacorapi\Response\ResponseDryRun;
+use ollily\Tools\Emergency;
 use Psr\Log\LoggerInterface;
-use Psr\Log\LogLevel;
 
+/**
+ * @phpstan-import-type LoggingLevel from AbstractProvider
+ */
 class CurlProvider extends AbstractProvider
 {
-    /** @var LoggerInterface */
-    private static $logger;
+    private static LoggerInterface $logger;
 
-    /** @var null|IResponse */
-    private $dryRunResponse;
+    private IResponse $dryRunResponse;
 
-    public function __construct(?IResponse $dryRunResponse = null, string $logLevel = LogLevel::INFO)
+    /**
+     * @param int|string     $level
+     * @param null|IResponse $dryRunResponse
+     *
+     * @see self::LEVEL_DEFAULT
+     *
+     * @phpstan-param LoggingLevel $level
+     */
+    public function __construct(int|string $level = self::LEVEL_DEFAULT, null|IResponse $dryRunResponse = null)
     {
-        self::$logger = new ConsoleLogger(CurlProvider::class, $logLevel);
+        self::$logger = new ConsoleLogger(name: CurlProvider::class, level: $level);
         self::$logger->debug('START');
 
-        parent::__construct($logLevel);
-        $this->dryRunResponse = $dryRunResponse;
+        parent::__construct($level);
+        if (is_null($dryRunResponse)) {
+            $this->dryRunResponse = new ResponseDryRun();
+        } else {
+            $this->dryRunResponse = $dryRunResponse;
+        }
 
         self::$logger->debug('END');
     }
 
     /**
-     * @param string $execUrl
-     * @param int    $reqType
-     *
-     * @return array<mixed,mixed>
+     * @inheritDoc
      */
-    protected function execInternal(string $execUrl, int $reqType = RequestType::REQ_TYP_GET)
+    #[\Override]
+    protected function execInternal(string $execUrl, RequestTypeEnum $reqType = RequestTypeEnum::GET): array
     {
         self::$logger->debug('START - execUrl,reqType', [$execUrl, $reqType]);
 
@@ -60,13 +74,10 @@ class CurlProvider extends AbstractProvider
     }
 
     /**
-     * @param string           $execUrl
-     * @param Map<mixed,mixed> $parameters
-     * @param int              $reqType
-     *
-     * @return array<mixed,mixed>
+     * @inheritDoc
      */
-    protected function execPostInternal(string $execUrl, Map $parameters, $reqType = RequestType::REQ_TYP_PUT)
+    #[\Override]
+    protected function execPostInternal(string $execUrl, Collection $parameters, RequestTypeEnum $reqType = RequestTypeEnum::PUT): array
     {
         self::$logger->debug('START - execUrl,parameters,reqType', [$execUrl, $parameters, $reqType]);
 
@@ -80,46 +91,24 @@ class CurlProvider extends AbstractProvider
     }
 
     /**
-     * @param int $reqType
+     * @param RequestTypeEnum $reqType
      *
-     * @return false|resource
+     * @return CurlHandle|false
      */
-    private function prepareCurl(int $reqType)
+    private function prepareCurl(RequestTypeEnum $reqType)
     {
         self::$logger->debug('START - reqType', [$reqType]);
 
         $newSession = curl_init();
-        // Set cURL options
-        curl_setopt($newSession, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($newSession, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-        $this->prepareCertificate($newSession);
-        $this->prepareAuthorisation($newSession);
 
-        self::$logger->debug('END');
-
-        return $newSession;
-    }
-
-    /**
-     * @param Map<mixed, mixed> $parameters
-     * @param int               $reqType
-     *
-     * @return false|resource
-     */
-    private function prepareCurlWrite(Map $parameters, int $reqType)
-    {
-        self::$logger->debug('START - parameters,reqType', [$parameters, $reqType]);
-
-        $newSession = $this->prepareCurl($reqType);
-        switch ($reqType) {
-            case RequestType::REQ_TYP_POST: {
-                $this->preparePostParameter($newSession, $parameters);
-                break;
-            }
-            case RequestType::REQ_TYP_PUT:
-            default: {
-                $this->preparePutParameter($newSession, $parameters);
-            }
+        if ($newSession instanceof CurlHandle) {
+            // Set cURL options
+            curl_setopt($newSession, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($newSession, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+            $this->prepareCertificate($newSession);
+            $this->prepareAuthorisation($newSession);
+        } else {
+            Emergency::breakSystem(ExitCodes::ERR_CODE_CURL_INIT, "Cannot create curl session");
         }
 
         self::$logger->debug('END');
@@ -128,33 +117,57 @@ class CurlProvider extends AbstractProvider
     }
 
     /**
+     * @param Collection<mixed, mixed> $parameters
+     * @param RequestTypeEnum          $reqType
+     *
+     * @return CurlHandle|false
+     */
+    private function prepareCurlWrite(Collection $parameters, RequestTypeEnum $reqType)
+    {
+        self::$logger->debug('START - parameters,reqType', [$parameters, $reqType]);
+
+        $execSession = $this->prepareCurl($reqType);
+        switch ($reqType) {
+            case RequestTypeEnum::POST:
+                $this->preparePostParameter($execSession, $parameters);
+                break;
+            case RequestTypeEnum::PUT:
+            default:
+                $this->preparePutParameter($execSession, $parameters);
+                break;
+        }
+
+        self::$logger->debug('END');
+
+        return $execSession;
+    }
+
+    /**
      * Run the query.
      *
-     * @param false|resource $execSession
-     * @param string         $execUrl
-     * @param bool           $dryRun
+     * @param CurlHandle|false $execSession
+     * @param string           $execUrl
+     * @param bool             $dryRun
      *
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
-    private function execCurl($execSession, string $execUrl, bool $dryRun = false)
+    private function execCurl($execSession, string $execUrl, bool $dryRun = false): array
     {
         self::$logger->debug('START - execUrl,dryRun', [$execUrl, $dryRun]);
 
-        /** @var array<mixed,mixed> */
+        /** @var array<mixed> */
         $rawData = [];
         if ($dryRun) {
             self::$logger->notice('DRYRUN is activated');
-            if (!is_null($this->dryRunResponse)) {
-                $rawData = $this->dryRunResponse->getResponse()->toArray();
-            }
+            $rawData = $this->dryRunResponse->getRawData()->toArray();
         } else {
-            if (is_resource($execSession) && !empty($execUrl)) {
+            if ($execSession instanceof CurlHandle && !empty($execUrl)) {
                 curl_setopt($execSession, CURLOPT_URL, $execUrl);
                 $curlResponse = curl_exec($execSession);
 
                 // Check for errors
                 if (curl_errno($execSession) !== 0) {
-                    self::$logger->error('curl_error', [curl_error($execSession)]);
+                    self::$logger->error('curl_error', [curl_error($execSession), $execUrl]);
                 }
 
                 // Close the cURL session
@@ -162,9 +175,21 @@ class CurlProvider extends AbstractProvider
 
                 // Decode the response
                 if (is_string($curlResponse)) {
-                    $rawData = json_decode($curlResponse, true);
+                    $isJson = json_validate($curlResponse);
+                    if ($isJson) {
+                        $rawData = json_decode($curlResponse, true);
+                    } else {
+                        Emergency::breakSystem(ExitCodes::ERR_CODE_RESPONSE_INVALID_OR_NULL, 'Response is invalid or null');
+                    }
+                } else {
+                    Emergency::breakSystem(ExitCodes::ERR_CODE_RESPONSE_INVALID_OR_NULL, 'Response is invalid or null');
                 }
             }
+        }
+
+        if (is_null($rawData)) {
+            $rawData = [];
+            Emergency::breakSystem(ExitCodes::ERR_CODE_RESPONSE_INVALID_OR_NULL, 'Response is null');
         }
         self::$logger->debug('END');
 
@@ -172,18 +197,18 @@ class CurlProvider extends AbstractProvider
     }
 
     /**
-     * @param false|resource $newSession
+     * @param CurlHandle|false $execSession
      */
-    private function prepareCertificate(&$newSession): void
+    private function prepareCertificate(&$execSession): void
     {
         self::$logger->debug('START');
 
-        if (is_resource($newSession)) {
-            if (file_exists($this->constData->c(ConstData::KEY_MY_CERT_CA))) {
-                curl_setopt($newSession, CURLOPT_CAINFO, $this->constData->c(ConstData::KEY_MY_CERT_CA));
+        if ($execSession instanceof CurlHandle) {
+            if (file_exists(ConstData::i()->c(ConstData::KEY_MY_CERT_CA))) {
+                curl_setopt($execSession, CURLOPT_CAINFO, ConstData::i()->c(ConstData::KEY_MY_CERT_CA));
             } else {
-                self::$logger->warning('CA certificate not found!', [$this->constData->c(ConstData::KEY_MY_CERT_CA)]);
-                curl_setopt($newSession, CURLOPT_SSL_VERIFYPEER, false); // NOSONAR: php:S4830
+                self::$logger->warning('CA certificate not found', [ConstData::i()->c(ConstData::KEY_MY_CERT_CA)]);
+                curl_setopt($execSession, CURLOPT_SSL_VERIFYPEER, false); // NOSONAR: php:S4830
             }
         }
 
@@ -191,17 +216,17 @@ class CurlProvider extends AbstractProvider
     }
 
     /**
-     * @param false|resource $newSession
+     * @param CurlHandle|false $execSession
      */
-    private function prepareAuthorisation(&$newSession): void
+    private function prepareAuthorisation(&$execSession): void
     {
         self::$logger->debug('START');
 
-        if (is_resource($newSession)) {
+        if ($execSession instanceof CurlHandle) {
             $token = $this->getTokenValue();
             if (!empty($token)) {
                 curl_setopt(
-                    $newSession,
+                    $execSession,
                     CURLOPT_HTTPHEADER,
                     [
                         'Accept: application/json',
@@ -212,7 +237,7 @@ class CurlProvider extends AbstractProvider
             } else {
                 $auth = $this->getAuthValue();
                 if (!empty($auth)) {
-                    curl_setopt($newSession, CURLOPT_USERPWD, $auth);
+                    curl_setopt($execSession, CURLOPT_USERPWD, $auth);
                 }
             }
         }
@@ -221,18 +246,18 @@ class CurlProvider extends AbstractProvider
     }
 
     /**
-     * @param false|resource    $newSession
-     * @param Map<mixed, mixed> $parameters
+     * @param CurlHandle|false         $execSession
+     * @param Collection<mixed, mixed> $parameters
      */
-    private function preparePutParameter(&$newSession, Map $parameters): void
+    private function preparePutParameter(&$execSession, Collection $parameters): void
     {
         self::$logger->debug('START - parameters', [$parameters]);
 
-        if (is_resource($newSession)) {
-            curl_setopt($newSession, CURLOPT_CUSTOMREQUEST, 'PUT');
+        if ($execSession instanceof CurlHandle) {
+            curl_setopt($execSession, CURLOPT_CUSTOMREQUEST, 'PUT');
             $parametersAsString = json_encode($parameters);
             if (is_string($parametersAsString)) {
-                curl_setopt($newSession, CURLOPT_POSTFIELDS, $parametersAsString);
+                curl_setopt($execSession, CURLOPT_POSTFIELDS, $parametersAsString);
             }
         }
 
@@ -240,19 +265,19 @@ class CurlProvider extends AbstractProvider
     }
 
     /**
-     * @param false|resource    $newSession
-     * @param Map<mixed, mixed> $parameters
+     * @param CurlHandle|false         $execSession
+     * @param Collection<mixed, mixed> $parameters
      */
-    private function preparePostParameter(&$newSession, Map $parameters): void
+    private function preparePostParameter(&$execSession, Collection $parameters): void
     {
         self::$logger->debug('START - parameters', [$parameters]);
 
-        if (is_resource($newSession)) {
-            curl_setopt($newSession, CURLOPT_POST, true);
-            $parametersAsString = json_encode($parameters);
+        if ($execSession instanceof CurlHandle) {
+            curl_setopt($execSession, CURLOPT_POST, true);
+            $parametersAsString = json_encode($parameters->toArray());
             self::$logger->debug('parameters', [$parametersAsString]);
             if (is_string($parametersAsString)) {
-                curl_setopt($newSession, CURLOPT_POSTFIELDS, $parametersAsString);
+                curl_setopt($execSession, CURLOPT_POSTFIELDS, $parametersAsString);
             }
         }
 

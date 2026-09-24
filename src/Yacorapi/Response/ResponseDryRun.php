@@ -13,69 +13,83 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Response;
 
+use Ds\Collection;
 use Ds\Map;
-use Ds\Set;
+use Ds\Sequence;
+use Ds\Vector;
 use oglow\tools\Yacorapi\IResponse;
+use oglow\tools\Yacorapi\Space\SpaceInfoEnum;
 use ollily\Tools\String\ImplodeTrait;
 
 /**
- * @SuppressWarnings("PMD")
+ * Response which is used as mock for a dry run.
  *
- * @psalm-suppress
+ * @author ollily
+ *
+ * @psalm-suppress InvalidArgument
  */
 class ResponseDryRun implements IResponse
 {
     use ImplodeTrait;
 
-    public const DUMMY_BODY  = 'dummy-body';
+    public const string DUMMY_BODY = 'dummy-body';
 
-    public const DUMMY_KEY   = 'dummy-key';
+    public const int DUMMY_ID = 9999;
 
-    public const DUMMY_TITLE = 'dummy-title';
+    public const string DUMMY_KEY = 'dummy-key';
 
-    public const DUMMY_TYPE  = 'dummy-type';
+    public const string DUMMY_TITLE = 'dummy-title';
 
-    public const DUMMY_WEBUI = 'dummy-webui';
+    public const string DUMMY_DESCR = 'dummy-description';
+
+    public const string DUMMY_TYPE = 'dummy-type';
+
+    public const string DUMMY_STATUS = 'dummy-status';
+
+    public const string DUMMY_WEBUI = 'dummy-webui';
+
+    public const int VAL_RESULT_START = 0;
+
+    public const int VAL_RESULT_SIZE = 1;
+
+    public const int VAL_RESULT_LIMIT = 20;
+
+    public const int VAL_RESULT_TOTAL_SIZE = 1;
 
     /**
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
     protected static function dummyBody(): array
     {
-        return [IResponse::KEY_STORAGE => [IResponse::KEY_VALUE => self::DUMMY_BODY]];
+        return [ResponseParameter::KEY_STORAGE => [ResponseParameter::KEY_VALUE => self::DUMMY_BODY]];
     }
 
     /**
      * @param bool $withBody
-     * @param bool $withContent
+     * @param bool $isContentArray
      *
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
-    protected static function dummyResultEntry(bool $withBody = false, bool $withContent = false): array
+    protected static function dummyResultEntry(bool $withBody = false, bool $isContentArray = false): array
     {
-        if ($withContent) {
-            $entry                         = [];
-            $entry[IResponse::KEY_CONTENT] = [
-                IResponse::KEY_KEY   => self::DUMMY_KEY,
-                IResponse::KEY_TITLE => self::DUMMY_TITLE,
-                IResponse::KEY_TYPE  => self::DUMMY_TYPE,
-                IResponse::KEY_LINKS => [IResponse::KEY_WEBUI => self::DUMMY_WEBUI],
-                IResponse::KEY_SPACE => [IResponse::KEY_KEY => self::DUMMY_KEY],
-            ];
-            if ($withBody) {
-                $entry[self::KEY_CONTENT][IResponse::KEY_BODY] = self::dummyBody();
-            }
+        $item = [
+            ResponseParameter::KEY_ID => self::DUMMY_ID,
+            ResponseParameter::KEY_KEY => self::DUMMY_KEY,
+            ResponseParameter::KEY_TITLE => self::DUMMY_TITLE,
+            ResponseParameter::KEY_TYPE => self::DUMMY_TYPE,
+            ResponseParameter::KEY_STATUS => self::DUMMY_STATUS,
+            ResponseParameter::KEY_LINKS => [ResponseParameter::KEY_WEBUI => self::DUMMY_WEBUI],
+            ResponseParameter::KEY_SPACE => [ResponseParameter::KEY_KEY => self::DUMMY_KEY],
+        ];
+        if ($withBody) {
+            $item[ResponseParameter::KEY_BODY][ResponseParameter::KEY_STORAGE][ResponseParameter::KEY_VALUE] = self::dummyBody();
+        }
+
+        $entry = [];
+        if ($isContentArray) {
+            $entry[ResponseParameter::KEY_CONTENT] = $item;
         } else {
-            $entry = [
-                IResponse::KEY_KEY   => self::DUMMY_KEY,
-                IResponse::KEY_TITLE => self::DUMMY_TITLE,
-                IResponse::KEY_TYPE  => self::DUMMY_TYPE,
-                IResponse::KEY_LINKS => [IResponse::KEY_WEBUI => self::DUMMY_WEBUI],
-                IResponse::KEY_SPACE => [IResponse::KEY_KEY => self::DUMMY_KEY],
-            ];
-            if ($withBody) {
-                $entry[IResponse::KEY_BODY] = self::dummyBody();
-            }
+            $entry = $item;
         }
 
         return $entry;
@@ -84,96 +98,145 @@ class ResponseDryRun implements IResponse
     /**
      * @param bool $withBody
      *
-     * @return Map<mixed,mixed>
+     * @return Collection<mixed,mixed>
+     *
+     * @phpstan-return Map<mixed,mixed>
      */
-    public static function prepareResponse(bool $withBody = false): Map
+    public static function prepareResponse(bool $withBody = false): Collection
     {
         $response = new Map();
-        $response->put(self::KEY_RESULTS, [0 => self::dummyResultEntry($withBody)]);
-        $response->put(self::KEY_START, 0);
-        $response->put(self::KEY_SIZE, 1);
-        $response->put(self::KEY_LIMIT, 22);
-        $response->put(self::KEY_TOTAL_SIZE, 1);
+        $response->put(ResponseParameter::KEY_RESULTS, [self::VAL_RESULT_START => self::dummyResultEntry($withBody)]);
+        $response->put(ResponseParameter::KEY_START, self::VAL_RESULT_START);
+        $response->put(ResponseParameter::KEY_SIZE, self::VAL_RESULT_SIZE);
+        $response->put(ResponseParameter::KEY_LIMIT, self::VAL_RESULT_LIMIT);
+        $response->put(ResponseParameter::KEY_TOTAL_SIZE, self::VAL_RESULT_TOTAL_SIZE);
 
         return $response;
     }
 
     /**
-     * @return Map<mixed,mixed>
+     * @inheritDoc
      */
-    public function getResponse(): Map
+    #[\Override]
+    public function getRawData(): Collection
     {
         return self::prepareResponse(true);
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
+    #[\Override]
     public function keyExists($key): bool
     {
         return true;
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
-    public function keys(): Set
+    #[\Override]
+    public function keys(): Sequence
     {
-        return (new Map())->keys();
+        $map = new Map();
+
+        return new Vector($map->keys());
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
-    public function getValue($key, $default = '')
+    #[\Override]
+    public function getValue(mixed $key, mixed $default = ''): mixed
     {
         return $default;
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
+    #[\Override]
     public function checkStatus(): bool
     {
         return true;
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
-    public function getResults(): Map
+    #[\Override]
+    public function getError(): Collection
+    {
+        return new Map();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[\Override]
+    public function getResults(): Collection
     {
         $response = new Map();
         $response->put(
-            self::KEY_RESULTS,
+            ResponseParameter::KEY_RESULTS,
             [
-                0 => self::dummyResultEntry(true),
-                1 => self::dummyResultEntry(true),
-            ]
+                    self::VAL_RESULT_START => self::dummyResultEntry(true),
+                    (self::VAL_RESULT_START + 1) => self::dummyResultEntry(true),
+                ]
         );
 
         return $response;
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
-    public function getResult(int $idx)
+    #[\Override]
+    public function getResultsCount(): int
+    {
+        return $this->getResults()->count();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[\Override]
+    public function getResult(int $idx): mixed
     {
         return self::dummyResultEntry(true);
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
-    public function isResultsAvailable(): bool // NOSONAR: php:S4144
+    #[\Override]
+    public function hasResults(): bool
     {
         return true;
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
+    #[\Override]
+    public function getLabels(): Sequence
+    {
+        return new Vector();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[\Override]
+    public function labelExists(string $labelName): bool
+    {
+        return false;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[\Override]
     public function checkData(): bool
     {
         // TODO: Implement checkData() method.
@@ -181,37 +244,50 @@ class ResponseDryRun implements IResponse
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
-    public function checkDataWrite()
+    #[\Override]
+    public function checkDataWrite(): int|bool
     {
-        // TODO: Implement checkDataWrite() method.
         return false;
     }
 
+    #[\Override]
+    public function getItemId(): int
+    {
+        return self::DUMMY_ID;
+    }
+
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
+    #[\Override]
     public function getBody(): string
     {
-        // TODO: Implement method.
         return '';
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
+    #[\Override]
     public function getRestrictions(): array
     {
-        // TODO: Implement method.
         return [];
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function __toString()
+    #[\Override]
+    public function getSpaceInfo(SpaceInfoEnum $flags = SpaceInfoEnum::SPACEINFO_ALL): mixed
     {
-        return $this->implode_recursive(';', $this->getResponse()->toArray());
+        return '';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[\Override]
+    public function __toString(): string
+    {
+        return self::implode_recursive(';', $this->getRawData()->toArray());
     }
 }

@@ -20,18 +20,17 @@ use PHPUnit\Framework\EasyGoingTestCase;
 
 class AbstractAddonTest extends EasyGoingTestCase
 {
-    /**
-     * @return AbstractAddonTestClazz
-     */
-    protected static function prepareO2t()
+    #[\Override]
+    protected static function prepareO2t(): AbstractAddonTestClazz
     {
         return new AbstractAddonTestClazz();
     }
 
     /**
-     * @return AbstractAddonTestClazz
+     * @inheritDoc
      */
-    protected function getCasto2t()
+    #[\Override]
+    protected function getCasto2t(): AbstractAddonTestClazz
     {
         return $this->o2t;
     }
