@@ -18,16 +18,16 @@ namespace oglow\tools\Yacorapi\Data;
  */
 enum QueryExtensionEnum: string
 {
-    case REQP_SPACE_LIST = 'expand=homepage,description.plain,metadata.labels';
     case REQP_FULL = 'expand=space,history,version,body.storage,metadata.labels,restrictions.read.restrictions.user,' .
         'restrictions.read.restrictions.group,restrictions.read,restrictions.update.restrictions.user,' .
         'restrictions.update.restrictions.group';
-    case REQP_SEARCH_FULL = 'expand=content.space,content.history,content.version,content.body.storage,metadata.labels';
     case REQP_LIGHT = 'expand=space,history,version,metadata.labels';
-    case REQP_PERM = 'expand=restrictions.read.restrictions.user,restrictions.read.restrictions.group,' .
-        'restrictions.read,restrictions.update.restrictions.user,restrictions.update.restrictions.group';
-    case REQP_SEARCH_LIGHT = 'expand=content.space,content.history,content.version,metadata.labels';
+    case REQP_SEARCH_FULL = 'expand=content.space,content.history,content.version,content.body.storage,content.metadata.labels';
+    case REQP_SEARCH_LIGHT = 'expand=content.space,content.history,content.version,content.metadata.labels';
+    case REQP_SPACE_LIST = 'expand=homepage,description.plain,metadata.labels';
     case REQP_RESTRICTIONS_FULL = 'expand=read.restrictions.user,read.restrictions.group,update.restrictions.user,update.restrictions.group';
+    case REQP_RESTRICTIONS_DETAIL = 'expand=restrictions.read.restrictions.user,restrictions.read.restrictions.group,' .
+            'restrictions.read,restrictions.update.restrictions.user,restrictions.update.restrictions.group';
     case RESP_CSV_SPACE_RESULTS = ' .results[]|.key + ";" + .type + ";" + "status" + ";"'
         . ' + "\"" + .name + "\"" + ";" + "\"" + .description.plain.value +';
 }

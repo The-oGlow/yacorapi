@@ -9,10 +9,19 @@
     ],
     "projectdoc for Software Development": [
         "projectdoc-actor-type",
+        "projectdoc-communication-type",
         "projectdoc-feature-importance",
-        "projectdoc-technical-debt-quality",
+        "projectdoc-issue-severity",
+        "projectdoc-issue-status",
+        "projectdoc-project-constraint-type",
+        "projectdoc-project-vision-type",
+        "projectdoc-quality-scenario-type",
+        "projectdoc-selection-technical-debt-quality",
+        "projectdoc-selection-communication-type",
         "projectdoc-use-case-level",
-        "projectdoc-user-type"
+        "projectdoc-user-type",
+        "projectdoc-user-character-type",
+        "projectdoc-technical-debt-quality"
     ],
     "projectdoc Toolbox": [
         "projectdoc-action-button-macro",
@@ -53,8 +62,6 @@
         "projectdoc-hml-rating",
         "projectdoc-in-document-link-macro",
         "projectdoc-index-entries-table-macro",
-        "projectdoc-issue-severity",
-        "projectdoc-issue-status",
         "projectdoc-iteration",
         "projectdoc-layout-element-macro",
         "projectdoc-level-macro",

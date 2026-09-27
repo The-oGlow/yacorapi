@@ -44,7 +44,7 @@ class CsvFileAdapter extends FileAdapter
     private const string STOREDATA_SEARCH = SP::DEFAULT_ITEM_SEP . SP::DEFAULT_SQUARE_BRACK_OPEN;
 
     /** Replacing ";\n[" */
-    private const string STOREDATA_REPL = SP::DEFAULT_ITEM_SEP . SP::C_FILE_EOL . SP::DEFAULT_SQUARE_BRACK_OPEN;
+    private const string STOREDATA_REPL = SP::DEFAULT_ITEM_SEP . SP::C_FILE_EOL_N . SP::DEFAULT_SQUARE_BRACK_OPEN;
 
     private static LoggerInterface $logger;
 
