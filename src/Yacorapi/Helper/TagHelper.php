@@ -57,13 +57,17 @@ class TagHelper extends AbstractHelper
      *
      * @return Sequence<mixed> All found tags
      */
-    public static function getTag(string $tagName, \DOMDocument $domDoc): Sequence
+    public static function getTag(string $tagName, \DOMDocument $domDoc, string $nsPrefix = ''): Sequence
     {
         /** @psalm-suppress TooManyTemplateParams
          *  @var bool|\DOMNodeList<\DOMNameSpaceNode|\DOMNode> */
         $result = false;
         if (!empty($tagName)) {
-            $result = $domDoc->getElementsByTagName($tagName);
+            if (!empty($nsPrefix)) {
+                $result = $domDoc->getElementsByTagNameNS($nsPrefix,$tagName);
+            } else {
+                $result = $domDoc->getElementsByTagName($tagName);
+            }
         }
         if (!is_bool($result)) {
             $tags = new Vector($result);
@@ -82,7 +86,7 @@ class TagHelper extends AbstractHelper
      *
      * @return Sequence<mixed> All found tags
      */
-    public static function findTag(string $tagName, \DOMDocument $domDoc): Sequence
+    public static function findTag(string $tagName, \DOMDocument $domDoc, string $nsPrefix='', string $nsUri = ''): Sequence
     {
         /** @psalm-suppress TooManyTemplateParams
          *  @var bool|\DOMNodeList<\DOMNameSpaceNode|\DOMNode> */
@@ -90,7 +94,12 @@ class TagHelper extends AbstractHelper
         if (!empty($tagName)) {
             try {
                 $xpath = new \DOMXPath($domDoc);
-                $result = $xpath->query($tagName);
+                if (!empty($nsPrefix)) {
+                    $registered = $xpath->registerNamespace($nsPrefix, $nsUri);
+                    $result = $xpath->query($tagName, registerNodeNS: true);
+                } else {
+                    $result = $xpath->query($tagName);
+                }
             } catch (\Throwable $error) {
                 self::$logger->notice($error->getMessage(), [$error::class]);
             }

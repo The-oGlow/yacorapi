@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Helper;
 
 use Ds\Collection;
+use Ds\Sequence;
 use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\Macro\HasMacroBodyEnum;
 use ollily\Common\AbstractHelper;
@@ -31,11 +32,17 @@ use Psr\Log\LogLevel;
  */
 class ContentHelper extends AbstractHelper
 {
+    /** @var string name of the macro tag */
+    public const string TAG_MACRO_NAME = 'ac:structured-macro';
+//    public const string TAG_MACRO_NAME = 'structured-macro';
+
     /** @var string Start tag for macro */
     public const string TAG_MACRO_START = '<ac:structured-macro ac:name="%s" ac:schema-version="%s">';
+//    public const string TAG_MACRO_START = '<structured-macro name="%s" schema-version="%s">';
 
     /** @var string End tag for macro */
     public const string TAG_MACRO_END = '</ac:structured-macro>';
+//    public const string TAG_MACRO_END = '</structured-macro>';
 
     /** @var string Tag for macro version */
     public const string TAG_MACRO_VERSION = '1';
@@ -216,5 +223,22 @@ class ContentHelper extends AbstractHelper
     public static function prepareHeading(string $text, int $headerLevel = 1): string
     {
         return sprintf('<h%s>%s</h%s>', $headerLevel, $text, $headerLevel);
+    }
+    
+    public static function replaceMacro(string $searchMacro, string $replaceMacro, \DOMNode $domNode): \DOMNode
+    {
+        /** @var Sequence<\DOMNode> /*/
+        $macrosFound = TagHelper::getTag(self::TAG_MACRO_NAME, $domNode);
+
+        /** @var \DOMElement $macroFound */
+        foreach ($macrosFound as $macroFound) {
+            var_dump($macroFound);
+            $macroFoundName = $macroFound->getAttribute('name');
+            var_dump($macroFoundName);
+            if ($macroFoundName== $searchMacro) {
+                $macroFound->setAttribute('name', $replaceMacro);
+            }
+        }
+        return $domNode;
     }
 }

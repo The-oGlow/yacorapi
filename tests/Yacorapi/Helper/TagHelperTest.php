@@ -17,6 +17,7 @@ use DOMDocument;
 use DOMNode;
 use Ds\Vector;
 use oglow\tools\Yacorapi\YacorapiTestData as YTD;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\EasyGoingTestCase;
 
 /**
@@ -24,6 +25,7 @@ use PHPUnit\Framework\EasyGoingTestCase;
  */
 class TagHelperTest extends EasyGoingTestCase
 {
+
     #[\Override]
     protected function getCasto2t(): TagHelper
     {
@@ -68,6 +70,42 @@ class TagHelperTest extends EasyGoingTestCase
             self::fail(sprintf('%s - %s', $thrown->getMessage(), $thrown::class));
         }
         $this->validFindResults($expectedCount, $expectedTagName, $actual);
+    }
+
+    #[DataProvider('providerGetTagNs')]
+    public function testGetTagWithNs(int $expectedCount, string $getTagName, string $tagName, string $nsPrefix, string $nsUri): void
+    {
+        $fullNs = '';
+        if (!empty($nsPrefix)) {
+            $fullNs = sprintf('xmlns:%s="%s"', $nsPrefix, $nsUri);
+        }
+        $domDoc = YTD::prepareDOMDocument(sprintf(YTD::TAG_ROOT, $fullNs, YTD::prepareTag($tagName, body: '')));
+        // var_dump($domDoc->saveXML());
+        try {
+            $actual = $this->getCasto2t()::getTag($getTagName, $domDoc, $nsUri);
+            self::assertCount($expectedCount, $actual);
+        } catch (\Throwable $thrown) {
+            self::fail(sprintf('%s - %s', $thrown->getMessage(), $thrown::class));
+        }
+    }
+
+    /**
+     * @return array<mixed>
+     */
+    public static function providerGetTagNs(): array
+    {
+        return [
+            'noNsTag-WithoutNs-1' => [1, YTD::TAG_EXIST_NAME, YTD::TAG_EXIST_NAME, '', ''],
+            'noNsTag-WithoutNs-2' => [0, YTD::TAG_EXIST_NAME_NS, YTD::TAG_EXIST_NAME, '', ''],
+            'noNsTag-WithNs-1' => [0, YTD::TAG_EXIST_NAME, YTD::TAG_EXIST_NAME_NS, '', ''],
+            'noNsTag-WithNs-2' => [1, YTD::TAG_EXIST_NAME_NS, YTD::TAG_EXIST_NAME_NS, '', ''],
+            'withNsTag-WithNs-1' => [1, YTD::TAG_EXIST_NAME, YTD::TAG_EXIST_NAME_NS, 'ac', 'http://atlassian.com/content'],
+            'withNsTag-WithNs-2' => [0, YTD::TAG_EXIST_NAME_NS, YTD::TAG_EXIST_NAME_NS, 'ac', 'http://atlassian.com/content'],
+            'withNsTag-WithoutNs-1' => [0, YTD::TAG_EXIST_NAME, YTD::TAG_EXIST_NAME, 'ac', 'http://atlassian.com/content'],
+            'withNsTag-WithoutNs-2' => [0, YTD::TAG_EXIST_NAME_NS, YTD::TAG_EXIST_NAME, 'ac', 'http://atlassian.com/content'],
+            'wrongNsTag-WithNs-1' => [0, YTD::TAG_EXIST_NAME, YTD::TAG_EXIST_NAME_NS, 'xxx', 'http://atlassian.com/content'],
+            'wrongNsTag-WithNs-2' => [0, YTD::TAG_EXIST_NAME_NS, YTD::TAG_EXIST_NAME_NS, 'xxx', 'http://atlassian.com/content'],
+        ];
     }
 
     /**

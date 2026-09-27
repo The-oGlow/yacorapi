@@ -154,6 +154,18 @@ class YacorapiTestData extends TestData
     /** Single macro which will be checked */
     public const string MACRO_VERIFY = 'create-from-template';
 
+    /** No macro name is given */
+    public const string MACRO_EMPTY = '';
+
+    /** A macro which does not exist */
+    public const string MACRO_NOT_EXIST = 'NOT-EXIST-MACRO';
+
+    /** A macro to search for */
+    public const string MACRO_SEARCH = 'MACRO-SEARCH';
+    
+    /** A macro which replaces the {@link self::MACRO_SEARCH} */
+    public const string MACRO_REPLACE = 'MACRO-REPLACE';
+    
     // Unspecific test data
     public const string ADDON_1 = 'MyAddon';
 
@@ -293,6 +305,17 @@ class YacorapiTestData extends TestData
 
     public const string TAG_EXIST = '<tagexist></tagexist>';
 
+    public const string TAG_NS = 'ac';
+
+    public const string TAG_ROOT_NS = '<' . self::TAG_NS . ':roottag %s>%s</' . self::TAG_NS . ':roottag>';
+    
+    public const string TAG_WRONG_NAME_NS = self::TAG_NS . ':tagwrong';
+    public const string TAG_EXIST_NAME_NS = self::TAG_NS . ':tagexist';
+    
+    public const string TAG_WRONG_NS = '<' . self::TAG_NS . ':tagwrong></' . self::TAG_NS . ':tagwrong>';
+    
+    public const string TAG_EXIST_NS = '<' . self::TAG_NS . ':tagexist></' . self::TAG_NS . ':tagexist>';
+    
     public const string TAG_EXIST_SHORT = '<tagexist/>';
 
     public const string TAG_BODY_CONTENT = 'Content of the tag body';
@@ -519,6 +542,7 @@ class YacorapiTestData extends TestData
     public static function prepareDOMDocument(string $content): \DOMDocument
     {
         $newDom = new \DOMDocument();
+        $newDom->preserveWhiteSpace = false;
         if (!empty($content)) {
             $newDom->loadXML($content);
         }
@@ -537,7 +561,17 @@ class YacorapiTestData extends TestData
         return $newElement;
     }
 
-    // Macro Code Specific
+    public static function prepareTag(string $tagName, string $attributes='', string $body='%s'): string
+    {
+        $newElement = false;
+        if (!empty($tagName)) {
+            $newElement = sprintf('<%s %s>%s</%s>', $tagName, $attributes, $body, $tagName);
+        }
+    
+        return $newElement;
+    }
+        
+        // Macro Code Specific
 
     /**
      * <strong>Do not change the method name!</strong>.
