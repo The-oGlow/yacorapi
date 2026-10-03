@@ -25,7 +25,6 @@ use PHPUnit\Framework\EasyGoingTestCase;
  */
 class TagHelperTest extends EasyGoingTestCase
 {
-
     #[\Override]
     protected function getCasto2t(): TagHelper
     {
@@ -80,7 +79,7 @@ class TagHelperTest extends EasyGoingTestCase
             $fullNs = sprintf('xmlns:%s="%s"', $nsPrefix, $nsUri);
         }
         $domDoc = YTD::prepareDOMDocument(sprintf(YTD::TAG_ROOT, $fullNs, YTD::prepareTag($tagName, body: '')));
-        // var_dump($domDoc->saveXML());
+
         try {
             $actual = $this->getCasto2t()::getTag($getTagName, $domDoc, $nsUri);
             self::assertCount($expectedCount, $actual);

@@ -84,14 +84,12 @@ class RapiClientRead extends RapiClientBase implements IRapiClientRead
     {
         self::$logger->debug('START - pageId', [$pageId]);
 
-        if (is_string($pageId) && is_numeric($pageId)) {
-            $pageId=intval($pageId);
+        if (is_numeric($pageId)) {
+            $pageId = intval($pageId);
         } else {
             $pageId = IRapiClientBase::REQ_VAL_PAGE_ID_NO;
         }
-
         $prepareUrl = $this->prepareLoadUrl($pageId);
-
 
         return $this->exec($prepareUrl);
     }

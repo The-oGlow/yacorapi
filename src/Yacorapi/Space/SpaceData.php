@@ -112,7 +112,6 @@ class SpaceData extends AbstractContainer
     #[\Override]
     protected function prepareData(): void
     {
-        /** @psalm-suppress MixedMethodCall */
         $this->mySpaceFileDefault = strval(ConstData::i()->c(ConstData::KEY_MY_DIR)) . DIRECTORY_SEPARATOR . self::VAL_SPACES_FILE;
 
         $allData = [];

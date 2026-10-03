@@ -27,7 +27,7 @@ enum QueryExtensionEnum: string
     case REQP_SPACE_LIST = 'expand=homepage,description.plain,metadata.labels';
     case REQP_RESTRICTIONS_FULL = 'expand=read.restrictions.user,read.restrictions.group,update.restrictions.user,update.restrictions.group';
     case REQP_RESTRICTIONS_DETAIL = 'expand=restrictions.read.restrictions.user,restrictions.read.restrictions.group,' .
-            'restrictions.read,restrictions.update.restrictions.user,restrictions.update.restrictions.group';
+        'restrictions.read,restrictions.update.restrictions.user,restrictions.update.restrictions.group';
     case RESP_CSV_SPACE_RESULTS = ' .results[]|.key + ";" + .type + ";" + "status" + ";"'
         . ' + "\"" + .name + "\"" + ";" + "\"" + .description.plain.value +';
 }

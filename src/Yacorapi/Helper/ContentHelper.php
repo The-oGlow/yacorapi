@@ -224,28 +224,29 @@ class ContentHelper extends AbstractHelper
     {
         return sprintf('<h%s>%s</h%s>', $headerLevel, $text, $headerLevel);
     }
-    
+
     /**
-     * 
-     * @param string $searchMacro
-     * @param string $replaceMacro
-     * @param \DOMElement|\DOMDocument $domNode
-     * @return \DOMNode
+     * @param string                   $searchMacro
+     * @param string                   $replaceMacro
+     * @param \DOMDocument|\DOMElement $domNode
+     *
+     * @return \DOMDocument|\DOMElement
      */
-    public function replaceMacro(string $searchMacro, string $replaceMacro, \DOMElement|\DOMDocument $domNode): \DOMNode
+    public function replaceMacro(string $searchMacro, string $replaceMacro, \DOMElement|\DOMDocument $domNode): \DOMElement|\DOMDocument
     {
         if (!empty($searchMacro)) {
-            /** @var Sequence<\DOMNode|\DOMElement|\DOMDocument> /*/
+            /** @var Sequence<\DOMDocument|\DOMElement|\DOMNode> / */
             $macrosFound = TagHelper::getTag(self::TAG_MACRO_NAME, $domNode);
 
             /** @var \DOMElement $macroFound */
             foreach ($macrosFound as $macroFound) {
                 $macroFoundName = $macroFound->getAttribute(self::TAG_PARAMETER_NAME_NAME);
-                if ($macroFoundName== $searchMacro) {
+                if ($macroFoundName == $searchMacro) {
                     $macroFound->setAttribute(self::TAG_PARAMETER_NAME_NAME, $replaceMacro);
                 }
             }
         }
+
         return $domNode;
     }
 }

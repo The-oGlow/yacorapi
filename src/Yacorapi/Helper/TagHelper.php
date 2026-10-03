@@ -52,8 +52,9 @@ class TagHelper extends AbstractHelper
     /**
      * Returns all tags with a specific tag name.
      *
-     * @param string       $tagName The tag name
-     * @param \DOMElement|\DOMDocument $domDoc  The dom structure to search in
+     * @param string                   $tagName  The tag name
+     * @param \DOMDocument|\DOMElement $domDoc   The dom structure to search in
+     * @param string                   $nsPrefix
      *
      * @return Sequence<mixed> All found tags
      */
@@ -64,7 +65,7 @@ class TagHelper extends AbstractHelper
         $result = false;
         if (!empty($tagName)) {
             if (!empty($nsPrefix)) {
-                $result = $domDoc->getElementsByTagNameNS($nsPrefix,$tagName);
+                $result = $domDoc->getElementsByTagNameNS($nsPrefix, $tagName);
             } else {
                 $result = $domDoc->getElementsByTagName($tagName);
             }
@@ -81,12 +82,14 @@ class TagHelper extends AbstractHelper
     /**
      * Returns all tags with a specific tag name using {@link \\DOMXPath}.
      *
-     * @param string       $tagName The tag name
-     * @param \DOMDocument $domDoc  The dom structure to search in
+     * @param string       $tagName  The tag name
+     * @param \DOMDocument $domDoc   The dom structure to search in
+     * @param string       $nsPrefix
+     * @param string       $nsUri
      *
      * @return Sequence<mixed> All found tags
      */
-    public static function findTag(string $tagName, \DOMDocument $domDoc, string $nsPrefix='', string $nsUri = ''): Sequence
+    public static function findTag(string $tagName, \DOMDocument $domDoc, string $nsPrefix = '', string $nsUri = ''): Sequence
     {
         /** @psalm-suppress TooManyTemplateParams
          *  @var bool|\DOMNodeList<\DOMNameSpaceNode|\DOMNode> */

@@ -363,7 +363,6 @@ abstract class AbstractResponse implements IResponse
             }
         }
 
-
         // Separate body
         $this->body = '';
 

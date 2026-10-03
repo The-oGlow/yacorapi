@@ -4,7 +4,7 @@
     xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
     bootstrap="tests/bootstrap.php"
     cacheDirectory=".phpunit.cache"
-    colors="true"
+    colors="false"
     executionOrder="defects"
     beStrictAboutOutputDuringTests="false"
     displayDetailsOnTestsThatTriggerDeprecations="true"
@@ -53,9 +53,8 @@
     <coverage
         includeUncoveredFiles="true"
         ignoreDeprecatedCodeUnits="false"
-        pathCoverage="false"
-        disableCodeCoverageIgnore="false"
-    >
+        pathCoverage="true"
+        disableCodeCoverageIgnore="false">
         <report>
             <text outputFile="target/analysis/text/coverage.txt" showUncoveredFiles="true" showOnlySummary="false"/>
             <clover outputFile="target/analysis/clover/coverage.xml"/>

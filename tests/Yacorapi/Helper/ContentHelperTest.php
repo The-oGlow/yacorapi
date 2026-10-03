@@ -21,8 +21,8 @@ use PHPUnit\Framework\EasyGoingTestCase;
 
 class ContentHelperTest extends EasyGoingTestCase
 {
-    Use UnavailableMethodsTrait;
-    
+    use UnavailableMethodsTrait;
+
     #[\Override]
     protected static function prepareO2t(): object
     {
@@ -111,14 +111,14 @@ class ContentHelperTest extends EasyGoingTestCase
     }
 
     /**
-     * @param string $expected
+     * @param bool   $expected
      * @param string $searchMacro
      * @param string $replaceMacro
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('providerReplaceMacro')]
     public function testReplaceMacro(bool $expected, string $expectedMacro, string $searchMacro, string $replaceMacro): void
     {
-        $macroOriginal= $this->getCasto2t()->prepareMacro($searchMacro, new Map([YTD::KEY_ALPHA1 => YTD::DATA_ALPHA1]));
+        $macroOriginal = $this->getCasto2t()->prepareMacro($searchMacro, new Map([YTD::KEY_ALPHA1 => YTD::DATA_ALPHA1]));
         $content = sprintf(YTD::TAG_ROOT, '', $macroOriginal);
         $domDoc = YTD::prepareDOMDocument($content);
         if ($expected) {
@@ -126,9 +126,16 @@ class ContentHelperTest extends EasyGoingTestCase
             self::assertStringNotContainsString($replaceMacro, $content);
         }
         $actual = $this->getCasto2t()->replaceMacro($searchMacro, $replaceMacro, $domDoc);
-        $actualXml= $actual->saveXML();
-        
-        self::assertStringContainsString($expectedMacro, $actualXml);
+        if ($actual instanceof \DOMDocument) {
+            $actualXml = $actual->saveXML();
+            if (is_string($actualXml)) {
+                self::assertStringContainsString($expectedMacro, $actualXml);
+            } else {
+                self::fail('Invalid XML:');
+            }
+        } else {
+            self::fail(sprintf('Wrong result: %s', get_class($actual)));
+        }
     }
 
     // Dataprovider
@@ -138,9 +145,10 @@ class ContentHelperTest extends EasyGoingTestCase
      */
     public static function providerReplaceMacro(): array
     {
-        $expected = ContentHelper::TAG_PARAMETER_NAME_NAME.'="%s"';
+        $expected = ContentHelper::TAG_PARAMETER_NAME_NAME . '="%s"';
+
         return [
-            'emptyEmpty' => [false, sprintf($expected,YTD::MACRO_EMPTY), YTD::MACRO_EMPTY, YTD::MACRO_EMPTY],
+            'emptyEmpty' => [false, sprintf($expected, YTD::MACRO_EMPTY), YTD::MACRO_EMPTY, YTD::MACRO_EMPTY],
             'searchSearch' => [false, sprintf($expected, YTD::MACRO_SEARCH), YTD::MACRO_SEARCH, YTD::MACRO_SEARCH],
             'replaceReplace' => [false, sprintf($expected, YTD::MACRO_REPLACE), YTD::MACRO_REPLACE, YTD::MACRO_REPLACE],
             'searchEmpty' => [false, sprintf($expected, YTD::MACRO_EMPTY), YTD::MACRO_SEARCH, YTD::MACRO_EMPTY],

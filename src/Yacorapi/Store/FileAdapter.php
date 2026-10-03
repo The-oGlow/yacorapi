@@ -106,7 +106,6 @@ class FileAdapter extends AbstractStoreAdapter
     {
         self::$logger->debug('START', [$this->storeItem]);
 
-        /** @psalm-suppress MixedMethodCall */
         $line = sprintf(
             '%s;%s%s;%s',
             $resultsEntry[SP::KEY_KEY],
