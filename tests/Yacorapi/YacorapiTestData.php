@@ -166,7 +166,12 @@ class YacorapiTestData extends TestData
     /** A macro which replaces the {@link self::MACRO_SEARCH} */
     public const string MACRO_REPLACE = 'MACRO-REPLACE';
     
-    // Unspecific test data
+    public const string MACRO_IRL_HTML = 'html';
+    public const string MACRO_IRL_CODE = 'code';
+    public const string MACRO_IRL_SECTION = 'section';
+    public const string MACRO_IRL_COLUMN = 'column';
+    
+// Unspecific test data
     public const string ADDON_1 = 'MyAddon';
 
     public const string ADDON_1_A = 'macro1';
@@ -563,7 +568,7 @@ class YacorapiTestData extends TestData
 
     public static function prepareTag(string $tagName, string $attributes='', string $body='%s'): string
     {
-        $newElement = false;
+        $newElement = '';
         if (!empty($tagName)) {
             $newElement = sprintf('<%s %s>%s</%s>', $tagName, $attributes, $body, $tagName);
         }

@@ -93,14 +93,17 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
         if (file_exists($fileName)) {
             $fHandle = fopen($fileName, SP::C_FILE_READ);
 
-            if (!empty($fHandle)) {
+            if (is_resource($fHandle)) {
                 $columnHeader = new Vector();
                 if ($withHeader) {
-                    $columnHeader = self::prepareLineAsColumns(fgets($fHandle, SP::C_FILE_LINE_LEN));
+                    $headerLine = fgets($fHandle, SP::C_FILE_LINE_LEN);
+                    if(is_string($headerLine)) {
+                        $columnHeader = self::prepareLineAsColumns($headerLine);
+                    }
                 }
                 while ($line = fgets($fHandle, SP::C_FILE_LINE_LEN)) {
                     if (is_string($line)) { // @phpstan-ignore function.alreadyNarrowedType
-                        if (empty($columnHeader)) {
+                        if ($columnHeader->isEmpty()) {
                             $resultList->push(self::prepareLineAsColumns($line));
                         } else {
                             $tmpLine = self::prepareLineAsColumns($line);
@@ -128,7 +131,7 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
     /**
      * Extract the column header from string to array.
      * 
-     * @param type $lineHeader The column header as string
+     * @param string $lineHeader The column header as string
      * @return Sequence<mixed> The column header as sequence
      */ 
     protected static function prepareLineAsColumns(string $lineHeader): Sequence {

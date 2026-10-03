@@ -53,11 +53,11 @@ class TagHelper extends AbstractHelper
      * Returns all tags with a specific tag name.
      *
      * @param string       $tagName The tag name
-     * @param \DOMDocument $domDoc  The dom structure to search in
+     * @param \DOMElement|\DOMDocument $domDoc  The dom structure to search in
      *
      * @return Sequence<mixed> All found tags
      */
-    public static function getTag(string $tagName, \DOMDocument $domDoc, string $nsPrefix = ''): Sequence
+    public static function getTag(string $tagName, \DOMElement|\DOMDocument $domDoc, string $nsPrefix = ''): Sequence
     {
         /** @psalm-suppress TooManyTemplateParams
          *  @var bool|\DOMNodeList<\DOMNameSpaceNode|\DOMNode> */
