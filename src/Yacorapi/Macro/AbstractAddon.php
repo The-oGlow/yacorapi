@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Macro;
 
-use Ds\Collection;
 use Ds\Map;
-use Ds\Vector;
+use Ds\Seq;
 use Exception;
 use Monolog\ConsoleLogger;
 use ollily\Tools\JsonHelper;
@@ -26,8 +25,8 @@ abstract class AbstractAddon implements IAddon
 {
     private static LoggerInterface $logger;
 
-    /** @var Map<mixed,Vector<mixed>> */
-    protected Collection $addonsMacros;
+    /** @var Map<mixed,Seq> */
+    protected Map $addonsMacros;
 
     public function __construct()
     {
@@ -48,7 +47,7 @@ abstract class AbstractAddon implements IAddon
                 /** @var Map<mixed,mixed> */
                 $map = new Map();
                 foreach ($jsonData as $key => $value) {
-                    $map->put($key, new Vector($value));
+                    $map->put($key, new Seq($value));
                 }
                 $this->addonsMacros = $map;
             } catch (Exception $exception) {
@@ -72,20 +71,20 @@ abstract class AbstractAddon implements IAddon
      * @inheritDoc
      */
     #[\Override]
-    public function getAddonNames(): Vector
+    public function getAddonNames(): Seq
     {
-        return new Vector($this->addonsMacros->keys());
+        return new Seq($this->addonsMacros->keys());
     }
 
     /**
      * @inheritDoc
      */
     #[\Override]
-    public function getMacros(): Vector
+    public function getMacros(): Seq
     {
-        $macros = new Vector();
+        $macros = new Seq();
 
-        /** @var Vector<mixed> $vecMacros */
+        /** @var Seq $vecMacros */
         foreach ($this->addonsMacros->values() as $vecMacros) {
             foreach ($vecMacros as $macro) {
                 $macros->push($macro);

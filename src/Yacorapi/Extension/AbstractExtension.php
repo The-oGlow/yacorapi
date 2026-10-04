@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Extension;
 
 use Ds\Map;
-use Ds\Vector;
+use Ds\Seq;
 use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\Macro\IAddon;
@@ -61,7 +61,7 @@ abstract class AbstractExtension implements IExtension
     #[\Override]
     public function getAddons(): Map
     {
-        /** @var Map<mixed,Vector<mixed>> */
+        /** @var Map<mixed,Seq> */
         $addonsTmp = new Map();
         /** @psalm-suppress RedundantPropertyInitializationCheck */
         if (isset($this->addons)) {
@@ -75,10 +75,10 @@ abstract class AbstractExtension implements IExtension
      * @inheritDoc
      */
     #[\Override]
-    public function getMacros(): Vector
+    public function getMacros(): Seq
     {
-        /** @var Vector<mixed> $macrosTmp */
-        $macrosTmp = new Vector();
+        /** @var Seq $macrosTmp */
+        $macrosTmp = new Seq();
         /** @psalm-suppress RedundantPropertyInitializationCheck */
         if (isset($this->addons)) {
             $macrosTmp = $this->addons->getMacros();

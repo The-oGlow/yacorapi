@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Client;
 
-use Ds\Collection;
 use Ds\Map;
 use InvalidArgumentException;
 use Monolog\ConsoleLogger;
@@ -66,8 +65,6 @@ class RapiClientWrite extends RapiClientRead implements IRapiClientWrite
         ?IContainer $addons = null,
         mixed $level = IRapiClientBase::LEVEL_DEFAULT
     ) {
-        /** @psalm-suppress ArgumentTypeCoercion
-         * @phpstan-ignore argument.type */
         self::$logger = new ConsoleLogger(name: RapiClientWrite::class, level: $level);
         self::$logger->debug('START');
 
@@ -262,7 +259,7 @@ class RapiClientWrite extends RapiClientRead implements IRapiClientWrite
      * @param int          $nextVersion
      * @param string       $comment
      *
-     * @return Collection<mixed,mixed>
+     * @return Map<mixed,mixed>
      *
      * @throws InvalidArgumentException
      */
@@ -274,7 +271,7 @@ class RapiClientWrite extends RapiClientRead implements IRapiClientWrite
         string $spaceKey = IRapiClientBase::REQ_VAL_SPACE_EMPTY,
         int $nextVersion = IRapiClientBase::RESP_VAL_VERSION_NO,
         string $comment = IRapiClientBase::REQ_VAL_COMMENT_EMPTY
-    ): Collection {
+    ): Map {
         if (empty($comment)) {
             $comment = self::MSG_PAGE_CREATED;
         }
@@ -325,7 +322,7 @@ class RapiClientWrite extends RapiClientRead implements IRapiClientWrite
      * @param int          $nextVersion
      * @param string       $comment
      *
-     * @return Collection<mixed,mixed>
+     * @return Map<mixed,mixed>
      *
      * @throws InvalidArgumentException
      */
@@ -336,7 +333,7 @@ class RapiClientWrite extends RapiClientRead implements IRapiClientWrite
         int $pageId = IRapiClientBase::REQ_VAL_PAGE_ID_NO,
         int $nextVersion = IRapiClientBase::RESP_VAL_VERSION_NO,
         string $comment = IRapiClientBase::REQ_VAL_COMMENT_EMPTY
-    ): Collection {
+    ): Map {
         if (empty($comment)) {
             $comment = self::MSG_UPDATE_PAGE_WITH_CHANGES;
         }
@@ -378,7 +375,7 @@ class RapiClientWrite extends RapiClientRead implements IRapiClientWrite
      * @param int          $nextVersion
      * @param string       $comment
      *
-     * @return Collection<mixed,mixed>
+     * @return Map<mixed,mixed>
      *
      * @throws InvalidArgumentException
      */
@@ -388,7 +385,7 @@ class RapiClientWrite extends RapiClientRead implements IRapiClientWrite
         int $newParentId = IRapiClientBase::REQ_VAL_PARENT_ID_NO,
         int $nextVersion = IRapiClientBase::RESP_VAL_VERSION_NO,
         string $comment = IRapiClientBase::REQ_VAL_COMMENT_EMPTY
-    ): Collection {
+    ): Map {
         if (empty($comment)) {
             $comment = sprintf('%s %s', self::MSG_MOVED_TO_NEW_PARENT, $newParentId);
         }

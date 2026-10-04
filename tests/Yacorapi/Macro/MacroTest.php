@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Macro;
 
 use Ds\Map;
-use Ds\Vector;
+use Ds\Seq;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\YacorapiTestData;
 use PHPUnit\Framework\TestCase;
@@ -42,7 +42,7 @@ class MacroTest extends TestCase
 
         self::assertInstanceOf(Map::class, $actualAddons);
         self::assertCount($expectedAddons, $actualAddons);
-        self::assertInstanceOf(Vector::class, $actualMacros);
+        self::assertInstanceOf(Seq::class, $actualMacros);
         self::assertCount($expectedMacros, $actualMacros);
     }
 

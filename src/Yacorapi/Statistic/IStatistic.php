@@ -13,16 +13,16 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Statistic;
 
-use Ds\Vector;
+use Ds\Seq;
 
 interface IStatistic extends \Stringable
 {
     public const string ITEM_SEP = ';';
 
     /**
-     * @return Vector<mixed>
+     * @return Seq
      */
-    public function keys(): Vector;
+    public function keys(): Seq;
 
     /**
      * @param mixed $key

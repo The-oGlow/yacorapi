@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Macro;
 
-use Ds\Collection;
+use Ds\Map;
 use Exception;
 use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\ExitCodes;
@@ -49,6 +49,7 @@ class AddonMacroData extends AbstractContainer
     {
         self::$logger->debug('START', [$mode]);
 
+        /** @var array<mixed> */
         $macros = [];
         if ($this->keyExists($mode->value)) {
             $addons = $this->getDataByMode($mode->value);
@@ -106,7 +107,7 @@ class AddonMacroData extends AbstractContainer
         if ($this->keyExists($mode->value)) {
             $addons = $this->getDataByMode($mode->value);
             foreach ($addons as $macros) {
-                if ($macros instanceof Collection) {
+                if ($macros instanceof Map) {
                     $macroNames = array_merge($macroNames, $macros->toArray());
                 } elseif (is_array($macros)) {
                     $macroNames = array_merge($macroNames, $macros);

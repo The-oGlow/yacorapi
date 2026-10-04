@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Provider;
 
-use Ds\Collection;
 use Ds\Map;
 use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\ConstData;
@@ -23,9 +22,6 @@ use oglow\tools\Yacorapi\Response\ResponseParameter;
 use oglow\tools\Yacorapi\YacorapiTestData;
 use Psr\Log\LoggerInterface;
 
-/**
- * @phpstan-import-type LoggingLevel from AbstractProvider
- */
 class MockProvider extends AbstractProvider
 {
     private static LoggerInterface $logger;
@@ -34,8 +30,6 @@ class MockProvider extends AbstractProvider
      * @param int|string $level
      *
      * @see self::LEVEL_DEFAULT
-     *
-     * @phpstan-param LoggingLevel $level
      */
     public function __construct(int|string $level = self::LEVEL_DEFAULT)
     {
@@ -63,7 +57,7 @@ class MockProvider extends AbstractProvider
      * @inheritDoc
      */
     #[\Override]
-    protected function execPostInternal(string $execUrl, Collection $parameters, RequestTypeEnum $reqType): array
+    protected function execPostInternal(string $execUrl, Map $parameters, RequestTypeEnum $reqType): array
     {
         self::$logger->debug('START - execUrl,parameters,reqType', [$execUrl, $parameters, $reqType]);
 
@@ -253,13 +247,13 @@ class MockProvider extends AbstractProvider
     }
 
     /**
-     * @param string                  $execUrl
-     * @param Collection<mixed,mixed> $parameters
-     * @param RequestTypeEnum         $reqType
+     * @param string           $execUrl
+     * @param Map<mixed,mixed> $parameters
+     * @param RequestTypeEnum  $reqType
      *
      * @return array<mixed>
      */
-    protected function evaluateParameterRequest(string $execUrl, Collection $parameters, RequestTypeEnum $reqType): array
+    protected function evaluateParameterRequest(string $execUrl, Map $parameters, RequestTypeEnum $reqType): array
     {
         $response = [];
 
@@ -285,14 +279,14 @@ class MockProvider extends AbstractProvider
     }
 
     /**
-     * @param string                  $execUrl
-     * @param Collection<mixed,mixed> $parameters
-     * @param RequestTypeEnum         $reqType
-     * @param array<mixed>            $response
+     * @param string           $execUrl
+     * @param Map<mixed,mixed> $parameters
+     * @param RequestTypeEnum  $reqType
+     * @param array<mixed>     $response
      *
      * @return bool
      */
-    protected function evalCreatePage(string $execUrl, Collection $parameters, RequestTypeEnum $reqType, array &$response): bool
+    protected function evalCreatePage(string $execUrl, Map $parameters, RequestTypeEnum $reqType, array &$response): bool
     {
         $done = false;
         /** @var Map<mixed,mixed> */
@@ -322,14 +316,14 @@ class MockProvider extends AbstractProvider
     }
 
     /**
-     * @param string                  $execUrl
-     * @param Collection<mixed,mixed> $parameters
-     * @param RequestTypeEnum         $reqType
-     * @param array<mixed>            $response
+     * @param string           $execUrl
+     * @param Map<mixed,mixed> $parameters
+     * @param RequestTypeEnum  $reqType
+     * @param array<mixed>     $response
      *
      * @return bool
      */
-    protected function evalUpdatePage(string $execUrl, Collection $parameters, RequestTypeEnum $reqType, array &$response): bool
+    protected function evalUpdatePage(string $execUrl, Map $parameters, RequestTypeEnum $reqType, array &$response): bool
     {
         $done = false;
         /** @var Map<mixed,mixed> */
@@ -379,12 +373,12 @@ class MockProvider extends AbstractProvider
     }
 
     /**
-     * @param Collection<mixed,mixed> $parameters
-     * @param array<mixed>            $expectedKeys
+     * @param Map<mixed,mixed> $parameters
+     * @param array<mixed>     $expectedKeys
      *
      * @return bool
      */
-    public function verifyKeys(Collection $parameters, array $expectedKeys): bool
+    public function verifyKeys(Map $parameters, array $expectedKeys): bool
     {
         $verify = false;
 
@@ -407,12 +401,12 @@ class MockProvider extends AbstractProvider
     }
 
     /**
-     * @param Collection<mixed,mixed> $parameters
-     * @param array<mixed>            $notExpectedKeys
+     * @param Map<mixed,mixed> $parameters
+     * @param array<mixed>     $notExpectedKeys
      *
      * @return bool
      */
-    public function notVerifyKeys(Collection $parameters, array $notExpectedKeys): bool
+    public function notVerifyKeys(Map $parameters, array $notExpectedKeys): bool
     {
         $verify = true;
 

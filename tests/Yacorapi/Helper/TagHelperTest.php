@@ -15,7 +15,7 @@ namespace oglow\tools\Yacorapi\Helper;
 
 use DOMDocument;
 use DOMNode;
-use Ds\Vector;
+use Ds\Seq;
 use oglow\tools\Yacorapi\YacorapiTestData as YTD;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\EasyGoingTestCase;
@@ -124,7 +124,7 @@ class TagHelperTest extends EasyGoingTestCase
             }
         }
 
-        $deletedTags = new Vector();
+        $deletedTags = new Seq();
 
         try {
             $actual = $this->getCasto2t()::deleteTag($tagName, $domDoc, $deletedTags, $allTags);

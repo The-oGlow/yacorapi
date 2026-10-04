@@ -13,10 +13,8 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Response;
 
-use Ds\Collection;
 use Ds\Map;
-use Ds\Sequence;
-use Ds\Vector;
+use Ds\Seq;
 use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Space\SpaceInfoEnum;
 use ollily\Tools\String\ImplodeTrait;
@@ -98,11 +96,11 @@ class ResponseDryRun implements IResponse
     /**
      * @param bool $withBody
      *
-     * @return Collection<mixed,mixed>
+     * @return Map<mixed,mixed>
      *
      * @phpstan-return Map<mixed,mixed>
      */
-    public static function prepareResponse(bool $withBody = false): Collection
+    public static function prepareResponse(bool $withBody = false): Map
     {
         $response = new Map();
         $response->put(ResponseParameter::KEY_RESULTS, [self::VAL_RESULT_START => self::dummyResultEntry($withBody)]);
@@ -118,7 +116,7 @@ class ResponseDryRun implements IResponse
      * @inheritDoc
      */
     #[\Override]
-    public function getRawData(): Collection
+    public function getRawData(): Map
     {
         return self::prepareResponse(true);
     }
@@ -136,11 +134,11 @@ class ResponseDryRun implements IResponse
      * @inheritDoc
      */
     #[\Override]
-    public function keys(): Sequence
+    public function keys(): Seq
     {
         $map = new Map();
 
-        return new Vector($map->keys());
+        return new Seq($map->keys());
     }
 
     /**
@@ -165,7 +163,7 @@ class ResponseDryRun implements IResponse
      * @inheritDoc
      */
     #[\Override]
-    public function getError(): Collection
+    public function getError(): Map
     {
         return new Map();
     }
@@ -174,7 +172,7 @@ class ResponseDryRun implements IResponse
      * @inheritDoc
      */
     #[\Override]
-    public function getResults(): Collection
+    public function getResults(): Map
     {
         $response = new Map();
         $response->put(
@@ -219,9 +217,9 @@ class ResponseDryRun implements IResponse
      * @inheritDoc
      */
     #[\Override]
-    public function getLabels(): Sequence
+    public function getLabels(): Seq
     {
-        return new Vector();
+        return new Seq();
     }
 
     /**

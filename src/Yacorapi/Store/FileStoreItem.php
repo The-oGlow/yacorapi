@@ -20,8 +20,6 @@ use Psr\Log\LoggerInterface;
  * Default implementation for a store item.
  *
  * @author ollily
- *
- * @phpstan-import-type LoggingLevel from \Monolog\AbstractEasyGoingLogger
  */
 class FileStoreItem extends AbstractStoreItem
 {
@@ -51,8 +49,6 @@ class FileStoreItem extends AbstractStoreItem
      * @param string                                         $ext   The suffix of the filename of this store item
      * @param int|\Monolog\Level|\Psr\Log\LogLevel::*|string $level The minimum logging level at which this handler will be triggered
      *                                                              (Default: {@link self::LEVEL_DEFAULT})
-     *
-     * @phpstan-param LoggingLevel $level
      */
     protected function __construct(
         string $dir,

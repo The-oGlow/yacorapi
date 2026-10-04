@@ -13,10 +13,8 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi;
 
-use Ds\Collection;
 use Ds\Map;
-use Ds\Sequence;
-use Ds\Vector;
+use Ds\Seq;
 use oglow\tools\Yacorapi\Space\SpaceInfoEnum;
 use Stringable;
 
@@ -37,7 +35,7 @@ interface IResponse extends Stringable
      *
      * @return Map<mixed,mixed> The raw response
      */
-    public function getRawData(): Collection;
+    public function getRawData(): Map;
 
     /**
      * Verifies, if the key does exists at the first level of the response.
@@ -51,9 +49,9 @@ interface IResponse extends Stringable
     /**
      * Returns all keys at first level of the response.
      *
-     * @return Vector<mixed> All used keys
+     * @return Seq All used keys
      */
-    public function keys(): Sequence;
+    public function keys(): Seq;
 
     /**
      * Returns the value for the key (only from first level of the response) or a default value.
@@ -77,7 +75,7 @@ interface IResponse extends Stringable
      *
      * @return Map<mixed,mixed> Error information
      */
-    public function getError(): Collection;
+    public function getError(): Map;
 
     /**
      * Verifies if the response has data.
@@ -98,7 +96,7 @@ interface IResponse extends Stringable
      *
      * @return Map<mixed,mixed> The complete search result
      */
-    public function getResults(): Collection;
+    public function getResults(): Map;
 
     /**
      * Returns a single result from the given position.
@@ -151,9 +149,9 @@ interface IResponse extends Stringable
     /**
      * Returns all labels set to this item.
      *
-     * @return Vector<mixed> List of labels or empty list
+     * @return Seq List of labels or empty list
      */
-    public function getLabels(): Sequence;
+    public function getLabels(): Seq;
 
     /**
      * Returns, if the item has the given label.

@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Store;
 
-use Ds\Collection;
-use Ds\Sequence;
-use Ds\Vector;
+use Ds\Map;
+use Ds\Seq;
 use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Response\ResponseParameter as RP;
@@ -70,8 +69,6 @@ class CsvFileAdapter extends FileAdapter
         FileStoreStageEnum $staging = FileStoreStageEnum::BASE,
         mixed $level = self::LEVEL_DEFAULT
     ) {
-        /** @psalm-suppress ArgumentTypeCoercion
-         * @phpstan-ignore argument.type */
         self::$logger = new ConsoleLogger(CsvFileAdapter::class, level: $level);
         self::$logger->debug("START", [$fileName, $filePrefix, $fileSuffix, $fileExt, $pathToFile, $staging->name]);
 
@@ -137,13 +134,13 @@ class CsvFileAdapter extends FileAdapter
     /**
      * Generates a full csv line for the output.
      *
-     * @param IResponse     $response      The response
-     * @param Vector<mixed> $exportColumns List of column names to add to the line
-     * @param bool          $header        TRUE=generate the file header, else FALSE
+     * @param IResponse $response      The response
+     * @param Seq       $exportColumns List of column names to add to the line
+     * @param bool      $header        TRUE=generate the file header, else FALSE
      *
      * @return string The full csv line
      */
-    public static function prepareExportLine(IResponse $response, Sequence $exportColumns, bool $header = false): string
+    public static function prepareExportLine(IResponse $response, Seq $exportColumns, bool $header = false): string
     {
         $textSep = SP::DEFAULT_COLUMN_TEXT_SEP;
         $sepChar = SP::DEFAULT_ITEM_SEP;
@@ -174,8 +171,8 @@ class CsvFileAdapter extends FileAdapter
                                 $outValue = self::implode_recursive(self::DEFAULT_GLUE, $outValue);
                             } elseif (is_object($outValue)) {
                                 switch (true) {
-                                    case $outValue instanceof Sequence:
-                                    case $outValue instanceof Collection:
+                                    case $outValue instanceof Seq:
+                                    case $outValue instanceof Map:
                                         $outValue = $outValue->toArray();
                                         break;
                                 }

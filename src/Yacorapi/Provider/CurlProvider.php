@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Provider;
 
 use CurlHandle;
-use Ds\Collection;
+use Ds\Map;
 use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\ExitCodes;
@@ -24,9 +24,6 @@ use oglow\tools\Yacorapi\Response\ResponseDryRun;
 use ollily\Tools\Emergency;
 use Psr\Log\LoggerInterface;
 
-/**
- * @phpstan-import-type LoggingLevel from AbstractProvider
- */
 class CurlProvider extends AbstractProvider
 {
     private static LoggerInterface $logger;
@@ -38,8 +35,6 @@ class CurlProvider extends AbstractProvider
      * @param null|IResponse $dryRunResponse
      *
      * @see self::LEVEL_DEFAULT
-     *
-     * @phpstan-param LoggingLevel $level
      */
     public function __construct(int|string $level = self::LEVEL_DEFAULT, null|IResponse $dryRunResponse = null)
     {
@@ -77,7 +72,7 @@ class CurlProvider extends AbstractProvider
      * @inheritDoc
      */
     #[\Override]
-    protected function execPostInternal(string $execUrl, Collection $parameters, RequestTypeEnum $reqType = RequestTypeEnum::PUT): array
+    protected function execPostInternal(string $execUrl, Map $parameters, RequestTypeEnum $reqType = RequestTypeEnum::PUT): array
     {
         self::$logger->debug('START - execUrl,parameters,reqType', [$execUrl, $parameters, $reqType]);
 
@@ -117,12 +112,12 @@ class CurlProvider extends AbstractProvider
     }
 
     /**
-     * @param Collection<mixed, mixed> $parameters
-     * @param RequestTypeEnum          $reqType
+     * @param Map<mixed, mixed> $parameters
+     * @param RequestTypeEnum   $reqType
      *
      * @return CurlHandle|false
      */
-    private function prepareCurlWrite(Collection $parameters, RequestTypeEnum $reqType)
+    private function prepareCurlWrite(Map $parameters, RequestTypeEnum $reqType)
     {
         self::$logger->debug('START - parameters,reqType', [$parameters, $reqType]);
 
@@ -246,10 +241,10 @@ class CurlProvider extends AbstractProvider
     }
 
     /**
-     * @param CurlHandle|false         $execSession
-     * @param Collection<mixed, mixed> $parameters
+     * @param CurlHandle|false  $execSession
+     * @param Map<mixed, mixed> $parameters
      */
-    private function preparePutParameter(&$execSession, Collection $parameters): void
+    private function preparePutParameter(&$execSession, Map $parameters): void
     {
         self::$logger->debug('START - parameters', [$parameters]);
 
@@ -265,10 +260,10 @@ class CurlProvider extends AbstractProvider
     }
 
     /**
-     * @param CurlHandle|false         $execSession
-     * @param Collection<mixed, mixed> $parameters
+     * @param CurlHandle|false  $execSession
+     * @param Map<mixed, mixed> $parameters
      */
-    private function preparePostParameter(&$execSession, Collection $parameters): void
+    private function preparePostParameter(&$execSession, Map $parameters): void
     {
         self::$logger->debug('START - parameters', [$parameters]);
 

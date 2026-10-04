@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Client;
 
-use Ds\Collection;
-use Ds\Vector;
+use Ds\Map;
 use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\Data\ItemTypeEnum;
@@ -53,8 +52,6 @@ class RapiClientStatistic extends RapiClientPermission implements IRapiClientSta
         ?IContainer $addons = null,
         mixed $level = IRapiClientBase::LEVEL_DEFAULT
     ) {
-        /** @psalm-suppress ArgumentTypeCoercion
-         * @phpstan-ignore argument.type */
         self::$logger = new ConsoleLogger(name: RapiClientStatistic::class, level: $level);
         self::$logger->debug('START');
 
@@ -171,14 +168,14 @@ class RapiClientStatistic extends RapiClientPermission implements IRapiClientSta
     }
 
     /**
-     * @param string                  $spaceKey
-     * @param string                  $addOnName
-     * @param Collection<mixed,mixed> $macroNames
-     * @param IStatistic              $outputMatrix
+     * @param string           $spaceKey
+     * @param string           $addOnName
+     * @param Map<mixed,mixed> $macroNames
+     * @param IStatistic       $outputMatrix
      *
      * @return IStatistic
      */
-    protected function loopAddonMacros(string $spaceKey, string $addOnName, Collection $macroNames, IStatistic $outputMatrix): IStatistic
+    protected function loopAddonMacros(string $spaceKey, string $addOnName, Map $macroNames, IStatistic $outputMatrix): IStatistic
     {
         self::$logger->debug('START - spaceKey,addOnName,macroNames', [$spaceKey, $addOnName, $macroNames]);
 
@@ -218,14 +215,14 @@ class RapiClientStatistic extends RapiClientPermission implements IRapiClientSta
     }
 
     /**
-     * @param string                   $spaceKey
-     * @param AddonTypeEnum            $addonMode
-     * @param Collection<mixed, mixed> $mapAddons
-     * @param IStatistic               $outputMatrix
+     * @param string            $spaceKey
+     * @param AddonTypeEnum     $addonMode
+     * @param Map<mixed, mixed> $mapAddons
+     * @param IStatistic        $outputMatrix
      *
      * @return IStatistic
      */
-    protected function loopAddons(string $spaceKey, AddonTypeEnum $addonMode, Collection $mapAddons, IStatistic $outputMatrix): IStatistic
+    protected function loopAddons(string $spaceKey, AddonTypeEnum $addonMode, Map $mapAddons, IStatistic $outputMatrix): IStatistic
     {
         self::$logger->debug('START - spaceKey,mode,addonMode', [$spaceKey, $addonMode, $mapAddons]);
 
@@ -244,7 +241,7 @@ class RapiClientStatistic extends RapiClientPermission implements IRapiClientSta
             }
             self::$logger->debug('Found :', [$addonName, $macroNames]);
 
-            $outputMatrix = $this->loopAddonMacros($spaceKey, $addonName, new Vector($macroNames), $outputMatrix);
+            $outputMatrix = $this->loopAddonMacros($spaceKey, $addonName, new Map($macroNames), $outputMatrix);
 
             self::$logger->debug('Checking Addon - END');
         }

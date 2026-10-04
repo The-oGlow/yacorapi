@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Extension;
 
-use Ds\Collection;
 use Ds\Map;
-use Ds\Vector;
+use Ds\Seq;
 use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\YacorapiTestData;
 use PHPUnit\Framework\EasyGoingTestCase;
@@ -47,11 +46,11 @@ class ExtensionTraitTest extends EasyGoingTestCase
     }
 
     /**
-     * @return Collection<mixed,IExtension>
+     * @return Map<mixed,IExtension>
      *
      * @phpstan-return Map<mixed,IExtension>
      */
-    protected function getPublicInitExtensions(): Collection
+    protected function getPublicInitExtensions(): Map
     {
         $modeExtension = ExtensionEnum::EXTENSION_ALL;
 
@@ -117,7 +116,7 @@ class ExtensionTraitTest extends EasyGoingTestCase
 
         $actual = $this->getCasto2t()->publicGetExtensionAddonMacros($addons);
 
-        self::assertInstanceOf(Vector::class, $actual);
+        self::assertInstanceOf(Seq::class, $actual);
         self::assertCount($expectedSize, $actual);
         foreach ($expectedMacros as $expectedMacro) {
             self::assertContains($expectedMacro, $actual);

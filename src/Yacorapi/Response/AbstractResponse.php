@@ -13,10 +13,8 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Response;
 
-use Ds\Collection;
 use Ds\Map;
-use Ds\Sequence;
-use Ds\Vector;
+use Ds\Seq;
 use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Response\ResponseParameter as RP;
@@ -38,13 +36,13 @@ abstract class AbstractResponse implements IResponse
     private static LoggerInterface $logger;
 
     /** @var Map<mixed,mixed> */
-    private Collection $rawData;
+    private Map $rawData;
 
     /** @var Map<mixed,mixed> */
-    private Collection $results;
+    private Map $results;
 
-    /** @var Vector<mixed> */
-    private Sequence $labels;
+    /** @var Seq */
+    private Seq $labels;
 
     private string $body;
 
@@ -67,7 +65,7 @@ abstract class AbstractResponse implements IResponse
      * @inheritDoc
      */
     #[\Override]
-    public function getRawData(): Collection
+    public function getRawData(): Map
     {
         return $this->rawData;
     }
@@ -85,9 +83,9 @@ abstract class AbstractResponse implements IResponse
      * @inheritDoc
      */
     #[\Override]
-    public function keys(): Vector
+    public function keys(): Seq
     {
-        return new Vector($this->rawData->keys());
+        return new Seq($this->rawData->keys());
     }
 
     /**
@@ -125,7 +123,7 @@ abstract class AbstractResponse implements IResponse
      * @inheritDoc
      */
     #[\Override]
-    public function getError(): Collection
+    public function getError(): Map
     {
         /** @var Map<mixed,mixed> */
         $error = new Map();
@@ -197,7 +195,7 @@ abstract class AbstractResponse implements IResponse
      * @inheritDoc
      */
     #[\Override]
-    public function getResults(): Collection
+    public function getResults(): Map
     {
         return $this->results;
     }
@@ -258,9 +256,7 @@ abstract class AbstractResponse implements IResponse
             $info->putAll($this->prepareSpaceInfo(SIEnum::SPACEINFO_TYPE));
         } else {
             $tmpInfo = $this->prepareSpaceInfo($flags);
-            if ($tmpInfo instanceof Map) {
-                $info = $tmpInfo->first()->value;
-            }
+            $info = $tmpInfo->first()->value;
         }
 
         return $info;
@@ -269,9 +265,9 @@ abstract class AbstractResponse implements IResponse
     /**
      * @param SIEnum $flags
      *
-     * @return Collection<mixed,mixed>
+     * @return Map<mixed,mixed>
      */
-    protected function prepareSpaceInfo(SIEnum $flags): Collection
+    protected function prepareSpaceInfo(SIEnum $flags): Map
     {
         $space = $this->getValue(RP::KEY_SPACE);
         switch (true) {
@@ -313,7 +309,7 @@ abstract class AbstractResponse implements IResponse
      * @inheritDoc
      */
     #[\Override]
-    public function getLabels(): Sequence
+    public function getLabels(): Seq
     {
         return $this->labels;
     }
@@ -351,13 +347,13 @@ abstract class AbstractResponse implements IResponse
     private function prepareData(array $rawData = []): void
     {
         // Separate labels
-        $this->labels = new Vector();
+        $this->labels = new Seq();
         if (array_key_exists(RP::KEY_METADATA, $rawData)) {
             self::$logger->debug('Separate metdata');
             if (array_key_exists(RP::KEY_LABELS, $rawData[RP::KEY_METADATA])) {
                 self::$logger->debug('Separate labels');
                 if (array_key_exists(RP::KEY_RESULTS, $rawData[RP::KEY_METADATA][RP::KEY_LABELS])) {
-                    $this->labels = new Vector(array_column($rawData[RP::KEY_METADATA][RP::KEY_LABELS][RP::KEY_RESULTS], RP::KEY_NAME));
+                    $this->labels = new Seq(array_column($rawData[RP::KEY_METADATA][RP::KEY_LABELS][RP::KEY_RESULTS], RP::KEY_NAME));
                     unset($rawData[RP::KEY_METADATA][RP::KEY_LABELS][RP::KEY_RESULTS]);
                 }
             }

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Macro;
 
-use Ds\Vector;
+use Ds\Seq;
 use oglow\tools\Yacorapi\YacorapiTestData;
 
 class AbstractAddonTestClazz extends AbstractAddon
@@ -24,8 +24,8 @@ class AbstractAddonTestClazz extends AbstractAddon
         parent::init();
         $this->addonsMacros->putAll(
             [
-                YacorapiTestData::ADDON_1 => new Vector(YacorapiTestData::ADDON_1_ORDER),
-                YacorapiTestData::ADDON_2 => new Vector(YacorapiTestData::ADDON_2_ORDER),
+                YacorapiTestData::ADDON_1 => new Seq(YacorapiTestData::ADDON_1_ORDER),
+                YacorapiTestData::ADDON_2 => new Seq(YacorapiTestData::ADDON_2_ORDER),
             ]
         );
     }

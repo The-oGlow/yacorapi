@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Helper;
 
-use Ds\Collection;
-use Ds\Sequence;
+use Ds\Map;
+use Ds\Seq;
 use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\Macro\HasMacroBodyEnum;
 use ollily\Common\AbstractHelper;
@@ -27,8 +27,6 @@ use Psr\Log\LogLevel;
  * @author ollily
  *
  * @phpstan-type HeaderLevelType 1|2|3|4|5|6
- *
- * @phpstan-import-type LoggingLevel from \Monolog\AbstractEasyGoingLogger
  */
 class ContentHelper extends AbstractHelper
 {
@@ -72,8 +70,6 @@ class ContentHelper extends AbstractHelper
      */
     protected function __construct(bool $withLogger = true, LogLevel|string|int $level = self::LEVEL_DEFAULT)
     {
-        /** @psalm-suppress ArgumentTypeCoercion
-         * @phpstan-ignore argument.type */
         self::$logger = new ConsoleLogger(ContentHelper::class, level: $level);
         self::$logger->debug('START');
 
@@ -85,15 +81,15 @@ class ContentHelper extends AbstractHelper
     /**
      * Creates the tag for a confluence macro including parameters (optional) and body (optional):
      *
-     * @param string                    $macroName  The name of the confluence macro as it shown in the source view
-     * @param Collection<string,string> $parameters A map of parameters (optional)
-     * @param string                    $body       The content of the body of the macro (Default {@link self::VAL_BODY_EMPTY})
+     * @param string             $macroName  The name of the confluence macro as it shown in the source view
+     * @param Map<string,string> $parameters A map of parameters (optional)
+     * @param string             $body       The content of the body of the macro (Default {@link self::VAL_BODY_EMPTY})
      *
      * @return string The full tag for the macro
      *
      * @see self::VAL_BODY_EMPTY
      */
-    public function prepareMacro(string $macroName, Collection $parameters, string $body = self::VAL_BODY_EMPTY): string
+    public function prepareMacro(string $macroName, Map $parameters, string $body = self::VAL_BODY_EMPTY): string
     {
         $newTag = self::VAL_TAG_EMPTY;
         $newTag .= sprintf(self::TAG_MACRO_START, $macroName, self::TAG_MACRO_VERSION);
@@ -107,11 +103,11 @@ class ContentHelper extends AbstractHelper
     /**
      * Creates the tags for the parameter in the macro. If map is empty, nothing will be created.
      *
-     * @param Collection<string,string> $parameters
+     * @param Map<string,string> $parameters
      *
      * @return string The tags of the macro parameters
      */
-    public function prepareMacroParameter(Collection $parameters): string
+    public function prepareMacroParameter(Map $parameters): string
     {
         $newTag = self::VAL_TAG_EMPTY;
         if (!$parameters->isEmpty()) {
@@ -235,7 +231,7 @@ class ContentHelper extends AbstractHelper
     public function replaceMacro(string $searchMacro, string $replaceMacro, \DOMElement|\DOMDocument $domNode): \DOMElement|\DOMDocument
     {
         if (!empty($searchMacro)) {
-            /** @var Sequence<\DOMDocument|\DOMElement|\DOMNode> / */
+            /** @var Seq */
             $macrosFound = TagHelper::getTag(self::TAG_MACRO_NAME, $domNode);
 
             /** @var \DOMElement $macroFound */

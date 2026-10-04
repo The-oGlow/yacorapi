@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi;
 
-use Ds\Collection;
 use Ds\Map;
 use oglow\tools\Addon\Atlassian\Extension\AtlassianExtension;
 use oglow\tools\Yacorapi\Data\ItemTypeEnum;
@@ -464,12 +463,12 @@ class YacorapiTestData extends TestData
     }
 
     /**
-     * @param string                  $text
-     * @param Collection<mixed,mixed> $parameters
+     * @param string           $text
+     * @param Map<mixed,mixed> $parameters
      *
      * @return array<mixed>
      */
-    public static function prepareResponseSpace(string $text, Collection $parameters): array
+    public static function prepareResponseSpace(string $text, Map $parameters): array
     {
         /** @var Map<mixed,mixed> */
         $mapParameters = $parameters;
@@ -498,12 +497,12 @@ class YacorapiTestData extends TestData
     }
 
     /**
-     * @param mixed                   $text
-     * @param Collection<mixed,mixed> $parameters
+     * @param mixed            $text
+     * @param Map<mixed,mixed> $parameters
      *
      * @return array<mixed>
      */
-    public static function prepareResponseAncestor(mixed $text, Collection $parameters): array
+    public static function prepareResponseAncestor(mixed $text, Map $parameters): array
     {
         /** @var Map<mixed,mixed> */
         $mapParameters = $parameters;
@@ -522,12 +521,12 @@ class YacorapiTestData extends TestData
     }
 
     /**
-     * @param string                  $text
-     * @param Collection<mixed,mixed> $parameters
+     * @param string           $text
+     * @param Map<mixed,mixed> $parameters
      *
      * @return array<mixed>
      */
-    public static function prepareResponseBody(string $text, Collection $parameters): array
+    public static function prepareResponseBody(string $text, Map $parameters): array
     {
         /** @var Map<mixed,mixed> */
         $mapParameters = $parameters;

@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Response;
 
-use Ds\Collection;
 use Ds\Map;
-use Ds\Vector;
+use Ds\Seq;
 use oglow\tools\Yacorapi\Response\ResponseParameter as RP;
 use oglow\tools\Yacorapi\Space\SpaceInfoEnum;
 use oglow\tools\Yacorapi\YacorapiTestData;
@@ -60,7 +59,7 @@ class ResponseTest extends EasyGoingTestCase
 
     public function testKeys(): void
     {
-        $expected = Vector::class;
+        $expected = Seq::class;
         $expectedCount = 0;
 
         $actual = $this->getCasto2t()->keys();
@@ -161,7 +160,7 @@ class ResponseTest extends EasyGoingTestCase
 
     public function testGetLabels(): void
     {
-        $expected = Vector::class;
+        $expected = Seq::class;
         $expectedCount = 0;
 
         $actual = $this->getCasto2t()->getLabels();
@@ -191,12 +190,12 @@ class ResponseTest extends EasyGoingTestCase
     }
 
     /**
-     * @param Collection<mixed,mixed>|int|string $expected
-     * @param bool                               $expectedPrimitive
-     * @param SpaceInfoEnum                      $flags
+     * @param int|Map<mixed,mixed>|string $expected
+     * @param bool                        $expectedPrimitive
+     * @param SpaceInfoEnum               $flags
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('providerGetSpaceInfo')]
-    public function testGetSpaceInfo(Collection|string|int $expected, bool $expectedPrimitive, SpaceInfoEnum $flags): void
+    public function testGetSpaceInfo(Map|string|int $expected, bool $expectedPrimitive, SpaceInfoEnum $flags): void
     {
         $actual = $this->getCasto2t()->getSpaceInfo($flags);
 

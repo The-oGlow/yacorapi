@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Client;
 
-use Ds\Sequence;
-use Ds\Vector;
+use Ds\Seq;
 use oglow\tools\Yacorapi\Provider\MockProvider;
 use PHPUnit\Framework\EasyGoingTestCase;
 use Psr\Log\LogLevel;
@@ -41,11 +40,11 @@ class RapiClientBaseTest extends EasyGoingTestCase
 
     public function testRapiMethods(): void
     {
-        $expected = new Vector(self::AVAILABLE_METHODS);
+        $expected = new Seq(self::AVAILABLE_METHODS);
 
         $actual = $this->getCasto2t()::taskitemMethods();
 
-        self::assertInstanceOf(Sequence::class, $actual);
+        self::assertInstanceOf(Seq::class, $actual);
         foreach ($actual->getIterator() as $item) {
             if ($expected->contains($item)) {
                 $expected->remove($expected->find($item)); // @phpstan-ignore argument.type

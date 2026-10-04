@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Response;
 
 use Ds\Map;
-use Ds\Vector;
+use Ds\Seq;
 use oglow\tools\Yacorapi\YacorapiTestData;
 use PHPUnit\Framework\EasyGoingTestCase;
 
@@ -74,7 +74,7 @@ class ResponseDryRunTest extends EasyGoingTestCase
 
     public function testKeys(): void
     {
-        $expected = Vector::class;
+        $expected = Seq::class;
         $expectedCount = 0;
 
         $actual = $this->getCasto2t()->keys();

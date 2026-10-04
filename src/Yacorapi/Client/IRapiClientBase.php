@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Client;
 
-use Ds\Sequence;
+use Ds\Seq;
 use oglow\tools\Yacorapi\Data\ItemTypeEnum;
 use oglow\tools\Yacorapi\Extension\ExtensionEnum;
 use oglow\tools\Yacorapi\IConnectionProvider;
@@ -107,7 +107,7 @@ interface IRapiClientBase
     ): IRapiClient;
 
     /**
-     * @return Sequence<string> All available REST-API methods
+     * @return Seq All available REST-API methods
      */
-    public static function taskitemMethods(): Sequence;
+    public static function taskitemMethods(): Seq;
 }

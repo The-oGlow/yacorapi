@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi;
 
-use Ds\Collection;
 use Ds\Map;
 use Monolog\ConsoleLogger;
 use Monolog\DoNothingLogger;
@@ -153,7 +152,7 @@ final class ConstData extends AbstractSingleton
     // Variables
 
     /** @var Map<string,scalar> All defined settings */
-    private Collection $definedConst;
+    private Map $definedConst;
 
     /** @var object User authorization */
     private object $userAuth;
@@ -168,8 +167,6 @@ final class ConstData extends AbstractSingleton
     {
         // Init logger at first
         if ($withLogger) {
-            /** @psalm-suppress ArgumentTypeCoercion
-             * @phpstan-ignore argument.type */
             self::$logger = new ConsoleLogger(ConstData::class, level: $level);
         } else {
             self::$logger = new DoNothingLogger();
@@ -279,7 +276,7 @@ final class ConstData extends AbstractSingleton
      * @inheritDoc
      */
     #[\Override]
-    protected function prepareSettings(Collection $overrideParameters): void
+    protected function prepareSettings(Map $overrideParameters): void
     {
         self::$logger->debug('START');
 
@@ -310,7 +307,7 @@ final class ConstData extends AbstractSingleton
      * @inheritDoc
      */
     #[\Override]
-    protected function validateSettings(Collection $overrideParameters): bool
+    protected function validateSettings(Map $overrideParameters): bool
     {
         self::$logger->debug('START');
 
