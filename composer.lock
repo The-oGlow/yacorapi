@@ -4,7 +4,7 @@
     "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
     "This file is @generated automatically"
   ],
-  "content-hash": "720c853f4dd915e4c6969abd5fd17786",
+  "content-hash": "03d2523adb30d9d6a4f0458e51fe0199",
   "packages": [
     {
       "name": "composer/ca-bundle",
@@ -1437,6 +1437,75 @@
       "time": "2026-07-27T13:52:45+00:00"
     },
     {
+      "name": "symfony/css-selector",
+      "version": "v8.1.6",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/symfony/css-selector.git",
+        "reference": "08e2905152a39cf3fd1745d83f8c483e258887d9"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/symfony/css-selector/zipball/08e2905152a39cf3fd1745d83f8c483e258887d9",
+        "reference": "08e2905152a39cf3fd1745d83f8c483e258887d9",
+        "shasum": ""
+      },
+      "require": {
+        "php": ">=8.4.1"
+      },
+      "type": "library",
+      "autoload": {
+        "psr-4": {
+          "Symfony\\Component\\CssSelector\\": ""
+        },
+        "exclude-from-classmap": [
+          "/Tests/"
+        ]
+      },
+      "notification-url": "https://packagist.org/downloads/",
+      "license": [
+        "MIT"
+      ],
+      "authors": [
+        {
+          "name": "Fabien Potencier",
+          "email": "fabien@symfony.com"
+        },
+        {
+          "name": "Jean-François Simon",
+          "email": "jeanfrancois.simon@sensiolabs.com"
+        },
+        {
+          "name": "Symfony Community",
+          "homepage": "https://symfony.com/contributors"
+        }
+      ],
+      "description": "Converts CSS selectors to XPath expressions",
+      "homepage": "https://symfony.com",
+      "support": {
+        "source": "https://github.com/symfony/css-selector/tree/v8.1.6"
+      },
+      "funding": [
+        {
+          "url": "https://symfony.com/sponsor",
+          "type": "custom"
+        },
+        {
+          "url": "https://github.com/fabpot",
+          "type": "github"
+        },
+        {
+          "url": "https://github.com/nicolas-grekas",
+          "type": "github"
+        },
+        {
+          "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+          "type": "tidelift"
+        }
+      ],
+      "time": "2026-08-23T10:06:25+00:00"
+    },
+    {
       "name": "symfony/deprecation-contracts",
       "version": "v3.7.1",
       "source": {
@@ -2625,6 +2694,87 @@
         }
       ],
       "time": "2026-09-18T09:10:14+00:00"
+    },
+    {
+      "name": "voku/simple_html_dom",
+      "version": "5.0.0",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/voku/simple_html_dom.git",
+        "reference": "091de9ee6daf73a7ee3a062fb53e3687bc54ef70"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/voku/simple_html_dom/zipball/091de9ee6daf73a7ee3a062fb53e3687bc54ef70",
+        "reference": "091de9ee6daf73a7ee3a062fb53e3687bc54ef70",
+        "shasum": ""
+      },
+      "require": {
+        "ext-dom": "*",
+        "ext-libxml": "*",
+        "ext-simplexml": "*",
+        "php": ">=7.1.0",
+        "symfony/css-selector": "~3.0 || ~4.0 || ~5.0 || ~6.0 || ~7.0 || ~8.0"
+      },
+      "require-dev": {
+        "phpunit/phpunit": "~6.0 || ~7.0 || ~8.0 || ~9.0"
+      },
+      "suggest": {
+        "voku/portable-utf8": "If you need e.g. UTF-8 fixed output."
+      },
+      "type": "library",
+      "autoload": {
+        "psr-4": {
+          "voku\\helper\\": "src/voku/helper/"
+        }
+      },
+      "notification-url": "https://packagist.org/downloads/",
+      "license": [
+        "MIT"
+      ],
+      "authors": [
+        {
+          "name": "dimabdc",
+          "email": "support@titor.ru",
+          "homepage": "https://github.com/dimabdc",
+          "role": "Developer"
+        },
+        {
+          "name": "Lars Moelleken",
+          "homepage": "https://www.moelleken.org/",
+          "role": "Fork-Maintainer"
+        }
+      ],
+      "description": "Simple HTML DOM package.",
+      "homepage": "https://github.com/voku/simple_html_dom",
+      "keywords": [
+        "HTML Parser",
+        "dom",
+        "php dom"
+      ],
+      "support": {
+        "issues": "https://github.com/voku/simple_html_dom/issues",
+        "source": "https://github.com/voku/simple_html_dom/tree/5.0.0"
+      },
+      "funding": [
+        {
+          "url": "https://www.paypal.me/moelleken",
+          "type": "custom"
+        },
+        {
+          "url": "https://github.com/voku",
+          "type": "github"
+        },
+        {
+          "url": "https://www.patreon.com/voku",
+          "type": "patreon"
+        },
+        {
+          "url": "https://tidelift.com/funding/github/packagist/voku/simple_html_dom",
+          "type": "tidelift"
+        }
+      ],
+      "time": "2026-04-21T08:58:52+00:00"
     }
   ],
   "packages-dev": [
@@ -8498,8 +8648,8 @@
   "platform": {
     "php": ">=8.4.1",
     "ext-curl": "*",
-    "ext-json": "*",
-    "ext-ds": "^1.0"
+    "ext-ds": "^1.0",
+    "ext-json": "*"
   },
   "platform-dev": {},
   "plugin-api-version": "2.6.0"

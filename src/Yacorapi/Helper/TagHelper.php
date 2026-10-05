@@ -19,6 +19,13 @@ use Monolog\ConsoleLogger;
 use ollily\Common\AbstractHelper;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
+use voku\helper\HtmlDomHelper;
+use voku\helper\HtmlDomParser;
+use voku\helper\SimpleHtmlDom;
+use voku\helper\SimpleXmlDom;
+use voku\helper\SimpleXmlDomInterface;
+use voku\helper\SimpleXmlDomNodeInterface;
+use voku\helper\XmlDomParser;
 
 /**
  * Helper clazz for editing tags of a confluence page.
@@ -89,17 +96,24 @@ class TagHelper extends AbstractHelper
     public static function findTag(string $tagName, \DOMDocument $domDoc, string $nsPrefix='', string $nsUri = ''): Sequence
     {
         /** @psalm-suppress TooManyTemplateParams
-         *  @var bool|\DOMNodeList<\DOMNameSpaceNode|\DOMNode> */
+         *  @var bool|SimpleXmlDomInterface[]|SimpleXmlDomNodeInterface<SimpleXmlDomInterface> */
         $result = false;
         if (!empty($tagName)) {
             try {
+                $simpleXmlDom = new XmlDomParser($domDoc);
+                $simpleXmlDom->autoRegisterXPathNamespaces(true);
+                $result = $simpleXmlDom->findMultiOrFalse($tagName);
                 $xpath = new \DOMXPath($domDoc);
                 if (!empty($nsPrefix)) {
-                    $registered = $xpath->registerNamespace($nsPrefix, $nsUri);
-                    $result = $xpath->query($tagName, registerNodeNS: true);
+                    $registered = $xpath-> registerNamespace($nsPrefix, $nsUri);
+                    $result2 = $xpath->query($tagName, registerNodeNS: true);
                 } else {
-                    $result = $xpath->query($tagName);
+                    $result2 = $xpath->query($tagName);
                 }
+                $a = $result[0]->getNode();
+                $b = $result2->item(0);
+                var_dump ($a==$b);
+                die(1);
             } catch (\Throwable $error) {
                 self::$logger->notice($error->getMessage(), [$error::class]);
             }

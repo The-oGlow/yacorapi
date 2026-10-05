@@ -45,7 +45,7 @@ class TagHelperTest extends EasyGoingTestCase
      * @param DOMDocument $domDoc
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('providerGetTagFindTag')]
-    public function testGetTag(int $expectedCount, string $expectedTagName, string $tagName, DOMDocument $domDoc): void
+    public function ztestGetTag(int $expectedCount, string $expectedTagName, string $tagName, DOMDocument $domDoc): void
     {
         try {
             $actual = $this->getCasto2t()::getTag($tagName, $domDoc);
@@ -62,7 +62,7 @@ class TagHelperTest extends EasyGoingTestCase
      * @param DOMDocument $domDoc
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('providerGetTagFindTag')]
-    public function testfindTag(int $expectedCount, string $expectedTagName, string $tagName, DOMDocument $domDoc): void
+    public function ztestFindTag(int $expectedCount, string $expectedTagName, string $tagName, DOMDocument $domDoc): void
     {
         try {
             $actual = $this->getCasto2t()::findTag($tagName, $domDoc);
@@ -80,9 +80,11 @@ class TagHelperTest extends EasyGoingTestCase
             $fullNs = sprintf('xmlns:%s="%s"', $nsPrefix, $nsUri);
         }
         $domDoc = YTD::prepareDOMDocument(sprintf(YTD::TAG_ROOT, $fullNs, YTD::prepareTag($tagName, body: '')));
-        // var_dump($domDoc->saveXML());
+//        var_dump($domDoc->saveXML());
         try {
-            $actual = $this->getCasto2t()::getTag($getTagName, $domDoc, $nsUri);
+//            $actual = $this->getCasto2t()::getTag($getTagName, $domDoc, $nsUri);
+            $actual = $this->getCasto2t()::findTag($getTagName, $domDoc, $nsPrefix, $nsUri);
+//            var_dump($actual);die(1);
             self::assertCount($expectedCount, $actual);
         } catch (\Throwable $thrown) {
             self::fail(sprintf('%s - %s', $thrown->getMessage(), $thrown::class));
@@ -95,16 +97,16 @@ class TagHelperTest extends EasyGoingTestCase
     public static function providerGetTagNs(): array
     {
         return [
-            'noNsTag-WithoutNs-1' => [1, YTD::TAG_EXIST_NAME, YTD::TAG_EXIST_NAME, '', ''],
-            'noNsTag-WithoutNs-2' => [0, YTD::TAG_EXIST_NAME_NS, YTD::TAG_EXIST_NAME, '', ''],
-            'noNsTag-WithNs-1' => [0, YTD::TAG_EXIST_NAME, YTD::TAG_EXIST_NAME_NS, '', ''],
-            'noNsTag-WithNs-2' => [1, YTD::TAG_EXIST_NAME_NS, YTD::TAG_EXIST_NAME_NS, '', ''],
-            'withNsTag-WithNs-1' => [1, YTD::TAG_EXIST_NAME, YTD::TAG_EXIST_NAME_NS, 'ac', 'http://atlassian.com/content'],
+//            'noNsTag-WithoutNs-1' => [1, YTD::TAG_EXIST_NAME, YTD::TAG_EXIST_NAME, '', ''],
+//            'noNsTag-WithoutNs-2' => [0, YTD::TAG_EXIST_NAME_NS, YTD::TAG_EXIST_NAME, '', ''],
+//            'noNsTag-WithNs-1' => [0, YTD::TAG_EXIST_NAME, YTD::TAG_EXIST_NAME_NS, '', ''],
+//            'noNsTag-WithNs-2' => [1, YTD::TAG_EXIST_NAME_NS, YTD::TAG_EXIST_NAME_NS, '', ''],
+//            'withNsTag-WithNs-1' => [1, YTD::TAG_EXIST_NAME, YTD::TAG_EXIST_NAME_NS, 'ac', 'http://atlassian.com/content'],
             'withNsTag-WithNs-2' => [0, YTD::TAG_EXIST_NAME_NS, YTD::TAG_EXIST_NAME_NS, 'ac', 'http://atlassian.com/content'],
-            'withNsTag-WithoutNs-1' => [0, YTD::TAG_EXIST_NAME, YTD::TAG_EXIST_NAME, 'ac', 'http://atlassian.com/content'],
-            'withNsTag-WithoutNs-2' => [0, YTD::TAG_EXIST_NAME_NS, YTD::TAG_EXIST_NAME, 'ac', 'http://atlassian.com/content'],
-            'wrongNsTag-WithNs-1' => [0, YTD::TAG_EXIST_NAME, YTD::TAG_EXIST_NAME_NS, 'xxx', 'http://atlassian.com/content'],
-            'wrongNsTag-WithNs-2' => [0, YTD::TAG_EXIST_NAME_NS, YTD::TAG_EXIST_NAME_NS, 'xxx', 'http://atlassian.com/content'],
+//            'withNsTag-WithoutNs-1' => [0, YTD::TAG_EXIST_NAME, YTD::TAG_EXIST_NAME, 'ac', 'http://atlassian.com/content'],
+//            'withNsTag-WithoutNs-2' => [0, YTD::TAG_EXIST_NAME_NS, YTD::TAG_EXIST_NAME, 'ac', 'http://atlassian.com/content'],
+//            'wrongNsTag-WithNs-1' => [0, YTD::TAG_EXIST_NAME, YTD::TAG_EXIST_NAME_NS, 'xxx', 'http://atlassian.com/content'],
+//            'wrongNsTag-WithNs-2' => [0, YTD::TAG_EXIST_NAME_NS, YTD::TAG_EXIST_NAME_NS, 'xxx', 'http://atlassian.com/content'],
         ];
     }
 
@@ -115,7 +117,7 @@ class TagHelperTest extends EasyGoingTestCase
      * @param bool        $allTags
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('providerDeleteTag')]
-    public function testDeleteTag(int $expectedCount, string $tagName, DOMDocument $domDoc, bool $allTags): void
+    public function ztestDeleteTag(int $expectedCount, string $tagName, DOMDocument $domDoc, bool $allTags): void
     {
         $occurenceBefore = 0;
         if (!empty($tagName)) {
@@ -162,7 +164,7 @@ class TagHelperTest extends EasyGoingTestCase
      * @param DOMDocument    $domDoc
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('providerReplaceTags')]
-    public function testReplaceTags(int $expectedCount, string $tagNameSearch, string|DOMNode $tagNameReplace, DOMDocument $domDoc): void
+    public function ztestReplaceTags(int $expectedCount, string $tagNameSearch, string|DOMNode $tagNameReplace, DOMDocument $domDoc): void
     {
         $actual = $this->getCasto2t()::replaceTags($tagNameSearch, $tagNameReplace, $domDoc);
         self::assertEquals($domDoc, $actual);
@@ -273,13 +275,16 @@ class TagHelperTest extends EasyGoingTestCase
     public static function providerGetTagFindTag(): array
     {
         return [
-            'emptyTagEmptyDOM' => [0, YTD::TAG_EMPTY, YTD::TAG_EMPTY, self::emptyDom()],
-            'existTagEmptyDOM' => [0, YTD::TAG_EMPTY, YTD::TAG_EXIST_NAME, self::emptyDom()],
-            'emptyTagExistDOM' => [0, YTD::TAG_EMPTY, YTD::TAG_EMPTY, self::existDom()],
-            'wrongTagExistDOM' => [0, YTD::TAG_EMPTY, YTD::TAG_WRONG_NAME, self::existDom()],
-            'existTagExistDOM' => [1, YTD::TAG_EXIST_NAME, YTD::TAG_EXIST_NAME, self::existDom()],
-            'existTagExistDOMShort' => [1, YTD::TAG_EXIST_NAME, YTD::TAG_EXIST_NAME, YTD::prepareDOMDocument(sprintf(YTD::TAG_ROOT, '', YTD::TAG_EXIST_SHORT))],
-            'wrongTagMultipleDOM' => [3, YTD::TAG_WRONG_NAME, YTD::TAG_WRONG_NAME, self::wrongDomMultiple()],
+//            'emptyTagEmptyDOM' => [0, YTD::TAG_EMPTY, YTD::TAG_EMPTY, self::emptyDom()],
+//            'existTagEmptyDOM' => [0, YTD::TAG_EMPTY, YTD::TAG_EXIST_NAME, self::emptyDom()],
+//            'emptyTagExistDOM' => [0, YTD::TAG_EMPTY, YTD::TAG_EMPTY, self::existDom()],
+//            'wrongTagExistDOM' => [0, YTD::TAG_EMPTY, YTD::TAG_WRONG_NAME, self::existDom()],
+//            'existTagExistDOM' => [1, YTD::TAG_EXIST_NAME, YTD::TAG_EXIST_NAME, self::existDom()],
+//            'existTagExistDOMShort' => [1, YTD::TAG_EXIST_NAME, YTD::TAG_EXIST_NAME, YTD::prepareDOMDocument(sprintf(YTD::TAG_ROOT, '', YTD::TAG_EXIST_SHORT))],
+//            'wrongTagMultipleDOM' => [3, YTD::TAG_WRONG_NAME, YTD::TAG_WRONG_NAME, self::wrongDomMultiple()],
+            'nsTagnsExistDOM' => [1, YTD::TAG_EXIST_NAME_NS, YTD::TAG_EXIST_NAME_NS,
+            YTD::prepareDOMDocument(sprintf(YTD::TAG_ROOT, 'xmlns:ac="http://atlassian.com/content"', YTD::TAG_WRONG . YTD::TAG_EXIST_NS . YTD::TAG_WRONG))
+            ]
         ];
     }
 

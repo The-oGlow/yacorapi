@@ -30,10 +30,11 @@
     "require": {
         "php": ">=8.4.1",
         "ext-curl": "*",
-        "ext-json": "*",
         "ext-ds": "^1.0",
+        "ext-json": "*",
         "ollily/ezkoding": "^8.4",
-        "ollily/ezlogging": "^8.4"
+        "ollily/ezlogging": "^8.4",
+        "voku/simple_html_dom": "^5.0"
     },
     "provide": {
     },
