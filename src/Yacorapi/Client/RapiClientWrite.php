@@ -222,9 +222,7 @@ class RapiClientWrite extends RapiClientRead implements IRapiClientWrite
      *
      * @param int $pageId Id of the page
      *
-     * @return array<mixed> Returns [currentVersion,nextVersion,pageTitle,itemType]
-     *
-     * @phpstan-return PageInfo
+     * @return PageInfo Returns [currentVersion,nextVersion,pageTitle,itemType]
      */
     protected function loadItemInfo(int $pageId): array
     {

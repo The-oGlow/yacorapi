@@ -39,8 +39,6 @@ class ExtensionTraitTestClazz
      * @param ExtensionEnum $modeExtension
      *
      * @return Map<mixed,IExtension>
-     *
-     * @phpstan-return Map<mixed,IExtension>
      */
     public function publicLoadExtensions(ExtensionEnum $modeExtension): Map
     {
@@ -51,8 +49,6 @@ class ExtensionTraitTestClazz
      * @param ExtensionEnum $modeExtension
      *
      * @return Map<mixed,IExtension>
-     *
-     * @phpstan-return Map<mixed,IExtension>
      */
     public function publicInitExtensions(ExtensionEnum $modeExtension): Map
     {
@@ -62,11 +58,7 @@ class ExtensionTraitTestClazz
     /**
      * @param Map<mixed,IExtension> $extensions
      *
-     * @phpstan-param Map<mixed,IExtension> $extensions
-     *
      * @return Map<mixed,Seq>
-     *
-     * @phpstan-return Map<mixed,Seq>
      */
     public function publicGetExtensionAddons(Map $extensions): Map
     {
@@ -75,8 +67,6 @@ class ExtensionTraitTestClazz
 
     /**
      * @param Map<mixed,Seq> $addons
-     *
-     * @phpstan-param Map<mixed,Seq> $addons
      *
      * @return Seq<string>
      */
@@ -87,8 +77,6 @@ class ExtensionTraitTestClazz
 
     /**
      * @param Map<mixed,Seq> $addons
-     *
-     * @phpstan-param Map<mixed,Seq> $addons
      *
      * @return array<mixed>
      */

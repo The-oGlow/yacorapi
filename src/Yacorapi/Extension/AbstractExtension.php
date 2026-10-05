@@ -39,18 +39,6 @@ abstract class AbstractExtension implements IExtension
         self::$logger->debug('END');
     }
 
-    //    /**
-    //     * @inheritDoc
-    //     */
-    //    #[\Override]
-    //    abstract public static function getName(): string;
-    //
-    //    /**
-    //     * @inheritDoc
-    //     */
-    //    #[\Override]
-    //    abstract public static function getId(): int;
-
     protected function init(): void
     {
     }

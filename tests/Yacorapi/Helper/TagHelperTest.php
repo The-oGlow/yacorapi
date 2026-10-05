@@ -16,6 +16,7 @@ namespace oglow\tools\Yacorapi\Helper;
 use DOMDocument;
 use DOMNode;
 use Ds\Seq;
+use oglow\tools\Yacorapi\Data\NamespacesEnum;
 use oglow\tools\Yacorapi\YacorapiTestData as YTD;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\EasyGoingTestCase;
@@ -71,19 +72,28 @@ class TagHelperTest extends EasyGoingTestCase
         $this->validFindResults($expectedCount, $expectedTagName, $actual);
     }
 
+    /**
+     * @param int             $expectedCount
+     * @param string          $expectedTagName
+     * @param string          $tagName
+     * @param ?NamespacesEnum $nameSpace
+     * @param bool            $withXPath
+     */
     #[DataProvider('providerGetTagNs')]
-    public function testGetTagWithNs(int $expectedCount, string $getTagName, string $tagName, string $nsPrefix, string $nsUri): void
+    public function testGetTagWithNs(int $expectedCount, string $expectedTagName, string $tagName, ?NamespacesEnum $nameSpace, bool $withXPath): void
     {
         $fullNs = '';
-        if (!empty($nsPrefix)) {
-            $fullNs = sprintf('xmlns:%s="%s"', $nsPrefix, $nsUri);
+        if (!empty($nameSpace)) {
+            $fullNs = $nameSpace->xmlNs();
         }
         $domDoc = YTD::prepareDOMDocument(sprintf(YTD::TAG_ROOT, $fullNs, YTD::prepareTag($tagName, body: '')));
 
         try {
-//            $actual = $this->getCasto2t()::getTag($getTagName, $domDoc, $nsUri);
-            $actual = $this->getCasto2t()::findTag($getTagName, $domDoc, $nsPrefix, $nsUri);
-//            var_dump($actual);die(1);
+            if (is_null($nameSpace)) {
+                $actual = $this->getCasto2t()::findTag($expectedTagName, $domDoc, withXPath: $withXPath);
+            } else {
+                $actual = $this->getCasto2t()::findTag($expectedTagName, $domDoc, $nameSpace->name, $nameSpace->value, withXPath: $withXPath);
+            }
             self::assertCount($expectedCount, $actual);
         } catch (\Throwable $thrown) {
             self::fail(sprintf('%s - %s', $thrown->getMessage(), $thrown::class));
@@ -96,16 +106,28 @@ class TagHelperTest extends EasyGoingTestCase
     public static function providerGetTagNs(): array
     {
         return [
-//            'noNsTag-WithoutNs-1' => [1, YTD::TAG_EXIST_NAME, YTD::TAG_EXIST_NAME, '', ''],
-//            'noNsTag-WithoutNs-2' => [0, YTD::TAG_EXIST_NAME_NS, YTD::TAG_EXIST_NAME, '', ''],
-//            'noNsTag-WithNs-1' => [0, YTD::TAG_EXIST_NAME, YTD::TAG_EXIST_NAME_NS, '', ''],
-//            'noNsTag-WithNs-2' => [1, YTD::TAG_EXIST_NAME_NS, YTD::TAG_EXIST_NAME_NS, '', ''],
-//            'withNsTag-WithNs-1' => [1, YTD::TAG_EXIST_NAME, YTD::TAG_EXIST_NAME_NS, 'ac', 'http://atlassian.com/content'],
-            'withNsTag-WithNs-2' => [0, YTD::TAG_EXIST_NAME_NS, YTD::TAG_EXIST_NAME_NS, 'ac', 'http://atlassian.com/content'],
-//            'withNsTag-WithoutNs-1' => [0, YTD::TAG_EXIST_NAME, YTD::TAG_EXIST_NAME, 'ac', 'http://atlassian.com/content'],
-//            'withNsTag-WithoutNs-2' => [0, YTD::TAG_EXIST_NAME_NS, YTD::TAG_EXIST_NAME, 'ac', 'http://atlassian.com/content'],
-//            'wrongNsTag-WithNs-1' => [0, YTD::TAG_EXIST_NAME, YTD::TAG_EXIST_NAME_NS, 'xxx', 'http://atlassian.com/content'],
-//            'wrongNsTag-WithNs-2' => [0, YTD::TAG_EXIST_NAME_NS, YTD::TAG_EXIST_NAME_NS, 'xxx', 'http://atlassian.com/content'],
+            // SimpleHtmlDom
+            'noNsTag-withoutNs-1-shd' => [1, YTD::TAG_EXIST_NAME, YTD::TAG_EXIST_NAME, null, false],
+            'noNsTag-withoutNs-2-shd' => [0, YTD::TAG_EXIST_NAME_NS, YTD::TAG_EXIST_NAME, null, false],
+            'withNsTag-withoutNs-1-shd' => [0, YTD::TAG_EXIST_NAME, YTD::TAG_EXIST_NAME_NS, null, false],
+            'withNsTag-withoutNs-2-shd' => [0, YTD::TAG_EXIST_NAME_NS, YTD::TAG_EXIST_NAME_NS, null, false],
+            'withNsTag-withNs-1-shd' => [0, YTD::TAG_EXIST_NAME, YTD::TAG_EXIST_NAME_NS, NamespacesEnum::ac, false],
+            'withNsTag-withNs-2-shd' => [1, YTD::TAG_EXIST_NAME_NS, YTD::TAG_EXIST_NAME_NS, NamespacesEnum::ac, false],
+            'noNsTag-withNs-1-shd' => [1, YTD::TAG_EXIST_NAME, YTD::TAG_EXIST_NAME,  NamespacesEnum::ac, false],
+            'noNsTag-withNs-2-shd' => [0, YTD::TAG_EXIST_NAME_NS, YTD::TAG_EXIST_NAME, NamespacesEnum::ac, false],
+            'withNsTag-wrongNs-1-shd' => [0, YTD::TAG_EXIST_NAME, YTD::TAG_EXIST_NAME_NS, NamespacesEnum::ri, false],
+            'withNsTag-wrongNs-2-shd' => [0, YTD::TAG_EXIST_NAME_NS, YTD::TAG_EXIST_NAME_NS, NamespacesEnum::ri, false],
+            // XPath
+            'noNsTag-withoutNs-1-xpath' => [1, YTD::TAG_EXIST_NAME, YTD::TAG_EXIST_NAME, null, true],
+            'noNsTag-withoutNs-2-xpath' => [0, YTD::TAG_EXIST_NAME_NS, YTD::TAG_EXIST_NAME, null, true],
+            'withNsTag-withoutNs-1-xpath' => [0, YTD::TAG_EXIST_NAME, YTD::TAG_EXIST_NAME_NS, null, true],
+            'withNsTag-withoutNs-2-xpath' => [0, YTD::TAG_EXIST_NAME_NS, YTD::TAG_EXIST_NAME_NS, null, true],
+            'withNsTag-withNs-1-xpath' => [0, YTD::TAG_EXIST_NAME, YTD::TAG_EXIST_NAME_NS, NamespacesEnum::ac, true],
+            'withNsTag-withNs-2-xpath' => [1, YTD::TAG_EXIST_NAME_NS, YTD::TAG_EXIST_NAME_NS, NamespacesEnum::ac, true],
+            'noNsTag-withNs-1-xpath' => [1, YTD::TAG_EXIST_NAME, YTD::TAG_EXIST_NAME, NamespacesEnum::ac, true],
+            'noNsTag-withNs-2-xpath' => [0, YTD::TAG_EXIST_NAME_NS, YTD::TAG_EXIST_NAME, NamespacesEnum::ac, true],
+            'withNsTag-wrongNs-1-xpath' => [0, YTD::TAG_EXIST_NAME, YTD::TAG_EXIST_NAME_NS, NamespacesEnum::ri, true],
+            'withNsTag-wrongNs-2-xpath' => [0, YTD::TAG_EXIST_NAME_NS, YTD::TAG_EXIST_NAME_NS, NamespacesEnum::ri, true],
         ];
     }
 
@@ -282,8 +304,8 @@ class TagHelperTest extends EasyGoingTestCase
 //            'existTagExistDOMShort' => [1, YTD::TAG_EXIST_NAME, YTD::TAG_EXIST_NAME, YTD::prepareDOMDocument(sprintf(YTD::TAG_ROOT, '', YTD::TAG_EXIST_SHORT))],
 //            'wrongTagMultipleDOM' => [3, YTD::TAG_WRONG_NAME, YTD::TAG_WRONG_NAME, self::wrongDomMultiple()],
             'nsTagnsExistDOM' => [1, YTD::TAG_EXIST_NAME_NS, YTD::TAG_EXIST_NAME_NS,
-            YTD::prepareDOMDocument(sprintf(YTD::TAG_ROOT, 'xmlns:ac="http://atlassian.com/content"', YTD::TAG_WRONG . YTD::TAG_EXIST_NS . YTD::TAG_WRONG))
-            ]
+            YTD::prepareDOMDocument(sprintf(YTD::TAG_ROOT, 'xmlns:ac="http://atlassian.com/content"', YTD::TAG_WRONG . YTD::TAG_EXIST_NS . YTD::TAG_WRONG)),
+            ],
         ];
     }
 

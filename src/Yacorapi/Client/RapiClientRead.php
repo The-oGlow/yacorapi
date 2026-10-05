@@ -64,7 +64,6 @@ class RapiClientRead extends RapiClientBase implements IRapiClientRead
 
         $data = $this->addons->getDataByMode($addonMode->value);
         if (!empty($data)) {
-            /** @psalm-suppress MixedMethodCall */
             $addonSet = new ResponseAddonMacro($addonMode, $data->toArray());
         } else {
             $addonSet = new ResponseAddonMacro($addonMode);

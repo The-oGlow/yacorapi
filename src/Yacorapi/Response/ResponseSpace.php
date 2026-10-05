@@ -86,7 +86,6 @@ class ResponseSpace extends AbstractResponse
     {
         $value = $default;
         if ($this->keyExists($key)) {
-            /** @psalm-suppress MixedArrayOffset */
             $value = $this->spaces[$key];
         }
 

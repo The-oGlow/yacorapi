@@ -18,12 +18,7 @@ use Monolog\ConsoleLogger;
 use ollily\Common\AbstractHelper;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
-use voku\helper\HtmlDomHelper;
-use voku\helper\HtmlDomParser;
 use voku\helper\SimpleHtmlDom;
-use voku\helper\SimpleXmlDom;
-use voku\helper\SimpleXmlDomInterface;
-use voku\helper\SimpleXmlDomNodeInterface;
 use voku\helper\XmlDomParser;
 
 /**
@@ -33,6 +28,8 @@ use voku\helper\XmlDomParser;
  */
 class TagHelper extends AbstractHelper
 {
+    public const string NAMESPACE_SEP = ':';
+
     private static LoggerInterface $logger;
 
     /**
@@ -82,36 +79,40 @@ class TagHelper extends AbstractHelper
     }
 
     /**
-     * Returns all tags with a specific tag name using {@link \\DOMXPath}.
+     * Returns all tags with a specific tag name using {@link XmlDomParser} or {@link \DOMXPath}.
      *
-     * @param string       $tagName  The tag name
-     * @param \DOMDocument $domDoc   The dom structure to search in
-     * @param string       $nsPrefix
-     * @param string       $nsUri
+     * @param string       $tagName   The tag name
+     * @param \DOMDocument $domDoc    The dom structure to search in
+     * @param string       $nsPrefix  The namespace prefix to register (Default: '')
+     * @param string       $nsUri     The namespace uri to register (Default: '')
+     * @param bool         $withXPath TRUE=Use XPath to find, else use SimpleHtmlDom (Default: FALSE)
      *
      * @return Seq All found tags
      */
-    public static function findTag(string $tagName, \DOMDocument $domDoc, string $nsPrefix = '', string $nsUri = ''): Seq
+    public static function findTag(string $tagName, \DOMDocument $domDoc, string $nsPrefix = '', string $nsUri = '', bool $withXPath = false): Seq
     {
-        /** @psalm-suppress TooManyTemplateParams
-         *  @var bool|SimpleXmlDomInterface[]|SimpleXmlDomNodeInterface<SimpleXmlDomInterface> */
-        $result = false;
+        $result = [];
         if (!empty($tagName)) {
             try {
-                $simpleXmlDom = new XmlDomParser($domDoc);
-                $simpleXmlDom->autoRegisterXPathNamespaces(true);
-                $result = $simpleXmlDom->findMultiOrFalse($tagName);
-                $xpath = new \DOMXPath($domDoc);
-                if (!empty($nsPrefix)) {
-                    $registered = $xpath-> registerNamespace($nsPrefix, $nsUri);
-                    $result2 = $xpath->query($tagName, registerNodeNS: true);
+                if ($withXPath) {
+                    $xpath = new \DOMXPath($domDoc);
+                    if (!empty($nsPrefix)) {
+                        $xpath->registerNamespace($nsPrefix, $nsUri);
+                    }
+                    if (str_contains($tagName, self::NAMESPACE_SEP)) {
+                        $result = $xpath->query($tagName, registerNodeNS: true);
+                    } else {
+                        $result = $xpath->query($tagName);
+                    }
                 } else {
-                    $result2 = $xpath->query($tagName);
+                    $simpleXmlDom = new XmlDomParser($domDoc);
+                    $simpleXmlDom->autoRegisterXPathNamespaces(true);
+                    /** @psalm-suppress TooManyTemplateParams */
+                    $result = $simpleXmlDom->findMultiOrFalse($tagName);
+
+                    // Prevent memory leak
+                    unset($simpleXmlDom);
                 }
-                $a = $result[0]->getNode();
-                $b = $result2->item(0);
-                var_dump ($a==$b);
-                die(1);
             } catch (\Throwable $error) {
                 self::$logger->notice($error->getMessage(), [$error::class]);
             }
