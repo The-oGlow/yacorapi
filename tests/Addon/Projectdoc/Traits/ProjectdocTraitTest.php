@@ -19,18 +19,17 @@ use PHPUnit\Framework\EasyGoingTestCase;
 
 class ProjectdocTraitTest extends EasyGoingTestCase
 {
-    /**
-     * @return ProjectdocTraitTestClazz
-     */
-    protected static function prepareO2t()
+    #[\Override]
+    protected static function prepareO2t(): ProjectdocTraitTestClazz
     {
         return new ProjectdocTraitTestClazz();
     }
 
     /**
-     * @return ProjectdocTraitTestClazz
+     * @inheritDoc
      */
-    protected function getCasto2t()
+    #[\Override]
+    protected function getCasto2t(): ProjectdocTraitTestClazz
     {
         return $this->o2t;
     }
@@ -38,9 +37,8 @@ class ProjectdocTraitTest extends EasyGoingTestCase
     /**
      * @param bool      $expected
      * @param IResponse $response
-     *
-     * @dataProvider providerResponse
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('providerResponse')]
     public function testCheckDataPdtDocument(bool $expected, IResponse $response): void
     {
         $actual = $this->getCasto2t()->checkDataPdtDocument($response);
@@ -51,9 +49,8 @@ class ProjectdocTraitTest extends EasyGoingTestCase
     /**
      * @param bool      $expected
      * @param IResponse $response
-     *
-     * @dataProvider providerResponse
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('providerResponse')]
     public function testCheckDataPdtProperty(bool $expected, IResponse $response): void
     {
         $actual = $this->getCasto2t()->checkDataPdtProperty($response);
@@ -65,9 +62,8 @@ class ProjectdocTraitTest extends EasyGoingTestCase
      * @param string    $expected
      * @param IResponse $response
      * @param string    $propertyName
-     *
-     * @dataProvider providerPropertyName
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('providerPropertyName')]
     public function testshowResultsPdt(string $expected, IResponse $response, string $propertyName): void
     {
         $actual = $this->getCasto2t()->showResultsPdt($response, $propertyName);
@@ -79,9 +75,8 @@ class ProjectdocTraitTest extends EasyGoingTestCase
      * @param IResponse $expected
      * @param int       $pageId
      * @param string    $propertyName
-     *
-     * @dataProvider providerPdtReadProperty
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('providerPdtReadProperty')]
     public function testPdtReadProperty(IResponse $expected, int $pageId, string $propertyName): void
     {
         $actual = $this->getCasto2t()->pdtReadProperty($pageId, $propertyName);
@@ -90,13 +85,12 @@ class ProjectdocTraitTest extends EasyGoingTestCase
     }
 
     /**
-     * @param IResponse $expected
-     * @param mixed[]   $propertyNames
-     * @param string    $spaceKey
-     * @param string    $where
-     *
-     * @dataProvider providerPdtReadDocument
+     * @param IResponse    $expected
+     * @param array<mixed> $propertyNames
+     * @param string       $spaceKey
+     * @param string       $where
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('providerPdtReadDocument')]
     public function testPdtReadDocument(
         IResponse $expected,
         array $propertyNames,
@@ -109,9 +103,9 @@ class ProjectdocTraitTest extends EasyGoingTestCase
     }
 
     /**
-     * @return mixed[]
+     * @return array<mixed>
      */
-    public function providerResponse()
+    public static function providerResponse(): array
     {
         return [
             'empty' => [ false, new Response()],
@@ -119,9 +113,9 @@ class ProjectdocTraitTest extends EasyGoingTestCase
     }
 
     /**
-     * @return mixed[]
+     * @return array<mixed>
      */
-    public function providerPropertyName()
+    public static function providerPropertyName(): array
     {
         return [
             'empty' => [ '', new Response(), ''],
@@ -129,9 +123,9 @@ class ProjectdocTraitTest extends EasyGoingTestCase
     }
 
     /**
-     * @return mixed[]
+     * @return array<mixed>
      */
-    public function providerPdtReadProperty()
+    public static function providerPdtReadProperty(): array
     {
         return [
             'empty' => [ new Response(), 0,''],
@@ -139,9 +133,9 @@ class ProjectdocTraitTest extends EasyGoingTestCase
     }
 
     /**
-     * @return mixed[]
+     * @return array<mixed>
      */
-    public function providerPdtReadDocument()
+    public static function providerPdtReadDocument(): array
     {
         return [
             'empty' => [ new Response(), [],'',''],

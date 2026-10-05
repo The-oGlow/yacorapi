@@ -13,23 +13,17 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Extension;
 
-use oglow\tools\Yacorapi\Traits\PrepReadTrait;
-use oglow\tools\Yacorapi\Traits\PrepSpaceTrait;
-use oglow\tools\Yacorapi\Traits\PrepWriteTrait;
-
 class RapiClientExtension extends AbstractExtension
 {
-    use PrepReadTrait;
-    use PrepSpaceTrait;
-    use PrepWriteTrait;
-
+    #[\Override]
     public static function getName(): string
     {
         return 'RAPI-Client Extension';
     }
 
+    #[\Override]
     public static function getId(): int
     {
-        return 1;
+        return ExtensionEnum::EXTENSION_RAPI_CLIENT->value;
     }
 }

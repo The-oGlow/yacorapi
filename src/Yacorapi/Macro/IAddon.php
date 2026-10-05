@@ -14,14 +14,14 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Macro;
 
 use Ds\Map;
-use Ds\Vector;
+use Ds\Seq;
 
 interface IAddon
 {
     /**
      * Returns the addons and their assigned macros.
      *
-     * @return Map<mixed,Vector<mixed>>
+     * @return Map<mixed,Seq>
      *
      * @see getAddonNames()
      * @see getMacros()
@@ -32,27 +32,27 @@ interface IAddon
     /**
      * Returns the names of the addons.
      *
-     * @return Vector<mixed>
+     * @return Seq
      *
      * @see getAddons()
      */
-    public function getAddonNames(): Vector;
+    public function getAddonNames(): Seq;
 
     /**
      * Returns the macros without any addons as vector.
      *
-     * @return Vector<mixed>
+     * @return Seq
      *
      * @see getAddons()
      *
      * @sse getMacrosArray()
      */
-    public function getMacros(): Vector;
+    public function getMacros(): Seq;
 
     /**
      * Returns the macros without any addons as array.
      *
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      *
      * @see getAddons()
      * @see getMacros()

@@ -14,18 +14,17 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Macro;
 
 use Monolog\ConsoleLogger;
-use oglow\tools\Yacorapi\Extension\IExtension;
-use oglow\tools\Yacorapi\Traits\ExtensionTrait;
+use oglow\tools\Yacorapi\Extension\ExtensionEnum;
+use oglow\tools\Yacorapi\Extension\ExtensionTrait;
 use Psr\Log\LoggerInterface;
 
 class AllAddon extends AbstractAddon
 {
     use ExtensionTrait;
 
-    public const ADDON_ALL = 99;
+    public const AddonTypeEnum ADDON_TYPE = AddonTypeEnum::ADDON_ALL;
 
-    /** @var LoggerInterface */
-    private static $logger;
+    private static LoggerInterface $logger;
 
     public function __construct()
     {
@@ -35,10 +34,11 @@ class AllAddon extends AbstractAddon
         self::$logger->debug('END');
     }
 
+    #[\Override]
     protected function init(): void
     {
         parent::init();
-        $extensions         = $this->initExtensions(IExtension::EXTENSION_ALL);
+        $extensions         = $this->initExtensions(ExtensionEnum::EXTENSION_ALL);
         $this->addonsMacros = $this->getExtensionAddons($extensions);
     }
 }

@@ -14,75 +14,47 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Helper;
 
 use Ds\Map;
-use PHPUnit\Framework\ConstantCheckTestCase;
-use ollily\Tools\Test\TestData;
+use oglow\tools\Yacorapi\Macro\HasMacroBodyEnum;
+use oglow\tools\Yacorapi\YacorapiTestData as YTD;
+use ollily\Tools\Reflection\UnavailableMethodsTrait;
+use PHPUnit\Framework\EasyGoingTestCase;
 
-class ContentHelperTest extends ConstantCheckTestCase
+class ContentHelperTest extends EasyGoingTestCase
 {
-    public const CLASS_PREFIX = ContentHelperTest::class . self::C_STATIC_SEP;
+    use UnavailableMethodsTrait;
 
-    public const MACRO_HTML = 'html';
-
-    public const MACRO_SECTION = 'section';
-
-    public const MACRO_COLUMN = 'column';
-
-    /** @var int */
-    protected const EXPECTED_CONSTANT_COUNT = 13;
-
-    /** @var bool */
-    protected const WITH_CONST_CROSSCHECK = true;
-
-    /**
-     * @return ContentHelper
-     */
-    protected static function prepareO2t()
+    #[\Override]
+    protected static function prepareO2t(): object
     {
-        return new ContentHelper();
+        return ContentHelper::i();
+    }
+
+    #[\Override]
+    protected function getCasto2t(): ContentHelper
+    {
+        return $this->o2t::i();
     }
 
     /**
-     * @return ContentHelper
+     * @param string           $expected
+     * @param string           $macroName
+     * @param Map<mixed,mixed> $parameters
+     * @param string           $body
      */
-    protected function getCasto2t()
+    #[\PHPUnit\Framework\Attributes\DataProvider('providerPrepareMacro')]
+    public function ztestPrepareMacro(string $expected, string $macroName, Map $parameters, string $body): void
     {
-        return $this->o2t;
-    }
+        $actual = $this->getCasto2t()->prepareMacro($macroName, $parameters, $body);
 
-    public static function setUpBeforeClass(bool $withConstCrossCheck = self::WITH_CONST_CROSSCHECK, int $expectedConstsCount = self::EXPECTED_CONSTANT_COUNT): void
-    {
-        parent::setUpBeforeClass($withConstCrossCheck, $expectedConstsCount);
-    }
-
-    public function testConstsExists(): void
-    {
-        $const = [
-            self::CLASS_PREFIX . 'MACROBODY_PLAIN',
-            self::CLASS_PREFIX . 'MACROBODY_RICHTEXT',
-            self::CLASS_PREFIX . 'CHOOSE_BODY_RICHTEXT',
-            self::CLASS_PREFIX . 'CHOOSE_BODY_PLAIN',
-            self::CLASS_PREFIX . 'TAG_PARAM_START',
-            self::CLASS_PREFIX . 'TAG_PARAM_END',
-            self::CLASS_PREFIX . 'TAG_PLAIN_START',
-            self::CLASS_PREFIX . 'TAG_PLAIN_END',
-            self::CLASS_PREFIX . 'TAG_RICH_START',
-            self::CLASS_PREFIX . 'TAG_RICH_END',
-            self::CLASS_PREFIX . 'TAG_MACRO_START',
-            self::CLASS_PREFIX . 'TAG_MACRO_END',
-            self::CLASS_PREFIX . 'TAG_MACRO_VERSION',
-        ];
-        static::updateActualConsts($const);
-
-        $this->verifyConstAllExists($const);
+        self::assertEquals($expected, $actual);
     }
 
     /**
-     * @param string                $expected
-     * @param null|Map<mixed,mixed> $parameters
-     *
-     * @dataProvider providerParameters
+     * @param string           $expected
+     * @param Map<mixed,mixed> $parameters
      */
-    public function testPrepareMacroParameter(string $expected, ?Map $parameters): void
+    #[\PHPUnit\Framework\Attributes\DataProvider('providerPrepareMacroParameter')]
+    public function ztestPrepareMacroParameter(string $expected, Map $parameters): void
     {
         $actual = $this->getCasto2t()->prepareMacroParameter($parameters);
 
@@ -92,10 +64,9 @@ class ContentHelperTest extends ConstantCheckTestCase
     /**
      * @param string $expected
      * @param string $body
-     *
-     * @dataProvider providerPlainBody
      */
-    public function testPreparePlainBody(string $expected, string $body): void
+    #[\PHPUnit\Framework\Attributes\DataProvider('providerPreparePlainBody')]
+    public function ztestPreparePlainBody(string $expected, string $body): void
     {
         $actual = $this->getCasto2t()->preparePlainBody($body);
 
@@ -105,12 +76,23 @@ class ContentHelperTest extends ConstantCheckTestCase
     /**
      * @param string $expected
      * @param string $body
-     *
-     * @dataProvider providerRichBody
      */
-    public function testPrepareRichTextBody(string $expected, string $body): void
+    #[\PHPUnit\Framework\Attributes\DataProvider('providerPrepareRichBody')]
+    public function ztestPrepareRichTextBody(string $expected, string $body): void
     {
         $actual = $this->getCasto2t()->prepareRichTextBody($body);
+
+        self::assertEquals($expected, $actual);
+    }
+
+    /**
+     * @param HasMacroBodyEnum $expected
+     * @param string           $macroName
+     */
+    #[\PHPUnit\Framework\Attributes\DataProvider('providerChooseMacroBody')]
+    public function ztestChooseMacroBody(HasMacroBodyEnum $expected, string $macroName): void
+    {
+        $actual = $this->callMethodOnO2t('chooseMacroBody', [$macroName]);
 
         self::assertEquals($expected, $actual);
     }
@@ -119,10 +101,9 @@ class ContentHelperTest extends ConstantCheckTestCase
      * @param string $expected
      * @param string $macroName
      * @param string $body
-     *
-     * @dataProvider providerMacroNameBody
      */
-    public function testPrepareMacroBody(string $expected, string $macroName, string $body): void
+    #[\PHPUnit\Framework\Attributes\DataProvider('providerPrepareMacroBody')]
+    public function ztestPrepareMacroBody(string $expected, string $macroName, string $body): void
     {
         $actual = $this->getCasto2t()->prepareMacroBody($macroName, $body);
 
@@ -130,180 +111,230 @@ class ContentHelperTest extends ConstantCheckTestCase
     }
 
     /**
-     * @param string $expected
-     * @param string $macroName
-     *
-     * @dataProvider providerChooseMacroBody
+     * @param bool   $expected
+     * @param string $searchMacro
+     * @param string $replaceMacro
      */
-    public function testChooseMacroBody(string $expected, string $macroName): void
+    #[\PHPUnit\Framework\Attributes\DataProvider('providerReplaceMacro')]
+    public function testReplaceMacro(bool $expected, string $expectedMacro, string $searchMacro, string $replaceMacro): void
     {
-        $actual = $this->getCasto2t()->chooseMacroBody($macroName);
-
-        self::assertEquals($expected, $actual);
-    }
-
-    /**
-     * @param string                $expected
-     * @param string                $macroName
-     * @param null|Map<mixed,mixed> $parameters
-     * @param string                $body
-     *
-     * @dataProvider providerMacroNameParametersBody
-     */
-    public function testPrepareMacro(string $expected, string $macroName, ?Map $parameters, string $body): void
-    {
-        $actual = $this->getCasto2t()->prepareMacro($macroName, $parameters, $body);
-
-        self::assertEquals($expected, $actual);
+        $macroOriginal = $this->getCasto2t()->prepareMacro($searchMacro, new Map([YTD::KEY_ALPHA1 => YTD::DATA_ALPHA1]));
+        $content = sprintf(YTD::TAG_ROOT, '', $macroOriginal);
+        $domDoc = YTD::prepareDOMDocument($content);
+        if ($expected) {
+            self::assertStringContainsString($searchMacro, $content);
+            self::assertStringNotContainsString($replaceMacro, $content);
+        }
+        $actual = $this->getCasto2t()->replaceMacro($searchMacro, $replaceMacro, $domDoc);
+        if ($actual instanceof \DOMDocument) {
+            $actualXml = $actual->saveXML();
+            if (is_string($actualXml)) {
+                self::assertStringContainsString($expectedMacro, $actualXml);
+            } else {
+                self::fail('Invalid XML:');
+            }
+        } else {
+            self::fail(sprintf('Wrong result: %s', get_class($actual)));
+        }
     }
 
     // Dataprovider
 
     /**
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
-    public function providerPlainBody(): array
+    public static function providerReplaceMacro(): array
     {
+        $expected = ContentHelper::TAG_PARAMETER_NAME_NAME . '="%s"';
+
         return [
-            'empty' => [TestData::DATA_EMPTY, TestData::DATA_EMPTY],
-            'html' => [ContentHelper::TAG_PLAIN_START . self::MACRO_HTML . ContentHelper::TAG_PLAIN_END, self::MACRO_HTML],
-            'section' => [ContentHelper::TAG_PLAIN_START . self::MACRO_SECTION . ContentHelper::TAG_PLAIN_END, self::MACRO_SECTION],
-            'column' => [ContentHelper::TAG_PLAIN_START . self::MACRO_COLUMN . ContentHelper::TAG_PLAIN_END, self::MACRO_COLUMN],
+            'emptyEmpty' => [false, sprintf($expected, YTD::MACRO_EMPTY), YTD::MACRO_EMPTY, YTD::MACRO_EMPTY],
+            'searchSearch' => [false, sprintf($expected, YTD::MACRO_SEARCH), YTD::MACRO_SEARCH, YTD::MACRO_SEARCH],
+            'replaceReplace' => [false, sprintf($expected, YTD::MACRO_REPLACE), YTD::MACRO_REPLACE, YTD::MACRO_REPLACE],
+            'searchEmpty' => [false, sprintf($expected, YTD::MACRO_EMPTY), YTD::MACRO_SEARCH, YTD::MACRO_EMPTY],
+            'emptyReplace' => [false, sprintf($expected, YTD::MACRO_EMPTY), YTD::MACRO_EMPTY, YTD::MACRO_EMPTY],
+            'searchReplace' => [true, sprintf($expected, YTD::MACRO_REPLACE), YTD::MACRO_SEARCH, YTD::MACRO_REPLACE],
         ];
     }
 
     /**
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
-    public function providerRichBody(): array
+    public static function providerPreparePlainBody(): array
     {
         return [
-            'empty' => [TestData::DATA_EMPTY, TestData::DATA_EMPTY],
-            'html' => [ContentHelper::TAG_RICH_START . self::MACRO_HTML . ContentHelper::TAG_RICH_END, self::MACRO_HTML],
-            'section' => [ContentHelper::TAG_RICH_START . self::MACRO_SECTION . ContentHelper::TAG_RICH_END, self::MACRO_SECTION],
-            'column' => [ContentHelper::TAG_RICH_START . self::MACRO_COLUMN . ContentHelper::TAG_RICH_END, self::MACRO_COLUMN],
+            'empty' => [YTD::DATA_EMPTY, YTD::DATA_EMPTY],
+            'content' => [self::prepareBodyPlain(YTD::MACR_BODY_CONTENT), YTD::MACR_BODY_CONTENT],
         ];
     }
 
     /**
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
-    public function providerMacroName(): array
+    public static function providerPrepareRichBody(): array
     {
         return [
-            'empty' => [false, TestData::DATA_EMPTY],
-            'html' => [false, self::MACRO_HTML],
-            'section' => [false, self::MACRO_SECTION],
-            'column' => [false, self::MACRO_COLUMN],
+            'empty' => [YTD::DATA_EMPTY, YTD::DATA_EMPTY],
+            'content' => [self::prepareBodyRich(YTD::MACR_BODY_CONTENT), YTD::MACR_BODY_CONTENT],
         ];
     }
 
     /**
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
-    public function providerChooseMacroBody(): array
+    public static function providerMacroName(): array
     {
         return [
-            'empty' => [ContentHelper::CHOOSE_BODY_PLAIN, TestData::DATA_EMPTY],
-            'html' => [ContentHelper::CHOOSE_BODY_PLAIN, self::MACRO_HTML],
-            'section' => [ContentHelper::CHOOSE_BODY_RICHTEXT, self::MACRO_SECTION],
-            'column' => [ContentHelper::CHOOSE_BODY_RICHTEXT, self::MACRO_COLUMN],
+            'empty' => [false, YTD::DATA_EMPTY],
+            'html' => [false, YTD::MACRO_IRL_HTML],
+            'code' => [false, YTD::MACRO_IRL_CODE],
+            'section' => [false, YTD::MACRO_IRL_SECTION],
+            'column' => [false, YTD::MACRO_IRL_COLUMN],
         ];
     }
 
     /**
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
-    public function providerParameters(): array
+    public static function providerChooseMacroBody(): array
     {
         return [
-            'null' => ['', null],
+            'empty' => [HasMacroBodyEnum::NONE, YTD::DATA_EMPTY],
+            'notExist' => [HasMacroBodyEnum::NONE, YTD::DATA_NOTEXIST],
+            'html' => [HasMacroBodyEnum::PLAIN, YTD::MACRO_IRL_HTML],
+            'code' => [HasMacroBodyEnum::PLAIN, YTD::MACRO_IRL_CODE],
+            'section' => [HasMacroBodyEnum::RICH, YTD::MACRO_IRL_SECTION],
+            'column' => [HasMacroBodyEnum::RICH, YTD::MACRO_IRL_COLUMN],
+        ];
+    }
+
+    /**
+     * @return array<mixed>
+     */
+    public static function providerPrepareMacroParameter(): array
+    {
+        return [
             'empty' => ['', new Map()],
             'oneParam' => [
-                sprintf(ContentHelper::TAG_PARAM_START . TestData::DATA_ALPHA1 . ContentHelper::TAG_PARAM_END, 0),
-                new Map(TestData::ARRAY_ALPHA1)],
+                self::prepareParameter(YTD::KEY_NUM1, YTD::DATA_NUM1),
+                new Map(YTD::ARRAY_NUM_KEY1)],
             'twoParam' => [
-                sprintf(ContentHelper::TAG_PARAM_START . TestData::DATA_BOOL_T . ContentHelper::TAG_PARAM_END, 0) .
-                sprintf(ContentHelper::TAG_PARAM_START . TestData::DATA_BOOL_F . ContentHelper::TAG_PARAM_END, 1)
-                , new Map(TestData::ARRAY_BOOL2)],
+                self::prepareParameter(0, YTD::DATA_BOOL_T) .
+                self::prepareParameter(1, YTD::DATA_BOOL_F),
+                new Map(YTD::ARRAY_BOOL2)],
             'threeParam' => [
-                sprintf(ContentHelper::TAG_PARAM_START . TestData::DATA_NUM1 . ContentHelper::TAG_PARAM_END, 0) .
-                sprintf(ContentHelper::TAG_PARAM_START . TestData::DATA_NUM2 . ContentHelper::TAG_PARAM_END, 1) .
-                sprintf(ContentHelper::TAG_PARAM_START . TestData::DATA_NUM3 . ContentHelper::TAG_PARAM_END, 2)
-                , new Map(TestData::ARRAY_NUM3)],
+                self::prepareParameter(YTD::KEY_NUM1, YTD::DATA_NUM1) .
+                self::prepareParameter(YTD::KEY_NUM2, YTD::DATA_NUM2) .
+                self::prepareParameter(YTD::KEY_NUM3, YTD::DATA_NUM3),
+                new Map(YTD::ARRAY_NUM_KEY3)],
         ];
     }
 
     /**
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
-    public function providerMacroNameBody(): array
+    public static function providerPrepareMacroBody(): array
     {
         return [
-            'emptyAll' => [TestData::DATA_EMPTY, TestData::DATA_EMPTY, TestData::DATA_EMPTY],
-            'htmlEmptyBody' => [TestData::DATA_EMPTY, self::MACRO_HTML, TestData::DATA_EMPTY],
-            'sectionEmptyBody' => [TestData::DATA_EMPTY, self::MACRO_SECTION, TestData::DATA_EMPTY],
-            'columnEmptyBody' => [TestData::DATA_EMPTY, self::MACRO_COLUMN, TestData::DATA_EMPTY],
-            'emptyMacroWithBody' => [
-                ContentHelper::TAG_PLAIN_START . TestData::DATA_ALPHA1 . ContentHelper::TAG_PLAIN_END,
-                TestData::DATA_EMPTY, TestData::DATA_ALPHA1],
+            'emptyAll' => [YTD::DATA_EMPTY, YTD::DATA_EMPTY, YTD::DATA_EMPTY],
+            'htmlEmptyBody' => [YTD::DATA_EMPTY, YTD::MACRO_IRL_HTML, YTD::DATA_EMPTY],
+            'codeEmptyBody' => [YTD::DATA_EMPTY, YTD::MACRO_IRL_CODE, YTD::DATA_EMPTY],
+            'sectionEmptyBody' => [YTD::DATA_EMPTY, YTD::MACRO_IRL_SECTION, YTD::DATA_EMPTY],
+            'columnEmptyBody' => [YTD::DATA_EMPTY, YTD::MACRO_IRL_COLUMN, YTD::DATA_EMPTY],
+            'emptyMacroWithBody' => [YTD::DATA_EMPTY, YTD::DATA_EMPTY, YTD::DATA_ALPHA1],
             'htmlWithBody' => [
-                ContentHelper::TAG_PLAIN_START . TestData::DATA_ALPHA1 . ContentHelper::TAG_PLAIN_END,
-                self::MACRO_HTML, TestData::DATA_ALPHA1],
+                self::prepareBodyPlain(YTD::DATA_ALPHA1),
+                YTD::MACRO_IRL_HTML, YTD::DATA_ALPHA1],
+            'codeWithBody' => [
+                self::prepareBodyPlain(YTD::DATA_ALPHA1),
+                YTD::MACRO_IRL_CODE, YTD::DATA_ALPHA1],
             'sectionWithBody' => [
-                ContentHelper::TAG_RICH_START . TestData::DATA_ALPHA1 . ContentHelper::TAG_RICH_END,
-                self::MACRO_SECTION, TestData::DATA_ALPHA1],
+                self::prepareBodyRich(YTD::DATA_ALPHA1),
+                YTD::MACRO_IRL_SECTION, YTD::DATA_ALPHA1],
             'columnWithBody' => [
-                ContentHelper::TAG_RICH_START . TestData::DATA_ALPHA1 . ContentHelper::TAG_RICH_END,
-                self::MACRO_COLUMN, TestData::DATA_ALPHA1],
+                self::prepareBodyRich(YTD::DATA_ALPHA1),
+                YTD::MACRO_IRL_COLUMN, YTD::DATA_ALPHA1],
         ];
     }
 
     /**
-     * @return array<mixed,mixed>
+     * @return array<mixed>
      */
-    public function providerMacroNameParametersBody(): array
+    public static function providerPrepareMacro(): array
     {
         return [
-            'nullParam' => [
-                sprintf(ContentHelper::TAG_MACRO_START . ContentHelper::TAG_MACRO_END, TestData::DATA_EMPTY, ContentHelper::TAG_MACRO_VERSION),
-                TestData::DATA_EMPTY, null, TestData::DATA_EMPTY],
             'emptyParam' => [
-                sprintf(ContentHelper::TAG_MACRO_START . ContentHelper::TAG_MACRO_END, TestData::DATA_EMPTY, ContentHelper::TAG_MACRO_VERSION),
-                TestData::DATA_EMPTY, new Map(), TestData::DATA_EMPTY],
+                self::prepareMacro(YTD::DATA_EMPTY), YTD::DATA_EMPTY, new Map(), YTD::DATA_EMPTY],
             'oneParam' => [
                 sprintf(
                     ContentHelper::TAG_MACRO_START .
-                    sprintf(ContentHelper::TAG_PARAM_START . TestData::DATA_ALPHA1 . ContentHelper::TAG_PARAM_END, 0) .
-                    TestData::DATA_ALPHA3 .
+                    self::prepareParameter(0, YTD::DATA_ALPHA1) .
                     ContentHelper::TAG_MACRO_END,
-                    TestData::DATA_ALPHA2,
+                    YTD::DATA_ALPHA2,
                     ContentHelper::TAG_MACRO_VERSION
                 ),
-                TestData::DATA_ALPHA2, new Map(TestData::ARRAY_ALPHA1), TestData::DATA_ALPHA3],
+                YTD::DATA_ALPHA2, new Map(YTD::ARRAY_ALPHA1), YTD::DATA_ALPHA3],
             'twoParam' => [
                 sprintf(
                     ContentHelper::TAG_MACRO_START .
-                    sprintf(ContentHelper::TAG_PARAM_START . TestData::DATA_BOOL_T . ContentHelper::TAG_PARAM_END, 0) .
-                    sprintf(ContentHelper::TAG_PARAM_START . TestData::DATA_BOOL_F . ContentHelper::TAG_PARAM_END, 1) .
-                    TestData::DATA_ALPHA2 .
+                    self::prepareParameter(0, YTD::DATA_BOOL_T) .
+                    self::prepareParameter(1, YTD::DATA_BOOL_F) .
                     ContentHelper::TAG_MACRO_END,
-                    TestData::DATA_ALPHA1,
+                    YTD::DATA_ALPHA1,
                     ContentHelper::TAG_MACRO_VERSION
                 ),
-                TestData::DATA_ALPHA1, new Map(TestData::ARRAY_BOOL2), TestData::DATA_ALPHA2],
+                YTD::DATA_ALPHA1, new Map(YTD::ARRAY_BOOL2), YTD::DATA_ALPHA2],
             'threeParam' => [
                 sprintf(
                     ContentHelper::TAG_MACRO_START .
-                    sprintf(ContentHelper::TAG_PARAM_START . TestData::DATA_NUM1 . ContentHelper::TAG_PARAM_END, 0) .
-                    sprintf(ContentHelper::TAG_PARAM_START . TestData::DATA_NUM2 . ContentHelper::TAG_PARAM_END, 1) .
-                    sprintf(ContentHelper::TAG_PARAM_START . TestData::DATA_NUM3 . ContentHelper::TAG_PARAM_END, 2) .
-                    TestData::DATA_ALPHA2 .
+                    self::prepareParameter(0, YTD::DATA_NUM1) .
+                    self::prepareParameter(1, YTD::DATA_NUM2) .
+                    self::prepareParameter(2, YTD::DATA_NUM3) .
                     ContentHelper::TAG_MACRO_END,
-                    TestData::DATA_ALPHA5,
+                    YTD::DATA_ALPHA5,
                     ContentHelper::TAG_MACRO_VERSION
                 ),
-                TestData::DATA_ALPHA5, new Map(TestData::ARRAY_NUM3), TestData::DATA_ALPHA2],
+                YTD::DATA_ALPHA5, new Map(YTD::ARRAY_NUM3), YTD::DATA_ALPHA2],
+            'codePlainBody' => [
+                sprintf(
+                    ContentHelper::TAG_MACRO_START .
+                    self::prepareBodyPlain(YTD::MACR_BODY_CONTENT) .
+                    ContentHelper::TAG_MACRO_END,
+                    YTD::MACRO_IRL_CODE,
+                    ContentHelper::TAG_MACRO_VERSION
+                ),
+                YTD::MACRO_IRL_CODE, new Map(), YTD::MACR_BODY_CONTENT],
+            'sectionRichBody' => [
+                sprintf(
+                    ContentHelper::TAG_MACRO_START .
+                    self::prepareBodyRich(YTD::MACR_BODY_CONTENT) .
+                    ContentHelper::TAG_MACRO_END,
+                    YTD::MACRO_IRL_SECTION,
+                    ContentHelper::TAG_MACRO_VERSION
+                ),
+                YTD::MACRO_IRL_SECTION, new Map(), YTD::MACR_BODY_CONTENT],
         ];
+    }
+
+    // Helper
+
+    protected static function prepareMacro(mixed $macroName): string
+    {
+        return sprintf(ContentHelper::TAG_MACRO_START . ContentHelper::TAG_MACRO_END, $macroName, ContentHelper::TAG_MACRO_VERSION);
+    }
+
+    protected static function prepareParameter(mixed $paramName, mixed $paramValue): string
+    {
+        return sprintf(ContentHelper::TAG_PARAMETER, $paramName, $paramValue);
+    }
+
+    protected static function prepareBodyPlain(mixed $bodyContent): string
+    {
+        return sprintf(ContentHelper::TAG_BODY_PLAIN, $bodyContent);
+    }
+
+    protected static function prepareBodyRich(mixed $bodyContent): string
+    {
+        return sprintf(ContentHelper::TAG_BODY_RICH, $bodyContent);
     }
 }

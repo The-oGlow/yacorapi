@@ -20,25 +20,21 @@ use PHPUnit\Framework\EasyGoingTestCase;
 
 class ProjectDocToolboxHelperTest extends EasyGoingTestCase
 {
-    /** @var string */
-    private $cleanupFile = '';
+    private string $cleanupFile = '';
 
-    /**
-     * @return ProjectDocToolboxHelper
-     */
-    protected static function prepareO2t()
+    #[\Override]
+    protected static function prepareO2t(): object
     {
-        return new ProjectDocToolboxHelper();
+        return ProjectDocToolboxHelper::i();
     }
 
-    /**
-     * @return ProjectDocToolboxHelper
-     */
-    protected function getCasto2t()
+    #[\Override]
+    protected function getCasto2t(): ProjectDocToolboxHelper
     {
         return $this->o2t;
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         parent::tearDown();
@@ -50,9 +46,8 @@ class ProjectDocToolboxHelperTest extends EasyGoingTestCase
      * @param string    $oldDoctype
      * @param string    $newDoctype
      * @param bool      $expected
-     *
-     * @dataProvider providerModifyData
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('providerModifyData')]
     public function testModifyData(IResponse $response, string $oldDoctype, string $newDoctype, bool $expected): void
     {
         $actual = $this->getCasto2t()->modifyData($response, $oldDoctype, $newDoctype);
@@ -61,9 +56,9 @@ class ProjectDocToolboxHelperTest extends EasyGoingTestCase
     }
 
     /**
-     * @return array<mixed,array<mixed,mixed>>
+     * @return array<array<mixed>>
      */
-    public function providerModifyData(): array
+    public static function providerModifyData(): array
     {
         return [
             'RequestNew' => [new Response(), YacorapiTestData::MACR_DOCTYPE_OLD, YacorapiTestData::MACR_DOCTYPE_NEW, false],
@@ -76,9 +71,8 @@ class ProjectDocToolboxHelperTest extends EasyGoingTestCase
      * @param string $oldDoctype
      * @param string $newDoctype
      * @param bool   $expected
-     *
-     * @dataProvider providerReplaceAndStoreDoctype
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('providerReplaceAndStoreDoctype')]
     public function testReplaceAndStoreDoctype(string $fileName, string $body, string $oldDoctype, string $newDoctype, bool $expected): void
     {
         $this->cleanupFile = $fileName;
@@ -88,9 +82,9 @@ class ProjectDocToolboxHelperTest extends EasyGoingTestCase
     }
 
     /**
-     * @return array<mixed,array<mixed,mixed>>
+     * @return array<array<mixed>>
      */
-    public function providerReplaceAndStoreDoctype(): array
+    public static function providerReplaceAndStoreDoctype(): array
     {
         return [
             'FilenameWrongBodyEmpty' => [
@@ -98,28 +92,28 @@ class ProjectDocToolboxHelperTest extends EasyGoingTestCase
                 YacorapiTestData::MACR_BODY_EMPTY,
                 YacorapiTestData::MACR_DOCTYPE_OLD,
                 YacorapiTestData::MACR_DOCTYPE_NEW,
-                false
+                false,
             ],
             'FilenameWrongBodySimple' => [
                 YacorapiTestData::FILE_FILENAME_EMPTY,
                 YacorapiTestData::MACR_BODY_SIMPLE,
                 YacorapiTestData::MACR_DOCTYPE_OLD,
                 YacorapiTestData::MACR_DOCTYPE_NEW,
-                false
+                false,
             ],
             'FilenameCorrectBodyEmpty' => [
                 YacorapiTestData::prepareTempFile(),
                 YacorapiTestData::MACR_BODY_EMPTY,
                 YacorapiTestData::MACR_DOCTYPE_OLD,
                 YacorapiTestData::MACR_DOCTYPE_NEW,
-                false
+                false,
             ],
             'FilenameCorrectBodySimple' => [
                 YacorapiTestData::prepareTempFile(),
                 YacorapiTestData::MACR_BODY_SIMPLE,
                 YacorapiTestData::MACR_DOCTYPE_OLD,
                 YacorapiTestData::MACR_DOCTYPE_NEW,
-                false
+                false,
             ],
         ];
     }
@@ -129,14 +123,13 @@ class ProjectDocToolboxHelperTest extends EasyGoingTestCase
      * @param string $oldDoctype
      * @param string $newDoctype
      * @param bool   $isContains
-     *
-     * @dataProvider providerReplaceDoctype
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('providerReplaceDoctype')]
     public function testReplaceDoctype(string $body, string $oldDoctype, string $newDoctype, bool $isContains): void
     {
-        /** @var string $actual */
         $actual = $this->getCasto2t()->replaceDoctype($body, $oldDoctype, $newDoctype);
 
+        self::assertNotNull($actual);
         if ($isContains) {
             self::assertStringContainsString($newDoctype, $actual);
         } else {
@@ -145,9 +138,9 @@ class ProjectDocToolboxHelperTest extends EasyGoingTestCase
     }
 
     /**
-     * @return array<mixed,array<mixed,mixed>>
+     * @return array<array<mixed>>
      */
-    public function providerReplaceDoctype(): array
+    public static function providerReplaceDoctype(): array
     {
         return [
             'BodyEmpty'              => [YacorapiTestData::MACR_BODY_EMPTY, YacorapiTestData::MACR_DOCTYPE_OLD, YacorapiTestData::MACR_DOCTYPE_NEW, false],
@@ -160,7 +153,7 @@ class ProjectDocToolboxHelperTest extends EasyGoingTestCase
                 ),
                 YacorapiTestData::MACR_DOCTYPE_OLD,
                 YacorapiTestData::MACR_DOCTYPE_NEW,
-                false
+                false,
             ],
             'DoctypeInvalid'         => [
                 YacorapiTestData::repPH(
@@ -169,7 +162,7 @@ class ProjectDocToolboxHelperTest extends EasyGoingTestCase
                 ),
                 YacorapiTestData::MACR_DOCTYPE_OLD,
                 YacorapiTestData::MACR_DOCTYPE_NEW,
-                false
+                false,
             ],
             'DoctypeCorrect'         => [
                 YacorapiTestData::repPH(
@@ -178,7 +171,7 @@ class ProjectDocToolboxHelperTest extends EasyGoingTestCase
                 ),
                 YacorapiTestData::MACR_DOCTYPE_OLD,
                 YacorapiTestData::MACR_DOCTYPE_NEW,
-                true
+                true,
             ],
             'DoctypeAlreadyReplaced' => [
                 YacorapiTestData::repPH(
@@ -187,7 +180,7 @@ class ProjectDocToolboxHelperTest extends EasyGoingTestCase
                 ),
                 YacorapiTestData::MACR_DOCTYPE_OLD,
                 YacorapiTestData::MACR_DOCTYPE_NEW,
-                true
+                true,
             ],
         ];
     }

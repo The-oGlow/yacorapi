@@ -29,15 +29,10 @@ parameters:
                 - tests/*/*Test.php
 
         # Custom
-        -   
-            identifier: assign.propertyType
-            paths:
-                - src/Yacorapi/Client/AbstractRapiClient.php
         -
             identifier: class.notFound
             paths:
-                - src/Yacorapi/ConstData.php
-                - tests/Yacorapi/MySpacesTest.php
+                - tests/Yacorapi/Space/MySpacesTest.php
         -
             identifier: property.onlyWritten
             paths:
@@ -45,8 +40,6 @@ parameters:
 
     excludePaths:
         -  src/Addon/Projectdoc
-        -  src/Addon/Atlassian/Extension/AdminExtension.php
-        -  src/Yacorapi/Response/ResponseDryRun.php
 
 includes:
     - vendor/phpstan/phpstan-strict-rules/rules.neon

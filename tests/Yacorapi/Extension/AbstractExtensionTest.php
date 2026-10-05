@@ -14,24 +14,23 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Extension;
 
 use Ds\Map;
-use Ds\Vector;
+use Ds\Seq;
 use oglow\tools\Yacorapi\YacorapiTestData;
 use PHPUnit\Framework\EasyGoingTestCase;
 
 class AbstractExtensionTest extends EasyGoingTestCase
 {
-    /**
-     * @return AbstractExtensionTestClazz
-     */
-    protected static function prepareO2t()
+    #[\Override]
+    protected static function prepareO2t(): AbstractExtensionTestClazz
     {
         return new AbstractExtensionTestClazz();
     }
 
     /**
-     * @return AbstractExtensionTestClazz
+     * @inheritDoc
      */
-    protected function getCasto2t()
+    #[\Override]
+    protected function getCasto2t(): AbstractExtensionTestClazz
     {
         return $this->o2t;
     }
@@ -56,7 +55,7 @@ class AbstractExtensionTest extends EasyGoingTestCase
 
     public function testGetAddons(): void
     {
-        $expected = new Map([YacorapiTestData::ADDON_1 => new Vector(YacorapiTestData::ADDON_1_ORDER)]);
+        $expected = new Map([YacorapiTestData::ADDON_1 => new Seq(YacorapiTestData::ADDON_1_ORDER)]);
 
         $actual = $this->getCasto2t()->getAddons();
 
@@ -65,7 +64,7 @@ class AbstractExtensionTest extends EasyGoingTestCase
 
     public function testGetMacros(): void
     {
-        $expected = new Vector(YacorapiTestData::ADDON_1_ORDER);
+        $expected = new Seq(YacorapiTestData::ADDON_1_ORDER);
 
         $actual = $this->getCasto2t()->getMacros();
 

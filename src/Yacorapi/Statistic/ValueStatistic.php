@@ -13,103 +13,45 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Statistic;
 
-use Ds\Set;
-
+/**
+ * A statistic element which contains a constant and primitive value;.
+ */
 class ValueStatistic extends AbstractStatistic
 {
-    public const    C_STATISTIC_NAME = 'statisticName';
-
-    public const    C_EXPORT_NAME1   = 'exportName';
-
-    public const    C_VALUE          = 'value';
-
-    protected const EXPORT_NAME = self::C_VALUE;
-
-    /** @var Set<mixed> */
-    private $keysForValue;
-
-    /** @var mixed */
-    private $value;
+    public const string KEY_COUNT = StatisticTypeEnum::VALUE->value;
 
     /**
-     * ValueStatistic constructor.
-     *
      * @param string $statisticName
+     * @param mixed  $value
+     * @param string $exportName
      */
-    public function __construct($statisticName)
+    public function __construct(string $statisticName, mixed $value, string $exportName = StatisticStatistic::EMPTY_STRING)
     {
-        parent::__construct($statisticName);
-        $this->keysForValue = new Set([self::EXPORT_NAME]);
+        if (empty($statisticName)) {
+            $statisticName = self::KEY_COUNT;
+        }
+        if (empty($exportName)) {
+            $exportName = self::KEY_COUNT;
+        }
+        parent::__construct($statisticName, $exportName, StatisticTypeEnum::VALUE);
+        $this->addItem(self::EMPTY_STRING, $value);
     }
 
     /**
-     * @return Set<mixed>
+     * @inheritDoc
      */
-    public function keys(): Set
+    #[\Override]
+    public function addItem(mixed $key, mixed $item): void
     {
-        return $this->keysForValue;
+        parent::addItem(self::KEY_COUNT, $item);
     }
 
     /**
-     * @param mixed $key
-     *
-     * @return bool
+     * @inheritDoc
      */
-    public function keyExists($key): bool
+    #[\Override]
+    public function getItem(mixed $key): mixed
     {
-        return $this->keysForValue->contains($key);
-    }
-
-    /**
-     * @param mixed      $key
-     * @param IStatistic $item
-     *
-     * @see addValue()
-     */
-    public function addItem($key, $item): void
-    {
-        throw new \BadMethodCallException('Use instead \'->addValue\'');
-    }
-
-    /**
-     * @param mixed $key
-     *
-     * @return null|IStatistic
-     *
-     * @see getValue()
-     */
-    public function getItem($key)
-    {
-        throw new \BadMethodCallException('Use instead \'->getValue\'');
-    }
-
-    /**
-     * @param mixed $item
-     */
-    public function addValue($item): void
-    {
-        $this->value = $item;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getValue()
-    {
-        return $this->value;
-    }
-
-    /**
-     * @inheritdoc
-     *
-     * @SuppressWarnings("PHPMD.CamelCaseMethodName")
-     */
-    protected function __toStringValues(): array
-    {
-        return [
-            self::C_STATISTIC_NAME => $this->getStatisticName(),
-            self::C_EXPORT_NAME1   => $this->getExportName(),
-            self::C_VALUE          => $this->value
-        ];
+        return parent::getItem(self::KEY_COUNT);
     }
 }
