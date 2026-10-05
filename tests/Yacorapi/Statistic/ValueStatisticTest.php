@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Statistic;
 
-use Ds\Vector;
+use Ds\Seq;
 use ollily\Tools\Test\TestData as TeDa;
 use PHPUnit\Framework\EasyGoingTestCase;
 
@@ -33,7 +33,7 @@ class ValueStatisticTest extends EasyGoingTestCase
 
     public function testKeys(): void
     {
-        $expected = new Vector([ValueStatistic::KEY_COUNT]);
+        $expected = new Seq([ValueStatistic::KEY_COUNT]);
 
         $actual = $this->getCasto2t()->keys();
 

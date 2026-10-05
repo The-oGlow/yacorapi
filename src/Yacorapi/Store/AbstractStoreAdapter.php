@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Store;
 
-use Ds\Sequence;
-use Ds\Vector;
+use Ds\Seq;
 use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\ExitCodes;
@@ -58,13 +57,10 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
         FileStoreStageEnum $staging = FileStoreStageEnum::BASE,
         mixed $level = self::LEVEL_DEFAULT
     ) {
-        /** @psalm-suppress ArgumentTypeCoercion
-         * @phpstan-ignore argument.type */
         self::$logger = new ConsoleLogger(AbstractStoreAdapter::class, level: $level);
         self::$logger->debug("START", [$fileName, $filePrefix, $fileSuffix, $fileExt, $pathToFile, $staging->name]);
 
         // Init Dynamic Consts
-        /** @psalm-suppress MixedMethodCall */
         $this->sessionFolder = $this->prepareTargetFolderSession($fileName, ConstData::i()->c(ConstData::KEY_TARGET_DIR));
         $finalPathToFile = $this->prepareTargetFolderStaging($staging, $this->sessionFolder);
         if (!empty($pathToFile)) {
@@ -85,32 +81,40 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
      * @inheritDoc
      */
     #[\Override]
-    public static function readData(string $fileName, bool $withHeader = false): Sequence {
+    public static function readData(string $fileName, bool $withHeader = false): Seq
+    {
         self::$logger->debug('START', [$fileName, $withHeader]);
 
-        /** @var Sequence<mixed> */
-        $resultList = new Vector();
+        /** @var Seq */
+        $resultList = new Seq();
         if (file_exists($fileName)) {
             $fHandle = fopen($fileName, SP::C_FILE_READ);
 
-            if (!empty($fHandle)) {
-                $columnHeader = new Vector();
+            if (is_resource($fHandle)) {
+                $columnHeader = new Seq();
                 if ($withHeader) {
-                    $columnHeader = self::prepareLineAsColumns(fgets($fHandle, SP::C_FILE_LINE_LEN));
+                    $headerLine = fgets($fHandle, SP::C_FILE_LINE_LEN);
+                    if (!is_bool($headerLine)) {
+                        $columnHeader = self::prepareLineAsColumns($headerLine);
+                    }
                 }
                 while ($line = fgets($fHandle, SP::C_FILE_LINE_LEN)) {
-                    if (is_string($line)) { // @phpstan-ignore function.alreadyNarrowedType
-                        if (empty($columnHeader)) {
+                    /**
+                     * @psalm-suppress RedundantCondition
+                     * @phpstan-ignore function.impossibleType
+                     */
+                    if (!is_bool($line)) {
+                        if ($columnHeader->isEmpty()) {
                             $resultList->push(self::prepareLineAsColumns($line));
                         } else {
                             $tmpLine = self::prepareLineAsColumns($line);
-                            if ($columnHeader->count()==count($tmpLine)) {
+                            if ($columnHeader->count() == count($tmpLine)) {
                                 $resultList->push(array_combine($columnHeader->toArray(), $tmpLine->toArray()));
                             } else {
                                 Emergency::breakSystem(
-                                        ExitCodes::ERR_CODE_STORE_ADAPTER_COLUMN_DATA_MISMATCH, 
-                                        'Column header and column data do not have same size'
-                                        );
+                                    ExitCodes::ERR_CODE_STORE_ADAPTER_COLUMN_DATA_MISMATCH,
+                                    'Column header and column data do not have same size'
+                                );
                             }
                         }
                     }
@@ -122,26 +126,30 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
         }
 
         self::$logger->debug('END');
+
         return $resultList;
     }
 
     /**
      * Extract the column header from string to array.
-     * 
-     * @param type $lineHeader The column header as string
-     * @return Sequence<mixed> The column header as sequence
-     */ 
-    protected static function prepareLineAsColumns(string $lineHeader): Sequence {
+     *
+     * @param string $lineHeader The column header as string
+     *
+     * @return Seq The column header as sequence
+     */
+    protected static function prepareLineAsColumns(string $lineHeader): Seq
+    {
         $lineHeader = str_replace(SP::C_FILE_EOL_ALL, '', $lineHeader);
         $convertedHeader = mb_convert_encoding($lineHeader, SP::C_FILE_UTF8);
 
-        $columnHeader = new Vector();
+        $columnHeader = new Seq();
         if (is_string($convertedHeader)) { // @phpstan-ignore function.alreadyNarrowedType
-            $columnHeader = new Vector(explode(SP::DEFAULT_ITEM_SEP, $convertedHeader));
-        } 
+            $columnHeader = new Seq(explode(SP::DEFAULT_ITEM_SEP, $convertedHeader));
+        }
         foreach ($columnHeader as $index => $column) {
             $columnHeader->set($index, str_replace(SP::C_ILLEGAL_KEY_CHARS, '', $column));
         }
+
         return $columnHeader;
     }
 
@@ -346,5 +354,4 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
 
         self::$logger->debug('END');
     }
-
 }

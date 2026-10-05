@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Macro;
 
 use Ds\Map;
-use Ds\Vector;
+use Ds\Seq;
 use oglow\tools\Yacorapi\YacorapiTestData;
 use PHPUnit\Framework\EasyGoingTestCase;
 
@@ -48,7 +48,7 @@ class AbstractAddonTest extends EasyGoingTestCase
 
     public function testGetAddonNames(): void
     {
-        $expected = new Vector([YacorapiTestData::ADDON_1, YacorapiTestData::ADDON_2]);
+        $expected = new Seq([YacorapiTestData::ADDON_1, YacorapiTestData::ADDON_2]);
 
         $actual = $this->getCasto2t()->getAddonNames();
 
@@ -57,7 +57,7 @@ class AbstractAddonTest extends EasyGoingTestCase
 
     public function testGetMacros(): void
     {
-        $expected = new Vector(
+        $expected = new Seq(
             array_merge(
                 YacorapiTestData::ADDON_1_ORDER,
                 YacorapiTestData::ADDON_2_ORDER

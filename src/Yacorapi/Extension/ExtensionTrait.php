@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Extension;
 
-use Ds\Collection;
 use Ds\Map;
-use Ds\Vector;
+use Ds\Seq;
 use oglow\tools\Yacorapi\ExitCodes;
 use ollily\Tools\Emergency;
 
@@ -33,20 +32,18 @@ trait ExtensionTrait
     ];
 
     /** @var Map<mixed,IExtension> */
-    protected Collection $loadedExtensions;
+    protected Map $loadedExtensions;
 
     /**
-     * @param Collection<mixed,Vector<mixed>> $addons
+     * @param Map<mixed,Seq> $addons
      *
-     * @phpstan-param Map<mixed,Vector<mixed>> $addons
-     *
-     * @return Vector<mixed>
+     * @return Seq
      */
-    public function getExtensionAddonMacros(Collection $addons): Vector
+    public function getExtensionAddonMacros(Map $addons): Seq
     {
-        $macros = new Vector();
+        $macros = new Seq();
 
-        /** @var Vector<string> $vecMacros */
+        /** @var Seq<string> $vecMacros */
         foreach (array_values($addons->toArray()) as $vecMacros) {
             foreach ($vecMacros as $macro) {
                 $macros->push($macro);
@@ -79,11 +76,9 @@ trait ExtensionTrait
      *
      * @param ExtensionEnum $modeExtension
      *
-     * @return Collection<mixed,IExtension>
-     *
-     * @phpstan-return Map<mixed,IExtension>
+     * @return Map<mixed,IExtension>
      */
-    protected function loadExtensions(ExtensionEnum $modeExtension): Collection
+    protected function loadExtensions(ExtensionEnum $modeExtension): Map
     {
         self::$logger->debug('START', [$modeExtension]);
 
@@ -99,11 +94,9 @@ trait ExtensionTrait
      *
      * @param ExtensionEnum $modeExtension
      *
-     * @return Collection<mixed,IExtension>
-     *
-     * @phpstan-return Map<mixed,IExtension>
+     * @return Map<mixed,IExtension>
      */
-    protected function initExtensions(ExtensionEnum $modeExtension): Collection
+    protected function initExtensions(ExtensionEnum $modeExtension): Map
     {
         self::$logger->debug('START', [$modeExtension]);
 
@@ -129,19 +122,15 @@ trait ExtensionTrait
     /**
      * Returns a collection of all addons (incl. macros) from all extensions.
      *
-     * @param Collection<mixed,IExtension> $extensions
+     * @param Map<mixed,IExtension> $extensions
      *
-     * @phpstan-param Map<mixed,IExtension> $extensions
-     *
-     * @return Collection<mixed,Vector<mixed>>
-     *
-     * @phpstan-return Map<mixed,Vector<mixed>>
+     * @return Map<mixed,Seq>
      */
-    protected function getExtensionAddons(Collection $extensions): Collection
+    protected function getExtensionAddons(Map $extensions): Map
     {
         self::$logger->debug('START');
 
-        /** @var Map<mixed,Vector<mixed>> $extensionAddons */
+        /** @var Map<mixed,Seq> $extensionAddons */
         $extensionAddons = new Map();
 
         foreach ($extensions as $extension) {
@@ -158,16 +147,15 @@ trait ExtensionTrait
     }
 
     /**
-     * Returns an.
+     * Returns an addon.
      *
-     * @param Collection<mixed,Vector<mixed>> $addons
-     *
-     * @phpstan-param Map<mixed,Vector<mixed>> $addons
+     * @param Map<mixed,Seq> $addons
      *
      * @return array<mixed>
      */
-    protected function getExtensionAddonMacrosArray(Collection $addons): array
+    protected function getExtensionAddonMacrosArray(Map $addons): array
     {
+        /** @var Seq */
         $macros = $this->getExtensionAddonMacros($addons);
 
         return $macros->toArray();

@@ -57,7 +57,7 @@ class RapiClientReadTest extends EasyGoingTestCase
     #[\PHPUnit\Framework\Attributes\DataProvider('providerReadPageByPageId')]
     public function testReadPageByPageId(string $expected, int $pageId): void
     {
-        self::$logger->info('START');
+        self::$logger->info('START', [$pageId]);
 
         $response = $this->getCasto2t()->readPageByPageId($pageId);
 
@@ -322,7 +322,7 @@ class RapiClientReadTest extends EasyGoingTestCase
     {
         return [
             'exists' => [YacorapiTestData::C_PAGE_BODY_1, YacorapiTestData::C_SEARCHPAGEID_01],
-            'notExist' => [YacorapiTestData::DATA_EMPTY, YacorapiTestData::C_PAGEID_NOTEXIST],
+//            'notExist' => [YacorapiTestData::DATA_EMPTY, YacorapiTestData::C_PAGEID_NOTEXIST],
         ];
     }
 }

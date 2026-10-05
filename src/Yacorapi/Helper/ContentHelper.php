@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Helper;
 
-use Ds\Collection;
-use Ds\Sequence;
+use Ds\Map;
+use Ds\Seq;
 use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\Macro\HasMacroBodyEnum;
 use ollily\Common\AbstractHelper;
@@ -27,28 +27,26 @@ use Psr\Log\LogLevel;
  * @author ollily
  *
  * @phpstan-type HeaderLevelType 1|2|3|4|5|6
- *
- * @phpstan-import-type LoggingLevel from \Monolog\AbstractEasyGoingLogger
  */
 class ContentHelper extends AbstractHelper
 {
     /** @var string name of the macro tag */
     public const string TAG_MACRO_NAME = 'ac:structured-macro';
-//    public const string TAG_MACRO_NAME = 'structured-macro';
 
     /** @var string Start tag for macro */
     public const string TAG_MACRO_START = '<ac:structured-macro ac:name="%s" ac:schema-version="%s">';
-//    public const string TAG_MACRO_START = '<structured-macro name="%s" schema-version="%s">';
 
     /** @var string End tag for macro */
     public const string TAG_MACRO_END = '</ac:structured-macro>';
-//    public const string TAG_MACRO_END = '</structured-macro>';
 
     /** @var string Tag for macro version */
     public const string TAG_MACRO_VERSION = '1';
 
     /** @var string Tag for macro parameter */
     public const string TAG_PARAMETER = '<ac:parameter ac:name="%s">%s</ac:parameter>';
+
+    /** @var string Parameter for name */
+    public const string TAG_PARAMETER_NAME_NAME = 'ac:name';
 
     /** @var string Start tag for plain body */
     public const string TAG_BODY_PLAIN = '<ac:plain-text-body><![CDATA[%s]]></ac:plain-text-body>';
@@ -72,8 +70,6 @@ class ContentHelper extends AbstractHelper
      */
     protected function __construct(bool $withLogger = true, LogLevel|string|int $level = self::LEVEL_DEFAULT)
     {
-        /** @psalm-suppress ArgumentTypeCoercion
-         * @phpstan-ignore argument.type */
         self::$logger = new ConsoleLogger(ContentHelper::class, level: $level);
         self::$logger->debug('START');
 
@@ -85,15 +81,15 @@ class ContentHelper extends AbstractHelper
     /**
      * Creates the tag for a confluence macro including parameters (optional) and body (optional):
      *
-     * @param string                    $macroName  The name of the confluence macro as it shown in the source view
-     * @param Collection<string,string> $parameters A map of parameters (optional)
-     * @param string                    $body       The content of the body of the macro (Default {@link self::VAL_BODY_EMPTY})
+     * @param string             $macroName  The name of the confluence macro as it shown in the source view
+     * @param Map<string,string> $parameters A map of parameters (optional)
+     * @param string             $body       The content of the body of the macro (Default {@link self::VAL_BODY_EMPTY})
      *
      * @return string The full tag for the macro
      *
      * @see self::VAL_BODY_EMPTY
      */
-    public static function prepareMacro(string $macroName, Collection $parameters, string $body = self::VAL_BODY_EMPTY): string
+    public function prepareMacro(string $macroName, Map $parameters, string $body = self::VAL_BODY_EMPTY): string
     {
         $newTag = self::VAL_TAG_EMPTY;
         $newTag .= sprintf(self::TAG_MACRO_START, $macroName, self::TAG_MACRO_VERSION);
@@ -107,11 +103,11 @@ class ContentHelper extends AbstractHelper
     /**
      * Creates the tags for the parameter in the macro. If map is empty, nothing will be created.
      *
-     * @param Collection<string,string> $parameters
+     * @param Map<string,string> $parameters
      *
      * @return string The tags of the macro parameters
      */
-    public static function prepareMacroParameter(Collection $parameters): string
+    public function prepareMacroParameter(Map $parameters): string
     {
         $newTag = self::VAL_TAG_EMPTY;
         if (!$parameters->isEmpty()) {
@@ -134,17 +130,17 @@ class ContentHelper extends AbstractHelper
      *
      * @see self::VAL_BODY_EMPTY
      */
-    public static function prepareMacroBody(string $macroName, string $body = self::VAL_BODY_EMPTY): string
+    public function prepareMacroBody(string $macroName, string $body = self::VAL_BODY_EMPTY): string
     {
         $newTag = self::VAL_TAG_EMPTY;
 
         if (!empty($body)) {
-            switch (self::chooseMacroBody($macroName)) {
+            switch ($this->chooseMacroBody($macroName)) {
                 case HasMacroBodyEnum::PLAIN:
-                    $newTag .= self::preparePlainBody($body);
+                    $newTag .= $this->preparePlainBody($body);
                     break;
                 case HasMacroBodyEnum::RICH:
-                    $newTag .=  self::prepareRichTextBody($body);
+                    $newTag .=  $this->prepareRichTextBody($body);
                     break;
                 case HasMacroBodyEnum::CUSTOM:
                     $newTag .= $body;
@@ -167,7 +163,7 @@ class ContentHelper extends AbstractHelper
      * @see HasMacroBodyEnum
      * @see self::VAL_TAG_EMPTY
      */
-    public static function chooseMacroBody(string $macroName = self::VAL_TAG_EMPTY): HasMacroBodyEnum
+    private function chooseMacroBody(string $macroName = self::VAL_TAG_EMPTY): HasMacroBodyEnum
     {
         return HasMacroBodyEnum::hasBody($macroName);
     }
@@ -181,7 +177,7 @@ class ContentHelper extends AbstractHelper
      *
      * @see self::VAL_BODY_EMPTY
      */
-    public static function preparePlainBody(string $body = self::VAL_BODY_EMPTY): string
+    public function preparePlainBody(string $body = self::VAL_BODY_EMPTY): string
     {
         $newTag = self::VAL_TAG_EMPTY;
         if (!empty($body)) {
@@ -200,7 +196,7 @@ class ContentHelper extends AbstractHelper
      *
      * @see self::VAL_BODY_EMPTY
      */
-    public static function prepareRichTextBody(string $body = self::VAL_BODY_EMPTY): string
+    public function prepareRichTextBody(string $body = self::VAL_BODY_EMPTY): string
     {
         $newTag = self::VAL_TAG_EMPTY;
         if (!empty($body)) {
@@ -220,25 +216,33 @@ class ContentHelper extends AbstractHelper
      *
      * @return string H*-tag
      */
-    public static function prepareHeading(string $text, int $headerLevel = 1): string
+    public function prepareHeading(string $text, int $headerLevel = 1): string
     {
         return sprintf('<h%s>%s</h%s>', $headerLevel, $text, $headerLevel);
     }
-    
-    public static function replaceMacro(string $searchMacro, string $replaceMacro, \DOMNode $domNode): \DOMNode
-    {
-        /** @var Sequence<\DOMNode> /*/
-        $macrosFound = TagHelper::getTag(self::TAG_MACRO_NAME, $domNode);
 
-        /** @var \DOMElement $macroFound */
-        foreach ($macrosFound as $macroFound) {
-            var_dump($macroFound);
-            $macroFoundName = $macroFound->getAttribute('name');
-            var_dump($macroFoundName);
-            if ($macroFoundName== $searchMacro) {
-                $macroFound->setAttribute('name', $replaceMacro);
+    /**
+     * @param string                   $searchMacro
+     * @param string                   $replaceMacro
+     * @param \DOMDocument|\DOMElement $domNode
+     *
+     * @return \DOMDocument|\DOMElement
+     */
+    public function replaceMacro(string $searchMacro, string $replaceMacro, \DOMElement|\DOMDocument $domNode): \DOMElement|\DOMDocument
+    {
+        if (!empty($searchMacro)) {
+            /** @var Seq */
+            $macrosFound = TagHelper::getTag(self::TAG_MACRO_NAME, $domNode);
+
+            /** @var \DOMElement $macroFound */
+            foreach ($macrosFound as $macroFound) {
+                $macroFoundName = $macroFound->getAttribute(self::TAG_PARAMETER_NAME_NAME);
+                if ($macroFoundName == $searchMacro) {
+                    $macroFound->setAttribute(self::TAG_PARAMETER_NAME_NAME, $replaceMacro);
+                }
             }
         }
+
         return $domNode;
     }
 }

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi;
 
-use Ds\Collection;
 use Ds\Map;
 use oglow\tools\Addon\Atlassian\Extension\AtlassianExtension;
 use oglow\tools\Yacorapi\Data\ItemTypeEnum;
@@ -50,7 +49,7 @@ class YacorapiTestData extends TestData
 
     public const int EXT_ATLASSIAN_MACRO = 60;
 
-    public const int EXT_PDT_MACRO = 87;
+    public const int EXT_PDT_MACRO = 94;
 
     public const int EXT_3PARTY_ADDON = 11;
 
@@ -133,7 +132,7 @@ class YacorapiTestData extends TestData
 
     public const int MODE_ALL_ADDON_COUNT_TOTAL = 18;
 
-    public const int MODE_ALL_MACRO_COUNT_TOTAL = 219;
+    public const int MODE_ALL_MACRO_COUNT_TOTAL = 226;
 
     public const string MODE_ALL_ADDON_NAME = 'Scroll Documents for Confluence';
 
@@ -146,7 +145,7 @@ class YacorapiTestData extends TestData
     // Atlassian Macro
 
     /** All macros from all addons */
-    public const int MACROS_COUNT_TOTAL = 219;
+    public const int MACROS_COUNT_TOTAL = self::MODE_ALL_MACRO_COUNT_TOTAL;
 
     /** Array of specific macros which will be checked */
     public const array MACROS_VERIFY = ['children', 'code', 'create-from-template', 'section', 'toc'];
@@ -162,10 +161,18 @@ class YacorapiTestData extends TestData
 
     /** A macro to search for */
     public const string MACRO_SEARCH = 'MACRO-SEARCH';
-    
+
     /** A macro which replaces the {@link self::MACRO_SEARCH} */
     public const string MACRO_REPLACE = 'MACRO-REPLACE';
-    
+
+    public const string MACRO_IRL_HTML = 'html';
+
+    public const string MACRO_IRL_CODE = 'code';
+
+    public const string MACRO_IRL_SECTION = 'section';
+
+    public const string MACRO_IRL_COLUMN = 'column';
+
     // Unspecific test data
     public const string ADDON_1 = 'MyAddon';
 
@@ -308,14 +315,15 @@ class YacorapiTestData extends TestData
     public const string TAG_NS = 'ac';
 
     public const string TAG_ROOT_NS = '<' . self::TAG_NS . ':roottag %s>%s</' . self::TAG_NS . ':roottag>';
-    
+
     public const string TAG_WRONG_NAME_NS = self::TAG_NS . ':tagwrong';
+
     public const string TAG_EXIST_NAME_NS = self::TAG_NS . ':tagexist';
-    
+
     public const string TAG_WRONG_NS = '<' . self::TAG_NS . ':tagwrong></' . self::TAG_NS . ':tagwrong>';
-    
+
     public const string TAG_EXIST_NS = '<' . self::TAG_NS . ':tagexist></' . self::TAG_NS . ':tagexist>';
-    
+
     public const string TAG_EXIST_SHORT = '<tagexist/>';
 
     public const string TAG_BODY_CONTENT = 'Content of the tag body';
@@ -455,12 +463,12 @@ class YacorapiTestData extends TestData
     }
 
     /**
-     * @param string                  $text
-     * @param Collection<mixed,mixed> $parameters
+     * @param string           $text
+     * @param Map<mixed,mixed> $parameters
      *
      * @return array<mixed>
      */
-    public static function prepareResponseSpace(string $text, Collection $parameters): array
+    public static function prepareResponseSpace(string $text, Map $parameters): array
     {
         /** @var Map<mixed,mixed> */
         $mapParameters = $parameters;
@@ -489,12 +497,12 @@ class YacorapiTestData extends TestData
     }
 
     /**
-     * @param mixed                   $text
-     * @param Collection<mixed,mixed> $parameters
+     * @param mixed            $text
+     * @param Map<mixed,mixed> $parameters
      *
      * @return array<mixed>
      */
-    public static function prepareResponseAncestor(mixed $text, Collection $parameters): array
+    public static function prepareResponseAncestor(mixed $text, Map $parameters): array
     {
         /** @var Map<mixed,mixed> */
         $mapParameters = $parameters;
@@ -513,12 +521,12 @@ class YacorapiTestData extends TestData
     }
 
     /**
-     * @param string                  $text
-     * @param Collection<mixed,mixed> $parameters
+     * @param string           $text
+     * @param Map<mixed,mixed> $parameters
      *
      * @return array<mixed>
      */
-    public static function prepareResponseBody(string $text, Collection $parameters): array
+    public static function prepareResponseBody(string $text, Map $parameters): array
     {
         /** @var Map<mixed,mixed> */
         $mapParameters = $parameters;
@@ -561,17 +569,17 @@ class YacorapiTestData extends TestData
         return $newElement;
     }
 
-    public static function prepareTag(string $tagName, string $attributes='', string $body='%s'): string
+    public static function prepareTag(string $tagName, string $attributes = '', string $body = '%s'): string
     {
-        $newElement = false;
+        $newElement = '';
         if (!empty($tagName)) {
             $newElement = sprintf('<%s %s>%s</%s>', $tagName, $attributes, $body, $tagName);
         }
-    
+
         return $newElement;
     }
-        
-        // Macro Code Specific
+
+    // Macro Code Specific
 
     /**
      * <strong>Do not change the method name!</strong>.

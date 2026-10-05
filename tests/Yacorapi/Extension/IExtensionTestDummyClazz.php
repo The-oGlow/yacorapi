@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Extension;
 
 use Ds\Map;
-use Ds\Vector;
+use Ds\Seq;
 use oglow\tools\Yacorapi\YacorapiTestData;
 
 class IExtensionTestDummyClazz implements IExtension
@@ -34,7 +34,7 @@ class IExtensionTestDummyClazz implements IExtension
     /**
      * Returns the addons and their assigned macros.
      *
-     * @return Map<mixed,Vector<mixed>>
+     * @return Map<mixed,Seq>
      */
     #[\Override]
     public function getAddons(): Map
@@ -43,11 +43,11 @@ class IExtensionTestDummyClazz implements IExtension
     }
 
     /**
-     * @return Vector<mixed>
+     * @return Seq
      */
     #[\Override]
-    public function getMacros(): Vector
+    public function getMacros(): Seq
     {
-        return new Vector();
+        return new Seq();
     }
 }

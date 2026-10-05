@@ -42,8 +42,6 @@ class RapiClient extends RapiClientBatch implements IRapiClient
         ?IContainer $addons = null,
         mixed $level = IRapiClientBase::LEVEL_DEFAULT
     ) {
-        /** @psalm-suppress ArgumentTypeCoercion
-         * @phpstan-ignore argument.type */
         self::$logger = new ConsoleLogger(name: RapiClient::class, level: $level);
         self::$logger->debug('START');
 

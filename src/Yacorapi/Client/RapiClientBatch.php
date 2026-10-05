@@ -44,8 +44,6 @@ class RapiClientBatch extends RapiClientStatistic implements IRapiClientStatisti
         ?IContainer $addons = null,
         mixed $level = IRapiClientBase::LEVEL_DEFAULT
     ) {
-        /** @psalm-suppress ArgumentTypeCoercion
-         * @phpstan-ignore argument.type */
         self::$logger = new ConsoleLogger(name: RapiClientBatch::class, level: $level);
         self::$logger->debug('START');
 

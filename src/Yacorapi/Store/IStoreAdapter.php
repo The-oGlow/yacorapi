@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Store;
 
-use Ds\Sequence;
+use Ds\Seq;
 use Psr\Log\LogLevel;
 
 /**
@@ -46,15 +46,14 @@ interface IStoreAdapter
      * @return string The full filename
      */
     public function getFileName(): string;
-    
+
     /**
      * Loads the data, from an input file.
-     * 
-     * @param string $fileName The filename to read in
-     * @param bool $withHeader TRUE=the file has a column header at line 1, else FALSE
      *
-     * @return Sequence<mixed> The content of the file as sequence
+     * @param string $fileName   The filename to read in
+     * @param bool   $withHeader TRUE=the file has a column header at line 1, else FALSE
+     *
+     * @return Seq The content of the file as sequence
      */
-    public static function readData(string $fileName, bool $withHeader = false): Sequence;
-
+    public static function readData(string $fileName, bool $withHeader = false): Seq;
 }

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi;
 
-use Ds\Collection;
+use Ds\Map;
 use oglow\tools\Yacorapi\Request\RequestTypeEnum;
 use Psr\Log\LogLevel;
 
@@ -38,11 +38,11 @@ interface IConnectionProvider
     public function exec(string $execUrl, RequestTypeEnum $reqType = RequestTypeEnum::GET): IResponse;
 
     /**
-     * @param string                   $execUrl
-     * @param Collection<mixed, mixed> $parameters
-     * @param RequestTypeEnum          $reqType
+     * @param string            $execUrl
+     * @param Map<mixed, mixed> $parameters
+     * @param RequestTypeEnum   $reqType
      *
      * @return IResponse
      */
-    public function execPost(string $execUrl, Collection $parameters, RequestTypeEnum $reqType): IResponse;
+    public function execPost(string $execUrl, Map $parameters, RequestTypeEnum $reqType): IResponse;
 }

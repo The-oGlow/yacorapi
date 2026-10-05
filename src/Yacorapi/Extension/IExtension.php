@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Extension;
 
 use Ds\Map;
-use Ds\Vector;
+use Ds\Seq;
 
 interface IExtension
 {
@@ -25,12 +25,12 @@ interface IExtension
     /**
      * Returns the addons and their assigned macros.
      *
-     * @return Map<mixed,Vector<mixed>>
+     * @return Map<mixed,Seq>
      */
     public function getAddons(): Map;
 
     /**
-     * @return Vector<mixed>
+     * @return Seq
      */
-    public function getMacros(): Vector;
+    public function getMacros(): Seq;
 }

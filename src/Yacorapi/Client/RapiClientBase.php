@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Client;
 
-use Ds\Sequence;
+use Ds\Seq;
 use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\Extension\ExtensionEnum;
 use oglow\tools\Yacorapi\Extension\ExtensionTrait;
@@ -47,7 +47,7 @@ class RapiClientBase extends AbstractRapiClient implements IRapiClientBase
      * @inheritDoc
      */
     #[\Override]
-    public static function taskitemMethods(): Sequence
+    public static function taskitemMethods(): Seq
     {
         return self::existingMethodNames();
     }
@@ -68,8 +68,7 @@ class RapiClientBase extends AbstractRapiClient implements IRapiClientBase
         mixed $level = IRapiClientBase::LEVEL_DEFAULT
     ) {
         // Init Logger
-        /** @psalm-suppress ArgumentTypeCoercion
-         * @phpstan-ignore argument.type */
+
         self::$logger = new ConsoleLogger(name: RapiClientBase::class, level: $level);
         self::$logger->debug('START');
 

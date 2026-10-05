@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Provider;
 
-use Ds\Collection;
+use Ds\Map;
 use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\IConnectionProvider;
@@ -35,8 +35,6 @@ abstract class AbstractProvider implements IConnectionProvider
      * @param int|string $level
      *
      * @see self::LEVEL_DEFAULT
-     *
-     * @phpstan-param LoggingLevel $level
      */
     public function __construct(int|string $level = self::LEVEL_DEFAULT)
     {
@@ -65,7 +63,7 @@ abstract class AbstractProvider implements IConnectionProvider
      * @inheritDoc
      */
     #[\Override]
-    public function execPost(string $execUrl, Collection $parameters, RequestTypeEnum $reqType = RequestTypeEnum::PUT): IResponse
+    public function execPost(string $execUrl, Map $parameters, RequestTypeEnum $reqType = RequestTypeEnum::PUT): IResponse
     {
         self::$logger->debug('START - execUrl,parameters,reqType', [$execUrl, $parameters, $reqType]);
 
@@ -108,13 +106,13 @@ abstract class AbstractProvider implements IConnectionProvider
     abstract protected function execInternal(string $execUrl, RequestTypeEnum $reqType): array;
 
     /**
-     * @param string                  $execUrl
-     * @param Collection<mixed,mixed> $parameters
-     * @param RequestTypeEnum         $reqType
+     * @param string           $execUrl
+     * @param Map<mixed,mixed> $parameters
+     * @param RequestTypeEnum  $reqType
      *
      * @return array<mixed>
      */
-    abstract protected function execPostInternal(string $execUrl, Collection $parameters, RequestTypeEnum $reqType): array;
+    abstract protected function execPostInternal(string $execUrl, Map $parameters, RequestTypeEnum $reqType): array;
 
     /**
      * @return string

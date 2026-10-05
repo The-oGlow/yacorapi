@@ -23,8 +23,6 @@ use Psr\Log\LogLevel;
  * Implementation for a standarf file adapter.
  *
  * @author ollily
- *
- * @phpstan-import-type LoggingLevel from \Monolog\AbstractEasyGoingLogger
  */
 class FileAdapter extends AbstractStoreAdapter
 {
@@ -55,8 +53,6 @@ class FileAdapter extends AbstractStoreAdapter
         FileStoreStageEnum $staging = FileStoreStageEnum::BASE,
         mixed $level = self::LEVEL_DEFAULT
     ) {
-        /** @psalm-suppress ArgumentTypeCoercion
-         * @phpstan-ignore argument.type */
         self::$logger    = new ConsoleLogger(FileAdapter::class, level: $level);
         self::$logger->debug("START", [$fileName, $filePrefix, $fileSuffix, $fileExt, $pathToFile, $staging->name]);
 
@@ -106,7 +102,6 @@ class FileAdapter extends AbstractStoreAdapter
     {
         self::$logger->debug('START', [$this->storeItem]);
 
-        /** @psalm-suppress MixedMethodCall */
         $line = sprintf(
             '%s;%s%s;%s',
             $resultsEntry[SP::KEY_KEY],

@@ -15,7 +15,7 @@ namespace oglow\tools\Yacorapi\Helper;
 
 use DOMDocument;
 use DOMNode;
-use Ds\Vector;
+use Ds\Seq;
 use oglow\tools\Yacorapi\YacorapiTestData as YTD;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\EasyGoingTestCase;
@@ -25,7 +25,6 @@ use PHPUnit\Framework\EasyGoingTestCase;
  */
 class TagHelperTest extends EasyGoingTestCase
 {
-
     #[\Override]
     protected function getCasto2t(): TagHelper
     {
@@ -80,7 +79,7 @@ class TagHelperTest extends EasyGoingTestCase
             $fullNs = sprintf('xmlns:%s="%s"', $nsPrefix, $nsUri);
         }
         $domDoc = YTD::prepareDOMDocument(sprintf(YTD::TAG_ROOT, $fullNs, YTD::prepareTag($tagName, body: '')));
-//        var_dump($domDoc->saveXML());
+
         try {
 //            $actual = $this->getCasto2t()::getTag($getTagName, $domDoc, $nsUri);
             $actual = $this->getCasto2t()::findTag($getTagName, $domDoc, $nsPrefix, $nsUri);
@@ -127,7 +126,7 @@ class TagHelperTest extends EasyGoingTestCase
             }
         }
 
-        $deletedTags = new Vector();
+        $deletedTags = new Seq();
 
         try {
             $actual = $this->getCasto2t()::deleteTag($tagName, $domDoc, $deletedTags, $allTags);

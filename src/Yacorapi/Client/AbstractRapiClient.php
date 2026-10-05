@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Client;
 
-use Ds\Collection;
+use Ds\Map;
 use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\IConnectionProvider;
@@ -51,8 +51,7 @@ abstract class AbstractRapiClient
         mixed $level = IRapiClientBase::LEVEL_DEFAULT
     ) {
         // Init Logger
-        /** @psalm-suppress ArgumentTypeCoercion
-         * @phpstan-ignore argument.type */
+
         self::$logger = new ConsoleLogger(name:AbstractRapiClient::class, level:$level);
         self::$logger->debug('START');
 
@@ -65,8 +64,6 @@ abstract class AbstractRapiClient
             $this->addons = $addons;
         }
         if (empty($connectionProvider)) {
-            /** @psalm-suppress ArgumentTypeCoercion
-             * @phpstan-ignore argument.type */
             $this->connectionProvider = new CurlProvider($level);
         } else {
             $this->connectionProvider = $connectionProvider;
@@ -93,13 +90,13 @@ abstract class AbstractRapiClient
     }
 
     /**
-     * @param string                  $prepareUrl
-     * @param Collection<mixed,mixed> $parameters
-     * @param RequestTypeEnum         $reqType
+     * @param string           $prepareUrl
+     * @param Map<mixed,mixed> $parameters
+     * @param RequestTypeEnum  $reqType
      *
      * @return IResponse
      */
-    protected function execPost(string $prepareUrl, Collection $parameters, RequestTypeEnum $reqType): IResponse
+    protected function execPost(string $prepareUrl, Map $parameters, RequestTypeEnum $reqType): IResponse
     {
         self::$logger->debug('START - prepareUrl,parameters,reqType', [$prepareUrl, $parameters, $reqType]);
 

@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Helper;
 
-use Ds\Sequence;
-use Ds\Vector;
+use Ds\Seq;
 use Monolog\ConsoleLogger;
 use ollily\Common\AbstractHelper;
 use Psr\Log\LoggerInterface;
@@ -31,8 +30,6 @@ use voku\helper\XmlDomParser;
  * Helper clazz for editing tags of a confluence page.
  *
  * @author ollily
- *
- * @phpstan-import-type LoggingLevel from \Monolog\AbstractEasyGoingLogger
  */
 class TagHelper extends AbstractHelper
 {
@@ -46,8 +43,6 @@ class TagHelper extends AbstractHelper
      */
     protected function __construct(bool $withLogger = true, LogLevel|string|int $level = self::LEVEL_DEFAULT)
     {
-        /** @psalm-suppress ArgumentTypeCoercion
-         * @phpstan-ignore argument.type */
         self::$logger = new ConsoleLogger(TagHelper::class, level: $level);
         self::$logger->debug('START');
 
@@ -59,27 +54,28 @@ class TagHelper extends AbstractHelper
     /**
      * Returns all tags with a specific tag name.
      *
-     * @param string       $tagName The tag name
-     * @param \DOMDocument $domDoc  The dom structure to search in
+     * @param string                   $tagName  The tag name
+     * @param \DOMDocument|\DOMElement $domDoc   The dom structure to search in
+     * @param string                   $nsPrefix
      *
-     * @return Sequence<mixed> All found tags
+     * @return Seq All found tags
      */
-    public static function getTag(string $tagName, \DOMDocument $domDoc, string $nsPrefix = ''): Sequence
+    public static function getTag(string $tagName, \DOMElement|\DOMDocument $domDoc, string $nsPrefix = ''): Seq
     {
         /** @psalm-suppress TooManyTemplateParams
          *  @var bool|\DOMNodeList<\DOMNameSpaceNode|\DOMNode> */
         $result = false;
         if (!empty($tagName)) {
             if (!empty($nsPrefix)) {
-                $result = $domDoc->getElementsByTagNameNS($nsPrefix,$tagName);
+                $result = $domDoc->getElementsByTagNameNS($nsPrefix, $tagName);
             } else {
                 $result = $domDoc->getElementsByTagName($tagName);
             }
         }
         if (!is_bool($result)) {
-            $tags = new Vector($result);
+            $tags = new Seq($result);
         } else {
-            $tags = new Vector();
+            $tags = new Seq();
         }
 
         return $tags;
@@ -88,12 +84,14 @@ class TagHelper extends AbstractHelper
     /**
      * Returns all tags with a specific tag name using {@link \\DOMXPath}.
      *
-     * @param string       $tagName The tag name
-     * @param \DOMDocument $domDoc  The dom structure to search in
+     * @param string       $tagName  The tag name
+     * @param \DOMDocument $domDoc   The dom structure to search in
+     * @param string       $nsPrefix
+     * @param string       $nsUri
      *
-     * @return Sequence<mixed> All found tags
+     * @return Seq All found tags
      */
-    public static function findTag(string $tagName, \DOMDocument $domDoc, string $nsPrefix='', string $nsUri = ''): Sequence
+    public static function findTag(string $tagName, \DOMDocument $domDoc, string $nsPrefix = '', string $nsUri = ''): Seq
     {
         /** @psalm-suppress TooManyTemplateParams
          *  @var bool|SimpleXmlDomInterface[]|SimpleXmlDomNodeInterface<SimpleXmlDomInterface> */
@@ -119,9 +117,9 @@ class TagHelper extends AbstractHelper
             }
         }
         if (!is_bool($result)) {
-            $tags = new Vector($result);
+            $tags = new Seq($result);
         } else {
-            $tags = new Vector();
+            $tags = new Seq();
         }
 
         return $tags;
@@ -130,14 +128,14 @@ class TagHelper extends AbstractHelper
     /**
      * Removes the first found or all tags with a specific tag name.
      *
-     * @param string          $tagName     The tag name
-     * @param \DOMDocument    $domDoc      The dom structure to remove in
-     * @param Sequence<mixed> $deletedTags All deleted tags
-     * @param bool            $allTags     TRUE=remove all found tags, FALSE=remove the first found tag
+     * @param string       $tagName     The tag name
+     * @param \DOMDocument $domDoc      The dom structure to remove in
+     * @param Seq          $deletedTags All deleted tags
+     * @param bool         $allTags     TRUE=remove all found tags, FALSE=remove the first found tag
      *
      * @return \DOMDocument The new dom structure
      */
-    public static function deleteTag(string $tagName, \DOMDocument $domDoc, Sequence &$deletedTags, bool $allTags = false): \DOMDocument
+    public static function deleteTag(string $tagName, \DOMDocument $domDoc, Seq &$deletedTags, bool $allTags = false): \DOMDocument
     {
         /** @psalm-suppress TooManyTemplateParams
          *  @var bool|\DOMNodeList<\DOMNameSpaceNode|\DOMNode> */
@@ -172,9 +170,9 @@ class TagHelper extends AbstractHelper
             }
         }
         if (!is_bool($result)) {
-            $deletedTags = new Vector($result);
+            $deletedTags = new Seq($result);
         } else {
-            $deletedTags = new Vector();
+            $deletedTags = new Seq();
         }
 
         return $domDoc;

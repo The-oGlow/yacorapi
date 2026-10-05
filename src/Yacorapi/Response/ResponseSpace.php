@@ -15,7 +15,7 @@ namespace oglow\tools\Yacorapi\Response;
 
 use BadFunctionCallException;
 use Ds\Map;
-use Ds\Vector;
+use Ds\Seq;
 use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\IResponse;
 use Psr\Log\LoggerInterface;
@@ -72,10 +72,10 @@ class ResponseSpace extends AbstractResponse
      * @inheritDoc
      */
     #[\Override]
-    public function keys(): Vector
+    public function keys(): Seq
     {
-        // @var Vector<mixed>
-        return new Vector(array_keys($this->spaces));
+        // @var Seq
+        return new Seq(array_keys($this->spaces));
     }
 
     /**
