@@ -18,6 +18,8 @@ use Monolog\ConsoleLogger;
 use ollily\Common\AbstractHelper;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
+use voku\helper\SimpleHtmlDom;
+use voku\helper\XmlDomParser;
 
 /**
  * Helper clazz for editing tags of a confluence page.
@@ -26,6 +28,8 @@ use Psr\Log\LogLevel;
  */
 class TagHelper extends AbstractHelper
 {
+    public const string NAMESPACE_SEP = ':';
+
     private static LoggerInterface $logger;
 
     /**
@@ -75,28 +79,39 @@ class TagHelper extends AbstractHelper
     }
 
     /**
-     * Returns all tags with a specific tag name using {@link \\DOMXPath}.
+     * Returns all tags with a specific tag name using {@link XmlDomParser} or {@link \DOMXPath}.
      *
-     * @param string       $tagName  The tag name
-     * @param \DOMDocument $domDoc   The dom structure to search in
-     * @param string       $nsPrefix
-     * @param string       $nsUri
+     * @param string       $tagName   The tag name
+     * @param \DOMDocument $domDoc    The dom structure to search in
+     * @param string       $nsPrefix  The namespace prefix to register (Default: '')
+     * @param string       $nsUri     The namespace uri to register (Default: '')
+     * @param bool         $withXPath TRUE=Use XPath to find, else use SimpleHtmlDom (Default: FALSE)
      *
      * @return Seq All found tags
      */
-    public static function findTag(string $tagName, \DOMDocument $domDoc, string $nsPrefix = '', string $nsUri = ''): Seq
+    public static function findTag(string $tagName, \DOMDocument $domDoc, string $nsPrefix = '', string $nsUri = '', bool $withXPath = false): Seq
     {
-        /** @psalm-suppress TooManyTemplateParams
-         *  @var bool|\DOMNodeList<\DOMNameSpaceNode|\DOMNode> */
-        $result = false;
+        $result = [];
         if (!empty($tagName)) {
             try {
-                $xpath = new \DOMXPath($domDoc);
-                if (!empty($nsPrefix)) {
-                    $registered = $xpath->registerNamespace($nsPrefix, $nsUri);
-                    $result = $xpath->query($tagName, registerNodeNS: true);
+                if ($withXPath) {
+                    $xpath = new \DOMXPath($domDoc);
+                    if (!empty($nsPrefix)) {
+                        $xpath->registerNamespace($nsPrefix, $nsUri);
+                    }
+                    if (str_contains($tagName, self::NAMESPACE_SEP)) {
+                        $result = $xpath->query($tagName, registerNodeNS: true);
+                    } else {
+                        $result = $xpath->query($tagName);
+                    }
                 } else {
-                    $result = $xpath->query($tagName);
+                    $simpleXmlDom = new XmlDomParser($domDoc);
+                    $simpleXmlDom->autoRegisterXPathNamespaces(true);
+                    /** @psalm-suppress TooManyTemplateParams */
+                    $result = $simpleXmlDom->findMultiOrFalse($tagName);
+
+                    // Prevent memory leak
+                    unset($simpleXmlDom);
                 }
             } catch (\Throwable $error) {
                 self::$logger->notice($error->getMessage(), [$error::class]);

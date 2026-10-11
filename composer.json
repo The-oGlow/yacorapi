@@ -35,7 +35,8 @@
         "ext-ds": "^2.0",
         "psr/log": "^2.0||^3.0",
         "ollily/ezkoding": "^8.4",
-        "ollily/ezlogging": "^8.4"
+        "ollily/ezlogging": "^8.4",
+        "voku/simple_html_dom": "^5.0"
     },
     "provide": {
     },

@@ -209,10 +209,8 @@ class ContentHelper extends AbstractHelper
     /**
      * Creates a &lt;h*&gt;-tag with text.
      *
-     * @param string $text        The text used as heading
-     * @param int    $headerLevel the level for the H*-tag (Default: 1)
-     *
-     * @phpstan-param HeaderLevelType $headerLevel
+     * @param string          $text        The text used as heading
+     * @param HeaderLevelType $headerLevel the level for the H*-tag (Default: 1)
      *
      * @return string H*-tag
      */

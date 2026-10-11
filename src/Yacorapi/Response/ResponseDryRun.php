@@ -23,8 +23,6 @@ use ollily\Tools\String\ImplodeTrait;
  * Response which is used as mock for a dry run.
  *
  * @author ollily
- *
- * @psalm-suppress InvalidArgument
  */
 class ResponseDryRun implements IResponse
 {
@@ -97,8 +95,6 @@ class ResponseDryRun implements IResponse
      * @param bool $withBody
      *
      * @return Map<mixed,mixed>
-     *
-     * @phpstan-return Map<mixed,mixed>
      */
     public static function prepareResponse(bool $withBody = false): Map
     {
@@ -274,6 +270,11 @@ class ResponseDryRun implements IResponse
         return [];
     }
 
+    /**
+     * @inheritDoc
+     *
+     * @SuppressWarnings("PHPMD.UnusedFormalParameter")
+     */
     #[\Override]
     public function getSpaceInfo(SpaceInfoEnum $flags = SpaceInfoEnum::SPACEINFO_ALL): mixed
     {

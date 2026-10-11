@@ -47,8 +47,6 @@ class ExtensionTraitTest extends EasyGoingTestCase
 
     /**
      * @return Map<mixed,IExtension>
-     *
-     * @phpstan-return Map<mixed,IExtension>
      */
     protected function getPublicInitExtensions(): Map
     {

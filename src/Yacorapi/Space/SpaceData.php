@@ -35,7 +35,6 @@ class SpaceData extends AbstractContainer
 
     private static LoggerInterface $logger;
 
-    /** @psalm-suppress PropertyNotSetInConstructor     */
     private string $mySpaceFileDefault;
 
     public function __construct()
