@@ -13,27 +13,7 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Macro;
 
-use Ds\Vector;
-
 class SingleAddon extends AbstractAddon
 {
-    public const ADDON_SINGLE = 1;
-
-    protected function init(): void
-    {
-        parent::init();
-        $this->addonsMacros->putAll(
-            [
-                'single-addon' => new Vector(
-                    [
-                        'children',
-                        'code',
-                        'create-from-template',
-                        'section',
-                        'toc',
-                    ]
-                )
-            ]
-        );
-    }
+    public const AddonTypeEnum ADDON_TYPE = AddonTypeEnum::ADDON_SINGLE;
 }

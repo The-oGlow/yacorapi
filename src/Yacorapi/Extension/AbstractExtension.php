@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Extension;
 
 use Ds\Map;
-use Ds\Vector;
+use Ds\Seq;
 use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\Macro\IAddon;
@@ -22,48 +22,37 @@ use Psr\Log\LoggerInterface;
 
 abstract class AbstractExtension implements IExtension
 {
-    /** @var LoggerInterface */
-    private static $logger;
+    private static LoggerInterface $logger;
 
-    /** @var ConstData */
-    protected $constData;
+    protected ConstData $constData;
 
-    /** @var null|IAddon */
-    protected $addons;
+    protected IAddon $addons;
 
     public function __construct()
     {
-        $clazzName = get_class($this);
         self::$logger = new ConsoleLogger(AbstractExtension::class);
         self::$logger->debug('START');
-        $this->constData = new ConstData($clazzName);
+
+        $this->constData = ConstData::i();
         $this->init();
-        self::$logger->debug('Is initiated', [$clazzName]);
+
         self::$logger->debug('END');
     }
-
-    /**
-     * @inheritdoc
-     */
-    abstract public static function getName(): string;
-
-    /**
-     * @inheritdoc
-     */
-    abstract public static function getId(): int;
 
     protected function init(): void
     {
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
+    #[\Override]
     public function getAddons(): Map
     {
-        /** @var Map<mixed,Vector<mixed>> */
+        /** @var Map<mixed,Seq> */
         $addonsTmp = new Map();
-        if (!is_null($this->addons)) {
+        /** @psalm-suppress RedundantPropertyInitializationCheck */
+        if (isset($this->addons)) {
             $addonsTmp = $this->addons->getAddons();
         }
 
@@ -71,13 +60,15 @@ abstract class AbstractExtension implements IExtension
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
-    public function getMacros(): Vector
+    #[\Override]
+    public function getMacros(): Seq
     {
-        /** @var Vector<mixed> $macrosTmp */
-        $macrosTmp = new Vector();
-        if (!is_null($this->addons)) {
+        /** @var Seq $macrosTmp */
+        $macrosTmp = new Seq();
+        /** @psalm-suppress RedundantPropertyInitializationCheck */
+        if (isset($this->addons)) {
             $macrosTmp = $this->addons->getMacros();
         }
 

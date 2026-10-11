@@ -13,15 +13,13 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Store;
 
-use PHPUnit\Framework\EasyGoingTestCase;
 use oglow\tools\Yacorapi\YacorapiTestData;
+use PHPUnit\Framework\EasyGoingTestCase;
 
 class FileStoreItemTest extends EasyGoingTestCase
 {
-    /**
-     * @return IStoreItem
-     */
-    protected static function prepareO2t()
+    #[\Override]
+    protected static function prepareO2t(): IStoreItem
     {
         return FileStoreItem::prepareTargetFile(
             YacorapiTestData::FILE_FOLDERNAME,
@@ -31,9 +29,10 @@ class FileStoreItemTest extends EasyGoingTestCase
     }
 
     /**
-     * @return FileStoreItem
+     * @inheritDoc
      */
-    protected function getCasto2t()
+    #[\Override]
+    protected function getCasto2t(): FileStoreItem
     {
         return $this->o2t;
     }
@@ -83,7 +82,7 @@ class FileStoreItemTest extends EasyGoingTestCase
 
     public function testGetExt(): void
     {
-        $expected = YacorapiTestData::FILE_EXT_NAME;
+        $expected = str_replace(StoreParameter::C_FILE_SEP, '', YacorapiTestData::FILE_EXT_NAME);
 
         $actual = $this->getCasto2t()->getExt();
 
@@ -93,21 +92,22 @@ class FileStoreItemTest extends EasyGoingTestCase
     public function testSetExt(): void
     {
         $expected = YacorapiTestData::FILE_EXT_EMPTY;
+        $expected2 = YacorapiTestData::FILE_EXT_NAME;
 
         $actual = $this->getCasto2t()->getExt();
+
         self::assertNotEquals($expected, $actual);
 
-        $this->getCasto2t()->setExt($expected);
-
+        $this->getCasto2t()->setExt($expected2);
         $actual = $this->getCasto2t()->getExt();
-        self::assertEquals($expected, $actual);
+
+        $expected2 = str_replace(StoreParameter::C_FILE_SEP, '', $expected2);
+        self::assertEquals($expected2, $actual);
     }
 
     public function testToString(): void
     {
-        $expected = YacorapiTestData::FILE_FOLDERNAME . FileStoreItem::C_PATH_SEP .
-            YacorapiTestData::FILE_FILENAME . FileStoreItem::C_FILE_SEP .
-            YacorapiTestData::FILE_EXT_NAME;
+        $expected = YacorapiTestData::FILE_FOLDERNAME . DIRECTORY_SEPARATOR . YacorapiTestData::FILE_FILENAME . YacorapiTestData::FILE_EXT_NAME;
 
         $actual = $this->getCasto2t()->__toString();
 

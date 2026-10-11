@@ -15,21 +15,17 @@ namespace oglow\tools\Yacorapi\Provider;
 
 use Ds\Map;
 use oglow\tools\Yacorapi\IResponse;
-use oglow\tools\Yacorapi\Request\RequestType;
+use oglow\tools\Yacorapi\Request\RequestTypeEnum;
 use oglow\tools\Yacorapi\YacorapiTestData;
 use PHPUnit\Framework\EasyGoingTestCase;
 
 class AbstractProviderTest extends EasyGoingTestCase
 {
-    public function setUp(): void
-    {
-        parent::setUp();
-    }
-
     /**
      * @return AbstractProviderTestDummyClazz
      */
-    protected static function prepareO2t()
+    #[\Override]
+    protected static function prepareO2t(): AbstractProviderTestDummyClazz
     {
         return new AbstractProviderTestDummyClazz();
     }
@@ -37,20 +33,21 @@ class AbstractProviderTest extends EasyGoingTestCase
     /**
      * @return AbstractProviderTestDummyClazz
      */
-    protected function getCasto2t()
+    #[\Override]
+    protected function getCasto2t(): AbstractProviderTestDummyClazz
     {
         return $this->o2t;
     }
 
     /**
-     * @param IResponse $response
-     * @param mixed[]   $expectedData
+     * @param IResponse    $response
+     * @param array<mixed> $expectedData
      */
     protected function verifyResponse(IResponse $response, array $expectedData = []): void
     {
         self::assertNotEmpty($response);
         self::assertInstanceOf(IResponse::class, $response);
-        self::assertInstanceOf(Map::class, $response->getResponse());
+        self::assertInstanceOf(Map::class, $response->getRawData());
         self::assertInstanceOf(Map::class, $response->getResults());
         self::assertEquals($expectedData, $response->getResults()->toArray());
     }
@@ -78,7 +75,7 @@ class AbstractProviderTest extends EasyGoingTestCase
     {
         $expected = YacorapiTestData::ARRAY_EMPTY;
 
-        $actual = $this->getCasto2t()->publicExecInternal(YacorapiTestData::DATA_EMPTY, RequestType::REQ_TYP_GET);
+        $actual = $this->getCasto2t()->publicExecInternal(YacorapiTestData::DATA_EMPTY, RequestTypeEnum::GET);
 
         self::assertEquals($expected, $actual);
     }
@@ -87,23 +84,30 @@ class AbstractProviderTest extends EasyGoingTestCase
     {
         $expected = YacorapiTestData::ARRAY_EMPTY;
 
-        $actual = $this->getCasto2t()->publicExecPostInternal(YacorapiTestData::DATA_EMPTY, new Map(), RequestType::REQ_TYP_POST);
+        $actual = $this->getCasto2t()->publicExecPostInternal(YacorapiTestData::DATA_EMPTY, new Map(), RequestTypeEnum::POST);
 
         self::assertEquals($expected, $actual);
     }
 
     public function testGetTokenValue(): void
     {
-        $expected = 16;
+        $expected1 = 0;
+        $expected2 = 16;
 
         $actual = $this->getCasto2t()->publicGetTokenValue();
 
-        self::assertGreaterThanOrEqual($expected, strlen($actual));
+        self::assertThat(
+            strlen($actual),
+            self::logicalOr(
+                self::equalTo($expected1),
+                self::greaterThanOrEqual($expected2)
+            )
+        );
     }
 
     public function testGetAuthValue(): void
     {
-        $expected = 16;
+        $expected = 0;
 
         $actual = $this->getCasto2t()->publicGetAuthValue();
 

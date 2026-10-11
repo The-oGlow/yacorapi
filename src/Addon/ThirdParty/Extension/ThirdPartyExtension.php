@@ -15,22 +15,26 @@ namespace oglow\tools\Addon\ThirdParty\Extension;
 
 use oglow\tools\Addon\ThirdParty\Macro\ThirdPartyAddon;
 use oglow\tools\Yacorapi\Extension\AbstractExtension;
+use oglow\tools\Yacorapi\Extension\ExtensionEnum;
 
 class ThirdPartyExtension extends AbstractExtension
 {
+    #[\Override]
     protected function init(): void
     {
         parent::init();
         $this->addons = new ThirdPartyAddon();
     }
 
+    #[\Override]
     public static function getName(): string
     {
         return 'Third Party Extension';
     }
 
+    #[\Override]
     public static function getId(): int
     {
-        return 16;
+        return ExtensionEnum::EXTENSION_THIRD_PARTY->value;
     }
 }

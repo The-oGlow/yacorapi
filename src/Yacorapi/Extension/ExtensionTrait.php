@@ -1,0 +1,163 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of ezlogging
+ *
+ * (c) 2024 Oliver Glowa, coding.glowa.com
+ *
+ * This source file is subject to the Apache-2.0 license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+namespace oglow\tools\Yacorapi\Extension;
+
+use Ds\Map;
+use Ds\Seq;
+use oglow\tools\Yacorapi\ExitCodes;
+use ollily\Tools\Emergency;
+
+/**
+ * @phpstan-type ExtensionType null|IExtension|AdminExtension|AtlassianExtension|UserMacroExtension|ThirdPartyExtension|ProjectdocExtension
+ */
+trait ExtensionTrait
+{
+    protected const EXTENSION_AVAIL = [ExtensionEnum::EXTENSION_RAPI_CLIENT,
+        ExtensionEnum::EXTENSION_ATLASSIAN,
+        ExtensionEnum::EXTENSION_ATLASSIAN_ADMIN,
+        ExtensionEnum::EXTENSION_ATLASSIAN_USER_MACRO,
+        ExtensionEnum::EXTENSION_THIRD_PARTY,
+        ExtensionEnum::EXTENSION_PROJECTDOC_TOOLBOX,
+    ];
+
+    /** @var Map<mixed,IExtension> */
+    protected Map $loadedExtensions;
+
+    /**
+     * @param Map<mixed,Seq> $addons
+     *
+     * @return Seq
+     */
+    public function getExtensionAddonMacros(Map $addons): Seq
+    {
+        $macros = new Seq();
+
+        /** @var Seq<string> $vecMacros */
+        foreach (array_values($addons->toArray()) as $vecMacros) {
+            foreach ($vecMacros as $macro) {
+                $macros->push($macro);
+            }
+        }
+
+        return $macros;
+    }
+
+    /**
+     * Return an extension.
+     *
+     * @param ExtensionEnum $extension
+     *
+     * @return null|IExtension
+     */
+    protected function getExtension(ExtensionEnum $extension): ?IExtension
+    {
+        $result = null;
+        $key = $extension->value;
+        if ($this->loadedExtensions->hasKey($key)) {
+            $result = $this->loadedExtensions->get($key);
+        }
+
+        return $result;
+    }
+
+    /**
+     * Load extensions and set them to an field variable.
+     *
+     * @param ExtensionEnum $modeExtension
+     *
+     * @return Map<mixed,IExtension>
+     */
+    protected function loadExtensions(ExtensionEnum $modeExtension): Map
+    {
+        self::$logger->debug('START', [$modeExtension]);
+
+        $this->loadedExtensions = $this->initExtensions($modeExtension);
+
+        self::$logger->debug('END');
+
+        return $this->loadedExtensions;
+    }
+
+    /**
+     * Init extensions into a collection.
+     *
+     * @param ExtensionEnum $modeExtension
+     *
+     * @return Map<mixed,IExtension>
+     */
+    protected function initExtensions(ExtensionEnum $modeExtension): Map
+    {
+        self::$logger->debug('START', [$modeExtension]);
+
+        /** @var Map<mixed,IExtension> $extensions */
+        $extensions = new Map();
+
+        foreach (self::EXTENSION_AVAIL as $extensionEnum) {
+            if ($extensionEnum->isIn($modeExtension)) {
+                $newInstance = $extensionEnum->objectValue();
+                if (!empty($newInstance)) {
+                    $extensions->put($newInstance->getId(), $newInstance); // @phpstan-ignore staticMethod.dynamicCall
+                }
+            } else {
+                Emergency::breakSystem(ExitCodes::ERR_CODE_EXTENSION_NOT_LOADED, sprintf('Extension not loaded: %s ', $extensionEnum->name));
+            }
+        }
+
+        self::$logger->debug('END');
+
+        return $extensions;
+    }
+
+    /**
+     * Returns a collection of all addons (incl. macros) from all extensions.
+     *
+     * @param Map<mixed,IExtension> $extensions
+     *
+     * @return Map<mixed,Seq>
+     */
+    protected function getExtensionAddons(Map $extensions): Map
+    {
+        self::$logger->debug('START');
+
+        /** @var Map<mixed,Seq> $extensionAddons */
+        $extensionAddons = new Map();
+
+        foreach ($extensions as $extension) {
+            $addons = $extension->getAddons();
+            if (!$addons->isEmpty()) {
+                foreach ($addons as $addonKey => $addon) {
+                    $extensionAddons->put($addonKey, $addon);
+                }
+            }
+        }
+        self::$logger->debug('END');
+
+        return $extensionAddons;
+    }
+
+    /**
+     * Returns an addon.
+     *
+     * @param Map<mixed,Seq> $addons
+     *
+     * @return array<mixed>
+     */
+    protected function getExtensionAddonMacrosArray(Map $addons): array
+    {
+        /** @var Seq */
+        $macros = $this->getExtensionAddonMacros($addons);
+
+        return $macros->toArray();
+    }
+}

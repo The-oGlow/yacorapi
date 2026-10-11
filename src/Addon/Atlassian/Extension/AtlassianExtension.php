@@ -15,22 +15,26 @@ namespace oglow\tools\Addon\Atlassian\Extension;
 
 use oglow\tools\Addon\Atlassian\Macro\AtlassianAddon;
 use oglow\tools\Yacorapi\Extension\AbstractExtension;
+use oglow\tools\Yacorapi\Extension\ExtensionEnum;
 
 class AtlassianExtension extends AbstractExtension
 {
+    #[\Override]
     protected function init(): void
     {
         parent::init();
         $this->addons = new AtlassianAddon();
     }
 
+    #[\Override]
     public static function getName(): string
     {
         return 'Atlassian Extension';
     }
 
+    #[\Override]
     public static function getId(): int
     {
-        return 2;
+        return ExtensionEnum::EXTENSION_ATLASSIAN->value;
     }
 }

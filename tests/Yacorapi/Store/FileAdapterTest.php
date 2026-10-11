@@ -13,72 +13,68 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Store;
 
-use PHPUnit\Framework\EasyGoingTestCase;
-use oglow\tools\Yacorapi\YacorapiTestData;
 use Monolog\ConsoleLogger;
+use oglow\tools\Yacorapi\YacorapiTestData;
+use PHPUnit\Framework\EasyGoingTestCase;
 use Psr\Log\LoggerInterface;
 
 class FileAdapterTest extends EasyGoingTestCase
 {
-    private const RAND_MIN = 10;
+    private const int RAND_MIN = 10;
 
-    private const RAND_MAX = 30;
+    private const int RAND_MAX = 30;
 
-    private const CHAR_MIN = 64;
+    private const int CHAR_MIN = 64;
 
-    private const CHAR_MAX = self::CHAR_MIN + 26;
+    private const int CHAR_MAX = self::CHAR_MIN + 26;
 
-    /** @var LoggerInterface */
-    private static $logger;
+    private static LoggerInterface $logger;
 
-    /** @var string */
-    private static $fileName;
+    private static string $fileName;
 
-    public function __construct($name = null, $data = [], $dataName = '')
+    #[\Override]
+    public static function setUpBeforeClass(): void
     {
         self::$logger = new ConsoleLogger(FileAdapterTest::class);
         self::$logger->debug('START');
 
-        parent::__construct($name, $data, $dataName);
+        parent::setUpBeforeClass();
 
         self::$logger->debug('END');
     }
 
-    /**
-     * @return FileAdapter
-     */
-    protected static function prepareO2t()
+    #[\Override]
+    protected static function prepareO2t(): FileAdapter
     {
         return new FileAdapter(self::$fileName);
     }
 
-    /**
-     * @return FileAdapter
-     */
-    protected function getCasto2t()
+    #[\Override]
+    protected function getCasto2t(): FileAdapter
     {
         return $this->o2t;
     }
 
+    #[\Override]
     public function setUp(): void
     {
         self::$fileName = YacorapiTestData::FILE_FILENAME . '-' . microtime(true);
         $this->o2t = self::prepareO2t();
-        self::$logger->info($this->getCasto2t()->getStoreItem());
+        self::$logger->info($this->getCasto2t()->getFileName());
     }
 
     public function testStoreResults(): void
     {
         $results = [
-            FileAdapter::KEY_KEY => YacorapiTestData::C_PAGEID_EXIST,
-            FileAdapter::KEY_TITLE => YacorapiTestData::FILE_EXT_JSON
+            StoreParameter::KEY_KEY => YacorapiTestData::C_PAGEID_EXIST,
+            StoreParameter::KEY_TITLE => YacorapiTestData::FILE_EXT_JSON,
         ];
-        $results[FileAdapter::KEY_LINKS][FileAdapter::KEY_TINYUI] = YacorapiTestData::FILE_EXT_JSON;
+        $results[StoreParameter::KEY_LINKS][StoreParameter::KEY_TINYUI] = YacorapiTestData::FILE_EXT_JSON;
         $expected = 42;
 
         $this->getCasto2t()->storeResults($results);
 
-        $testFileName = $this->getCasto2t()->getStoreItem();
+        $testFileName = $this->getCasto2t()->getFileName();
         self::assertFileExists($testFileName);
         self::assertGreaterThanOrEqual($expected, filesize($testFileName), "Filesize is smaller as expected for '$testFileName'");
     }
@@ -93,7 +89,7 @@ class FileAdapterTest extends EasyGoingTestCase
 
         $this->getCasto2t()->storeDataHeader($dataHeader);
 
-        $testFileName = $this->getCasto2t()->getStoreItem();
+        $testFileName = $this->getCasto2t()->getFileName();
         self::assertFileExists($testFileName);
         self::assertEquals($expected, filesize($testFileName), "Filesize is not as expected for '$testFileName'");
     }
@@ -108,7 +104,7 @@ class FileAdapterTest extends EasyGoingTestCase
 
         $this->getCasto2t()->storeData($dataContent);
 
-        $testFileName = $this->getCasto2t()->getStoreItem();
+        $testFileName = $this->getCasto2t()->getFileName();
         self::assertFileExists($testFileName);
         self::assertEquals($expected, filesize($testFileName), "Filesize is not as expected for '$testFileName'");
     }

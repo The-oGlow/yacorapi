@@ -13,10 +13,10 @@ namespace oglow\tools\Yacorapi;
  */
 class MyAuth
 {
-    /** @var bool Flag, to switch between test and productive instances. */
-    public const  USE_PROD = false;
-    /** @var string The base URL to access the <strong>productive</strong> instance. */
-    public const PROD_URL = '#confluence-url_for_production#';
-    /** @var string The base URL to access the <strong>test</strong> instance. */
-    public const TEST_URL = '#confluence-url_for_testing#';
+    /** Flag, to switch between test and productive instances. */
+    public const bool USE_PROD = false;
+    /** The base URL to access the <strong>productive</strong> instance. */
+    public const string PROD_URL = '#confluence-url_for_production#';
+    /** The base URL to access the <strong>test</strong> instance. */
+    public const string TEST_URL = '#confluence-url_for_testing#';
 }
