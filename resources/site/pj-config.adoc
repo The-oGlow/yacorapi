@@ -2,8 +2,8 @@
 :doctype: book
 
 :site_resource: .
-include::{site_resource}/pj-settings.adoc[opts=optional]
-include::{site_resource}/adoc-cmmn-all.adoc[opts=optional]
+include::{site_resource}/../pj-settings.adoc[opts=optional]
+include::{site_resource}/../adoc-cmmn-all.adoc[opts=optional]
 
 :source-highlighter: highlight.js
 
