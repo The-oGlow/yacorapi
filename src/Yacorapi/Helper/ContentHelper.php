@@ -15,11 +15,11 @@ namespace oglow\tools\Yacorapi\Helper;
 
 use Ds\Map;
 use Ds\Seq;
-use Monolog\ConsoleLogger;
+use Monolog\DoNothingLogger;
+use Monolog\EasyGoingLogger;
 use oglow\tools\Yacorapi\Macro\HasMacroBodyEnum;
 use ollily\Common\AbstractHelper;
 use Psr\Log\LoggerInterface;
-use Psr\Log\LogLevel;
 
 /**
  * Helper clazz for generating content for a confluence page.
@@ -65,12 +65,16 @@ class ContentHelper extends AbstractHelper
     /**
      * Protected constructor.
      *
-     * @param bool                   $withLogger TRUE=activate logging, else FALSE
-     * @param int|LogLevel::*|string $level      The minimum logging level at which this handler will be triggered (Default: {@link self::LEVEL_DEFAULT})
+     * @param bool       $withLogger TRUE=activate logging, else FALSE
+     * @param int|string $level      The minimum logging level at which this handler will be triggered (Default: {@link self::LEVEL_DEFAULT})
      */
-    protected function __construct(bool $withLogger = true, LogLevel|string|int $level = self::LEVEL_DEFAULT)
+    protected function __construct(bool $withLogger = true, int|string $level = self::LEVEL_DEFAULT)
     {
-        self::$logger = new ConsoleLogger(ContentHelper::class, level: $level);
+        if ($withLogger) {
+            self::$logger = EasyGoingLogger::init(ContentHelper::class, level: $level);
+        } else {
+            self::$logger = new DoNothingLogger();
+        }
         self::$logger->debug('START');
 
         parent::__construct($withLogger, $level);

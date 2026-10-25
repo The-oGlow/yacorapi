@@ -185,7 +185,6 @@ class ResponseTest extends EasyGoingTestCase
 
         $actual = $this->getCasto2t()->getRestrictions();
 
-        self::assertIsArray($actual);
         self::assertCount($expectedCount, $actual);
     }
 

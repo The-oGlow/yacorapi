@@ -201,7 +201,7 @@ class TagHelperTest extends EasyGoingTestCase
         self::assertEquals($expectedCount, $occurenceAfter);
     }
 
-    public function validFindResults(int $expectedCount, string $expectedTagName, mixed $actual): void
+    public function validFindResults(int $expectedCount, string $expectedTagName, Seq $actual): void
     {
         self::assertCount($expectedCount, $actual);
         if ($expectedCount > 0 && $actual->count() > 0) {

@@ -14,14 +14,13 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi;
 
 use Ds\Map;
-use Monolog\ConsoleLogger;
 use Monolog\DoNothingLogger;
+use Monolog\EasyGoingLogger;
 use oglow\tools\Yacorapi\Request\RequestParameter;
 use ollily\Common\AbstractSingleton;
 use ollily\Tools\Emergency;
 use ollily\Tools\EnvironmentHelper;
 use Psr\Log\LoggerInterface;
-use Psr\Log\LogLevel;
 
 /**
  * Main settings clazz for the application.
@@ -160,14 +159,14 @@ final class ConstData extends AbstractSingleton
     /**
      * Protected constructor.
      *
-     * @param bool                   $withLogger TRUE=activate logging, else FALSE
-     * @param int|LogLevel::*|string $level      The minimum logging level at which this handler will be triggered (Default: {@link self::LEVEL_DEFAULT})
+     * @param bool       $withLogger TRUE=activate logging, else FALSE
+     * @param int|string $level      The minimum logging level at which this handler will be triggered (Default: {@link self::LEVEL_DEFAULT})
      */
-    protected function __construct(bool $withLogger = false, LogLevel|string|int $level = self::LEVEL_DEFAULT)
+    protected function __construct(bool $withLogger = false, int|string $level = self::LEVEL_DEFAULT)
     {
         // Init logger at first
         if ($withLogger) {
-            self::$logger = new ConsoleLogger(ConstData::class, level: $level);
+            self::$logger = EasyGoingLogger::init(ConstData::class, level: $level);
         } else {
             self::$logger = new DoNothingLogger();
         }

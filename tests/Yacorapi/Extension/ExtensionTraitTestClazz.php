@@ -68,7 +68,7 @@ class ExtensionTraitTestClazz
     /**
      * @param Map<mixed,Seq> $addons
      *
-     * @return Seq<string>
+     * @return Seq
      */
     public function publicGetExtensionAddonMacros(Map $addons): Seq
     {

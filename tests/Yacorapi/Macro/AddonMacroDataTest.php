@@ -61,7 +61,6 @@ class AddonMacroDataTest extends EasyGoingTestCase
         } else {
             $actual = $this->getCasto2t()->getMacroNamesByMode($mode);
         }
-        self::assertIsArray($actual);
         self::assertCount($expected, $actual);
     }
 
@@ -75,7 +74,6 @@ class AddonMacroDataTest extends EasyGoingTestCase
     {
         $actual = $this->getCasto2t()->getMacroNamesByAddon($mode, $addon);
 
-        self::assertIsArray($actual);
         self::assertCount($expected, $actual);
     }
 

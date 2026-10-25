@@ -23,7 +23,8 @@ use ollily\Tools\Emergency;
  */
 trait ExtensionTrait
 {
-    protected const EXTENSION_AVAIL = [ExtensionEnum::EXTENSION_RAPI_CLIENT,
+    /** @var array<mixed> */
+    protected const array EXTENSION_AVAIL = [ExtensionEnum::EXTENSION_RAPI_CLIENT,
         ExtensionEnum::EXTENSION_ATLASSIAN,
         ExtensionEnum::EXTENSION_ATLASSIAN_ADMIN,
         ExtensionEnum::EXTENSION_ATLASSIAN_USER_MACRO,
@@ -43,7 +44,7 @@ trait ExtensionTrait
     {
         $macros = new Seq();
 
-        /** @var Seq<string> $vecMacros */
+        /** @var Seq $vecMacros */
         foreach (array_values($addons->toArray()) as $vecMacros) {
             foreach ($vecMacros as $macro) {
                 $macros->push($macro);

@@ -23,13 +23,11 @@ use Psr\Log\LoggerInterface;
 
 class SpaceData extends AbstractContainer
 {
-    public const string VAL_SPACE_NS_SEP = '\\';
-
     public const string VAL_SPACES_NS = 'oglow\\tools\\Yacorapi';
 
     public const string VAL_SPACES_CLAZZ = 'MySpaces';
 
-    public const string VAL_SPACES_CLAZZ_FULL = self::VAL_SPACE_NS_SEP . self::VAL_SPACES_NS . self::VAL_SPACE_NS_SEP . self::VAL_SPACES_CLAZZ;
+    public const string VAL_SPACES_CLAZZ_FULL = '\\' . self::VAL_SPACES_NS . '\\' . self::VAL_SPACES_CLAZZ;
 
     public const string VAL_SPACES_FILE = self::VAL_SPACES_CLAZZ . '.php';
 
@@ -135,7 +133,8 @@ class SpaceData extends AbstractContainer
          * @phpstan-ignore function.impossibleType
          */
         if (method_exists(self::VAL_SPACES_CLAZZ_FULL, $mySpacesFunc)) {
-            $refInstance = new \ReflectionClass(self::VAL_SPACES_CLAZZ_FULL); // @phpstan-ignore argument.type
+            /** @phpstan-ignore argument.type */
+            $refInstance = new \ReflectionClass(self::VAL_SPACES_CLAZZ_FULL);
             $refObject = new \ReflectionMethod(self::VAL_SPACES_CLAZZ_FULL, $mySpacesFunc);
             $mySpaces = $refObject->invoke($refInstance);
         } else {

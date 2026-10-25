@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace oglow\tools\Addon\Projectdoc\Helper;
 
-use Monolog\ConsoleLogger;
+use Monolog\DoNothingLogger;
+use Monolog\EasyGoingLogger;
 use oglow\tools\Yacorapi\ConstData;
 use oglow\tools\Yacorapi\IResponse;
 use oglow\tools\Yacorapi\Response\ResponseParameter;
@@ -32,11 +33,16 @@ class ProjectDocToolboxHelper extends AbstractHelper
     /**
      * Protected constructor.
      *
-     * @param bool $withLogger TRUE=activate logging, else FALSE
+     * @param bool       $withLogger TRUE=activate logging, else FALSE
+     * @param int|string $level      The minimum logging level at which this handler will be triggered (Default: {@link self::LEVEL_DEFAULT})
      */
-    protected function __construct(bool $withLogger = true)
+    protected function __construct(bool $withLogger = true, int|string $level = self::LEVEL_DEFAULT)
     {
-        self::$logger = new ConsoleLogger(ProjectDocToolboxHelper::class, level: self::LEVEL_DEFAULT);
+        if ($withLogger) {
+            self::$logger = EasyGoingLogger::init(ProjectDocToolboxHelper::class, level: $level);
+        } else {
+            self::$logger = new DoNothingLogger();
+        }
         self::$logger->debug('START');
 
         parent::__construct($withLogger, static::LEVEL_DEFAULT);
@@ -52,6 +58,7 @@ class ProjectDocToolboxHelper extends AbstractHelper
             "/(ac:name=.projectdoc-properties-marker.\sac:schema-version=.1.><ac:parameter\sac:name=.doctype.>)(" . $oldDoctype . ")(<\/ac:parameter>)/";
             self::$logger->debug('Search pattern', [$oldDoctype,$newDoctype,$pattern]);
             $newBody = preg_replace($pattern, "$1" . $newDoctype . "$3", $body);
+            $newBody ??= '';
         }
         if ($body == $newBody) {
             self::$logger->notice('Doctype not replaced', [$oldDoctype, $newDoctype]);

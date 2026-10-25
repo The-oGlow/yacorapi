@@ -157,7 +157,7 @@ trait ProjectdocTrait
     private function showTotalsPdtDocument(IResponse $response): void
     {
         $total = $response->getValue(ResponseParameter::KEY_MAX_RESULT);
-        $size  = $response->getValue(ResponseParameter::KEY_SIZE);
+        $size = $response->getValue(ResponseParameter::KEY_SIZE);
         $start = $response->getValue(ResponseParameter::KEY_START_INDEX);
         $limit = $response->getValue(ResponseParameter::KEY_MAX_RESULT);
 
@@ -203,15 +203,17 @@ trait ProjectdocTrait
         if ($response->hasResults() && $response->keyExists('name')) {
             $line .= $this->prepareCsvLine(
                 \oglow\tools\Addon\Projectdoc\Traits\CSV_LINE_PDT_PROPERTY,
-                $response->getValue('name'),
-                $response->getValue('value'),
-                $response->getValue('controls'),
-                $response->getValue('document-key') ?? '',
-                $response->getValue('document-url') ?? ''
+                [
+                    $response->getValue('name'),
+                    $response->getValue('value'),
+                    $response->getValue('controls'),
+                    $response->getValue('document-key') ?? '',
+                    $response->getValue('document-url') ?? '',
+                ]
             );
         } else {
             if (!empty($propertyName)) {
-                $line .= $this->prepareCsvLine(\oglow\tools\Addon\Projectdoc\Traits\CSV_LINE_PDT_PROPERTY, $propertyName, '', '', '', '');
+                $line .= $this->prepareCsvLine(\oglow\tools\Addon\Projectdoc\Traits\CSV_LINE_PDT_PROPERTY, [$propertyName, '', '', '', '']);
             }
         }
 
@@ -219,14 +221,20 @@ trait ProjectdocTrait
     }
 
     /**
-     * @param string                     $format
-     * @param null|bool|float|int|string $param
+     * @param string $format
+     * @param mixed  $param
      *
-     * @return false|string
+     * @return string
      */
-    private function prepareCsvLine(string $format, ...$param): bool|string
+    private function prepareCsvLine(string $format, ...$param): string
     {
-        return sprintf($format . "\n", ...$param);
+        if (count($param) > 0) {
+            $line = sprintf($format . "\n", ...$param);
+        } else {
+            $line = $format . "\n";
+        }
+
+        return $line;
     }
 
     /**
@@ -239,6 +247,9 @@ trait ProjectdocTrait
     {
         $prepareUrl = $this->preparePdtPropertyReadUrl($pageId, $propertyName);
 
+        /**
+         * @psalm-suppress UndefinedMethod
+         */
         return $this->exec($prepareUrl);
     }
 
@@ -260,6 +271,9 @@ trait ProjectdocTrait
     ): IResponse {
         $prepareUrl = $this->preparePdtDocumentReadUrl($propertyNames, $spaceKey, $where, $mediaType, $resourceMode);
 
+        /**
+         * @psalm-suppress UndefinedMethod
+         */
         return $this->exec($prepareUrl);
     }
 }

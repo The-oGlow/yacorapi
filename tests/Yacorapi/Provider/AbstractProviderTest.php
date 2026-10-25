@@ -61,7 +61,13 @@ class AbstractProviderTest extends EasyGoingTestCase
     public function testPrepareResponseDataWrong(): void
     {
         static::expectException(\TypeError::class);
-        $result = $this->getCasto2t()->prepareResponse('WrongType'); // @phpstan-ignore argument.type
+        /**
+         * Intentional use a wrong type.
+         *
+         * @psalm-suppress InvalidArgument
+         * @phpstan-ignore argument.type
+         */
+        $result = $this->getCasto2t()->prepareResponse('WrongType');
         $this->verifyResponse($result);
     }
 

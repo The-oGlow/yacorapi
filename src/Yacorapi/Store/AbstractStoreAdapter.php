@@ -99,23 +99,17 @@ abstract class AbstractStoreAdapter implements IStoreAdapter
                     }
                 }
                 while ($line = fgets($fHandle, SP::C_FILE_LINE_LEN)) {
-                    /**
-                     * @psalm-suppress RedundantCondition
-                     * @phpstan-ignore function.impossibleType
-                     */
-                    if (!is_bool($line)) {
-                        if ($columnHeader->isEmpty()) {
-                            $resultList->push(self::prepareLineAsColumns($line));
+                    if ($columnHeader->isEmpty()) {
+                        $resultList->push(self::prepareLineAsColumns($line));
+                    } else {
+                        $tmpLine = self::prepareLineAsColumns($line);
+                        if ($columnHeader->count() == count($tmpLine)) {
+                            $resultList->push(array_combine($columnHeader->toArray(), $tmpLine->toArray()));
                         } else {
-                            $tmpLine = self::prepareLineAsColumns($line);
-                            if ($columnHeader->count() == count($tmpLine)) {
-                                $resultList->push(array_combine($columnHeader->toArray(), $tmpLine->toArray()));
-                            } else {
-                                Emergency::breakSystem(
-                                    ExitCodes::ERR_CODE_STORE_ADAPTER_COLUMN_DATA_MISMATCH,
-                                    'Column header and column data do not have same size'
-                                );
-                            }
+                            Emergency::breakSystem(
+                                ExitCodes::ERR_CODE_STORE_ADAPTER_COLUMN_DATA_MISMATCH,
+                                'Column header and column data do not have same size'
+                            );
                         }
                     }
                 }

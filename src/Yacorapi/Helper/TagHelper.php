@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace oglow\tools\Yacorapi\Helper;
 
 use Ds\Seq;
-use Monolog\ConsoleLogger;
+use InvalidArgumentException;
+use Monolog\DoNothingLogger;
+use Monolog\EasyGoingLogger;
 use ollily\Common\AbstractHelper;
 use Psr\Log\LoggerInterface;
-use Psr\Log\LogLevel;
-use voku\helper\SimpleHtmlDom;
 use voku\helper\XmlDomParser;
 
 /**
@@ -35,12 +35,16 @@ class TagHelper extends AbstractHelper
     /**
      * Protected constructor.
      *
-     * @param bool                   $withLogger TRUE=activate logging, else FALSE
-     * @param int|LogLevel::*|string $level      The minimum logging level at which this handler will be triggered (Default: {@link self::LEVEL_DEFAULT})
+     * @param bool       $withLogger TRUE=activate logging, else FALSE
+     * @param int|string $level      The minimum logging level at which this handler will be triggered (Default: {@link self::LEVEL_DEFAULT})
      */
-    protected function __construct(bool $withLogger = true, LogLevel|string|int $level = self::LEVEL_DEFAULT)
+    protected function __construct(bool $withLogger = true, int|string $level = self::LEVEL_DEFAULT)
     {
-        self::$logger = new ConsoleLogger(TagHelper::class, level: $level);
+        if ($withLogger) {
+            self::$logger = EasyGoingLogger::init(TagHelper::class, level: $level);
+        } else {
+            self::$logger = new DoNothingLogger();
+        }
         self::$logger->debug('START');
 
         parent::__construct($withLogger, $level);
@@ -59,9 +63,7 @@ class TagHelper extends AbstractHelper
      */
     public static function getTag(string $tagName, \DOMElement|\DOMDocument $domDoc, string $nsPrefix = ''): Seq
     {
-        /** @psalm-suppress TooManyTemplateParams
-         *  @var bool|\DOMNodeList<\DOMNameSpaceNode|\DOMNode> */
-        $result = false;
+        $result = [];
         if (!empty($tagName)) {
             if (!empty($nsPrefix)) {
                 $result = $domDoc->getElementsByTagNameNS($nsPrefix, $tagName);
@@ -69,13 +71,8 @@ class TagHelper extends AbstractHelper
                 $result = $domDoc->getElementsByTagName($tagName);
             }
         }
-        if (!is_bool($result)) {
-            $tags = new Seq($result);
-        } else {
-            $tags = new Seq();
-        }
 
-        return $tags;
+        return new Seq($result);
     }
 
     /**
@@ -107,9 +104,12 @@ class TagHelper extends AbstractHelper
                 } else {
                     $simpleXmlDom = new XmlDomParser($domDoc);
                     $simpleXmlDom->autoRegisterXPathNamespaces(true);
-                    /** @psalm-suppress TooManyTemplateParams */
-                    $result = $simpleXmlDom->findMultiOrFalse($tagName);
-
+                    /**
+                     * Method has too many params.
+                     *
+                     * @psalm-suppress TooManyTemplateParams
+                     */
+                    $result = $simpleXmlDom->findMultiOrNull($tagName);
                     // Prevent memory leak
                     unset($simpleXmlDom);
                 }
@@ -117,13 +117,11 @@ class TagHelper extends AbstractHelper
                 self::$logger->notice($error->getMessage(), [$error::class]);
             }
         }
-        if (!is_bool($result)) {
-            $tags = new Seq($result);
-        } else {
-            $tags = new Seq();
+        if (is_bool($result) || is_null($result)) {
+            $result = [];
         }
 
-        return $tags;
+        return new Seq($result);
     }
 
     /**
@@ -138,9 +136,7 @@ class TagHelper extends AbstractHelper
      */
     public static function deleteTag(string $tagName, \DOMDocument $domDoc, Seq &$deletedTags, bool $allTags = false): \DOMDocument
     {
-        /** @psalm-suppress TooManyTemplateParams
-         *  @var bool|\DOMNodeList<\DOMNameSpaceNode|\DOMNode> */
-        $result = false;
+        $result = [];
         if (!empty($tagName)) {
             $foundTags = self::getTag($tagName, $domDoc);
             if ($allTags) {
@@ -170,11 +166,7 @@ class TagHelper extends AbstractHelper
                 }
             }
         }
-        if (!is_bool($result)) {
-            $deletedTags = new Seq($result);
-        } else {
-            $deletedTags = new Seq();
-        }
+        $deletedTags = new Seq($result);
 
         return $domDoc;
     }
@@ -188,29 +180,26 @@ class TagHelper extends AbstractHelper
      */
     public static function replaceTags(string $tagNameSearch, \DOMNode|string $tagNameReplace, \DOMDocument $domDoc): \DOMDocument
     {
-        /** @psalm-suppress TooManyTemplateParams
-         *  @var bool|\DOMNodeList<\DOMNameSpaceNode|\DOMNode> */
-        $result = false;
+        $result = [];
         if (!empty($tagNameSearch)) {
             $foundTags = self::getTag($tagNameSearch, $domDoc);
-            $result = [];
             $posIdx = $foundTags->count() - 1;
             while ($posIdx > -1) {
                 /** @var \DOMElement $foundTag */
                 $foundTag = $foundTags->get($posIdx);
 
                 try {
-                    /** @psalm-suppress RedundantCondition */
                     if (is_string($tagNameReplace) && empty($tagNameReplace)) {
                         $newTag = $domDoc->createTextNode($tagNameReplace);
                     } elseif (is_string($tagNameReplace)) {
                         $newTag = $domDoc->createElement($tagNameReplace);
-                    } elseif ($tagNameReplace instanceof \DOMNode) { // @phpstan-ignore instanceof.alwaysTrue
-                        $newTag = $tagNameReplace;
+                        if (is_bool($newTag)) {
+                            throw new InvalidArgumentException(sprintf("Invalid tagname replacement '%s'", $tagNameReplace));
+                        }
                     } else {
-                        $newTag = '';
+                        $newTag = $tagNameReplace;
                     }
-                    if (!is_null($foundTag->parentNode) && $newTag instanceof \DOMNode) {
+                    if (!is_null($foundTag->parentNode)) {
                         $result[] = $foundTag->parentNode->replaceChild($newTag, $foundTag);
                     }
                 } catch (\Throwable $error) {

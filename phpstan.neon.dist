@@ -19,24 +19,7 @@ parameters:
 
     ignoreErrors:
         # Too strict -> disabled
-        -
-            identifier: function.alreadyNarrowedType
-            paths:
-                - tests/*/*Test.php
-        -
-            identifier: staticMethod.alreadyNarrowedType
-            paths:
-                - tests/*/*Test.php
-
         # Custom
-        -
-            identifier: class.notFound
-            paths:
-                - tests/Yacorapi/Space/MySpacesTest.php
-        -
-            identifier: property.onlyWritten
-            paths:
-                - src/foo/FooClazz.php
 
     excludePaths:
         -  src/Addon/Projectdoc

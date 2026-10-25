@@ -17,9 +17,6 @@ use Monolog\ConsoleLogger;
 use oglow\tools\Yacorapi\Extension\ExtensionEnum;
 use oglow\tools\Yacorapi\IConnectionProvider;
 use ollily\Common\IContainer;
-use ollily\Tools\Batch\ITaskItem;
-use ollily\Tools\Batch\ITaskList;
-use ollily\Tools\Batch\ProcessResultEnum;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -50,39 +47,5 @@ class RapiClientBatch extends RapiClientStatistic implements IRapiClientStatisti
         parent::__construct($modeExtension, $connectionProvider, $addons, $level);
 
         self::$logger->debug('END');
-    }
-
-    public function processQueue(ITaskList $taskList): ProcessResultEnum
-    {
-        $processResult = ProcessResultEnum::FAIL;
-
-        if ($taskList->isEmpty()) {
-            $processResult = ProcessResultEnum::EMPTY;
-        } else {
-            $listConfig = $taskList->getListConfig();
-            $listId = $taskList->getListId();
-            while (!$taskList->isEmpty()) { // @phpstan-ignore booleanNot.alwaysTrue
-                $taskResult = ProcessResultEnum::FAIL;
-                /** @var ITaskItem $task */
-                $task = $taskList->nextTask();
-                if (!$task->empty()) {
-                    $data = $task->getData();
-                    $taskResult = $this->doSomething($task, $data, $listConfig);
-                    if (ProcessResultEnum::SUCCESS != $taskResult) {
-                        break;
-                    }
-                }
-                if (ProcessResultEnum::SUCCESS == $taskResult) {
-                    $processResult = ProcessResultEnum::SUCCESS;
-                }
-            }
-        }
-
-        return $processResult;
-    }
-
-    protected function doSomething(ITaskItem $task, mixed $data, mixed $listConfig): ProcessResultEnum
-    {
-        return ProcessResultEnum::SUCCESS;
     }
 }
