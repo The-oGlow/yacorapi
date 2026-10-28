@@ -41,7 +41,7 @@ class MySpaces
      */
     public static function getMySpaceListAll(): array
     {
-        return ['#spacekey-all1#', '#spacekey-all2#'];
+        return ['#spacekey-all1#', '#spacekey-alln#'];
     }
 
     /**
@@ -51,7 +51,7 @@ class MySpaces
      */
     public static function getMySpaceListSubset1(): array
     {
-        return ['#spacekey-all1#', '#spacekey-all2#'];
+        return ['#spacekey-subset11#', '#spacekey-subset12#'];
     }
 
 }
