@@ -380,24 +380,26 @@ endif::[]
 === Unix / Linux
 
 * Clone this repository to your local drive
-* Create the folder +
-  `mkdir ${HOME}/.yacorapi`
-* Copy the file to the created folder +
-  `cp ./cfg/myauth.php.dist ${HOME}/.yacorapi/myauth.php`
-* Edit the file `${HOME}/.yacorapi/myauth.php`
+* run `./bin/install.sh`
+* Edit the file `${HOME}/.yacorapi/MyAuth.php`
 ** Replace `\#confluence-url_for_production#` with your Confluence URL for the production environment
 ** Replace `\#confluence-url_for_testing#` with your Confluence URL for the testing environment
+* Edit the file `${HOME}/.yacorapi/MySpaces.php`
+** Replace `\#spacekey-single#` with your primary spacekey
+** Replace `\#spacekey-simple1#`,`\#spacekey-simple2#` with your primary and secondary spacekey
+** Replace `\#spacekey-all1#` ... `\#spacekey-alln#` with all spacekeys on the instance
 
 === Windows
 
 * Clone this repository to your local drive
-* Create the folder +
-  `mkdir %USERPROFILE%\.yacorapi`
-* Copy the file to the created folder +
-  `copy .\cfg\myauth.php.dist %USERPROFILE%\.yacorapi\myauth.php`
-* Edit the file `%USERPROFILE%\.yacorapi\myauth.php`
+* run `bash .\bin\install.sh`
+* Edit the file `%USERPROFILE%\.yacorapi\MyAuth.php`
 ** Replace `\#confluence-url_for_production#` with your Confluence URL for the production environment
 ** Replace `\#confluence-url_for_testing#` with your Confluence URL for the testing environment
+* Edit the file `%USERPROFILE%\.yacorapi\MySpaces.php`
+** Replace `\#spacekey-single#` with your primary spacekey
+** Replace `\#spacekey-simple1#`,`\#spacekey-simple2#` with your primary and secondary spacekey
+** Replace `\#spacekey-all1#` ... `\#spacekey-alln#` with all spacekeys on the instance
 
 == Development
 
