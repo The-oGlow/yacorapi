@@ -41,7 +41,7 @@ class MySpacesTest extends EasyGoingTestCase
     {
         parent::setUpBeforeClass();
         self::$methodReferenced = SpaceTypeEnum::SPACE_ALL->method();
-        self::$methodIgnored = [SpaceTypeEnum::SPACE_SINGLE->method(), SpaceTypeEnum::SPACE_SIMPLE->method(), SpaceTypeEnum::SPACE_ALL->method()];
+        self::$methodIgnored = [SpaceTypeEnum::SPACE_SINGLE->method(), SpaceTypeEnum::SPACE_SIMPLE->method()];
     }
 
     /**
