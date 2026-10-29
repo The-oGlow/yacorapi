@@ -96,7 +96,10 @@ jobs:
 
       - name: install dependencies
         run: composer update --no-ansi --no-interaction --no-progress
-
+        
+      - name: install personal files
+        run: bash ${{ env.GITHUB_PROJECT_DIR }}/bin/install.sh
+        
       - name: execute tests
         run: composer c-test
 
