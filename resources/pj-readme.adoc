@@ -42,23 +42,23 @@ Managing the maintenance of a Confluence instance by REST API
 
 == Configuration
 
-Please read the link:config.adoc[configuration].
+Please read the link:site/config.adoc[configuration].
 
 == Usage
 
-include::{site_resource}/pj-usage.adoc[opts=optional]
+include::{site_resource}/site/pj-usage.adoc[opts=optional]
 
 == Examples
 
-Please read some link:examples.adoc[examples].
+Please read some link:site/examples.adoc[examples].
 
 == Project Status
 
-Please read the link:analysis.adoc[project status].
+Please read the link:site/analysis.adoc[project status].
 
 == Additional Information
 
-* link:composer.adoc[Composer Commands] - New commands for composer
+* link:site/composer.adoc[Composer Commands] - New commands for composer
 
 == Notice
 

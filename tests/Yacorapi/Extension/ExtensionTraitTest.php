@@ -131,7 +131,6 @@ class ExtensionTraitTest extends EasyGoingTestCase
 
         $actual = $this->getCasto2t()->publicGetExtensionAddonMacrosArray($addons);
 
-        self::assertIsArray($actual);
         self::assertCount($expectedSize, $actual);
         foreach ($expectedMacros as $expectedMacro) {
             self::assertContains($expectedMacro, $actual);

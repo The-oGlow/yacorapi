@@ -21,6 +21,7 @@ namespace foo;
  */
 class FooClazz
 {
+    /** @phpstan-ignore property.onlyWritten */
     private string $privateFoo = 'privateFooValue'; // NOSONAR
 
     protected function protectedFoo(): string

@@ -129,7 +129,11 @@ class ProjectDocToolboxHelperTest extends EasyGoingTestCase
     {
         $actual = $this->getCasto2t()->replaceDoctype($body, $oldDoctype, $newDoctype);
 
-        self::assertNotNull($actual);
+        if (empty($body)) {
+            self::assertEmpty($actual);
+        } else {
+            self::assertNotEmpty($actual);
+        }
         if ($isContains) {
             self::assertStringContainsString($newDoctype, $actual);
         } else {
@@ -143,10 +147,10 @@ class ProjectDocToolboxHelperTest extends EasyGoingTestCase
     public static function providerReplaceDoctype(): array
     {
         return [
-            'BodyEmpty'              => [YacorapiTestData::MACR_BODY_EMPTY, YacorapiTestData::MACR_DOCTYPE_OLD, YacorapiTestData::MACR_DOCTYPE_NEW, false],
-            'BodyInvalid'            => [YacorapiTestData::MACR_BODY_INVALID, YacorapiTestData::MACR_DOCTYPE_OLD, YacorapiTestData::MACR_DOCTYPE_NEW, false],
-            'BodySimple'             => [YacorapiTestData::MACR_DOCTYPE_OLD, YacorapiTestData::MACR_DOCTYPE_OLD, YacorapiTestData::MACR_DOCTYPE_NEW, false],
-            'DoctypeEmpty'           => [
+            'BodyEmptyNotReplaced'              => [YacorapiTestData::MACR_BODY_EMPTY, YacorapiTestData::MACR_DOCTYPE_OLD, YacorapiTestData::MACR_DOCTYPE_NEW, false],
+            'BodyInvalidNotReplaced'            => [YacorapiTestData::MACR_BODY_INVALID, YacorapiTestData::MACR_DOCTYPE_OLD, YacorapiTestData::MACR_DOCTYPE_NEW, false],
+            'BodySimpleNotReplaced'             => [YacorapiTestData::MACR_DOCTYPE_OLD, YacorapiTestData::MACR_DOCTYPE_OLD, YacorapiTestData::MACR_DOCTYPE_NEW, false],
+            'DoctypeEmptyNotReplaced'           => [
                 YacorapiTestData::repPH(
                     YacorapiTestData::getMacroCode(YacorapiTestData::MACR_PROJECTDOC_PROPERTIES_MARKER),
                     YacorapiTestData::MACR_DOCTYPE_EMPTY
@@ -155,7 +159,7 @@ class ProjectDocToolboxHelperTest extends EasyGoingTestCase
                 YacorapiTestData::MACR_DOCTYPE_NEW,
                 false,
             ],
-            'DoctypeInvalid'         => [
+            'DoctypeInvalidNotReplaced'         => [
                 YacorapiTestData::repPH(
                     YacorapiTestData::getMacroCode(YacorapiTestData::MACR_PROJECTDOC_PROPERTIES_MARKER),
                     YacorapiTestData::MACR_DOCTYPE_WRONG
@@ -164,7 +168,7 @@ class ProjectDocToolboxHelperTest extends EasyGoingTestCase
                 YacorapiTestData::MACR_DOCTYPE_NEW,
                 false,
             ],
-            'DoctypeCorrect'         => [
+            'DoctypeCorrectReplaced'         => [
                 YacorapiTestData::repPH(
                     YacorapiTestData::getMacroCode(YacorapiTestData::MACR_PROJECTDOC_PROPERTIES_MARKER),
                     YacorapiTestData::MACR_DOCTYPE_OLD
@@ -173,7 +177,7 @@ class ProjectDocToolboxHelperTest extends EasyGoingTestCase
                 YacorapiTestData::MACR_DOCTYPE_NEW,
                 true,
             ],
-            'DoctypeAlreadyReplaced' => [
+            'DoctypeAlreadyReplacedStayReplaced' => [
                 YacorapiTestData::repPH(
                     YacorapiTestData::getMacroCode(YacorapiTestData::MACR_PROJECTDOC_PROPERTIES_MARKER),
                     YacorapiTestData::MACR_DOCTYPE_NEW

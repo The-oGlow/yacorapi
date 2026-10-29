@@ -57,7 +57,7 @@ interface IResponse extends Stringable
      * Returns the value for the key (only from first level of the response) or a default value.
      *
      * @param mixed $key     The key to check for
-     * @param mixed $default A default value (Default: ''=
+     * @param mixed $default A default value (Default: '')
      *
      * @return mixed The found value or {@link $default}
      */

@@ -34,29 +34,41 @@ class SpaceDataTest extends EasyGoingTestCase
 
     public function testGetSpaceListDefault(): void
     {
-        $result = $this->getCasto2t()->getAllData();
-        self::assertIsArray($result);
+        $expected = 3;
+
+        $actual = $this->getCasto2t()->getAllData();
+
+        self::assertCount($expected, $actual);
     }
 
     public function testGetSpaceListSingle(): void
     {
-        $result = $this->getCasto2t()->getDataByMode(SpaceTypeEnum::SPACE_SINGLE->value);
-        self::assertIsArray($result);
-        self::assertCount(1, $result);
+        $expected = 1;
+
+        $actual = $this->getCasto2t()->getDataByMode(SpaceTypeEnum::SPACE_SINGLE->value);
+
+        self::assertIsArray($actual);
+        self::assertCount($expected, $actual);
     }
 
     public function testGetSpaceListSimple(): void
     {
-        $result = $this->getCasto2t()->getDataByMode(SpaceTypeEnum::SPACE_SIMPLE->value);
-        self::assertIsArray($result);
-        self::assertGreaterThan(1, $result);
+        $expected = 1;
+
+        $actual = $this->getCasto2t()->getDataByMode(SpaceTypeEnum::SPACE_SIMPLE->value);
+
+        self::assertIsArray($actual);
+        self::assertGreaterThan($expected, $actual);
     }
 
     public function testGetSpaceListAll(): void
     {
-        $result = $this->getCasto2t()->getDataByMode(SpaceTypeEnum::SPACE_ALL->value);
-        self::assertIsArray($result);
-        self::assertGreaterThan(1, $result);
+        $expected = 1;
+
+        $actual = $this->getCasto2t()->getDataByMode(SpaceTypeEnum::SPACE_ALL->value);
+
+        self::assertIsArray($actual);
+        self::assertGreaterThan($expected, $actual);
     }
 
     public function testPrepareMySpacesFileName(): void

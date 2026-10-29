@@ -33,6 +33,9 @@ class MySpacesTest extends EasyGoingTestCase
 
     private static LoggerInterface $logger;
 
+    /**
+     * @inheritDoc
+     */
     #[\Override]
     public static function setUpBeforeClass(): void
     {
@@ -41,15 +44,21 @@ class MySpacesTest extends EasyGoingTestCase
         self::$methodIgnored = [SpaceTypeEnum::SPACE_SINGLE->method(), SpaceTypeEnum::SPACE_SIMPLE->method(), SpaceTypeEnum::SPACE_ALL->method()];
     }
 
+    /**
+     * @psalm-suppress UndefinedClass
+     */
     #[\Override]
-    protected static function prepareO2t(): ?PersonalSpaces
+    protected static function prepareO2t(): ?PersonalSpaces  // @phpstan-ignore class.notFound
     {
         $instance = null;
 
         try {
             static::prepareSpaceData();
             $clazzName = SpaceData::VAL_SPACES_CLAZZ_FULL;
-
+            /**
+             * @psalm-suppress UndefinedClass
+             * @phpstan-ignore class.notFound
+             */
             $instance = new $clazzName();
         } catch (\Throwable $ex) {
             Emergency::exceptionStop($ex);
@@ -58,8 +67,11 @@ class MySpacesTest extends EasyGoingTestCase
         return $instance;
     }
 
+    /**
+     * @psalm-suppress UndefinedClass
+     */
     #[\Override]
-    protected function getCasto2t(): PersonalSpaces
+    protected function getCasto2t(): PersonalSpaces // @phpstan-ignore class.notFound
     {
         return $this->o2t;
     }
@@ -94,7 +106,7 @@ class MySpacesTest extends EasyGoingTestCase
         $ref = new \ReflectionClass($this->o2t);
         $allMethods = $ref->getMethods();
 
-        if (is_array($allMethods)) {
+        if (count($allMethods) > 0) {
             foreach ($allMethods as $allMethod) {
                 $methodName = $allMethod->getName();
                 if (str_starts_with($methodName, $prefix)) {
@@ -140,8 +152,8 @@ class MySpacesTest extends EasyGoingTestCase
             self::$logger->notice('No spaceData found:', [$spacesMissing]);
         }
 
-        self::assertIsArray($expected);
-        self::assertIsArray($actual);
+        self::assertGreaterThanOrEqual(1, count($expected));
+        self::assertGreaterThanOrEqual(1, count($actual));
         self::assertEqualsCanonicalizing($expected, $actual);
     }
 }

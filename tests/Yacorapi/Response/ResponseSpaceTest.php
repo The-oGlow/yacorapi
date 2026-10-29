@@ -41,7 +41,6 @@ class ResponseSpaceTest extends EasyGoingTestCase
 
         $actual = $this->getCasto2t()->getSpaces();
 
-        self::assertIsArray($actual);
         self::assertCount($expectedCount, $actual);
     }
 

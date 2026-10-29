@@ -23,7 +23,7 @@ class RapiClientBaseTest extends EasyGoingTestCase
     public const array AVAILABLE_METHODS = [
         'newClient', 'readPageByPageId', 'readPagesByTitle', 'checkPageExists', 'scanPages', 'searchPagesWithFilter', 'countItemsinSpace', 'spaceHomepage',
         'readRestrictionsByPageId', 'writeRestrictionsByPageId', 'listSpaces', 'countMacrosInSpace', 'createPage', 'updatePage', 'createOrUpdatePage',
-        'movePage', 'prepareAddonSet', 'taskitemMethods', 'getExtensionAddonMacros', 'processQueue',
+        'movePage', 'prepareAddonSet', 'taskitemMethods', 'getExtensionAddonMacros',
     ];
 
     #[\Override]

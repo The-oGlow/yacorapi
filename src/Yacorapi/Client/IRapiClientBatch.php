@@ -13,17 +13,6 @@ declare(strict_types=1);
 
 namespace oglow\tools\Yacorapi\Client;
 
-use ollily\Tools\Batch\ITaskList;
-use ollily\Tools\Batch\ProcessResultEnum;
-
 interface IRapiClientBatch extends IRapiClientStatistic
 {
-    /**
-     * The items of the  tasklist will be done.
-     *
-     * @param ITaskList $taskList
-     *
-     * @return ProcessResultEnum
-     */
-    public function processQueue(ITaskList $taskList): ProcessResultEnum;
 }

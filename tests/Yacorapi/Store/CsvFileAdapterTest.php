@@ -58,7 +58,7 @@ class CsvFileAdapterTest extends EasyGoingTestCase
     #[\Override]
     public function setUp(): void
     {
-        self::$fileName = YacorapiTestData::FILE_FILENAME . '-' . microtime(true);
+        self::$fileName = YacorapiTestData::FILE_FILENAME . '-' . microtime(false);
         $this->o2t = self::prepareO2t();
         self::$logger->info($this->getCasto2t()->getFileName());
     }

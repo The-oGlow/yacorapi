@@ -41,7 +41,7 @@ class AllAddonTest extends EasyGoingTestCase
         $actual = $this->getCasto2t()->getAddons();
 
         self::assertCount($expectedSize, $actual);
-        self::assertArrayHasKey($expectedAddon, $actual);
+        self::assertArrayHasKey($expectedAddon, $actual->toArray());
     }
 
     public function testGetAddonNames(): void
