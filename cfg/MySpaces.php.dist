@@ -44,14 +44,4 @@ class MySpaces
         return ['#spacekey-all1#', '#spacekey-alln#'];
     }
 
-    /**
-     * A list with a subset of space keys.
-     *
-     * @return string[]
-     */
-    public static function getMySpaceListSubset1(): array
-    {
-        return ['#spacekey-subset11#', '#spacekey-subset12#'];
-    }
-
 }
